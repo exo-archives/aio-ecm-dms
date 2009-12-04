@@ -26,6 +26,7 @@ import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -43,6 +44,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
@@ -58,6 +60,12 @@ public class UIJcrExplorerContainer extends UIContainer {
   public UIJcrExplorerContainer() throws Exception {
     addChild(UIJCRExplorer.class, null, null);
   }
+  
+  public String getUserAgent() {
+    PortletRequestContext requestContext = PortletRequestContext.getCurrentInstance();
+    PortletRequest portletRequest = requestContext.getRequest();
+    return portletRequest.getProperty("User-Agent");
+  }  
   
   public void initExplorer() throws Exception {
     try {
