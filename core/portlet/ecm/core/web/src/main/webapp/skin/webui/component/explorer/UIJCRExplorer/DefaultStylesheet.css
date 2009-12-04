@@ -1070,15 +1070,14 @@
 .UIJCRExplorer .UIDrivesArea .IconArrowDrives{
 	background: url('DefaultSkin/background/ArrowDrivers.gif') no-repeat left center; /* orientation=lt */
 	background: url('DefaultSkin/background/ArrowDrivers-rt.gif') no-repeat right center; /* orientation=rt */
-	height: 7px;	
+	height: 15px;	
 }
 
 .UIJCRExplorer .UIDrivesArea .TextTitleDriver{
 	font-weight: bold;
 	text-transform: uppercase;
 	padding-left: 15px;
-	line-height: 5px;
-	_line-height: 15px;
+	line-height: 15px;
 	margin-bottom:10px;
 }
 
