@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.presentation.removecomment;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
@@ -29,10 +30,12 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -72,10 +75,16 @@ public class RemoveCommentComponent extends AbstractActionComponent {
     String nodepath = String.valueOf(variables.get(OBJECTID));
     WebuiRequestContext requestcontext = (WebuiRequestContext)variables.get(Utils.REQUESTCONTEXT);
     try {
-        Node commentNode = (Node) nodefinder.getItem(repository, wsname, nodepath);
-        CommentsService commentService = uicomponent.getApplicationComponent(CommentsService.class);
-        commentService.deleteComment(commentNode);        
-        uicomponent.updateAjax(requestcontext);    
+      Node commentNode = (Node) nodefinder.getItem(repository, wsname, nodepath);
+      CommentsService commentService = uicomponent.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);        
+      uicomponent.updateAjax(requestcontext);    
+    } catch(VersionException e) {
+      LOG.error("Version exception");
+      Object[] args = { nodepath } ;
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", args, 
+          ApplicationMessage.WARNING));      
+      requestcontext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     } catch (Exception e) {
       LOG.error("an unexpected error occurs while removing the node", e);
       JCRExceptionManager.process(uiApp, e);
