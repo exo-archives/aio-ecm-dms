@@ -263,10 +263,6 @@ public class UIWorkingArea extends UIContainer {
           if(holdsLock) actionsList.append(",Unlock");
           else if(!isLocked) actionsList.append(",Lock");
         }
-        if(!isSameNameSibling) {
-          actionsList.append(",Copy");
-          actionsList.append(",Cut");
-        }
         actionsList.append(",Rename");
         if(isJcrEnable) actionsList.append(",Save");
         actionsList.append(",Delete");
@@ -276,7 +272,7 @@ public class UIWorkingArea extends UIContainer {
           if(holdsLock) actionsList.append(",Unlock");
           else if(!isLocked) actionsList.append(",Lock");
         }
-        if(!isSameNameSibling) actionsList.append(",Copy");
+        actionsList.append(",Copy");
         actionsList.append(",Rename");
       }
       if (!realNode.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
@@ -289,10 +285,8 @@ public class UIWorkingArea extends UIContainer {
           actionsList.append(",Lock");
         }
       }
-      if(!isSameNameSibling) {
-        actionsList.append(",Copy");
-        actionsList.append(",Cut");
-      }
+      actionsList.append(",Copy");
+      actionsList.append(",Cut");
       actionsList.append(",Rename");
       if(isJcrViewEnable()) actionsList.append(",Save");
       actionsList.append(",Delete");
@@ -472,11 +466,8 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
       return; 
     }
-    if(destPath.endsWith("/")) {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
-    }
+    // Make destination path without index on final name
+    destPath = destPath.concat("/").concat(srcNode.getName());
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class);
     try {
       if(ClipboardCommand.COPY.equals(type)) {
@@ -545,7 +536,6 @@ public class UIWorkingArea extends UIContainer {
       try {
         if (LOG.isDebugEnabled()) LOG.debug("Copy to another workspace");
         workspace.copy(srcWorkspaceName, srcPath, destPath);
-        //workspace.clone(srcWorkspaceName, srcPath, destPath, true);
       } catch (Exception e) {
         LOG.error("an unexpected error occurs while pasting the node", e);
         if (LOG.isDebugEnabled()) LOG.debug("Copy to other workspace by clone");
@@ -558,6 +548,52 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
+ /**
+  * Update clipboard after CUT node. Detain PathNotFoundException with cutting same name sibling node
+  * @param clipboardCommands
+  * @param mapClipboard
+  * @throws Exception
+  */
+  private static void updateClipboard(List<ClipboardCommand> clipboardCommands, Map<ClipboardCommand, Node> mapClipboard) throws Exception {
+    Node srcNode;
+    for (ClipboardCommand clipboard : clipboardCommands) {
+      if (ClipboardCommand.CUT.equals(clipboard.getType())) {
+        srcNode = mapClipboard.get(clipboard);
+        srcNode.refresh(true);
+        clipboard.setSrcPath(srcNode.getPath());
+      }
+    }
+  }
+  
+  /**
+   * Put data from clipboard to Map<Clipboard, Node>. After cutting node, we keep data to update clipboard by respective node
+   * @param clipboardCommands
+   * @param uiExplorer
+   * @return
+   * @throws Exception
+   */
+  private static Map<ClipboardCommand, Node> parseToMap(List<ClipboardCommand> clipboardCommands, UIJCRExplorer uiExplorer) throws Exception {
+    String srcPath;
+    String type;
+    String srcWorkspace;
+    Node srcNode;
+    Session srcSession;
+    Map<ClipboardCommand, Node> mapClipboard = new HashMap<ClipboardCommand, Node>();
+    for (ClipboardCommand clipboard : clipboardCommands) {
+      srcPath = clipboard.getSrcPath();
+      type = clipboard.getType();
+      srcWorkspace = clipboard.getWorkspace();
+      if (ClipboardCommand.CUT.equals(type)) {
+        srcSession = uiExplorer.getSessionByWorkspace(srcWorkspace);
+        // Use the method getNodeByPath because it is link aware
+        srcNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
+        clipboard.setSrcPath(srcNode.getPath());
+        mapClipboard.put(clipboard, srcNode);
+      }
+    }
+    return mapClipboard;
+  }
+  
   private void pasteByCut(ClipboardCommand currentClipboard, UIJCRExplorer uiExplorer, Session session, String srcWorkspace, String srcPath, 
       String destPath, ActionServiceContainer actionContainer, String repository,
       boolean isMultiSelect, boolean isLastPaste) throws Exception {
@@ -565,6 +601,12 @@ public class UIWorkingArea extends UIContainer {
     if (workspace.getName().equals(srcWorkspace)) {
       if (srcPath.equals(destPath)) return;
     }
+    UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+    List<ClipboardCommand> allClipboard = uiExplorer.getAllClipBoard();
+    List<ClipboardCommand> virtualClipboard = uiWorkingArea.getVirtualClipboards();
+    Map<ClipboardCommand, Node> mapAllClipboardNode = parseToMap(allClipboard, uiExplorer);
+    Map<ClipboardCommand, Node> mapVirtualClipboardNode = parseToMap(virtualClipboard, uiExplorer);
+    
     RelationsService relationsService = 
       uiExplorer.getApplicationComponent(RelationsService.class);
     List<Node> refList = new ArrayList<Node>();
@@ -637,6 +679,8 @@ public class UIWorkingArea extends UIContainer {
     }
     session.save();
     uiExplorer.getAllClipBoard().remove(currentClipboard);
+    updateClipboard(uiWorkingArea.getVirtualClipboards(), mapVirtualClipboardNode);
+    updateClipboard(uiExplorer.getAllClipBoard(), mapAllClipboardNode);
   }
   
   private void removeReferences(Node destNode) throws Exception {
@@ -1102,34 +1146,36 @@ public class UIWorkingArea extends UIContainer {
     }    
   }
   
-  private void moveNode(String srcPath, Node destNode, Event<?> event) throws Exception {
+  private void moveNode(String srcPath, Node selectedNode, Node destNode, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
+    Session srcSession;
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    if(srcPath.indexOf(":/") > -1) {
+    if(srcPath.indexOf(":/") > -1 || (selectedNode != null)) {
       String[] arrSrcPath = srcPath.split(":/");
-      if(("/" + arrSrcPath[1]).equals(destNode.getPath())) {
+      if((srcPath.contains(":/") && ("/" + arrSrcPath[1]).equals(destNode.getPath())) || (selectedNode != null && selectedNode.equals(destNode))) {
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.can-not-move-to-itself", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
     }
-    if (matcher.find()) {
-      wsName = matcher.group(1);
-      srcPath = matcher.group(2);
-    } else {
-      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
-    }    
-    Session srcSession = uiExplorer.getSessionByWorkspace(wsName);
-    // Use the method getNodeByPath because it is link aware
-    Node selectedNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
-    // Reset the path to manage the links that potentially create virtual path
-    srcPath = selectedNode.getPath();
-    // Reset the session to manage the links that potentially change of workspace
+    if (selectedNode == null) {
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        srcPath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+      }    
+      srcSession = uiExplorer.getSessionByWorkspace(wsName);
+      // Use the method getNodeByPath because it is link aware
+      selectedNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
+      // Reset the path to manage the links that potentially create virtual path
+      srcPath = selectedNode.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+    }
     srcSession = selectedNode.getSession();
-    
     if(!selectedNode.isCheckedOut()) {
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
           ApplicationMessage.WARNING));
@@ -1138,12 +1184,8 @@ public class UIWorkingArea extends UIContainer {
     }
     uiExplorer.addLockToken(selectedNode);
     String destPath = destNode.getPath();
-	String messagePath = destPath;
-    if(destPath.endsWith("/")) {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
-    }
+    String messagePath = destPath;
+    destPath = destPath.concat("/").concat(selectedNode.getName());
     Workspace srcWorkspace = srcSession.getWorkspace();
     Workspace destWorkspace = destNode.getSession().getWorkspace();
     try {
@@ -1163,8 +1205,47 @@ public class UIWorkingArea extends UIContainer {
   
   private void moveMultiNode(String[] srcPaths, Node destNode, 
       Event<?> event) throws Exception {
+    Node node = null;
+    String wsName = null;
+    String nodePath = null;
+    Session session = null;
+    Map<String, Node> mapNode = new HashMap <String, Node>();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     for(int i=0; i< srcPaths.length; i++) {
-      moveNode(srcPaths[i], destNode, event);
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPaths[i]);
+      //prepare to remove
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+        try {
+          session = uiExplorer.getSessionByWorkspace(wsName);
+          // Use the method getNodeByPath because it is link aware
+          node = uiExplorer.getNodeByPath(nodePath, session, false);
+          // Reset the session to manage the links that potentially change of workspace
+          session = node.getSession();
+          // Reset the workspace name to manage the links that potentially change of workspace 
+          wsName = session.getWorkspace().getName();
+          mapNode.put(nodePath, node);
+        } catch(PathNotFoundException path) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+              null,ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        } catch (Exception e) {
+          JCRExceptionManager.process(uiApp, e);
+        }
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      }    
+    }
+    
+    String path = null;
+    Iterator<String> iterator = mapNode.keySet().iterator(); 
+    while (iterator.hasNext()) {
+      path = iterator.next();
+      node = mapNode.get(path);
+      node.refresh(true);
+      moveNode(node.getPath(), node, destNode, event);
     }
   }
   
@@ -1276,7 +1357,7 @@ public class UIWorkingArea extends UIContainer {
         else moveMultiNode(nodePath.split(";"), destNode, event);
       } else {
         if(isLink) createLink(nodePath, destNode, event);
-        else moveNode(nodePath, destNode, event);
+        else moveNode(nodePath, null, destNode, event);
       }
       session.save();
       uiExplorer.updateAjax(event);
