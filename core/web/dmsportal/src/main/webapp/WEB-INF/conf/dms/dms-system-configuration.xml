@@ -126,10 +126,29 @@
 				              </field>   			               
 		              	</object>
 	              	</value>
+									<value>              	
+		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		              	<field  name="alias"><string>exoFolksonomiesPath</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:folksonomies</string></field>
+		                  <field name="permissions">
+				                <collection type="java.util.ArrayList">               
+				                  <value>                            
+				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                  </value>				                  
+				                </collection>
+				              </field>   			               
+		              	</object>
+	              	</value>	              	
                   <value>               
                     <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">                 
-                      <field  name="alias"><string>exoTagStylesPath</string></field>
-                      <field  name="path"><string>/exo:ecm/exo:taxStyles</string></field>
+                      <field  name="alias"><string>exoTagStylePath</string></field>
+                      <field  name="path"><string>/exo:ecm/exo:folksonomies/exo:tagStyles</string></field>
                       <field name="permissions">
                         <collection type="java.util.ArrayList">               
                           <value>                            
@@ -558,83 +577,6 @@
 	          </field>
 	          <field  name="jcrPaths">
 	          	<collection type="java.util.ArrayList">
-	          		<value>              	
-		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		              	<field  name="alias"><string>exoFolksonomiesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksonomies</string></field>
-		                  <field name="permissions">
-				                <collection type="java.util.ArrayList">               
-				                  <value>                            
-				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
-				                      <field name="identity"><string>*:/platform/administrators</string></field>
-				                      <field name="read"><string>true</string></field>                
-				                      <field name="addNode"><string>true</string></field>                
-				                      <field name="setProperty"><string>true</string></field>                
-				                      <field name="remove"><string>true</string></field>                
-				                    </object>  
-				                  </value>				                  
-				                </collection>
-				              </field>   			               
-		              	</object>
-	              	</value>	              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              	
-	              	<value>              	
-		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		              		<field  name="alias"><string>exoTagsPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksonomies/exo:tags</string></field>
-		                  <field name="permissions">
-				                <collection type="java.util.ArrayList">               
-				                  <value>                            
-				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
-				                      <field name="identity"><string>*:/platform/administrators</string></field>
-				                      <field name="read"><string>true</string></field>                
-				                      <field name="addNode"><string>true</string></field>                
-				                      <field name="setProperty"><string>true</string></field>                
-				                      <field name="remove"><string>true</string></field>                
-				                    </object>  
-				                  </value>				                  
-				                </collection>
-				              </field>   			               
-		              	</object>
-	              	</value>	              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		             	              		              	         	              	
-	              	<value>              	
-		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		              		<field  name="alias"><string>exoOldTagStylePath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksonomies/exo:tagStyle</string></field>
-		                  <field name="permissions">
-				                <collection type="java.util.ArrayList">               
-				                  <value>                            
-				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
-				                      <field name="identity"><string>*:/platform/administrators</string></field>
-				                      <field name="read"><string>true</string></field>                
-				                      <field name="addNode"><string>true</string></field>                
-				                      <field name="setProperty"><string>true</string></field>                
-				                      <field name="remove"><string>true</string></field>                
-				                    </object>  
-				                  </value>				                  
-				                </collection>
-				              </field>   			               
-		              	</object>
-	              	</value>
-	              	
-                  <value>               
-                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">                 
-                      <field  name="alias"><string>exoTagStylePath</string></field>
-                    <field  name="path"><string>/exo:ecm/exo:folksonomies/exo:tagStyle</string></field>
-                      <field name="permissions">
-                        <collection type="java.util.ArrayList">               
-                          <value>                            
-                            <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
-                              <field name="identity"><string>*:/platform/administrators</string></field>
-                              <field name="read"><string>true</string></field>                
-                              <field name="addNode"><string>true</string></field>                
-                              <field name="setProperty"><string>true</string></field>                
-                              <field name="remove"><string>true</string></field>                
-                            </object>  
-                          </value>                          
-                        </collection>
-                      </field>                       
-                    </object>
-                  </value>
                   
                   <value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
