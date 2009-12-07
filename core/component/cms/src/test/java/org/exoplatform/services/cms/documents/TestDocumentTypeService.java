@@ -100,7 +100,8 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node documentNode = getDocument(rootNode, "document");
     addDocumentFile(documentNode, "testaudio01", "audio/mp3");    
     addDocumentFile(documentNode, "videomp302", "video/mp3");
-    addDocumentFile(documentNode, "video", "video/mpeg");    
+    addDocumentFile(documentNode, "One night at museum", "video/mpeg");
+    addDocumentFile(documentNode, "Black dahlia", "video/mpeg");
     addDocumentFile(documentNode, "image01", "image/gif");
     addDocumentFile(documentNode, "image02", "image/jpeg");
     addDocumentFile(documentNode, "image03", "image/png");
@@ -112,11 +113,11 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
         REPO_NAME, createSessionProvider());
     assertNotNull(expectedList);    
     Iterator<Node> iterNodes = expectedList.iterator();
-    Node expectedNode = null;
+    Node expectedNode = null;    
     while (iterNodes.hasNext()) {
       expectedNode = iterNodes.next();
-      System.out.println("The supported type : "+supportedType+" have mimeTypes : "
-                                        + expectedNode.getProperty(JCR_MINE_TYPE).getString());
+      System.out.println("The node name : "+expectedNode.getName()+" have mime type : "
+        + expectedNode.getNode("jcr:content").getProperty("jcr:mimeType").getValue().getString());      
     }
   }
     
@@ -146,7 +147,8 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode = null;
     while (iterNodes.hasNext()) {
       expectedNode = iterNodes.next();
-      assertEquals("image/gif", expectedNode.getProperty(JCR_MINE_TYPE).getString());
+      assertEquals("image/gif", 
+          expectedNode.getNode("jcr:content").getProperty(JCR_MINE_TYPE).getString());
     }
   }
   
@@ -175,8 +177,8 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode = null;
     while( expectedIter.hasNext()) {
       expectedNode = expectedIter.next();
-      System.out.println("jcr:mimeType include :"
-                        +expectedNode.getProperty(JCR_MINE_TYPE).getString());            
+      System.out.println("Expected mime type:"
+             +expectedNode.getNode("jcr:content").getProperty(JCR_MINE_TYPE).getString());            
     }    
   }
 
@@ -207,8 +209,8 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode= null; 
     while (iterator.hasNext()) {
       expectedNode = iterator.next();
-      System.out.println("jcr:mimeType include :"
-                  +expectedNode.getProperty(JCR_MINE_TYPE).getString());
+      System.out.println("Expected mime type:"
+        +expectedNode.getNode("jcr:content").getProperty(JCR_MINE_TYPE).getString());
     }     
   }
   
@@ -240,7 +242,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode= null; 
     while (iterator.hasNext()) {
       expectedNode = iterator.next();
-      System.out.println("jcr:mimeType include :"
+      System.out.println("Expected mime type:"
                       +expectedNode.getProperty(JCR_MINE_TYPE).getString());
     }     
   }
@@ -294,6 +296,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     subNode.setProperty(JCR_MINE_TYPE, mimeTypeValue);
     subNode.setProperty(JCR_DATA, "");
     subNode.setProperty(JCR_LAST_MODIFIED, new GregorianCalendar());
+  
   }
   
 
