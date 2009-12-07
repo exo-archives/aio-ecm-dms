@@ -77,7 +77,10 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
         Node node = (Node) nodefinder.getItem(repository, wsname, nodepath);  
         
         // begin of lampt's modification.
+        Session session = node.getSession();   
         Node parentNode = null;
+        
+        // In case of node path begin with slash sign.
         if (nodepath.startsWith("/")) {
           if (node.hasProperty(Utils.JCR_DATA)) {
             node.setProperty(Utils.JCR_DATA, Utils.EMPTY);
@@ -93,8 +96,7 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
             node.save();
           }
         } // end of modification.        
-        
-        Session session = node.getSession();   
+                
         session.save();
         session.logout();
         uicomponent.updateAjax(requestcontext);
@@ -112,7 +114,5 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
     protected void executeAction(Map<String, Object> variables) throws Exception {
       RemoveAttachmentComponent.doDelete(variables);
     }
-  }
-  
-  
+  }    
 }
