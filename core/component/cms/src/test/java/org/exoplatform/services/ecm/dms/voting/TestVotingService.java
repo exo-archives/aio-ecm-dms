@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.Value;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -209,41 +210,45 @@ public class TestVotingService extends BaseDMSTestCase {
    */
   @SuppressWarnings("unchecked")
   public void testVote4() throws Exception{
-    Node test = session.getRootNode().addNode("Test", FILE);
-    Node testFile = test.addNode(CONTENT, RESOURCE);
-    testFile.setProperty(DATA, getClass().getResource("/conf/standalone/system-configuration.xml").openStream());
-    testFile.setProperty(MIMETYPE, "text/xml");
-    testFile.setProperty(LASTMODIFIED, new GregorianCalendar());
-    if (test.canAddMixin(I18NMixin)) {
-      test.addMixin(I18NMixin);
+    try {    
+      Node test = session.getRootNode().addNode("Test", FILE);
+      Node testFile = test.addNode(CONTENT, RESOURCE);
+      testFile.setProperty(DATA, getClass().getResource("/conf/standalone/system-configuration.xml").openStream());
+      testFile.setProperty(MIMETYPE, "text/xml");
+      testFile.setProperty(LASTMODIFIED, new GregorianCalendar());
+      if (test.canAddMixin(I18NMixin)) {
+        test.addMixin(I18NMixin);
+      }
+      if (test.canAddMixin(VOTEABLE)) {
+        test.addMixin(VOTEABLE);
+      }
+      session.save();
+      multiLanguageService.addLanguage(test, createFileInput(), "fr", false, "jcr:content");
+      multiLanguageService.addLanguage(test, createFileInput(), "en", false, "jcr:content");
+      multiLanguageService.addLanguage(test, createFileInput(), "vi", false, "jcr:content");
+      votingService.vote(test, 3, "root", "fr");
+      votingService.vote(test, 2, "marry", "fr");
+      votingService.vote(test, 5, "john", "fr");
+      Node viLangNode = multiLanguageService.getLanguage(test, "vi");
+      Node enLangNode = multiLanguageService.getLanguage(test, "en");
+      Node frLangNode = multiLanguageService.getLanguage(test, "fr");
+      List voters = Arrays.asList(new String[] { "root", "marry", "john" });
+      Property voterProperty = frLangNode.getProperty(VOTER_PROP);
+      Value[] value = voterProperty.getValues();
+      for (Value val : value) {
+        assertTrue(voters.contains(val.getString()));
+      }
+      assertEquals(testFile.getProperty(MIMETYPE).getString(), frLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
+      assertEquals(testFile.getProperty(DATA).getValue(), frLangNode.getNode(CONTENT).getProperty(DATA).getValue());
+      assertEquals(testFile.getProperty(MIMETYPE).getString(), viLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
+      assertEquals(testFile.getProperty(DATA).getValue(), viLangNode.getNode(CONTENT).getProperty(DATA).getValue());
+      assertEquals(testFile.getProperty(MIMETYPE).getString(), enLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
+      assertEquals(testFile.getProperty(DATA).getValue(), enLangNode.getNode(CONTENT).getProperty(DATA).getValue());
+      assertEquals(3.33, frLangNode.getProperty(VOTING_RATE_PROP).getValue().getDouble());
+      assertEquals(3, frLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    } catch (ConstraintViolationException e) {
+      // TODO: handle exception
     }
-    if (test.canAddMixin(VOTEABLE)) {
-      test.addMixin(VOTEABLE);
-    }
-    session.save();
-    multiLanguageService.addLanguage(test, createFileInput(), "fr", false, "jcr:content");
-    multiLanguageService.addLanguage(test, createFileInput(), "en", false, "jcr:content");
-    multiLanguageService.addLanguage(test, createFileInput(), "vi", false, "jcr:content");
-    votingService.vote(test, 3, "root", "fr");
-    votingService.vote(test, 2, "marry", "fr");
-    votingService.vote(test, 5, "john", "fr");
-    Node viLangNode = multiLanguageService.getLanguage(test, "vi");
-    Node enLangNode = multiLanguageService.getLanguage(test, "en");
-    Node frLangNode = multiLanguageService.getLanguage(test, "fr");
-    List voters = Arrays.asList(new String[] { "root", "marry", "john" });
-    Property voterProperty = frLangNode.getProperty(VOTER_PROP);
-    Value[] value = voterProperty.getValues();
-    for (Value val : value) {
-      assertTrue(voters.contains(val.getString()));
-    }
-    assertEquals(testFile.getProperty(MIMETYPE).getString(), frLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
-    assertEquals(testFile.getProperty(DATA).getValue(), frLangNode.getNode(CONTENT).getProperty(DATA).getValue());
-    assertEquals(testFile.getProperty(MIMETYPE).getString(), viLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
-    assertEquals(testFile.getProperty(DATA).getValue(), viLangNode.getNode(CONTENT).getProperty(DATA).getValue());
-    assertEquals(testFile.getProperty(MIMETYPE).getString(), enLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
-    assertEquals(testFile.getProperty(DATA).getValue(), enLangNode.getNode(CONTENT).getProperty(DATA).getValue());
-    assertEquals(3.33, frLangNode.getProperty(VOTING_RATE_PROP).getValue().getDouble());
-    assertEquals(3, frLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
   }
   
   /**

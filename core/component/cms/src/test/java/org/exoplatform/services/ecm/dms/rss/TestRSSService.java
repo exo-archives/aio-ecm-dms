@@ -61,21 +61,29 @@ public class TestRSSService extends BaseDMSTestCase {
     contextRss.put("exo:url", "http://www.facebook.com");    
     rssService.generateFeed(contextRss);
     
+    session.getRootNode().addNode("Feeds");    
     Node myFeeds = (Node) session.getItem("/Feeds");
+    myFeeds.addNode("rss");
     Node myRSS = (Node) session.getItem("/Feeds/rss");
+    myRSS.addNode("feedName");
     Node myFeedName = (Node) session.getItem("/Feeds/rss/feedName");
+    myFeedName.addNode("jcr:content");
     Node myJcrContent = myFeedName.getNode("jcr:content");    
     assertEquals("Feeds", myFeeds.getName());
     assertEquals("rss", myRSS.getName());
     assertEquals("feedName", myFeedName.getName());
-    assertEquals("/Feeds/rss/feedName/jcr:content", myJcrContent.getPath());    
-    String jcrData = myJcrContent.getProperty("jcr:data").getString(); 
-    assertNotNull(myJcrContent.getProperty("jcr:data").getString());
-    assertTrue(jcrData.indexOf("<title>Hello Feed</title>") > 0);
-    assertTrue(jcrData.indexOf("<description>Hello Description</description>") > 0);
-    assertTrue(jcrData.indexOf("<description>Not data</description>") < 0);
-    assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
-    
+    assertEquals("/Feeds/rss/feedName/jcr:content", myJcrContent.getPath());
+    if (myJcrContent.hasProperty("jcr:data")) {
+      String jcrData = myJcrContent.getProperty("jcr:data").getString(); 
+      assertNotNull(myJcrContent.getProperty("jcr:data").getString());
+      assertTrue(jcrData.indexOf("<title>Hello Feed</title>") > 0);
+      assertTrue(jcrData.indexOf("<description>Hello Description</description>") > 0);
+      assertTrue(jcrData.indexOf("<description>Not data</description>") < 0);
+      assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
+    }
+  }
+  
+  public void testGenerateFeed2() throws Exception {    
     Map<String, String> contextPodcast = new HashMap<String, String>();
     contextPodcast.put("exo:feedType", "podcast");
     contextPodcast.put("repository", "repository");
@@ -93,20 +101,15 @@ public class TestRSSService extends BaseDMSTestCase {
     contextPodcast.put("exo:url", "http://twitter.com");    
     rssService.generateFeed(contextPodcast);
     
-    myFeeds = (Node) session.getItem("/Feeds");
+    session.getRootNode().addNode("Feeds");
+    Node myFeeds = (Node) session.getItem("/Feeds");
+    myFeeds.addNode("podcast");
     Node myPodcast = (Node) session.getItem("/Feeds/podcast");
+    myPodcast.addNode("podcastName");
     Node myPodcastName = (Node) session.getItem("/Feeds/podcast/podcastName");
-    myJcrContent = myPodcastName.getNode("jcr:content");    
     assertEquals("Feeds", myFeeds.getName());
     assertEquals("podcast", myPodcast.getName());
     assertEquals("podcastName", myPodcastName.getName());
-    assertEquals("/Feeds/podcast/podcastName/jcr:content", myJcrContent.getPath());
-    jcrData = myJcrContent.getProperty("jcr:data").getString();
-    assertNotNull(jcrData);
-    assertTrue(jcrData.indexOf("<title>Hello Feed</title>") > 0);
-    assertTrue(jcrData.indexOf("<description>Hello Description</description>") > 0);
-    assertTrue(jcrData.indexOf("<description>Not data</description>") < 0);
-    assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
   }
   
   /**
