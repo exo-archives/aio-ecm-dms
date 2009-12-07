@@ -138,6 +138,7 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
   public void addGroupsTag(String[] tagsName, Node documentNode, String repository, String workspace, String[] roles) throws Exception {
     for (String group : roles) {
 			Node groupFolksonomyNode = getGroupFolksonomyFolder(group, repository, workspace);
+//			System.out.println(groupFolksonomyNode.getPath());
 			for (String tag : tagsName) {
 				try {
 					//find tag node

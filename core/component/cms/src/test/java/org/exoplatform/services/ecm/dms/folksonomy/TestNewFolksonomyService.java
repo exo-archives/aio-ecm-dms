@@ -19,12 +19,14 @@ package org.exoplatform.services.ecm.dms.folksonomy;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.SessionImpl;
 
 /**
  * Created by The eXo Platform SARL
@@ -39,7 +41,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	private static final String TEST2 = "test2";
 	private static final String USER_FOLKSONOMY_ALIAS = "userPrivateFolksonomy".intern();
   private static final String EXO_TOTAL = "exo:total";
-  private static final String[] groups = {"a", "b"};
+  private static final String[] groups = {"/platform/users", "/platform/guests"};
 	
 	private NewFolksonomyService newFolksonomyService_;
 	private LinkManager linkManager;
@@ -52,41 +54,61 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		session = (SessionImpl) sessionProviderService_.
+							getSystemSessionProvider(null).
+							getSession(COLLABORATION_WS, repository);
 		newFolksonomyService_ = (NewFolksonomyService)
 				container.getComponentInstanceOfType(NewFolksonomyService.class);
 		linkManager 
 		= (LinkManager) container.getComponentInstanceOfType(LinkManager.class);
 		
-		Node rootNode = session.getRootNode();
+//		String userName = session.getUserID();
 		String userName = session.getUserID();
-		System.out.println(userName);
-		test = rootNode.addNode(TEST);
-		test2 = rootNode.addNode(TEST2);
-		
+		Node root = session.getRootNode();
+		Node applicationData = root.hasNode("Application Data") ? 
+													 root.getNode("Application Data") :
+													 root.addNode("Application Data");
+		Node tagsNode = applicationData.hasNode("Tags") ? 
+										applicationData.getNode("Tags") :
+										applicationData.addNode("Tags");
+		Node rootNode = root.hasNode("Users") ? root.getNode("Users") : root.addNode("Users");
 		Node userNode = rootNode.hasNode(userName) ? rootNode.getNode(userName) :
 																									rootNode.addNode(userName);
+		Node groupsNode = root.hasNode("Groups") ? root.getNode("Groups") :
+																										root.addNode("Groups");
+		Node platformNode = groupsNode.hasNode("platform") ? groupsNode.getNode("platform") :
+																													groupsNode.addNode("platform");
 		Node privateNode = userNode.hasNode("Private") ? userNode.getNode("Private") :
 																										 userNode.addNode("Private");
 //    NodeHierarchyCreator nodehierarchyCreator = (NodeHierarchyCreator) container
 //    .getComponentInstanceOfType(NodeHierarchyCreator.class);
-		
+
     String folksonomyPath = "Folksonomy";
 		System.out.println(folksonomyPath);
 		folksonomyNode = privateNode.hasNode(folksonomyPath) ? privateNode.getNode(folksonomyPath) :
 																																privateNode.addNode(folksonomyPath);
+		System.out.println(folksonomyNode.getPath());
+
+		rootNode = privateNode;
+		System.out.println(userName);
+		test = rootNode.addNode(TEST);
+		test2 = rootNode.addNode(TEST2);
 		
 		int count = 0;
-		for (String g : groups) {
-			Node groupNode = rootNode.hasNode(g) ? rootNode.getNode(g) :
-																						 rootNode.addNode(g);
-			Node folksonomy = groupNode.hasNode(folksonomyPath) ? groupNode.getNode(folksonomyPath) :
-																														groupNode.addNode(folksonomyPath);
-			if (count ++ == 0) groupAFolksonomyNode = folksonomy;
-			else groupBFolksonomyNode = folksonomy;
+		
+	  String[] groups = {"/users", "/guests"};		
+		for (String gg : groups) {
+			String g = gg.substring(1);
+			Node groupNode = platformNode.hasNode(g) ? platformNode.getNode(g) :
+																						 			platformNode.addNode(g);
+			Node appData = groupNode.hasNode("ApplicationData") ? groupNode.getNode("ApplicationData") :
+																														groupNode.addNode("ApplicationData");
+			Node tag = appData.hasNode("Tags") ? appData.getNode("Tags") : appData.addNode("Tags");
+			if (count ++ == 0) groupAFolksonomyNode = tag;
+			else groupBFolksonomyNode = tag;
 		}
 		
-		publicFolksonomyNode = rootNode.hasNode(folksonomyPath) ? rootNode.getNode(folksonomyPath) :
-																			 rootNode.addNode(folksonomyPath);
+		publicFolksonomyNode = tagsNode;
 		session.save();
 	}
 	
@@ -134,9 +156,10 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
    *        property 'exo:total' of 'weather' node must be 1   *        
    */
 	public void testAddGroupsTag() throws Exception {
-		String[] groups = {"a", "b"};
 		String[] tags = { "sport", "weather" };
 		newFolksonomyService_.addGroupsTag(tags, test, REPO_NAME, COLLABORATION_WS, groups);
+		
+		System.out.println("Group A:" + groupAFolksonomyNode.getPath());
 		
 		assertTrue("testAddGroupsTag failed! ", groupAFolksonomyNode.hasNode("sport"));
 		assertTrue("testAddGroupsTag failed! ", groupAFolksonomyNode.hasNode("weather"));
@@ -184,7 +207,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
    */
 	public void testAddPublicTag() throws Exception {
 		String[] tags = { "sport", "weather" };
-		String publicFolksonomyTreePath = '/' + "Folksonomy"; 
+		String publicFolksonomyTreePath = "/Application Data/Tags"; 
 		newFolksonomyService_.addPublicTag(publicFolksonomyTreePath, 
 																			 tags, 
 																			 test, 
@@ -218,6 +241,12 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	public void testGetAllDocumentsByTag() throws Exception {
 		String[] tags = { "sport", "weather" };
 		String user = session.getUserID();
+//		Node sportTagNode = folksonomyNode.getNode("sport");
+//		System.out.println(sportTagNode.getProperty(EXO_TOTAL).getLong());
+//		NodeIterator iter = sportTagNode.getNodes();
+//		while (iter.hasNext()) {
+//			System.out.println(iter.nextNode().getPath());
+//		}
 		newFolksonomyService_.addPrivateTag(tags, 
 																			 test, 
 																			 REPO_NAME, 
@@ -256,7 +285,6 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
    * 							total 6
    */
 	public void testGetAllGroupTagsOfManyRoles() throws Exception {
-		String[] groups = {"a", "b"};
 		String[] tags = { "sport", "weather" };
 		String[] tags2 = { "sport", "music" };
 		newFolksonomyService_.addGroupsTag(tags, test, REPO_NAME, COLLABORATION_WS, groups);
@@ -284,13 +312,12 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
    * 							'sport', 'weather', 'music' 
    */
 	public void testGetAllGroupTags() throws Exception {
-		String[] groups = {"a", "b"};
 		String[] tags = { "sport", "weather" };
 		String[] tags2 = { "sport", "music" };
 		newFolksonomyService_.addGroupsTag(tags, test, REPO_NAME, COLLABORATION_WS, groups);
 		newFolksonomyService_.addGroupsTag(tags2, test2, REPO_NAME, COLLABORATION_WS, groups);
 		
-		List<Node> groupTags = newFolksonomyService_.getAllGroupTags("a", REPO_NAME, COLLABORATION_WS);
+		List<Node> groupTags = newFolksonomyService_.getAllGroupTags("/platform/users", REPO_NAME, COLLABORATION_WS);
 		int count = 0;
 		for (Node tag : groupTags) {
 			if ("sport".equals(tag.getName())) count ++;
@@ -339,7 +366,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
   public void testGetAllPublicTags() throws Exception {
 		String[] tags = { "sport", "weather" };
 		String[] tags2 = { "boy", "girl", "sport" };
-		String publicFolksonomyTreePath = '/' + "Folksonomy";
+		String publicFolksonomyTreePath = "/Application Data/Tags";
 		newFolksonomyService_.addPublicTag(publicFolksonomyTreePath, 
 																			 tags, 
 																			 test, 
@@ -374,7 +401,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	 */ 
   public void testModifyTagName() throws Exception {
 		String[] tags = { "sport", "weather" };
-		String publicFolksonomyTreePath = '/' + "Folksonomy";
+		String publicFolksonomyTreePath = "/Application Data/Tags";
 		newFolksonomyService_.addPublicTag(publicFolksonomyTreePath, 
 																			 tags, 
 																			 test, 
@@ -402,7 +429,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	 */ 
   public void testRemoveTag() throws Exception {
 		String[] tags = { "sport", "weather", "nobita"};
-		String publicFolksonomyTreePath = '/' + "Folksonomy";
+		String publicFolksonomyTreePath = "/Application Data/Tags";
 		newFolksonomyService_.addPublicTag(publicFolksonomyTreePath, 
 																			 tags, 
 																			 test, 
@@ -444,13 +471,17 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	 * Clean data test
 	 */
 	public void tearDown() throws Exception {
-		String[] nodes = { TEST, TEST2, session.getUserID(), "a", "b", "Folksonomy"};
+		String[] nodes = {"Users", "Groups", "Application Data", TEST, TEST2, session.getUserID()};
 		for (String node : nodes)
-			if (session.itemExists('/' + node)) {
+			if (session.getRootNode().hasNode(node)) {
 				Node n = session.getRootNode().getNode(node);
 				n.remove();
 				session.save();
 			}
 		super.tearDown();
+		NodeIterator iter = session.getRootNode().getNodes();
+		System.out.println("TearDown:......................");
+		while (iter.hasNext())
+			System.out.println(iter.nextNode().getPath());
 	}
 }

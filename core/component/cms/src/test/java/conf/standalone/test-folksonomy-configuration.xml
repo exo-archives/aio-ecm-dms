@@ -3,8 +3,8 @@
 <configuration>
   
 	<component>
-	  <key>org.exoplatform.services.cms.folksonomy.FolksonomyService</key>  
-	  <type>org.exoplatform.services.cms.folksonomy.impl.FolksonomyServiceImpl</type>      
+	  <key>org.exoplatform.services.cms.folksonomy.NewFolksonomyService</key>  
+	  <type>org.exoplatform.services.cms.folksonomy.impl.NewFolksonomyServiceImpl</type>      
 	</component>
 	
 	<external-component-plugins>
