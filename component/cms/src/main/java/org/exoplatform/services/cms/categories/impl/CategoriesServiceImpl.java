@@ -162,7 +162,8 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
         return; 
       }			
     }
-    node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
+    if(vals.size() == 0) node.removeMixin(CATEGORY_MIXIN); 
+    else node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
     node.getSession().save() ;
     systemSession.logout();
   }
