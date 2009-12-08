@@ -36,6 +36,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
+import com.mysql.jdbc.Util;
+
 public class CategoriesServiceImpl implements CategoriesService,Startable {		
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";
@@ -162,7 +164,11 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
         return; 
       }			
     }
-    node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
+    if(vals.size() == 0) {
+      node.removeMixin(CATEGORY_MIXIN);
+    } else {
+      node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
+    }
     node.getSession().save() ;
     systemSession.logout();
   }
