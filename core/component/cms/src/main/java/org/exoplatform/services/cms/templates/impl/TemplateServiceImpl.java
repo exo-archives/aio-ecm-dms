@@ -33,6 +33,8 @@ import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
@@ -75,6 +77,10 @@ public class TemplateServiceImpl implements TemplateService, Startable {
    */   
   private DMSConfiguration dmsConfiguration_;
   
+  private static String NODETYPE_LIST = "nodeTypeList";
+  
+  private ExoCache nodeTypeListCached ;
+  
   /**
    * Constructor method
    * Init jcrService, nodeHierarchyCreator, identityRegistry, localeConfigService, caService, 
@@ -90,13 +96,15 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public TemplateServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
       org.exoplatform.groovyscript.text.TemplateService templateService, 
-      DMSConfiguration dmsConfiguration, LocaleConfigService localeConfigService) throws Exception {
+      DMSConfiguration dmsConfiguration, LocaleConfigService localeConfigService,
+      CacheService caService) throws Exception {
     identityRegistry_ = identityRegistry;
     repositoryService_ = jcrService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
     this.templateService = templateService;
     dmsConfiguration_ = dmsConfiguration;
     localeConfigService_ = localeConfigService;
+    nodeTypeListCached = caService.getCacheInstance(TemplateService.class.getName());
   }
   
   /**
@@ -418,6 +426,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     //Update managedDocumentTypeMap
     List<String> managedDocumentTypes = managedDocumentTypesMap.get(repository);
     managedDocumentTypes.remove(nodeTypeName);
+    removeTemplateNodeTypeList();
   }
 
   /**
@@ -440,6 +449,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     session.logout();
     //Update managedDocumentTypesMap
     removeCacheTemplate(contentNode.getPath());
+    removeTemplateNodeTypeList();
     updateDocumentsTemplate(isDocumentTemplate, repository, nodeTypeName);
     return contentNode.getPath();
   }
@@ -461,6 +471,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     session.logout();
     //Update managedDocumentTypesMap
     removeCacheTemplate(contentNode.getPath());
+    removeTemplateNodeTypeList();
     updateDocumentsTemplate(isDocumentTemplate, repository, nodeTypeName);
     return contentNode.getPath();
   }
@@ -518,7 +529,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   /**
    * {@inheritDoc}
    */
+  @SuppressWarnings("unchecked")
   public List<String> getAllDocumentNodeTypes(String repository) throws Exception {
+    List<String> nodeTypeList = (List<String>)nodeTypeListCached.get(NODETYPE_LIST);
+    if(nodeTypeList != null && nodeTypeList.size() > 0) return nodeTypeList;
+    
     List<String> contentTypes = new ArrayList<String>();
     Session session = getSession(repository);
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
@@ -528,6 +543,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
         contentTypes.add(template.getName());
     }
     session.logout();
+    nodeTypeListCached.put(NODETYPE_LIST, contentTypes);
     return contentTypes;
   }  
   
@@ -758,5 +774,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateData);
     nodeTypeNode.getSession().save();
     return nodeTypeNode.getNode(SKINS).getNode(skinName + orientation);
+  }
+  
+  private void removeTemplateNodeTypeList() throws Exception {
+    nodeTypeListCached.clearCache();
   }
 }
