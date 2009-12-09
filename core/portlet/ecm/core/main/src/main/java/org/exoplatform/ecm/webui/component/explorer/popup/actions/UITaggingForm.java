@@ -102,10 +102,11 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     RequestContext context = RequestContext.getCurrentInstance();
     ResourceBundle res = context.getApplicationResourceBundle();
     List<SelectItemOption<String>> tagScopes = new ArrayList<SelectItemOption<String>>();
+    tagScopes.add(new SelectItemOption<String>(res.getString("UITaggingForm.label." + PRIVATE), PRIVATE));    
     tagScopes.add(new SelectItemOption<String>(res.getString("UITaggingForm.label." + PUBLIC), PUBLIC));
     tagScopes.add(new SelectItemOption<String>(res.getString("UITaggingForm.label." + GROUP), GROUP));
     tagScopes.add(new SelectItemOption<String>(res.getString("UITaggingForm.label." + SITE), SITE));
-    tagScopes.add(new SelectItemOption<String>(res.getString("UITaggingForm.label." + PRIVATE), PRIVATE));
+
     UIFormSelectBox box = new UIFormSelectBox(TAG_SCOPES, TAG_SCOPES, tagScopes);
     box.setOnChange("Change");
     uiInputSet.addUIFormInput(box);
