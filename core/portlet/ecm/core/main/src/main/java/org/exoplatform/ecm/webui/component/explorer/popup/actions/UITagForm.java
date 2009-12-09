@@ -97,7 +97,6 @@ public class UITagForm extends UIForm {
       String userName = uiExplorer.getSession().getUserID();
       int scope = uiExplorer.getTagScope();
       
-      String newTagName = uiForm.getUIStringInput(TAG_NAME).getValue() ;
 //		TODO : check tag name      
 //      if(!uiForm.validateRange(documentRange)) {
 //        uiApp.addMessage(new ApplicationMessage("UITagStyleForm.msg.range-validator", null)) ;
@@ -106,7 +105,7 @@ public class UITagForm extends UIForm {
       try {
       	// add new tag
       	if (uiForm.getTag() == null) {
-      		String tagName = uiForm.getUIStringInput(TAG_NAME).getValue();
+      		String tagName = uiForm.getUIStringInput(TAG_NAME).getValue().trim();
           NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class) ;
           if (scope == UITagExplorer.PRIVATE) { 
           	newFolksonomyService.addPrivateTag(new String[] { tagName }, 
@@ -127,7 +126,7 @@ public class UITagForm extends UIForm {
       	}
       	// rename tag
       	else {
-      		String tagName = uiForm.getUIStringInput(TAG_NAME).getValue();      		
+      		String tagName = uiForm.getUIStringInput(TAG_NAME).getValue().trim();      		
           NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class) ;
           if (!existTag(tagName, repository, workspace, scope, uiForm, userName)) {
           	newFolksonomyService.modifyTagName(uiForm.oldTagPath_, tagName, repository, workspace);

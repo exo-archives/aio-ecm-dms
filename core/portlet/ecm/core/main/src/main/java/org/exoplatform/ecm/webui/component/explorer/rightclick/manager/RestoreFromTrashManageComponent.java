@@ -25,6 +25,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
@@ -182,7 +183,12 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     	uiExplorer.updateAjax(event);	    	
     } catch (AccessDeniedException e) {
-    	LOG.error("access denied, can't remove favourite of node:" + node.getPath());
+    	LOG.error("access denied, can't restore of node:" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+		} catch (ConstraintViolationException e) {
+    	LOG.error("access denied, can't restore of node:" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);
     	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     	uiExplorer.updateAjax(event);
