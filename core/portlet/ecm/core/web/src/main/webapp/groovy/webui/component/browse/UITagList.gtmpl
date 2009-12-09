@@ -13,12 +13,12 @@ import javax.jcr.Node;
 		    def tagStyle = uicomponent.getTagStyle() ;  
         for(Node tag : uicomponent.getPrivateTagLink()){
           String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
-          String tagStatus = "" ;
+          int tagCount = 0;
           String style = "" ;
           String tagkey = "" ; 
-          if(tag.hasProperty("exo:tagStatus")) {
-            tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-            style = "style=\""+ tagStyle.get(tagStatus)+"\"" ;
+          if(tag.hasProperty("exo:total")) {
+            tagCount = (int)tag.getProperty("exo:total").getValue().getLong() ;
+            style = "Style = '" + uicomponent.getTagHtmlStyle(tagStyle, tagCount)+ "'" ;
           }
           tagkey = tag.getName() ;                  
           println "<a href=\"$tagLink\" $style>$tagkey</a>" ;
@@ -37,12 +37,12 @@ import javax.jcr.Node;
 	    <%
 	      for(Node tag : uicomponent.getPublicTagLink()){
 	        String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
-	        String tagStatus = "" ;
+          int tagCount = 0 ;
 	        String style = "" ;
 	        String tagkey = "" ; 
 	        if(tag.hasProperty("exo:tagStatus")) {
-	          tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-	          style = "style=\""+ tagStyle.get(tagStatus)+"\"" ;
+            tagCount = (int)tag.getProperty("exo:total").getValue().getLong() ;
+            style = "Style = '" + uicomponent.getTagHtmlStyle(tagStyle, tagCount)+ "'" ;
 	        }
 	        tagkey = tag.getName() ;                  
 	        println "<a href=\"$tagLink\" $style>$tagkey</a>" ;
