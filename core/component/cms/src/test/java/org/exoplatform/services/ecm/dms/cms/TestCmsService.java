@@ -310,15 +310,20 @@ public class TestCmsService extends BaseDMSTestCase {
     }
     session.save();
     Map<String, JcrInputProperty> map = createArticleMapInput();
-    String path = cmsService.storeNode(ARTICLE, storeNode, map, true, REPO_NAME);
-    assertTrue(session.itemExists(path));
-    Node articleNode = (Node)session.getItem(path);
+    String path1 = cmsService.storeNode(ARTICLE, storeNode, map, true, REPO_NAME);
+    assertTrue(session.itemExists(path1));
+    Node articleNode = (Node)session.getItem(path1);
     assertEquals("document_1", articleNode.getName());
     assertEquals("this is title", articleNode.getProperty("exo:title").getValue().getString());
     map = createArticleEditMapInput();
-    path = cmsService.storeNode(ARTICLE, storeNode, map, false, REPO_NAME);
-    assertTrue(session.itemExists(path));    
+    String path2 = cmsService.storeNode(ARTICLE, storeNode, map, false, REPO_NAME);
+    assertTrue(session.itemExists(path2));    
     assertEquals("this is title", articleNode.getProperty("exo:title").getValue().getString());
+    
+    session.getItem(path1).remove();
+    session.getItem(path2).remove();
+    referencedNode.remove();
+    session.save();
   }
   
   /**
@@ -340,6 +345,10 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals("this is title", articleNode.getProperty("exo:title").getString());
     assertEquals("this is summary", articleNode.getProperty("exo:summary").getString());
     assertEquals("this is article content", articleNode.getProperty("exo:text").getString());
+    
+    articleNode.remove();
+    storeNode.remove();
+    session.save();
   }
 
   /**
@@ -374,12 +383,20 @@ public class TestCmsService extends BaseDMSTestCase {
     Map<String, JcrInputProperty> map = createBinaryMapInput();
     if ((rootNode != null) && (map != null)) {
       try {
-        String path = cmsService.storeNode(NTRESOURCE, rootNode, map, true, REPO_NAME);    
-        assertTrue(session.itemExists(path));
-        Node binaryNode = (Node)session.getItem(path);
+      	System.out.println("NTRESOURCE: " + NTRESOURCE);
+      	System.out.println("rootNode: " + rootNode.getPath());
+      	System.out.println("map: " + map);
+      	System.out.println("REPO_NAME: " + REPO_NAME);
+      	
+        String path1 = cmsService.storeNode(NTRESOURCE, rootNode, map, true, REPO_NAME);
+        System.out.println("path1: " + path1);
+        assertTrue(session.itemExists(path1));
+        Node binaryNode = (Node)session.getItem(path1);
         assertEquals("BinaryData", binaryNode.getName());
         InputStream is = getClass().getResource("/conf/standalone/test-configuration.xml").openStream();
         assertTrue(compareInputStream(is, binaryNode.getProperty("jcr:data").getStream()));
+        binaryNode.remove();
+        session.save();
       } catch (NullPointerException e) {
         // TODO: handle exception
       }
@@ -396,7 +413,9 @@ public class TestCmsService extends BaseDMSTestCase {
   public void testStoreNodeArticleByPath2() throws RepositoryException, Exception {
     Map<String, JcrInputProperty> map = createArticleMapInput();
     try {
-      cmsService.storeNode(COLLABORATION_WS, ARTICLE, "/temp", map, REPO_NAME);
+      String path = cmsService.storeNode(COLLABORATION_WS, ARTICLE, "/temp", map, REPO_NAME);
+      session.getItem(path).remove();
+      session.save();
     } catch (PathNotFoundException ex) {
     }
   }
@@ -415,9 +434,9 @@ public class TestCmsService extends BaseDMSTestCase {
   public void testStoreNodeSample() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
     Map<String, JcrInputProperty> map = createSampleMapInput();
-    String path = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
-    assertTrue(session.itemExists(path));
-    Node sampleNode = (Node)session.getItem(path);
+    String path1 = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
+    assertTrue(session.itemExists(path1));
+    Node sampleNode = (Node)session.getItem(path1);
     assertEquals("document_2", sampleNode.getName());
     assertEquals("this is title", sampleNode.getProperty("exo:title").getString());
     assertEquals("this is description", sampleNode.getProperty("exo:description").getString());
@@ -428,6 +447,9 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(1.23, sampleNode.getProperty("exo:averageScore").getDouble());
     assertEquals(15, sampleNode.getProperty("exo:totalScore").getValue().getLong());
     assertEquals(true, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
+    
+    sampleNode.remove();
+    session.save();
   }
   
   /**
@@ -443,14 +465,16 @@ public class TestCmsService extends BaseDMSTestCase {
   public void testStoreNodeSampleByEdit() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
     Map<String, JcrInputProperty> map;
+    String path2 = null;
     if (!session.itemExists("/document_2")) {
       map = createSampleMapInput();
-      cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
+      path2 = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
+      session.save();
     }
     map = createSampleMapInputEdit();
-    String path = cmsService.storeNode(SAMPLE, storeNode, map, false, REPO_NAME);
-    assertTrue(session.itemExists(path));
-    Node sampleNode = (Node)session.getItem(path);
+    String path1 = cmsService.storeNode(SAMPLE, storeNode, map, false, REPO_NAME);
+    assertTrue(session.itemExists(path1));
+    Node sampleNode = (Node)session.getItem(path1);
     assertEquals("document_2", sampleNode.getName());
     assertEquals("this is title edit", sampleNode.getProperty("exo:title").getString());
     assertEquals("this is description", sampleNode.getProperty("exo:description").getString());
@@ -461,6 +485,13 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(2.34, sampleNode.getProperty("exo:averageScore").getDouble());
     assertEquals(16, sampleNode.getProperty("exo:totalScore").getValue().getLong());
     assertEquals(false, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
+    session.save();
+    session.getItem(path1).remove();
+    try {
+	    if (path2 != null)
+	    	session.getItem(path2).remove();
+    } catch (Exception ex) {}
+  	session.save();	
   }
 
   /**
@@ -480,11 +511,15 @@ public class TestCmsService extends BaseDMSTestCase {
     session.save();
     String uuid = referencedNode.getUUID();
     Map<String, JcrInputProperty> map = createReferenceMapInput();
-    String path = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
-    assertTrue(session.itemExists(path));
-    Node sampleNode = (Node)session.getItem(path);
+    String path1 = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
+    assertTrue(session.itemExists(path1));
+    Node sampleNode = (Node)session.getItem(path1);
     assertEquals("document_3", sampleNode.getName());
     assertEquals(uuid, sampleNode.getProperty("exo:category").getValues()[0].getString());
+    
+    sampleNode.remove();
+    referencedNode.remove();
+    session.save();
   }
 
   /**
@@ -512,6 +547,9 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(1.23, sampleNode.getProperty("exo:averageScore").getDouble());
     assertEquals(15, sampleNode.getProperty("exo:totalScore").getValue().getLong());
     assertEquals(true, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
+    
+    sampleNode.remove();
+    session.save();
   }
   
  /**
@@ -530,6 +568,10 @@ public class TestCmsService extends BaseDMSTestCase {
     cmsService.moveNode(test1.getPath(), COLLABORATION_WS, SYSTEM_WS, destPath, REPO_NAME);
     assertTrue(session2.itemExists(destPath));
     assertTrue(!session.itemExists("/test1"));
+
+    test2.remove();
+    session.save();
+    session2.save();
   }
   
   /**

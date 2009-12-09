@@ -54,7 +54,9 @@ public class TestQueryService extends BaseDMSTestCase {
     nodeHierarchyCreator = (NodeHierarchyCreator) container
         .getComponentInstanceOfType(NodeHierarchyCreator.class);
     baseUserPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    System.out.println("baseUserPath: " + baseUserPath + "--------------------------04568029348602348502358-34");
     baseQueriesPath = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH);
+    System.out.println("baseQueriesPath: " + baseQueriesPath + "--------------------------04568029348602348502358-34");
   }
 
   /**
@@ -448,8 +450,10 @@ public class TestQueryService extends BaseDMSTestCase {
       Node nodeUser = (Node) mySession.getItem(baseUserPath);
       NodeIterator iter = nodeUser.getNodes();
       while (iter.hasNext()) {
-        Node node = iter.nextNode();
-        node.remove();
+      	try {      	
+	        Node node = iter.nextNode().getNode(relativePath);
+	        node.remove();
+      	} catch (Exception ex) {}        
       }
       mySession.save();
 
@@ -457,7 +461,7 @@ public class TestQueryService extends BaseDMSTestCase {
       Node nodeQueryHome = (Node) mySession.getItem(baseQueriesPath);
       iter = nodeQueryHome.getNodes();
       while (iter.hasNext()) {
-        iter.nextNode().remove();
+      	iter.nextNode().remove();
       }
       mySession.save();
     } catch (PathNotFoundException e) {

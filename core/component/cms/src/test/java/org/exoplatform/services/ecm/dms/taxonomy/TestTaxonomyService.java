@@ -457,8 +457,9 @@ public class TestTaxonomyService extends BaseDMSTestCase {
       if (!tree.getName().equals("System"))
         taxonomyService.removeTaxonomyTree(tree.getName());
     }
-    if (session.itemExists("/MyDocuments")) {
-      session.getItem("/MyDocuments").remove();
+    for (String s : new String[] {"/Article","/MyDocuments"})
+    	if (session.itemExists(s)) {
+      session.getItem(s).remove();
       session.save();
     }
     super.tearDown();

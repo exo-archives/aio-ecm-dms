@@ -471,10 +471,15 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	 * Clean data test
 	 */
 	public void tearDown() throws Exception {
-		String[] nodes = {"Users", "Groups", "Application Data", TEST, TEST2, session.getUserID()};
+		String[] nodes = {"/Application Data/Tags",
+											"/Users/" + session.getUserID() + "/Private/Folksonomy", 
+											"Groups/platform/users/ApplicationData/Tags",
+											"Groups/platform/guests/ApplicationData/Tags",
+											TEST, TEST2, 
+											session.getUserID()};
 		for (String node : nodes)
-			if (session.getRootNode().hasNode(node)) {
-				Node n = session.getRootNode().getNode(node);
+			if (session.itemExists(node)) {
+				Node n = (Node)session.getItem(node);
 				n.remove();
 				session.save();
 			}

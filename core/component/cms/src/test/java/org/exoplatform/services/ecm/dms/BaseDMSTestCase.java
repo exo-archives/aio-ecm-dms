@@ -16,6 +16,8 @@
  */
 package org.exoplatform.services.ecm.dms;
 
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.logging.Log;
@@ -119,5 +121,5 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
     return Math.round(((System.currentTimeMillis() - from) * 100.00d / 60000.00d)) / 100.00d
     + "min";
   }
-
+  
 }

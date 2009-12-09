@@ -75,7 +75,7 @@ public class TestTimelineService extends BaseDMSTestCase {
     yesterday1.setProperty(EXO_MODIFIED_DATE, yesterdayTime);
     session.save();
     
-    List<Node> res = timelineService.getDocumentsOfToday(rootNode.getPath(), REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
+    List<Node> res = timelineService.getDocumentsOfToday(testNode.getPath(), REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
     assertEquals("testGetDocumentsOfToday failed! ", 2, res.size());
   }
   

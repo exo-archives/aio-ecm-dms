@@ -890,7 +890,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
           }
         }
         //uiStar.changeFavourite();
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);         
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo.getParent());         
       } catch (AccessDeniedException e) {
         LOG.error("Access denied! No permission for modifying property " +
         Utils.EXO_FAVOURITER + " of node: " + node.getPath());

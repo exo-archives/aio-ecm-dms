@@ -280,6 +280,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     // 2. Get and delete test nodes
     Node documentNode = rootNode.getNode("document");
     documentNode.remove();
+    session.save();
   }
   
 
