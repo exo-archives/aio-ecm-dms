@@ -333,7 +333,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     	System.out.println(node.getPath() + "--");
       list.add(node) ;
     }
-sv    return list;
+    return list;
   }
 
   /**
