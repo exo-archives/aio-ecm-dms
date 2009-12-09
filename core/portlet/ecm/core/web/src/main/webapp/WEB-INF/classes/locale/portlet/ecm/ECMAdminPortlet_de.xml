@@ -878,7 +878,7 @@
     <msg>
       <filename-error><![CDATA[Knotentypendatei f&uuml;r Import browsen]]></filename-error>
       <data-file-error><![CDATA[Nur xml Datei oder zip-Datei f&uuml;rs Importieren unterst&uuml;tzt.]]></data-file-error>
-      <data-invalid><![CDATA[Datenimport FEHLER. Daten in der importierten Datei ung&uuml;ltige Knotentypformate!]]></data-invalid>
+      <data-invalid>Invalid Data: unknown namespace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--

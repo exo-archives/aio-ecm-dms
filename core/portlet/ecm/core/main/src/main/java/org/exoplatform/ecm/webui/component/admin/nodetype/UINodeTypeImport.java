@@ -62,8 +62,17 @@ public class UINodeTypeImport extends UIForm {
   
   private List<NodeType> nodeTypeList_ = new ArrayList<NodeType>() ;
   final static String TABLE_NAME =  "UINodeTypeImport"; 
-  final static String [] TABLE_COLUMNS = {"label", "input"};
+  final static String [] TABLE_COLUMNS = {"label", "input"};  
+
+  private String undefinedNodeType;
+  public String getUndefinedNodeType() {
+    return undefinedNodeType;
+  }
   
+  public void setUndefinedNodeType(String undefinedNodeType) {
+    this.undefinedNodeType = undefinedNodeType;
+  }
+
   public UINodeTypeImport() throws Exception {
   }
   
@@ -90,9 +99,15 @@ public class UINodeTypeImport extends UIForm {
       uiInputSet.addChild(uiInfo);
       UIFormCheckBoxInput<String> checkbox = new UIFormCheckBoxInput<String>(nodeTypeName, nodeTypeName, "") ;
       NodeType register ;
-      try {
+      
+      // Get namespace from node type
+      String[] namespace = nodeTypeName.split(":");
+      try {               
+        
+        // Store name space of node type updated by lampt
+        setUndefinedNodeType(namespace[0]);
         register = ntManager.getNodeType(nodeTypeValue.getName()) ;
-      } catch(NoSuchNodeTypeException e) {
+      } catch(NoSuchNodeTypeException e) {        
         register = null ;
       }
       if(register != null) checkbox.setEnable(false);

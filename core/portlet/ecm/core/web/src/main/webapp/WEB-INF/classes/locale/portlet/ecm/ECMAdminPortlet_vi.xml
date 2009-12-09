@@ -880,7 +880,7 @@
     <msg>
       <filename-error>Chọn tệp để nhập</filename-error>
       <data-file-error>Chỉ hỗ trợ những tệp dạng xml hoặc tệp nén.</data-file-error>
-      <data-invalid>Dữ liệu nhập vào lỗi. Dữ liệu trong tệp nhập vào không đúng định dạng kiểu của node!</data-invalid>
+      <data-invalid>Dữ liệu không hợp lệ : Không hiểu kiểu namaspace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--

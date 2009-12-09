@@ -879,7 +879,7 @@
     <msg>
       <filename-error>Parcourir les fichiers pour l'import</filename-error>
       <data-file-error>Seuls les fichiers XML ou ZIP sont supportés pour l'import</data-file-error>
-      <data-invalid>Erreur d'importation des données. Format des données invalide dans le fichier à importer!</data-invalid>
+      <data-invalid>Invalid Data: unknown namespace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--

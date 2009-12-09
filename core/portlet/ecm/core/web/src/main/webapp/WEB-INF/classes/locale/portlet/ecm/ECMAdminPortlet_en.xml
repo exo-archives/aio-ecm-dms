@@ -875,7 +875,7 @@
     <msg>
       <filename-error>Browse node type file for import</filename-error>
       <data-file-error>Only xml file or zip file are supported to import.</data-file-error>
-      <data-invalid>Data import ERROR. Data in import file isn't valid nodetype's format!</data-invalid>
+      <data-invalid>Invalid Data: unknown namespace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--

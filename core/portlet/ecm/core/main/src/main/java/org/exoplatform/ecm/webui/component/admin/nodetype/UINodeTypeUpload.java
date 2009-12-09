@@ -59,6 +59,7 @@ import org.jibx.runtime.IUnmarshallingContext;
 public class UINodeTypeUpload extends UIForm {
 
   final static public String FIELD_UPLOAD = "upload" ;
+  
 
   public UINodeTypeUpload() throws Exception {
     this.setMultiPart(true) ;
@@ -105,13 +106,19 @@ public class UINodeTypeUpload extends UIForm {
         IUnmarshallingContext uctx = factory.createUnmarshallingContext();
         NodeTypeValuesList nodeTypeValuesList = (NodeTypeValuesList)uctx.unmarshalDocument(is, null);
         List<NodeType> ntvList = nodeTypeValuesList.getNodeTypeValuesList();
+        
         UINodeTypeImport uiImport = uiImportPopup.getChild(UINodeTypeImport.class) ; 
         uiImport.update(ntvList) ;
         Class[] childrenToRender = {UINodeTypeImport.class, UIPopupWindow.class} ;
         uiImportPopup.setRenderedChildrenOfTypes(childrenToRender) ;
         uiPopup.setShow(true) ;
+        
       } catch(Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-invalid", null)) ;
+        
+        // Get undedefined node type and add to message updated by lampt
+        UINodeTypeImport uiNodeTypeImport = uiImportPopup.getChild(UINodeTypeImport.class);
+        Object[] args = { uiNodeTypeImport.getUndefinedNodeType() };
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-invalid",args, ApplicationMessage.ERROR )) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } finally {

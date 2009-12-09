@@ -878,7 +878,7 @@
     <msg>
       <filename-error>إستكشف الملفات للإستيراد</filename-error>
       <data-file-error>   لا يمكن استيراد إلا الملفات ذات نوع 'zip' او 'XML'</data-file-error>
-      <data-invalid>خطأ في إستيراد المعلومات.شكل المعلومات التي في الملف غير صحيح!</data-invalid>
+      <data-invalid>Invalid Data: unknown namespace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--

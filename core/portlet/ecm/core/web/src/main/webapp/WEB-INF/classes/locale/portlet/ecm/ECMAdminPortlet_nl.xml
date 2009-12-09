@@ -881,7 +881,7 @@
     <msg>
       <filename-error>Bladeren knooppunt type bestand voor de invoer</filename-error>
       <data-file-error>Alleen xml-bestand of een zip-bestand worden ondersteund om te importeren.</data-file-error>
-      <data-invalid>Gegevens importeren FOUT. Gegevens in invoer-bestand is niet geldig NodeType van formaat!</data-invalid>
+      <data-invalid>Invalid Data: unknown namespace : '{0}'</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--
