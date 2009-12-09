@@ -38,7 +38,8 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
                     %>
                     <%=uicomponent.getLabel(fieldName)%>
                   </td>
-                 <% if (uicomponent.getTaxonomyMandatory() && (fieldName.equals("fieldListTaxonomy"))){
+                 <% if (uicomponent.getTaxonomyMandatory() && (field.getId().indexOf("fieldListTaxonomy") >= 0)){                 		
+                 		if (field.getValidators() != null) field.getValidators().clear();
                  		field.addValidator(MandatoryValidator.class);
                  }%>
   	              <td class="FieldComponent"><% uiform.renderField(field) %></td>
