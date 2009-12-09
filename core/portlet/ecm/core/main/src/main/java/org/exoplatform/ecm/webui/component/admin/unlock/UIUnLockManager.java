@@ -32,7 +32,7 @@ public class UIUnLockManager extends UIAbstractManager {
 
   public UIUnLockManager() throws Exception {
     addChild(UILockNodeList.class, null, null).setRendered(true);
-    addChild(UILockHolderContainer.class, null, null).setRendered(false);
+    addChild(UILockHolderContainer.class, null, null).setRendered(false);    
   }
   
   public void refresh() throws Exception {
@@ -40,10 +40,12 @@ public class UIUnLockManager extends UIAbstractManager {
   }
   
   public void update() throws Exception {
-    getChild(UILockNodeList.class).updateLockedNodesGrid(1);
+    UILockNodeList uiLockNodeList = getChild(UILockNodeList.class);
+    uiLockNodeList.updateLockedNodesGrid(uiLockNodeList.getUIPageIterator().getCurrentPage());
     UILockHolderContainer uiHolderContainer = getChild(UILockHolderContainer.class);
     if (uiHolderContainer != null) {
-      uiHolderContainer.getChild(UILockHolderList.class).updateLockedNodesGrid(1);
+      UILockHolderList uiLockHolderList = uiHolderContainer.getChild(UILockHolderList.class);
+      uiLockHolderList.updateLockedNodesGrid(uiLockHolderList.getUIPageIterator().getCurrentPage());
     }
   }
   
