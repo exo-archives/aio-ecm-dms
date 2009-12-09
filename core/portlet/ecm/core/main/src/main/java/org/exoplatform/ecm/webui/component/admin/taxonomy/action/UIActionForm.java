@@ -286,12 +286,15 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           return;
         }
       }
-      String targetPath = uiActionForm.getUIStringInput("targetPath").getValue();
-      if ((targetPath == null) || (targetPath.length() == 0)) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.targetPath-emty", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
+      UIFormStringInput targetPathInput = uiActionForm.getUIStringInput("targetPath");
+      if (targetPathInput != null) {      
+        String targetPath = targetPathInput.getValue();
+        if ((targetPath == null) || (targetPath.length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.targetPath-emty", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
       }
       boolean isChangeLocation = false;
       try {

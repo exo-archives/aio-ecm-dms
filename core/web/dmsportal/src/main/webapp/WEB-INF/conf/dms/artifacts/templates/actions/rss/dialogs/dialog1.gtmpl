@@ -1,7 +1,9 @@
 <%
+		/*	
   String driverName = uicomponent.getDriverName();
   String[] fieldURL = ["jcrPath=/node/exo:url", driverName];
-  uicomponent.addHiddenField("url", fieldURL); 
+  uicomponent.addHiddenField("url", fieldURL);
+  */ 
 %>
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
