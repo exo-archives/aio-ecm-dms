@@ -40,7 +40,7 @@ import javax.jcr.Node;
           int tagCount = 0 ;
 	        String style = "" ;
 	        String tagkey = "" ; 
-	        if(tag.hasProperty("exo:tagStatus")) {
+          if(tag.hasProperty("exo:total")) {
             tagCount = (int)tag.getProperty("exo:total").getValue().getLong() ;
             style = "Style = '" + uicomponent.getTagHtmlStyle(tagStyle, tagCount)+ "'" ;
 	        }

@@ -257,11 +257,15 @@ public class UIBrowseContainer extends UIContainer {
     																	SessionProviderFactory.createAnonimProvider() :
     																	SessionProviderFactory.createSessionProvider();
 
-    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, repository, workspace, sessionProvider)) {
-      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
-        documentsOnTag.add(node);
-      }
-    }
+		try {  																	
+	    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, repository, workspace, sessionProvider)) {
+	      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
+	        documentsOnTag.add(node);
+	      }
+	    }
+		} catch (PathNotFoundException ex) {
+			// in case : tagPath_ has changed due to name of current displayed tag changed 
+		}
     return documentsOnTag;
   }
   public String getIcons(Node node, String type) throws Exception {
