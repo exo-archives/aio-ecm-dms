@@ -30,23 +30,6 @@
     </propertyDefinitions>
   </nodeType>
   
-  <nodeType name="publication:workflowAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
-    <supertypes>
-      <supertype>exo:businessProcessAction</supertype>
-    </supertypes>
-    <propertyDefinitions>
-      <propertyDefinition name="exo:validator" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false"/>
-      <propertyDefinition name="exo:businessProcess" requiredType="String" autoCreated="true" mandatory="true"
-        onParentVersion="COPY" protected="true" multiple="false">
-        <valueConstraints/>
-        <defaultValues>
-          <defaultValue>content-publishing</defaultValue>
-        </defaultValues>
-      </propertyDefinition>
-    </propertyDefinitions>
-  </nodeType>
-  
   <nodeType	name="exo:publishLocation" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">  				
 		<propertyDefinitions>
 			<propertyDefinition name="exo:publishWorkspace" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">

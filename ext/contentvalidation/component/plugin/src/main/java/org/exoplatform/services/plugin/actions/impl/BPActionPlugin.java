@@ -67,10 +67,6 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     
   protected ECMEventListener createEventListener(String actionName, String moveExecutable, 
       String repository, String srcWorkspace, String srcPath, Map variables, String actionType) throws Exception {
-    if (actionType.equals("publication:workflowAction")) {
-      return new BPWorkflowActionLauncherListener(actionName, moveExecutable, repository, 
-          srcWorkspace, srcPath, variables);
-    }
     return new BPActionLauncherListener(actionName, moveExecutable, repository, 
                                         srcWorkspace, srcPath, variables);
   }  
@@ -113,19 +109,6 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public class BPActionLauncherListener extends BaseActionLauncherListener {
     
     public BPActionLauncherListener(String actionName, String businessProcess, String repository,
-        String srcWorkspace, String srcPath, Map actionVariables) throws Exception {
-      super(actionName, businessProcess, repository, srcWorkspace, srcPath, actionVariables);
-    }    
-    
-    public void triggerAction(String userId, Map variables, String repository) {
-      executeAction(userId, super.executable_, variables, repository);
-    }  
-
-  }
-  
-  public class BPWorkflowActionLauncherListener extends WorkflowActionLauncherListener {
-    
-    public BPWorkflowActionLauncherListener(String actionName, String businessProcess, String repository,
         String srcWorkspace, String srcPath, Map actionVariables) throws Exception {
       super(actionName, businessProcess, repository, srcWorkspace, srcPath, actionVariables);
     }    

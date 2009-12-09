@@ -58,7 +58,6 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
   public static final String BACKUP = "backup";
   
   
-  public static final String WORKFLOW_NODETYPE = "publication:workflowAction".intern();
   public static final String PUBLICATION = "publication:publication".intern();
   public static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
   public static final String CURRENT_STATE = "publication:currentState".intern();
