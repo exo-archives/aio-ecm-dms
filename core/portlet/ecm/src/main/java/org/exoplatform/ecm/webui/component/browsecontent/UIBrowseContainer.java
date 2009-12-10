@@ -533,7 +533,7 @@ public class UIBrowseContainer extends UIContainer {
             NodeIterator item = childNode.getNodes();
             while (item.hasNext()) {
               Node node = item.nextNode();
-              if (canRead(node)){
+              if (canRead(node) && (!childNode.isNodeType("exo:hiddenable"))){
                 NodeType nodeType = node.getPrimaryNodeType();
                 if (templates.contains(nodeType.getName())&&(isShowDocument)) { 
                   if (subCategoryDoc.size() < getRowPerBlock()) {
