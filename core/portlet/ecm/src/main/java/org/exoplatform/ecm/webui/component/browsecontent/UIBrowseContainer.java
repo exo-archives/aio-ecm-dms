@@ -202,8 +202,9 @@ public class UIBrowseContainer extends UIContainer {
   public SessionProvider getAnonimProvider() { return SessionProviderFactory.createAnonimProvider(); } 
   
   public String getCategoryPath() { return categoryPath_; }
-  public List getCurrentList() throws Exception {
+  public List getCurrentList() throws Exception {        
     return uiPageIterator_.getCurrentPageData();
+    
   }
   public Node getCurrentNode() throws Exception { 
     if(getNodeByPath(currentPath_) == null) return getNodeByPath(rootPath_);
@@ -518,7 +519,7 @@ public class UIBrowseContainer extends UIContainer {
       NodeIterator tabIter = getCurrentNode().getNodes();
       while(tabIter.hasNext()) {
         Node childNode = tabIter.nextNode();
-        if(canRead(childNode)) {
+        if(canRead(childNode) && (!childNode.isNodeType("exo:hiddenable"))) {
           NodeType nt = childNode.getPrimaryNodeType();
           if (templates.contains(nt.getName())&&(isShowDocument)) { 
             subDocumentList.add(childNode);
@@ -566,7 +567,7 @@ public class UIBrowseContainer extends UIContainer {
             childOfSubCategory.put("sub", subCategoryCat);
             String path = childNode.getPath();
             String keyPath = path.substring(path.lastIndexOf("/") + 1);
-            content.put(keyPath, childOfSubCategory);
+            content.put(keyPath, childOfSubCategory);                           
             subCategoryList.add(path);
           } 
         }
@@ -712,7 +713,7 @@ public class UIBrowseContainer extends UIContainer {
       NodeIterator item = selectedNode.getNodes();
       if (isEnableChildDocument()) {
         while (item.hasNext()) {
-          Node node = item.nextNode();
+          Node node = item.nextNode();          
           if (templates.contains(node.getPrimaryNodeType().getName())) {
             if (canRead(node)) {
               if (isAllowPublish()) {
