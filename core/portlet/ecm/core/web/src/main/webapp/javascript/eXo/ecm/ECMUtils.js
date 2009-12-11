@@ -160,17 +160,34 @@
 	}
 	 
 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
+		
 		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
 		var elemt = DOM.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
-	
-		if(elemt.style.display == 'none') {
+		
+		if(elemt.style.display == 'none') {		
 			elemtClicked.childNodes[0].style.display = 'none' ;
 			elemtClicked.childNodes[1].style.display = 'block' ;
 			elemt.style.display = 'block' ;
-		} else {
+		} else {			
 			elemtClicked.childNodes[0].style.display = 'block' ;
 			elemtClicked.childNodes[1].style.display = 'none' ;
 			elemt.style.display = 'none' ;
+		}
+	};
+	
+	ECMUtils.prototype.showHideContentOnRow = function(elemtClicked) {
+		
+		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
+		var elemt = DOM.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
+		var show = DOM.findFirstDescendantByClass(elemt, "div", "ShowContentPermission") ;
+		var hide = DOM.findFirstDescendantByClass(elemt, "div", "HideContentPermission") ;
+			 
+		if(show.style.display == 'none') {				
+			hide.style.display = 'none';
+			show.style.display = 'block';					
+		} else {			
+			hide.style.display = 'block';
+			show.style.display = 'none';						
 		}
 	};
 	
