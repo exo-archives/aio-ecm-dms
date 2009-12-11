@@ -252,8 +252,8 @@ public class UIAddressBar extends UIForm {
         uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
         uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
       }
-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);           
-      QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(queryStatement, Query.SQL);        
       QueryResult queryResult = query.execute();                  
@@ -261,8 +261,9 @@ public class UIAddressBar extends UIForm {
       uiSearchResult.setQueryResults(queryResult);            
       uiSearchResult.updateGrid(true);
       long time = System.currentTimeMillis() - startTime;
-      uiSearchResult.setSearchTime(time);
+      uiSearchResult.setSearchTime(time);      
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
     }
   }
   
