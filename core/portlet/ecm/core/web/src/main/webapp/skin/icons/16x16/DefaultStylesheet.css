@@ -935,3 +935,11 @@
   background: url('DefaultSkin/UnPublished.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/UnPublished.gif') no-repeat right center; /* orientation=rt */
 }
+
+.HideContentPermission {
+  cursor : pointer;
+}
+
+.ShowContentPermission {
+  cursor : pointer;
+}
