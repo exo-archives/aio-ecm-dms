@@ -8,8 +8,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>bp</artifactId>
-  <name>eXo Content validation business processes configuration</name>
   <packaging>pom</packaging>
+  <name>eXo DMS Content validation business processes configuration</name>
 
   <modules>
     <module>bonita/content-publishing</module>
@@ -37,15 +37,5 @@
       </resource>
     </resources>
   </build>
-  
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <property><name>default</name></property>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-  </profiles>
   
 </project>

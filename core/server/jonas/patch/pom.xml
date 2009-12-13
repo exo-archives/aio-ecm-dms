@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.server.jonas.patch</artifactId>
-  <packaging>jar</packaging>
-  <name>eXo JOnAS Server</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo JOnAS server patch</description>
+  <name>eXo DMS JOnAS Server</name>
 
   <build>
     <resources>

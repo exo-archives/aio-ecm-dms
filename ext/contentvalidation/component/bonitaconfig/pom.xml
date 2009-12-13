@@ -8,10 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.bonitaconfig</artifactId>
-  <packaging>jar</packaging>
-  <name>eXo Content Validation with Bonita workflow</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo Content Validation with Bonita workflow</description>
+  <name>eXo DMS Content Validation with Bonita workflow</name>
 
   <dependencies>
     <dependency>
@@ -23,10 +20,6 @@
   </dependencies>
   
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
 
     <resources>
       <resource>

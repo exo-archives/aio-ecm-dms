@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.component.migration.2.3.drives</artifactId>
-  <packaging>jar</packaging>
-  <name>eXo ECM Migration for drives path</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo ECM Migration Services</description>
+  <name>eXo DMS Migration for drives path</name>
 
   <dependencies>
     <dependency>
@@ -51,18 +48,13 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>    
 
   </dependencies>  
 
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
-
     <resources>
       <resource>
         <directory>src/main/java</directory>

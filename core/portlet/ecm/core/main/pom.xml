@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.portlet.ecm.core.main</artifactId>
-  <packaging>jar</packaging>
   <name>eXo DMS Portlet Java Content</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo DMS Portlet Java Content: File Explorer, Browser Content, ECM Admin</description>
 
   <dependencies>
     <dependency>
@@ -30,14 +27,14 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>    
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>  	
   </dependencies>

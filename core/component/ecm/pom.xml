@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.component.ecm</artifactId>
-  <packaging>jar</packaging>
-  <name>ECM Federation Service</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo ECM Federation Service</description>
+  <name>eXo DMS Federation Service</name>
 
   <dependencies>
     <dependency>
@@ -65,10 +62,6 @@
   </dependencies>
   
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
 
     <resources>
       <resource>

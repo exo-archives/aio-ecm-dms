@@ -8,10 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.workflowPublication</artifactId>
-  <packaging>jar</packaging>
-  <name>eXo workflow publication</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo workflow Publication</description>
+  <name>eXo DMS workflow publication</name>
 
   <dependencies>
     <dependency>
@@ -73,7 +70,7 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.publication</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency> 
     
@@ -87,21 +84,21 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency> 
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency> 
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.plugin</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency> 
     

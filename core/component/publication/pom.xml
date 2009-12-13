@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.component.publication</artifactId>
-  <packaging>jar</packaging>
-  <name>eXo Publication Service</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo Publication Service</description>
+  <name>eXo DMS Publication Service</name>
 
   <dependencies>
     <dependency>

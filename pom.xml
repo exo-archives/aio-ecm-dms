@@ -2,31 +2,35 @@
 
   <parent>
     <groupId>org.exoplatform</groupId>
-    <artifactId>parent</artifactId>
-    <version>1.1.1</version>
+    <artifactId>exo.parent</artifactId>
+    <version>6</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm</groupId>
   <artifactId>dms</artifactId>
-  <name>eXo ECM - DMS</name>
   <version>2.5.3-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>eXo ECM DMS Parent</name>
 
   <properties>
-	<org.exoplatform.kernel.version>2.0.8</org.exoplatform.kernel.version>
-	<org.exoplatform.core.version>2.1.6</org.exoplatform.core.version>
-	<org.exoplatform.jcr.version>1.10.5.1</org.exoplatform.jcr.version>
-	<org.exoplatform.ws.version>1.3.4</org.exoplatform.ws.version>
-	<org.exoplatform.pc.version>2.0.7</org.exoplatform.pc.version>
-	<org.exoplatform.portal.version>2.5.6.2</org.exoplatform.portal.version>
-	<org.exoplatform.ecm.dms.version>2.5.3-SNAPSHOT</org.exoplatform.ecm.dms.version>
-	<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
-	<bonita.version>4.0</bonita.version>        
-  </properties>
+    <org.exoplatform.kernel.version>2.0.8</org.exoplatform.kernel.version>
+    <org.exoplatform.core.version>2.1.6</org.exoplatform.core.version>
+    <org.exoplatform.jcr.version>1.10.5.1</org.exoplatform.jcr.version>
+    <org.exoplatform.ws.version>1.3.4</org.exoplatform.ws.version>
+    <org.exoplatform.pc.version>2.0.7</org.exoplatform.pc.version>
+    <org.exoplatform.portal.version>2.5.6.2</org.exoplatform.portal.version>
+    <org.exoplatform.ecm.workflow.version>1.0.4.1</org.exoplatform.ecm.workflow.version>
+    <org.shindig.version>0.8.1-1-r719456</org.shindig.version>
+    <bonita.version>4.0</bonita.version>        
+
+    <!-- tests default config -->
+    <maven.test.skip>true</maven.test.skip>
+    <maven.test.failure.ignore>true</maven.test.failure.ignore>    </properties>
   
   <modules>
     <module>core</module>
+		<module>ext</module>
   </modules>
 
   <build>
@@ -51,35 +55,6 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration> 
-        	<source>1.5</source>
-        	<target>1.5</target>
-        	<optimize>true</optimize>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.3</version>
-        <configuration>
-          <skip>${exo.test.skip}</skip>
-          <useFile>false</useFile>
-          <forkMode>once</forkMode><!--once , pertest -->
-          <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
-          <includes>
-            <include implementation="java.lang.String">**/${exo.test.classes}*.java</include>
-          </includes>
-         <systemProperties>
-		     <property>
-		      <name>emma.coverage.out.file</name>
-		      <value>target/emma/coverage.ec</value>
-		     </property>
-	     </systemProperties>        
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -108,129 +83,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Run EMMA report on demand-->
-       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.2</version>
-        <executions>
-          <execution>
-            <id>emma1</id>
-            <phase>test-compile</phase>
-            <configuration>
-              <tasks if="emma.run">
-                <echo message="[EMMA] classes instrumentation executes..." />
-                <taskdef resource="emma_ant.properties" classpathref="maven.dependency.classpath" />
-                <mkdir dir="target" />
-                <mkdir dir="target/classes" />
-                <mkdir dir="target/emma/classes" />                
-                <copy todir="target/emma/classes" verbose="false" overwrite="true">
-                  <fileset dir="target/classes" />
-                </copy>
-                <emma enabled="true">
-                  <instr mode="overwrite" metadatafile="target/emma/metadata.em">
-                    <filter excludes="*JiBX*" />
-                    <instrpath>
-                      <dirset dir="target">
-                        <include name="emma/classes" />
-                      </dirset>
-                    </instrpath>
-                  </instr>
-                </emma>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>emma2</id>
-            <phase>test</phase>
-            <configuration>
-              <tasks if="emma.run">             
-              	<echo message="[EMMA]report generation executes..." />
-                <taskdef resource="emma_ant.properties" classpathref="maven.dependency.classpath" />
-                <emma enabled="true">
-                  <merge outfile="${exo.projects.directory.src}/ecm/trunk/target/coverage.es">
-                    <fileset dir="${exo.projects.directory.src}/ecm/trunk/">
-                      <include name="**/target/emma/*.e*" />
-                      <include name="**/target/emma/*.e*" />
-                    </fileset>
-                    <fileset file="${exo.projects.directory.config}/coverage.es" />
-                  </merge>
-                  <report>
-                    <sourcepath>
-                      <dirset dir="${exo.projects.directory.src}/ecm/trunk/">
-                        <include name="**/src/**/java" />
-                      </dirset>
-                    </sourcepath>
-                    <fileset dir="${exo.projects.directory.src}/ecm/trunk/target/">
-                      <include name="*.es" />
-                    </fileset>
-                    <html outfile="${exo.projects.directory.src}/ecm/trunk/target/coverage.html" />
-                    <xml outfile="${exo.projects.directory.src}/ecm/trunk/target/coverage.xml" />
-                  </report>
-                </emma>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>emma</groupId>
-            <artifactId>emma</artifactId>
-            <version>2.0.5312</version>
-            <scope>test</scope>
-          </dependency>
-          <dependency>
-            <groupId>emma</groupId>
-            <artifactId>emma_ant</artifactId>
-            <version>2.0.5312</version>
-            <scope>test</scope>
-          </dependency>
-        </dependencies>
-      </plugin>
-
     </plugins>
   </build>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-         <configLocation>${exo.projects.directory.config}/exo-checkstyle-checker.xml</configLocation>
-         <suppressionsLocation>${exo.projects.directory.config}/exo-checkstyle-suppressions.xml</suppressionsLocation>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <property><name>default</name></property>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-	  <properties>
-		<exo.test.classes>Test</exo.test.classes>
-		<exo.test.skip>true</exo.test.skip>
-	  </properties>
-    </profile>
-	<profile>
-		<id>ext</id>
-		<activation>
-		<property>
-			<name>ext</name>
-		</property>
-		<activeByDefault>false</activeByDefault>
-		</activation>
-		<modules>
-			<module>/ext</module>
-		</modules>
-    </profile>
-  </profiles>
 </project>

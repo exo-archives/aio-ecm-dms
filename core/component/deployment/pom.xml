@@ -7,10 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.component.deployment</artifactId>
-  <packaging>jar</packaging>
   <name>eXo DMS Deployment Services</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo DMS Deployment Services</description>
 
   <dependencies>
     <dependency>
@@ -50,11 +47,6 @@
   </dependencies>  
 
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
-
     <resources>
       <resource>
         <directory>src/main/java</directory>
@@ -103,8 +95,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
-          <forkMode>${exo.test.forkmode}</forkMode>
           <includes>
             <include>**/TestContent.java</include>    						
           </includes>

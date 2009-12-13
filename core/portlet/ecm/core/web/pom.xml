@@ -9,19 +9,17 @@
   <artifactId>exo.ecm.dms.core.portlet.ecm.core.web</artifactId>
   <packaging>war</packaging>
   <name>eXo DMS Portlet Web Content</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo DMS Portlet Web Content: File Explorer, Browser Content, ECM Admin</description>
 
   <dependencies>    
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.core.main</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
     </dependency>  	
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.ext.main</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>2.5.3-SNAPSHOT</version>
     </dependency>  	
   </dependencies>
 

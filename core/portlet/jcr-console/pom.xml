@@ -8,8 +8,6 @@
   <artifactId>exo.ecm.dms.core.portlet.jcr-console</artifactId>
   <packaging>war</packaging>
   <name>eXo DMS JCR console Portlet</name>
-  <url>http://www.exoplatform.org</url>
-  <description>eXo DMS JCR console Portlet</description>
 
   <dependencies>
     <dependency>
