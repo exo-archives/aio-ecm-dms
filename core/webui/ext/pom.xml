@@ -7,7 +7,6 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
-  <version>2.5.3-SNAPSHOT</version>
   <name>eXo DMS webui ext</name>
   
   <dependencies>
