@@ -299,7 +299,7 @@ public class UIToolBar extends UIContainer {
       } else  {
         documentNode = uiDocument.getOriginalNode();
       }
-      if(documentNode == null) {
+      if ((documentNode == null) || !container.isShowDocumentDetail()) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
