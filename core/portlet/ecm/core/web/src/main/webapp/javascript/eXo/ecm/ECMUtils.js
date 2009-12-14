@@ -177,17 +177,17 @@
 	
 	ECMUtils.prototype.showHideContentOnRow = function(elemtClicked) {
 		
-		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
+		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "Text");
 		var elemt = DOM.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
-		var show = DOM.findFirstDescendantByClass(elemt, "div", "ShowContentPermission") ;
-		var hide = DOM.findFirstDescendantByClass(elemt, "div", "HideContentPermission") ;
+		var shortContent = DOM.findFirstDescendantByClass(elemt, "div", "ShortContentPermission") ;
+		var fullContent = DOM.findFirstDescendantByClass(elemt, "div", "FullContentPermission") ;
 			 
-		if(show.style.display == 'none') {				
-			hide.style.display = 'none';
-			show.style.display = 'block';					
+		if(shortContent.style.display == 'none') {										
+			fullContent.style.display = 'none';
+			shortContent.style.display = 'block';					
 		} else {			
-			hide.style.display = 'block';
-			show.style.display = 'none';						
+			fullContent.style.display = 'block';
+			shortContent.style.display = 'none';						
 		}
 	};
 	

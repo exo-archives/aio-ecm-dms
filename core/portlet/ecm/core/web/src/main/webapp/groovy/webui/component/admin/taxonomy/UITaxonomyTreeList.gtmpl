@@ -43,10 +43,10 @@
               <td><div class="Text" title="$taxonomyTree.taxoTreeWorkspace">$taxonomyTree.taxoTreeWorkspace</div></td>
               <td><div class="Text" title="<%=taxonomyTree.getTaxoTreeHomePath().replace("/", " /")%>"><%=taxonomyTree.getTaxoTreeHomePath().replace("/", " /")%></div></td>
               <td>
-                <div class="Comments ShowHideContainer">
+                <div class="Text">
                   <div class="ShowHideComponent" title="$taxonomyTree.taxoTreePermissions" onclick="eXo.ecm.ECMUtils.showHideContentOnRow(this)">
-                    <div class="HideContentPermission"><a><%=pathTitle(taxonomyTree.taxoTreePermissions, 20)%></a></div>
-                    <div class="ShowContentPermission" style="display: none"><a>$taxonomyTree.taxoTreePermissions</a></div>
+                    <div class="ShortContentPermission"><a><%=pathTitle(taxonomyTree.taxoTreePermissions, 20)%></a></div>
+                    <div class="FullContentPermission" style="display: none"><a>$taxonomyTree.taxoTreePermissions</a></div>
                     <div style="clear: both;"><span></span></div>
                   </div>                  
                 </div>                

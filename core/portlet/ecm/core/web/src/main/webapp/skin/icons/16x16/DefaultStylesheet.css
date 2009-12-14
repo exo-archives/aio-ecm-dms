@@ -936,10 +936,10 @@
   background: url('DefaultSkin/UnPublished.gif') no-repeat right center; /* orientation=rt */
 }
 
-.HideContentPermission {
-  cursor : pointer;
+.FullContentPermission {
+  cursor : pointer;  
 }
 
-.ShowContentPermission {
-  cursor : pointer;
+.ShortContentPermission {
+  cursor : pointer;  
 }
