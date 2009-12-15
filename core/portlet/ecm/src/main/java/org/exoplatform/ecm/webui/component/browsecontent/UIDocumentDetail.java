@@ -114,7 +114,6 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
         template = templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
       }
       if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
-      templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
       return template;
     } catch (AccessControlException e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
@@ -126,7 +125,6 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       context.addUIComponentToUpdateByAjax(uiFormController);
       return null;
     } catch (Exception e) {
-      e.printStackTrace();
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       Object[] arg = { template };
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
