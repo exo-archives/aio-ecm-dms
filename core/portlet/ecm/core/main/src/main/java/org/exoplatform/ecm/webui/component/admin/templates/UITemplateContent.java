@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.admin.templates;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -28,6 +29,7 @@ import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -350,8 +352,21 @@ public class UITemplateContent extends UIForm implements UISelectable {
     public void execute(Event<UITemplateContent> event) throws Exception {
       UITemplateContent uiTempContent = event.getSource() ;
       UITemplatesManager uiManager = uiTempContent.getAncestorOfType(UITemplatesManager.class) ;
-      UIViewTemplate uiViewTemp = uiTempContent.getAncestorOfType(UIViewTemplate.class) ;
-      uiTempContent.removeChild(UIPopupWindow.class) ;
+      UIViewTemplate uiViewTemp = uiTempContent.getAncestorOfType(UIViewTemplate.class) ;      
+      
+      // The codes are updated by lampt.
+      List<UIComponent> uicomponents = uiManager.getChildren();
+      List<UIComponent> parentUIComponents = new ArrayList<UIComponent>();
+      parentUIComponents.addAll(uicomponents);
+      for (UIComponent uicomponent : parentUIComponents) {
+        if (UIPopupWindow.class.isInstance(uicomponent)) {
+          if (!uicomponent.getId().equals(UITemplatesManager.NEW_TEMPLATE) &&
+                                !uicomponent.getId().equals(UITemplatesManager.EDIT_TEMPLATE)) {
+            uiManager.removeChildById(uicomponent.getId());  
+          }
+        }
+      }
+                 
       String membership = uiTempContent.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;
       uiManager.initPopupPermission(uiTempContent.getId(), membership) ;
       if(uiTempContent.getId().equals(UIDialogTab.DIALOG_FORM_NAME)) {

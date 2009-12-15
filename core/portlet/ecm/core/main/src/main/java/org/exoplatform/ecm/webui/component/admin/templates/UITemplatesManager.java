@@ -57,8 +57,7 @@ public class UITemplatesManager extends UIAbstractManager {
   }
 
   public void initPopupPermission(String id, String membership) throws Exception {
-    String popupId = id.concat(UITemplateContent.TEMPLATE_PERMISSION);
-    removeChildById(popupId);
+    String popupId = id.concat(UITemplateContent.TEMPLATE_PERMISSION);    
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId);
     uiPopup.setWindowSize(560, 300);
     UIPermissionSelector uiECMPermission = createUIComponent(UIPermissionSelector.class, null, null);
