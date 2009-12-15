@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.lock.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.lock.LockService;
 import org.picocontainer.Startable;
 
@@ -32,10 +33,24 @@ import org.picocontainer.Startable;
 public class LockServiceImpl implements LockService, Startable {
   
   private List<String> settingLockList = new ArrayList<String>();
+  private String group_;
+  
+  /**
+   * Constructor method
+   * @param params
+   * @throws Exception
+   */
+  public LockServiceImpl(InitParams params) throws Exception {
+    group_ = params.getValueParam("group").getValue();    
+  }
+  
+  public String getGroup(){
+    return group_;
+  }
   
   public List<String> getAllGroupsOrUsersForLock() throws Exception {    
-    if (settingLockList.size() == 0) settingLockList.add("*:/platform/administrators");
-    if (!settingLockList.contains("*:/platform/administrators")) settingLockList.add("*:/platform/administrators");
+    if (settingLockList.size() == 0) settingLockList.add(group_);
+    if (!settingLockList.contains(group_)) settingLockList.add(group_);
     
     return settingLockList;
   }
