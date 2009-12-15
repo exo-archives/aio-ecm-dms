@@ -32,7 +32,6 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -66,8 +65,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private IdentityRegistry identityRegistry_;
   private String               cmsTemplatesBasePath_;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
-
-  private List<TemplateDefaultPlugin> templateDefaultplugins_ = new ArrayList<TemplateDefaultPlugin>();
 
   private Map<String,HashMap<String,List<String>>> foldersFilterMap = new HashMap<String,HashMap<String,List<String>>> ();  
   private Map<String,List<String>> managedDocumentTypesMap = new HashMap<String,List<String>>();
@@ -119,10 +116,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
         plugin.init();
       }
 
-      for (TemplateDefaultPlugin plugin : templateDefaultplugins_) {
-        plugin.init();
-      }
-      
       //Cached all nodetypes that is document type in the map
       for(RepositoryEntry repositoryEntry:repositoryService_.getConfig().getRepositoryConfigurations()) {
         String repositoryName = repositoryEntry.getName();
@@ -180,9 +173,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public void addTemplates(ComponentPlugin plugin) {
     if (plugin instanceof TemplatePlugin)
       plugins_.add((TemplatePlugin) plugin);
-
-    if (plugin instanceof TemplateDefaultPlugin)
-      templateDefaultplugins_.add((TemplateDefaultPlugin) plugin);
   }
   
   /**
