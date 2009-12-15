@@ -29,11 +29,21 @@ public class TemplateConfig {
   private List<NodeType> nodeTypes = new ArrayList<NodeType>();
   private List<Template> templates = new ArrayList<Template>();  
   
+  private List<NodeType> excludeRenderTemplateNodeTypes = new ArrayList<NodeType>();
+  
   public List<NodeType> getNodeTypes() {   return this.nodeTypes; }
   public void setNodeTypes(List<NodeType> s) {  this.nodeTypes = s; }    
   
   public List<Template> getTemplates() {   return this.templates; }
   public void setTemplates(List<Template> s) {  this.templates = s; }
+
+  public List<NodeType> getExcludeRenderTemplateNodeTypes() {
+    return excludeRenderTemplateNodeTypes;
+  }
+  
+  public void setExcludeRenderTemplateNodeTypes(List<NodeType> excludeRenderTemplateNodeTypes) {
+    this.excludeRenderTemplateNodeTypes = excludeRenderTemplateNodeTypes;
+  }
   
   static public class Template {
     

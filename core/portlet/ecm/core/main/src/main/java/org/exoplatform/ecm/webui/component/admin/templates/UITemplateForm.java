@@ -67,7 +67,8 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(listeners = UITemplateForm.SaveActionListener.class),
       @EventConfig(listeners = UITemplateForm.RefreshActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UITemplateForm.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UITemplateForm.AddPermissionActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UITemplateForm.AddPermissionActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UITemplateForm.OnChangeActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UITemplateForm extends UIFormTabPane implements UISelectable {  
@@ -85,8 +86,10 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
 
   public UITemplateForm() throws Exception {
     super("UITemplateForm") ;
-    UIFormInputSetWithAction templateTab = new UIFormInputSetWithAction(FIELD_TAB_TEMPLATE) ;
-    templateTab.addUIFormInput(new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption())) ;
+    UIFormInputSetWithAction templateTab = new UIFormInputSetWithAction(FIELD_TAB_TEMPLATE);
+    UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption());
+    uiSelectBox.setOnChange("OnChange");
+    templateTab.addUIFormInput(uiSelectBox);
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_LABEL, FIELD_LABEL, null).
                                addValidator(MandatoryValidator.class)) ;
     
@@ -110,13 +113,33 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
   }
 
   public void refresh()throws Exception {
-    getUIStringInput(FIELD_LABEL).setValue("") ;
-    getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(false) ;
-    getUIFormTextAreaInput(FIELD_DIALOG).setValue("") ;
-    getUIFormTextAreaInput(FIELD_VIEW).setValue("") ;
-    getUIFormTextAreaInput(FIELD_SKIN).setValue("") ;
-    getUIStringInput(FIELD_PERMISSION).setValue("") ;
-    getUIFormSelectBox(FIELD_NAME).setOptions(getOption()) ; 
+    getUIFormSelectBox(FIELD_NAME).setOptions(getOption());
+    String nodeType = getUIFormSelectBox(FIELD_NAME).getValue();
+    getUIStringInput(FIELD_LABEL).setValue("");
+    getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(false);
+    initTemplate(nodeType);
+    getUIStringInput(FIELD_PERMISSION).setValue("");
+  }
+
+  private void initTemplate(String nodeType)throws Exception {
+    getUIFormTextAreaInput(FIELD_VIEW).setValue(getDefaultView(nodeType));
+    getUIFormTextAreaInput(FIELD_DIALOG).setValue(getDefaultDialog(nodeType));
+    getUIFormTextAreaInput(FIELD_SKIN).setValue(getDefaultStyleSheet(nodeType));
+  }
+  
+  private String getDefaultStyleSheet(String nodeType) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    return Utils.encodeHTML(templateService.buildStyleSheet(nodeType, getRepository()));
+  }
+
+  private String getDefaultView(String nodeType) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    return Utils.encodeHTML(templateService.buildViewForm(nodeType, getRepository()));
+  }
+
+  private String getDefaultDialog(String nodeType) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    return Utils.encodeHTML(templateService.buildDialogForm(nodeType, getRepository()));
   }
   
   private String getRepository() {
@@ -154,6 +177,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
       NodeTypeIterator iter = nodeTypeManager.getAllNodeTypes() ;
       while (iter.hasNext()) {
         NodeType nodeType = iter.nextNodeType();
+        if (nodeType.isMixin()) continue;
         String nodeTypeName = nodeType.getName();
         if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
       }
@@ -221,6 +245,18 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiFormTabPane = event.getSource() ;
       uiFormTabPane.refresh() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormTabPane.getParent()) ;
+    }
+  }
+
+  static  public class OnChangeActionListener extends EventListener<UITemplateForm> {
+    public void execute(Event<UITemplateForm> event) throws Exception {
+      UITemplateForm uiFormTabPane = event.getSource() ;
+      String nodeType = uiFormTabPane.getUIFormSelectBox(FIELD_NAME).getValue();
+      uiFormTabPane.getUIStringInput(FIELD_LABEL).setValue("");
+      uiFormTabPane.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(false);
+      uiFormTabPane.initTemplate(nodeType);
+      uiFormTabPane.getUIStringInput(FIELD_PERMISSION).setValue("");
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormTabPane.getParent()) ;
     }
   }

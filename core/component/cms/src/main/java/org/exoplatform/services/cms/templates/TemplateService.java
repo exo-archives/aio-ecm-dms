@@ -21,7 +21,10 @@ import java.util.Set;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.nodetype.NodeType;
 
+import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 
@@ -375,4 +378,25 @@ public interface TemplateService {
    * @throws Exception
    */
   public String getSkinPath(String nodeTypeName, String skinName, String locale, String repository) throws Exception;
+  
+  /**
+   * Build string of dialog form template base on properties of nodetype
+   * @param nodeType
+   * @return
+   */
+  public String buildDialogForm(String nodeTypeName, String repository) throws Exception;
+
+  /**
+   * Build string of view template form base on properties of nodetype
+   * @param nodeType
+   * @return
+   */
+  public String buildViewForm(String nodeTypeName, String repository) throws Exception;
+
+  /**
+   * Build string of view template form base on properties of nodetype
+   * @param nodeType
+   * @return
+   */
+  public String buildStyleSheet(String nodeTypeName, String repository) throws Exception;
 }

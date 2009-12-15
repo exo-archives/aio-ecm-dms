@@ -32,6 +32,7 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -65,6 +66,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private IdentityRegistry identityRegistry_;
   private String               cmsTemplatesBasePath_;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
+
+  private List<TemplateDefaultPlugin> templateDefaultplugins_ = new ArrayList<TemplateDefaultPlugin>();
 
   private Map<String,HashMap<String,List<String>>> foldersFilterMap = new HashMap<String,HashMap<String,List<String>>> ();  
   private Map<String,List<String>> managedDocumentTypesMap = new HashMap<String,List<String>>();
@@ -115,6 +118,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       for (TemplatePlugin plugin : plugins_) {
         plugin.init();
       }
+
+      for (TemplateDefaultPlugin plugin : templateDefaultplugins_) {
+        plugin.init();
+      }
+      
       //Cached all nodetypes that is document type in the map
       for(RepositoryEntry repositoryEntry:repositoryService_.getConfig().getRepositoryConfigurations()) {
         String repositoryName = repositoryEntry.getName();
@@ -172,6 +180,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public void addTemplates(ComponentPlugin plugin) {
     if (plugin instanceof TemplatePlugin)
       plugins_.add((TemplatePlugin) plugin);
+
+    if (plugin instanceof TemplateDefaultPlugin)
+      templateDefaultplugins_.add((TemplateDefaultPlugin) plugin);
   }
   
   /**
@@ -576,6 +587,37 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     session.logout();
     return skinNode.getPath();
   }  
+  
+  /**
+   * {@inheritDoc}
+   */
+  public String buildDialogForm(String nodeTypeName, String repository) throws Exception {
+    if (plugins_ == null && plugins_.size() == 0) throw new Exception("Cannot find plugin for template");
+    TemplatePlugin templatePlugin = plugins_.get(0);
+    ManageableRepository manageRepo = repositoryService_.getRepository(repository);
+    NodeType nodeType = manageRepo.getNodeTypeManager().getNodeType(nodeTypeName);
+    return templatePlugin.buildDialogForm(nodeType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String buildViewForm(String nodeTypeName, String repository) throws Exception {
+    if (plugins_ == null && plugins_.size() == 0) throw new Exception("Cannot find plugin for template");
+    TemplatePlugin templatePlugin = plugins_.get(0);
+    ManageableRepository manageRepo = repositoryService_.getRepository(repository);
+    NodeType nodeType = manageRepo.getNodeTypeManager().getNodeType(nodeTypeName);
+    return templatePlugin.buildViewForm(nodeType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String buildStyleSheet(String nodeTypeName, String repository) throws Exception {
+    if (plugins_ == null && plugins_.size() == 0) throw new Exception("Cannot find plugin for template");
+    TemplatePlugin templatePlugin = plugins_.get(0);
+    return templatePlugin.buildStyleSheet(null);
+  }
   
   /**
    * Get template with the following specified params 

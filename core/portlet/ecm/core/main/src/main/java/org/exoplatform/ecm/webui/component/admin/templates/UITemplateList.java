@@ -162,6 +162,7 @@ public class UITemplateList extends UIGrid {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      uiTemplateForm.refresh();
       uiTemplatesManager.initPopup(uiTemplateForm, UITemplatesManager.NEW_TEMPLATE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTemplatesManager) ;
     }
