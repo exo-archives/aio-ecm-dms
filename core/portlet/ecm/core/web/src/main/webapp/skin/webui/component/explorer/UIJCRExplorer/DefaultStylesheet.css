@@ -200,46 +200,18 @@
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
-	width: 30px; 
 	height: 19px; 
 	overflow: hidden;
   white-space: nowrap;
-}
-
-.UIJCRExplorerPortlet .UIListGrid .RightColumn {
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */
-	padding-left: 3px; /* orientation=lt */
-	padding-right: 3px; /* orientation=rt */
-	width: 105px;
-	overflow: hidden;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
-	height: 19px; 
-	margin: 0px 590px 0px 30px; /* orientation=lt */
-	margin: 0px 30px 0px 590px; /* orientation=rt */
-	padding-left: 5px; /* orientation=lt */
-	padding-right: 5px; /* orientation=rt */
-	white-space: nowrap; 
-	cursor: pointer;
+  padding-left: 3px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {
 	line-height: 19px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .RowView .RightColumn {
-	padding: 2px 0px 2px 3px; /* orientation=lt */
-	padding: 2px 3px 2px 0px; /* orientation=rt */
- 	border-right: none; /* orientation=lt */
- 	border-left: none; /* orientation=rt */
-}
-
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn {
-	padding: 2px 0px; 
+	padding: 2px 0px 2px 3px; 
  	border-right: none; /* orientation=lt */
  	border-left: none; /* orientation=rt */
 }
@@ -260,28 +232,13 @@
 
 .UIJCRExplorerPortlet .UIListGrid .LineLeft {
 	background: url('/ecm/skin/icons/24x24/DefaultSkin/Split.gif') no-repeat center;
-  width: 2px;
+  width: 3px;
   height: 19px;
   float: left;/* orientation=lt */
   float: right;/* orientation=rt */
-  col-resize
-}
-
-.UIJCRExplorerPortlet .UIListGrid .LineRight {
-	background: url('/ecm/skin/icons/24x24/DefaultSkin/Split.gif') no-repeat center;
-  width: 2px;
-  height: 19px;
-  float: right;/* orientation=lt */
-  float: left;/* orientation=rt */
   cursor: col-resize;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
- 	border-right: none; /* orientation=lt */
- 	border-left: none; /* orientation=rt */
-	padding: 2px 0px 2px 3px; /* orientation=lt */
-	padding: 2px 3px 2px 0px; /* orientation=rt */
-} 
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
 	width: 95%;
