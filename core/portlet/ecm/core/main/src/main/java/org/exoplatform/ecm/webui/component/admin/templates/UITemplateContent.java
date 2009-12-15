@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 import javax.jcr.version.VersionHistory;
 import javax.portlet.PortletPreferences;
 
@@ -333,6 +334,14 @@ public class UITemplateContent extends UIForm implements UISelectable {
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;
       String content = frozenNode.getProperty(Utils.EXO_TEMPLATEFILE).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
+      if (frozenNode.hasProperty(Utils.EXO_ROLES)) {
+        StringBuilder rule = new StringBuilder() ;
+        Value[] rules = frozenNode.getProperty(Utils.EXO_ROLES).getValues() ;
+        for(int i = 0; i < rules.length; i++) {
+          rule.append(rules[i].getString());
+        }
+        uiForm.getUIStringInput(FIELD_VIEWPERMISSION).setValue(rule.toString());
+      }      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
