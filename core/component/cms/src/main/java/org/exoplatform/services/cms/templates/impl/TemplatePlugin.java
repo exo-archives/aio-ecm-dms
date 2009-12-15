@@ -354,6 +354,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
   private String buildDialogNodeType(NodeType nodeType) throws ValueFormatException, RepositoryException {
     return buildDialogNodeType(nodeType, "/node/");
   }
+  
   /**
    * Build string of dialog template base on properties of nodetype
    * @param nodeType
@@ -377,7 +378,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
       propertyNameFormat = prodef.getName().replace(":", "_");
       propertyPath = jcrPath.concat(prodef.getName());
       propertyId = propertyPath.replace(":", "_");
-      componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addTextField(\"").append(propertyId).append("\",");
+      componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addTextField(\"").append(propertyId).append("\", ");
       validate = new StringBuilder("validate=");
       buildDialogNodeType.append(START_TR);
       buildDialogNodeType.append(TD_LABEL.replace("${nodetypename}", nodeType.getName()).replace(":", "_").replace("${propertyname}", propertyNameFormat));
@@ -395,7 +396,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
       
       case PropertyType.BOOLEAN :
         params.append(", \"options=true,false\"");
-        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addSelectBoxField(\"").append(propertyId).append("\",");
+        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addSelectBoxField(\"").append(propertyId).append("\", ");
         break;
      
       case PropertyType.STRING :
@@ -404,7 +405,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
       case PropertyType.DATE :
         validate.append("datetime,");
         params.append(", \"options=displaytime\", \"visible=true\"");
-        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addCalendarField(\"").append(propertyId).append("\",");
+        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addCalendarField(\"").append(propertyId).append("\", ");
         break;
       
       case PropertyType.LONG :
@@ -420,7 +421,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
         break;
 
       case PropertyType.BINARY :
-        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addUploadField(\"").append(propertyId).append("\",");
+        componentField = new StringBuilder("\n\t\t\t\t\t\tuicomponent.addUploadField(\"").append(propertyId).append("\", ");
         break;
 
       default:
