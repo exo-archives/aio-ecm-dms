@@ -44,7 +44,7 @@ public class UIActionTaxonomyManager extends UIContainer {
 
   public void setDefaultConfig() throws Exception {
     UIActionTypeForm uiActionType = getChild(UIActionTypeForm.class);
-    uiActionType.update();
+    uiActionType.setDefaultActionType(null);
     Class[] renderClasses = { UIActionTypeForm.class, UIActionForm.class };
     setRenderedChildrenOfTypes(renderClasses);
   }

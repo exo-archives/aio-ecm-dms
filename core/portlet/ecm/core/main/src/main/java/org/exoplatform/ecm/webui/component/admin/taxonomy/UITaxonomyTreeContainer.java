@@ -165,7 +165,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
         uiPermInfo.updateGrid();
       }
     }
-    uiActionTypeForm.update();
+    uiActionTypeForm.setDefaultActionType(null);
     findFirstComponentOfType(UITaxonomyTreeMainForm.class).update(taxonomyTreeData);
   }
   

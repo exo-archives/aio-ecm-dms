@@ -81,8 +81,11 @@ public class UIActionTypeForm extends UIForm {
   public void setDefaultActionType(String actionType) throws Exception {
     defaultActionType_ = actionType;
     if (actionType == null) {
-      defaultActionType_ = "exo:taxonomyAction";
+      defaultActionType_ = "exo:taxonomyAction";            
     }
+    List<SelectItemOption<String>> actionTypeList = new ArrayList<SelectItemOption<String>>();
+    actionTypeList.add(new SelectItemOption<String>(defaultActionType_, defaultActionType_));
+    getUIFormSelectBox(ACTION_TYPE).setOptions(actionTypeList);
     getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_);
   }
 
