@@ -2338,6 +2338,9 @@
     <label>
       <userOrGroup>Người dùng hoặc nhóm</userOrGroup>
     </label>
+    <msg>
+      <userOrGroup-alreadyExists>Kiểu thành viên đã tồn tại, xin chọn lại kiểu khác!</userOrGroup-alreadyExists>
+    </msg>    
   </UITagPermissionForm>
   
   <UIAnyPermission>

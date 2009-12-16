@@ -2333,6 +2333,9 @@
     <label>
       <userOrGroup>Users or groups</userOrGroup>
     </label>
+    <msg>
+      <userOrGroup-alreadyExists>Membership already exists. Please choose another one!</userOrGroup-alreadyExists>
+    </msg>    
   </UITagPermissionForm>
   
   <UIAnyPermission>

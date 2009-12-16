@@ -65,15 +65,21 @@ public class UITagPermissionForm extends UIForm implements UISelectable {
    		UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
    		String userOrGroup = uiForm.getChild(UITagPermissionInputSet.class).getUIStringInput(
    				UITagPermissionInputSet.FIELD_USERORGROUP).getValue();
-      
+			NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class);   		
+   		
       if (Utils.isNameEmpty(userOrGroup)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      if (newFolksonomyService.getTagPermissionList().contains(userOrGroup)) {
+        uiApp.addMessage(new ApplicationMessage("UITagPermissionForm.msg.userOrGroup-alreadyExists", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       
-			NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class);   		
 			newFolksonomyService.addTagPermission(userOrGroup);
 			event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
 			uiForm.getChild(UITagPermissionInputSet.class).getChild(UIFormStringInput.class).setValue("");
