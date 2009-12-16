@@ -58,9 +58,12 @@ import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.documents.TrashService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -254,6 +257,12 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       actionService.removeAction(node, uiExplorer.getRepositoryName());
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
       thumbnailService.processRemoveThumbnail(node);
+      NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class);
+      newFolksonomyService.removeTagsOfNodeRecursively(node,uiExplorer.getRepositoryName(),
+      																								 uiExplorer.getRepository().getConfiguration().
+      																								 getDefaultWorkspaceName(),
+      																								 node.getSession().getUserID(),
+																											 getGroups());
       node.remove();
       parentNode.save();
     } catch (VersionException ve) {
@@ -420,6 +429,14 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     uiConfirmMessage.setNodePath(nodePath);
     UIPopupContainer.activate(uiConfirmMessage, 500, 180);
     event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+  }
+  
+  private String getGroups() throws Exception {
+  	StringBuilder ret = new StringBuilder();
+		for (String group : Utils.getGroups())
+			ret.append(group).append(';');
+		ret.deleteCharAt(ret.length() - 1);
+		return ret.toString();
   }
   
   @Override

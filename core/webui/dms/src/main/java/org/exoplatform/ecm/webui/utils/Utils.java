@@ -193,6 +193,11 @@ public class Utils {
   
   final static public String EMPTY = "";
   
+  final static public String PUBLIC  = "Public";
+  final static public String GROUP   = "Group";
+  final static public String SITE 	 = "Site";
+  final static public String PRIVATE = "Private";
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {

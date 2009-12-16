@@ -34,6 +34,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.utils.comparator.PropertyValueComparator;
+
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -195,8 +196,11 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
       docNode.setDateEdited(getDateFormat(node.getProperty(DATE_MODIFIED).getDate()));
       tags = new StringBuilder(1024);
 
-      for(Node tag : newFolksonomyService.getLinkedTagsOfDocument(node, repository, node.getSession().getWorkspace().getName())) {
-        tags.append(tag.getName()).append(", ");
+      List<Node> tagList = newFolksonomyService.
+      		getLinkedTagsOfDocumentByScope(NewFolksonomyService.PUBLIC, "", node, 
+      											repository, node.getSession().getWorkspace().getName());
+      for(Node tag : tagList) {
+				tags.append(tag.getName()).append(", ");
       }
       
       if (tags.lastIndexOf(",") > 0) {

@@ -50,6 +50,7 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	private Node groupAFolksonomyNode;
 	private Node groupBFolksonomyNode;
 	private Node publicFolksonomyNode;
+	private Node siteFolksonomyNode;
 	
 	@Override
 	public void setUp() throws Exception {
@@ -231,6 +232,50 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	}
 	
   /**
+   * Test Method: addSiteTag()
+   * Input: Node 'test'
+   * Test action: add 2 tags 'sport' and 'weather' for node 'test' in site 'portal1'
+   * Expected Result: 
+   *        in folksonomy node of site 'portal1' user, 2 folder 'sport' and 'weather' appear; 
+   *        in folder 'sport' there must be a symlink to node 'test'
+   *        in folder 'weather' there must be a symlink to node 'test'   *        
+   *        property 'exo:total' of 'sport' node must be 1
+   *        property 'exo:total' of 'weather' node must be 1   *        
+   */
+	public void testAddSiteTag() throws Exception {
+		String[] tags = { "sport", "weather" };
+		String site = "portal1";
+		Node root = session.getRootNode();
+		Node siteTags = root.hasNode("SiteTags") ?
+										root.getNode("SiteTags") :
+										root.addNode("SiteTags");
+		
+		siteFolksonomyNode = siteTags.addNode(site);
+		session.save();
+		newFolksonomyService_.addSiteTag(site, 
+																		 tags, 
+																		 test, 
+																		 REPO_NAME, 
+																		 COLLABORATION_WS);
+		assertTrue("testAddSiteTag failed! ", siteFolksonomyNode.hasNode("sport"));
+		assertTrue("testAddSiteTag failed! ", siteFolksonomyNode.hasNode("weather"));
+		
+		Node sportTagNode = siteFolksonomyNode.getNode("sport");
+		Node link = sportTagNode.getNodes().nextNode();
+		Node targetNode = linkManager.getTarget(link);
+		assertTrue("testAddSiteTag failed! ", test.isSame(targetNode));
+		
+		Node weatherTagNode = siteFolksonomyNode.getNode("weather");
+		link = weatherTagNode.getNodes().nextNode();
+		targetNode = linkManager.getTarget(link);
+		assertTrue("testAddSiteTag failed! ", test.isSame(targetNode));
+		
+		assertEquals("testAddSiteTag failed! ", 1L, sportTagNode.getProperty(EXO_TOTAL).getLong());
+		assertEquals("testAddSiteTag failed! ", 1L, weatherTagNode.getProperty(EXO_TOTAL).getLong());		
+	}
+	
+	
+  /**
    * Test Method: getAllDocumentsByTag()
    * Input: Nodes 'test', 'test2'
    * Test action: add 2 tags 'sport' and 'weather' for node 'test' and 'test2' of current user
@@ -387,6 +432,41 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 		}
 		
 		assertEquals("testGetAllPublicTags failed!", 4, count);
+  }
+  
+  
+	/**
+	 * Test Method : getAllSiteTags() 	
+	 * Input: Node 'test', 'test2'
+	 * Test action: add 2 tags 'sport' and 'weather' for node 'test' in site 'portal1'
+	 * 							add 3 tags 'sport', 'boy', 'girl' for node 'test2' in site 'portal1'
+	 * 							get all tags of site 'portal1'
+	 * Expected Result:
+	 * 							sport, weather, boy, girl 
+	 */
+  public void testGetAllSiteTags() throws Exception {
+		String[] tags = { "sport", "weather" };
+		String[] tags2 = { "boy", "girl", "sport" };
+		String site = "portal1";
+		newFolksonomyService_.addSiteTag(site, 
+																			 tags, 
+																			 test, 
+																			 REPO_NAME, 
+																			 COLLABORATION_WS);
+		newFolksonomyService_.addSiteTag(site, 
+																			 tags2, 
+																			 test2, 
+																			 REPO_NAME, 
+																			 COLLABORATION_WS);
+		List<Node> tagList = newFolksonomyService_.getAllSiteTags(site, REPO_NAME, COLLABORATION_WS);
+		int count = 0;
+		for (Node tag : tagList) {
+			if ("sport".equals(tag.getName())) count ++;
+			if ("weather".equals(tag.getName())) count ++;
+			if ("boy".equals(tag.getName())) count ++;
+			if ("girl".equals(tag.getName())) count ++;
+		}
+		assertEquals("testGetAllSiteTags failed!", 4, count);
   }
   
 	/**

@@ -1881,7 +1881,7 @@
   #             org.exoplatform.ecm.webui.component.admin.folksonomy									 #
   ######################################################################################
   -->
-  <UIFolksonomyManager>
+  <UITagManager>
     <header>
       <name>Tên kiểu</name>
       <documentRange>Số lượng tài liệu</documentRange>
@@ -1893,7 +1893,7 @@
         <EditStyle>Sửa</EditStyle>
       </title>
     </action>
-  </UIFolksonomyManager>
+  </UITagManager>
   <UITagStyleForm>
     <label>
       <styleName>Tên kiểu</styleName>
@@ -2257,7 +2257,7 @@
     <title>Thêm/Sửa CSS</title>
   </SkinForm>  
 
-   <UIFolksonomyManager>
+   <UITagManager>
      <action>
        <title>
          <RemoveStyle>Xóa</RemoveStyle>
@@ -2267,7 +2267,7 @@
      <msg>
        <confirm-delete>Bạn có chắc chắn muốn xóa style này?</confirm-delete>
      </msg>
-   </UIFolksonomyManager>
+   </UITagManager>
    
 	 <UITaxonomyTreeMainForm>			
 			<msg>	  		
@@ -2305,6 +2305,58 @@
 			<action>
 				<Previous>Quay lại</Previous>
 			</action>
-		</UITaxonomyTreeWorkingArea>   		
+		</UITaxonomyTreeWorkingArea>
+		
+  <UITabPane>
+    <title>
+      <UITagManager>Quản lý nhãn</UITagManager>
+      <UITagPermissionManager>Quản lý quyền truy cập nhãn</UITagPermissionManager>
+    </title>
+  </UITabPane>
+  
+  <UITagPermissionInfo>
+    <header>
+      <usersOrGroups>Người dùng hoặc nhóm</usersOrGroups>
+      <action>Thao tác</action>
+    </header>
+    <action>
+     <title>
+       <Delete>Xóa</Delete>
+     </title>
+   </action>
+    
+  </UITagPermissionInfo>
+
+  <UITagPermissionForm>
+    <title>Thêm quyền truy cập</title>
+    <action>
+      <Save>Lưu</Save>
+    </action>
+    <label>
+      <userOrGroup>Người dùng hoặc nhóm</userOrGroup>
+    </label>
+  </UITagPermissionForm>
+  
+  <UIAnyPermission>
+    <label>
+      <any>Bất kỳ</any>
+    </label>
+  </UIAnyPermission>
+  
+  <UIGroupMemberSelector>
+    <label>
+      <selectGroup>Chọn nhóm</selectGroup>
+      <selectMembership>Chọn kiểu thành viên</selectMembership>
+    </label>
+  </UIGroupMemberSelector>  
+
+  <UIFolksonomyManager>
+    <action>
+      <title>
+        <AddStyle>Thêm style</AddStyle>
+      </title>
+    </action>
+  </UIFolksonomyManager>  
+
 </bundle>
 

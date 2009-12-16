@@ -15,6 +15,7 @@
   <div class="UIFormInputSetWithAction">
     <%
       def formName = uicomponent.getFormName() ;
+    	def parentFormName = uicomponent.getParent().getName();
       def actions = uicomponent.getInputSetActions() ;
       def actionValues = uicomponent.getActionValues() ;
       def isShowAction = uicomponent.isShowActionInfo();
@@ -76,9 +77,9 @@
 	                      </a>
                      <%} else { %>
                           <div class="ActionField FloatLeft">
-                          [ <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
-                              <%=arrInfor[i]%>
-                          </a> ]
+                            <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
+                              <%=arrInfor[i].trim()%>
+                          </a>
                         </div>
                        <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
                          <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt=""/>                

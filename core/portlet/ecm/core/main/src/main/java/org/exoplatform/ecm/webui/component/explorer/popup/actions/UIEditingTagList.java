@@ -63,7 +63,7 @@ public class UIEditingTagList extends UIGrid {
 		int scope = uiExplorer.getTagScope();
 		String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);
 		
-		List<Node> tags = (scope == UITagExplorer.PRIVATE) ?
+		List<Node> tags = (scope == NewFolksonomyService.PRIVATE) ?
 											newFolksonomyService.getAllPrivateTags(uiExplorer.getSession().getUserID(), repository, workspace) :
 											newFolksonomyService.getAllPublicTags(publicTagNodePath, repository, workspace);
 		List<TagData> tagDataList = new ArrayList<TagData>();		

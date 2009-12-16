@@ -3006,4 +3006,22 @@
     </title>
   </TagPopup>
   
+  <UITagStyleForm>
+    <msg>
+      <error-update>Error when updating</error-update>
+    </msg>
+  </UITagStyleForm>
+  
+  <UIPopupMenu>
+    <msg>
+      <editTagAccessDenied>Access denied!</editTagAccessDenied>
+    </msg>
+  </UIPopupMenu>
+  
+  <UIPopupWindow>
+    <title>
+      <UITaggingFormContainer>Tag Manager</UITaggingFormContainer>
+    </title>
+  </UIPopupWindow>
+    
 </bundle>

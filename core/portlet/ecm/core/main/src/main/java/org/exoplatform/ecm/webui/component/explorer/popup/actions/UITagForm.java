@@ -88,7 +88,6 @@ public class UITagForm extends UIForm {
   static public class UpdateTagActionListener extends EventListener<UITagForm> {
     public void execute(Event<UITagForm> event) throws Exception {
       UITagForm uiForm = event.getSource() ;
-      UIEditingTagsForm uiEdit = uiForm.getAncestorOfType(UIEditingTagsForm.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       
@@ -107,14 +106,14 @@ public class UITagForm extends UIForm {
       	if (uiForm.getTag() == null) {
       		String tagName = uiForm.getUIStringInput(TAG_NAME).getValue().trim();
           NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class) ;
-          if (scope == UITagExplorer.PRIVATE) { 
+          if (scope == NewFolksonomyService.PRIVATE) { 
           	newFolksonomyService.addPrivateTag(new String[] { tagName }, 
           																		 null, 
           																		 repository, 
           																		 workspace, 
           																		 userName);	
           }
-          if (scope == UITagExplorer.PUBLIC) {
+          if (scope == NewFolksonomyService.PUBLIC) {
           	NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);
           	String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);
           	newFolksonomyService.addPublicTag(publicTagNodePath, 
@@ -136,15 +135,17 @@ public class UITagForm extends UIForm {
 //           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           }
       	}
-        
-        UIEditingTagList uiTagList = uiEdit.getChild(UIEditingTagList.class) ;
-        uiTagList.updateGrid() ;
+      	
+        UIEditingTagsForm uiEdit = uiForm.getAncestorOfType(UIEditingTagsForm.class) ;
+        if (uiEdit != null) {
+	        uiEdit.getChild(UIEditingTagList.class).updateGrid();
+        }
       } catch(Exception e) {
         String key = "UITagStyleForm.msg.error-update" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         return ;
       }
-      UIPopupWindow uiPopup = uiEdit.getChild(UIPopupWindow.class) ;
+      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
       uiPopup.setShow(false) ;
 
       Preference preferences = uiExplorer.getPreference();
@@ -152,7 +153,7 @@ public class UITagForm extends UIForm {
         UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
       }      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiEdit) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent()) ;
     }
     
     private boolean existTag(String tagName, String repo, String workspace, int scope, 
@@ -160,7 +161,7 @@ public class UITagForm extends UIForm {
     	NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class) ;
     	NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);
     	String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);
-    	List<Node> tagList = (scope == UITagExplorer.PUBLIC) ?	
+    	List<Node> tagList = (scope == NewFolksonomyService.PUBLIC) ?	
     												newFolksonomyService.getAllPublicTags(publicTagNodePath, repo, workspace) :
     												newFolksonomyService.getAllPrivateTags(userName, repo, workspace);
 			for (Node tag : tagList)
@@ -173,11 +174,10 @@ public class UITagForm extends UIForm {
 
   static public class CancelActionListener extends EventListener<UITagForm> {
     public void execute(Event<UITagForm> event) throws Exception {
-      UITagForm uiForm = event.getSource() ;
-      UIEditingTagsForm uiEdit = uiForm.getAncestorOfType(UIEditingTagsForm.class) ;
-      UIPopupWindow uiPopup = uiEdit.getChild(UIPopupWindow.class) ;
+      UITagForm uiForm = event.getSource();
+      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
       uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiEdit);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
     }
   }
   

@@ -293,7 +293,10 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    */
   public List<Node> getTags(Node node) throws Exception {
     NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class);
-    return folksonomyService.getLinkedTagsOfDocument(node,getRepositoryName(), getWorkspaceName());
+    return folksonomyService.
+    	getLinkedTagsOfDocumentByScope(NewFolksonomyService.PRIVATE, 
+    																 getStrValue(Utils.PRIVATE, node), 
+    																 node,getRepositoryName(), getWorkspaceName());
   }
 
   /**
@@ -368,5 +371,19 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
   }
+  
+  private String getStrValue(String scope, Node node) throws Exception {
+  	StringBuilder ret = new StringBuilder();
+  	if (Utils.PRIVATE.equals(scope))
+  		ret.append(node.getSession().getUserID());
+  	else if (Utils.GROUP.equals(scope)) {
+  		for (String group : Utils.getGroups())
+  			ret.append(group).append(';');
+  		ret.deleteCharAt(ret.length() - 1);
+  	}
+  	
+  	return ret.toString();
+  }
+  
   
 }

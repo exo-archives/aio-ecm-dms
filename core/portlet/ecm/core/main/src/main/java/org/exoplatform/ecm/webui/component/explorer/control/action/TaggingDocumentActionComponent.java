@@ -26,6 +26,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFi
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsDocumentFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingFormContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -58,7 +59,7 @@ public class TaggingDocumentActionComponent extends UIComponent {
     public void processEvent(Event<TaggingDocumentActionComponent> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(UITaggingForm.class, 600);
+      UIPopupContainer.activate(UITaggingFormContainer.class, 600);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }

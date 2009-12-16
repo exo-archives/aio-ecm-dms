@@ -53,7 +53,6 @@ import org.exoplatform.webui.event.EventListener;
     lifecycle = UIContainerLifecycle.class,
     template = "system:/groovy/portal/webui/container/UIContainer.gtmpl",
     events = {
-      @EventConfig(listeners = UIEditingTagsForm.AddTagActionListener.class),
       @EventConfig(listeners = UIEditingTagsForm.EditTagActionListener.class),
       @EventConfig(listeners = UIEditingTagsForm.RemoveTagActionListener.class, confirm = "UIEditingTagsForm.msg.confirm-remove")
     }
@@ -66,7 +65,6 @@ public class UIEditingTagsForm extends UIContainer implements UIPopupComponent {
 	public void activate() throws Exception {
 		addChild(UIEditingTagList.class, null, null);
 		getChild(UIEditingTagList.class).updateGrid();
-		addChild(UIAddTag.class, null, null);
 	}
 
 	public void deActivate() throws Exception {
@@ -102,7 +100,7 @@ public class UIEditingTagsForm extends UIContainer implements UIPopupComponent {
     
 		String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);			
     
-    List<Node> tagList = (scope == UITagExplorer.PUBLIC) ?
+    List<Node> tagList = (scope == NewFolksonomyService.PUBLIC) ?
     				newFolksonomyService.getAllPublicTags(publicTagNodePath, repository, workspace) :
     				newFolksonomyService.getAllPrivateTags(userName, repository, workspace);
     
@@ -162,11 +160,11 @@ public class UIEditingTagsForm extends UIContainer implements UIPopupComponent {
 			String workspace = manageableRepo.getConfiguration().getDefaultWorkspaceName();
 
 			String tagPath = "";
-			if (UITagExplorer.PUBLIC == scope) {
+			if (NewFolksonomyService.PUBLIC == scope) {
 				tagPath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH) + '/'
 						+ tagName;
 				newFolksonomyService.removeTag(tagPath, repository, workspace);
-			} else if (UITagExplorer.PRIVATE == scope) {
+			} else if (NewFolksonomyService.PRIVATE == scope) {
 				Node userFolksonomyNode = getUserFolksonomyFolder(userID, uiForm);
 				tagPath = userFolksonomyNode.getNode(tagName).getPath();
 				newFolksonomyService.removeTag(tagPath, repository, workspace);
@@ -183,15 +181,4 @@ public class UIEditingTagsForm extends UIContainer implements UIPopupComponent {
     }
   }
   
-  static public class AddTagActionListener extends EventListener<UIEditingTagsForm> {
-  	public void execute(Event<UIEditingTagsForm> event) throws Exception {
-  		UIEditingTagsForm uiEdit = event.getSource() ;
-      String selectedName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-//      Node selectedTagStyle = uiManager.getSelectedTagStyle(selectedName) ;
-      uiEdit.initTaggingFormPopup(null) ;
-
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiEdit) ;
-  	}
-  }
-	
 }

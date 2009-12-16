@@ -4,7 +4,22 @@
   
 	<component>
 	  <key>org.exoplatform.services.cms.folksonomy.NewFolksonomyService</key>  
-	  <type>org.exoplatform.services.cms.folksonomy.impl.NewFolksonomyServiceImpl</type>      
+	  <type>org.exoplatform.services.cms.folksonomy.impl.NewFolksonomyServiceImpl</type>
+     <init-params>
+       <value-param>
+         <name>repository</name>
+         <value>repository</value>
+       </value-param>
+       <value-param>
+         <name>workspace</name>
+         <value>collaboration</value>
+       </value-param>
+       <value-param>
+         <name>path</name>
+         <value>/SiteTags</value>
+       </value-param>
+     </init-params>          
+	  
 	</component>
 	
 	<external-component-plugins>
@@ -79,7 +94,28 @@
 		    	</object-param>
 		    </init-params>	  
 		  </component-plugin> 
-
 	</external-component-plugins>
+
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.folksonomy.NewFolksonomyService</target-component>     
+      <component-plugin>
+        <name>predefinedTagPermissionPlugin</name>
+        <set-method>addTagPermissionPlugin</set-method>
+        <type>org.exoplatform.services.cms.folksonomy.impl.TagPermissionPlugin</type>
+        <init-params>
+          <object-param>
+            <name>TagPermission.configuration</name>
+            <description>configuration predefined permission for tag to inject in jcr</description>
+            <object type="org.exoplatform.services.cms.folksonomy.impl.TagPermissionConfig">
+              <field  name="tagPermissionList">
+                <collection type="java.util.ArrayList">                 
+			            <value><string>*:/platform/administrators</string></value>
+                </collection>
+              </field>
+            </object>
+          </object-param>  
+        </init-params>                  
+      </component-plugin>
+  </external-component-plugins>
 	
 </configuration>

@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.folksonomy;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.jcr.Node;
 
@@ -48,9 +49,9 @@ public interface NewFolksonomyService {
   final static public String EXO_TAGSTYLE = "exo:tagStyle".intern();
   
   final static public int PUBLIC = 0;
-  final static public int GROUP = 1;
+  final static public int GROUP = 3;
   final static public int SITE = 2;
-  final static public int PRIVATE = 3;
+  final static public int PRIVATE = 1;
   
 	
   /**
@@ -99,7 +100,7 @@ public interface NewFolksonomyService {
    * @param workspace     Workspace name
    * @throws Exception
    */  
-  public void addSiteTag(String siteName, String treePath, String[] tagsName, Node node, 
+  public void addSiteTag(String siteName, String[] tagsName, Node node, 
       String repository, String workspace) throws Exception ;
   /**
    * Get all private tags
@@ -154,7 +155,7 @@ public interface NewFolksonomyService {
    * @return  List<Node>
    * @throws Exception
    */
-  public List<Node> getAllSiteTags(String siteName, String treePath, String repository, 
+  public List<Node> getAllSiteTags(String siteName, String repository, 
       String workspace) throws Exception ;
   /**
    * Get all document which storing in tag
@@ -277,5 +278,40 @@ public interface NewFolksonomyService {
    */
   public List<Node> getLinkedTagsOfDocumentByScope(int scope, String value, Node documentNode, String repository, 
   		String workspace) throws Exception;
+  
+  /**
+   * Remove all tags linked to children of given node
+   * @param node
+   * @param repository
+   * @param workspace
+   * @throws Exception
+   */
+  public void removeTagsOfNodeRecursively(Node node, String repository, String workspace,
+  		String username, String groups) throws Exception;
+  
+  /**
+   * Add given users or groups to tagPermissionList 
+   * @param usersOrGroups
+   */
+  public void addTagPermission(String usersOrGroups);
+  
+  /**
+   * Remove given users or groups from tagPermissionList 
+   * @param usersOrGroups
+   */
+  public void removeTagPermission(String usersOrGroups);
+  
+  /**
+   * Returns tagPermissionList 
+   */
+  public List<String> getTagPermissionList();
+  
+  /**
+   * Can edit tag or not?
+   * @param scope					Scope
+   * @param memberships		Memberships
+   * @return true 				If it is possible
+   */
+  public boolean canEditTag(int scope, List<String> memberships);
   
 }

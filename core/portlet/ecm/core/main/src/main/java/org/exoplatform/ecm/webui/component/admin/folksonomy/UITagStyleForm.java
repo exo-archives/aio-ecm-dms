@@ -107,7 +107,7 @@ public class UITagStyleForm extends UIForm {
   static public class UpdateStyleActionListener extends EventListener<UITagStyleForm> {
     public void execute(Event<UITagStyleForm> event) throws Exception {
       UITagStyleForm uiForm = event.getSource() ;
-      UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class) ;
+      UITagManager uiManager = uiForm.getAncestorOfType(UITagManager.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       
       String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
@@ -151,7 +151,7 @@ public class UITagStyleForm extends UIForm {
   static public class CancelActionListener extends EventListener<UITagStyleForm> {
     public void execute(Event<UITagStyleForm> event) throws Exception {
       UITagStyleForm uiForm = event.getSource() ;
-      UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class) ;
+      UITagManager uiManager = uiForm.getAncestorOfType(UITagManager.class) ;
       UIPopupWindow uiPopup = uiManager.getChild(UIPopupWindow.class) ;
       uiPopup.setShow(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

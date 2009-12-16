@@ -1881,7 +1881,7 @@
   #             org.exoplatform.ecm.webui.component.admin.folksonomy									 #
   ######################################################################################
   -->
-  <UIFolksonomyManager>
+  <UITagManager>
     <header>
       <name>Style name</name>
       <documentRange>Document range</documentRange>
@@ -1893,7 +1893,7 @@
         <EditStyle>Edit</EditStyle>
       </title>
     </action>
-  </UIFolksonomyManager>
+  </UITagManager>
   <UITagStyleForm>
     <label>
       <styleName>Style name</styleName>
@@ -2258,7 +2258,7 @@
     <title>add/edit skin</title>
   </SkinForm>
 
-	 <UIFolksonomyManager>
+	 <UITagManager>
 	   <action>
 	     <title>
 	       <RemoveStyle>Remove</RemoveStyle>
@@ -2268,7 +2268,7 @@
 	   <msg>
 	     <confirm-delete>Are you sure want to delete this tag style?</confirm-delete>
 	   </msg>
-	 </UIFolksonomyManager>
+	 </UITagManager>
 
 <UITaxonomyTreeContainer>
 		<action>
@@ -2303,6 +2303,55 @@
 			<Previous>Previous</Previous>
 		</action>
 	</UITaxonomyTreeWorkingArea>
-	
-	</bundle>
+
+  <UITabPane>
+    <title>
+      <UITagManager>Tag manager</UITagManager>
+      <UITagPermissionManager>Tag permission manager</UITagPermissionManager>
+    </title>
+  </UITabPane>
+  
+  <UITagPermissionInfo>
+    <header>
+      <usersOrGroups>Users or groups</usersOrGroups>
+      <action>Action</action>
+    </header>
+    <action>
+      <title>
+        <Delete>Delete</Delete>
+      </title>
+    </action>
+   
+  </UITagPermissionInfo>
+  <UITagPermissionForm>
+    <title>Add a permission</title>
+    <action>
+      <Save>Save</Save>
+    </action>
+    <label>
+      <userOrGroup>Users or groups</userOrGroup>
+    </label>
+  </UITagPermissionForm>
+  
+  <UIAnyPermission>
+    <label>
+      <any>Any</any>
+    </label>
+  </UIAnyPermission>
+  
+  <UIGroupMemberSelector>
+    <label>
+      <selectGroup>Select group</selectGroup>
+      <selectMembership>Select membership</selectMembership>
+    </label>
+  </UIGroupMemberSelector>
+  
+  <UIFolksonomyManager>
+    <action>
+      <title>
+        <AddStyle>Add style</AddStyle>
+      </title>
+    </action>
+  </UIFolksonomyManager>  
+</bundle>
 

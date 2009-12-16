@@ -43,9 +43,8 @@ public class UIFolksonomyManagerComponent extends UIAbstractManagerComponent {
       UIECMAdminPortlet portlet = event.getSource().getAncestorOfType(UIECMAdminPortlet.class);
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
       uiWorkingArea.setChild(UIFolksonomyManager.class) ;
-      UIFolksonomyManager uiFolkSonomyManager = uiWorkingArea.getChild(UIFolksonomyManager.class) ;
-      UITagStyleList uiTagStyleList = uiFolkSonomyManager.getChild(UITagStyleList.class) ;
-      uiTagStyleList.updateGrid() ;
+      UIFolksonomyManager uiFolksonomyManager = uiWorkingArea.getChild(UIFolksonomyManager.class);
+			uiFolksonomyManager.update();      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }
   }  

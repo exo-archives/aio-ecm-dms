@@ -3056,4 +3056,22 @@
     </title>
   </TagPopup>
   
+  <UITagStyleForm>
+    <msg>
+      <error-update>Lỗi trong quá trình cập nhật!</error-update>
+    </msg>
+  </UITagStyleForm>
+  
+  <UIPopupMenu>
+    <msg>
+      <editTagAccessDenied>Lỗi truy cập!</editTagAccessDenied>
+    </msg>
+  </UIPopupMenu>
+  
+  <UIPopupWindow>
+    <title>
+      <UITaggingFormContainer>Quản lý nhãn</UITaggingFormContainer>
+    </title>
+  </UIPopupWindow>
+  
 </bundle>
