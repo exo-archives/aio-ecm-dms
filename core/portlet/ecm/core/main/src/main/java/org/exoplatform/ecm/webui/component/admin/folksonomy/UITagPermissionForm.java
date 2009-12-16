@@ -30,6 +30,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -75,6 +76,7 @@ public class UITagPermissionForm extends UIForm implements UISelectable {
 			NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class);   		
 			newFolksonomyService.addTagPermission(userOrGroup);
 			event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
+			uiForm.getChild(UITagPermissionInputSet.class).getChild(UIFormStringInput.class).setValue("");
     }
   }
   
@@ -83,6 +85,7 @@ public class UITagPermissionForm extends UIForm implements UISelectable {
       UITagPermissionForm uiForm = event.getSource();
       UIGroupMemberSelector uiGroupMemberSelector = uiForm.createUIComponent(UIGroupMemberSelector.class, null, null);
       uiGroupMemberSelector.setSourceComponent(uiForm, new String[] { UITagPermissionInputSet.FIELD_USERORGROUP });
+      uiGroupMemberSelector.setShowAnyPermission(false);
       uiForm.getAncestorOfType(UITagPermissionManager.class).initPopupPermission(uiGroupMemberSelector);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
