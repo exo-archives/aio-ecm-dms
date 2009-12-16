@@ -26,6 +26,7 @@ import javax.jcr.query.Query;
 
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -103,11 +104,10 @@ public class UIQueriesForm extends UIForm implements UISelectable {
   public String[] getActions() { return ACTIONS ; }
 
   public void doSelect(String selectField, Object value) {
-    getUIStringInput(selectField).setValue(value.toString()) ;
-    UIQueriesManager uiManager = getAncestorOfType(UIQueriesManager.class) ;
-    UIPopupWindow uiPopup = uiManager.getChildById("PermissionPopup") ;
-    uiPopup.setRendered(false) ;
-    uiPopup.setShow(false) ;
+    getUIStringInput(selectField).setValue(value.toString());
+    UIQueriesManager uiManager = getAncestorOfType(UIQueriesManager.class);
+    UIPopupWindow uiPopup = uiManager.getChildById("PermissionPopup");    
+    uiManager.removeChildById("PermissionPopup");
   }
   
   public void setIsAddNew(boolean isAddNew) { isAddNew_ = isAddNew ; }
