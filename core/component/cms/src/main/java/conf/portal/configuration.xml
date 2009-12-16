@@ -230,17 +230,6 @@
   </component>
   
   <component>
-    <key>org.exoplatform.services.cms.lock.LockService</key>  
-    <type>org.exoplatform.services.cms.lock.impl.LockServiceImpl</type>
-    <init-params>
-		    <value-param>
-		      <name>group</name>
-		      <value>*:/platform/administrators</value>
-		    </value-param>            
-	  	</init-params>
-  </component>
-
-  <component>
     <key>org.exoplatform.services.cms.timeline.TimelineService</key>  
     <type>org.exoplatform.services.cms.timeline.impl.TimelineServiceImpl</type>
     <init-params>
@@ -250,6 +239,33 @@
       </value-param>
     </init-params>
   </component>
+  
+  <component>
+    <key>org.exoplatform.services.cms.lock.LockService</key>  
+    <type>org.exoplatform.services.cms.lock.impl.LockServiceImpl</type>    
+  </component>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.lock.LockService</target-component>     
+      <component-plugin>
+        <name>predefinedLockGroupsOrUsersPlugin</name>
+        <set-method>addLockGroupsOrUsersPlugin</set-method>
+        <type>org.exoplatform.services.cms.lock.impl.LockGroupsOrUsersPlugin</type>
+        <init-params>
+          <object-param>
+            <name>LockGroupsOrUsers.configuration</name>
+            <description>configuration predefined groups or users for lock administrator</description>
+            <object type="org.exoplatform.services.cms.lock.impl.LockGroupsOrUsersConfig">
+              <field  name="settingLockList">
+                <collection type="java.util.ArrayList">                 
+			            			<value><string>*:/platform/administrators</string></value>
+                </collection>
+              </field>
+            </object>
+          </object-param>  
+        </init-params>                  
+      </component-plugin>
+  </external-component-plugins>
     
   <external-component-plugins>
 	  <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>      

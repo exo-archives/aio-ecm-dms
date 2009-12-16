@@ -80,7 +80,7 @@ public class UILockHolderList extends UIComponentDecorator {
       UILockHolderContainer uiLockHolderContainer = uiLockHolderList.getAncestorOfType(UILockHolderContainer.class);
       String settingLock = event.getRequestContext().getRequestParameter(OBJECTID);
       LockService lockService = uiLockHolderContainer.getApplicationComponent(LockService.class);
-      if (!settingLock.equals("*:/platform/administrators")) {
+      if (!lockService.getPreSettingLockList().contains(settingLock)) {
         lockService.removeGroupsOrUsersForLock(settingLock);
       } else {
         Object[] args = {settingLock};

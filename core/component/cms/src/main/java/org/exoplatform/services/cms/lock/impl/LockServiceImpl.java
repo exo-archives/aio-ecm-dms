@@ -19,8 +19,11 @@ package org.exoplatform.services.cms.lock.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.lock.LockService;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -33,7 +36,9 @@ import org.picocontainer.Startable;
 public class LockServiceImpl implements LockService, Startable {
   
   private List<String> settingLockList = new ArrayList<String>();
-  private String group_;
+  private List<String> preSettingLockList = new ArrayList<String>();
+  private List<LockGroupsOrUsersPlugin> lockGroupsOrUsersPlugin_ = new ArrayList<LockGroupsOrUsersPlugin>();
+  private static final Log LOG = ExoLogger.getLogger(LockService.class);
   
   /**
    * Constructor method
@@ -41,17 +46,23 @@ public class LockServiceImpl implements LockService, Startable {
    * @throws Exception
    */
   public LockServiceImpl(InitParams params) throws Exception {
-    group_ = params.getValueParam("group").getValue();    
+    //group_ = params.getValueParam("group").getValue();    
   }
   
-  public String getGroup(){
-    return group_;
+  /**
+   * Add new users or groups into lockGroupsOrUsersPlugin_
+   * @param usersOrGroups
+   */
+  public void addLockGroupsOrUsersPlugin(ComponentPlugin plugin) {      
+    if (plugin instanceof LockGroupsOrUsersPlugin)
+      lockGroupsOrUsersPlugin_.add((LockGroupsOrUsersPlugin)plugin);
   }
   
-  public List<String> getAllGroupsOrUsersForLock() throws Exception {    
-    if (settingLockList.size() == 0) settingLockList.add(group_);
-    if (!settingLockList.contains(group_)) settingLockList.add(group_);
-    
+  public List<String> getPreSettingLockList(){
+    return preSettingLockList;
+  }
+  
+  public List<String> getAllGroupsOrUsersForLock() throws Exception {
     return settingLockList;
   }
   
@@ -66,8 +77,20 @@ public class LockServiceImpl implements LockService, Startable {
   /**
    * {@inheritDoc}
    */
-  public void start() {
-    settingLockList.clear();
+  public void start() {    
+    try {
+      settingLockList.clear();
+      for(LockGroupsOrUsersPlugin plugin : lockGroupsOrUsersPlugin_) {
+        try{
+          settingLockList.addAll(plugin.initGroupsOrUsers());
+          preSettingLockList.addAll(plugin.initGroupsOrUsers());
+        }catch(Exception e) {
+          LOG.error("can not init lock groups or users: ", e);
+        }
+      }
+    }catch (Exception e) {
+      LOG.error("===>>>>Exception when init LockService", e);      
+    }
   }
 
   /**

@@ -28,6 +28,8 @@ import java.util.List;
 
 public interface LockService {  
   
+  public List<String> getPreSettingLockList() throws Exception;
+  
   public List<String> getAllGroupsOrUsersForLock() throws Exception;
   
   public void addGroupsOrUsersForLock(String groupsOrUsers) throws Exception; 
