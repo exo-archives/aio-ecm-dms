@@ -37,6 +37,7 @@
   <modules>
     <module>core</module>
 		<module>ext</module>
+		<module>packaging</module>
   </modules>
 
   <build>
