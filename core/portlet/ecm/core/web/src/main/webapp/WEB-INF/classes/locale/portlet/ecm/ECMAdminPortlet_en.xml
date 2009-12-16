@@ -2321,7 +2321,9 @@
         <Delete>Delete</Delete>
       </title>
     </action>
-   
+    <msg>
+      <confirm-delete-permission>Are you sure want to delete?</confirm-delete-permission>
+    </msg>   
   </UITagPermissionInfo>
   <UITagPermissionForm>
     <title>Add a permission</title>

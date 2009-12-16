@@ -2324,6 +2324,9 @@
        <Delete>Xóa</Delete>
      </title>
    </action>
+    <msg>
+      <confirm-delete-permission>Bạn có chắc chắn muốn xóa?</confirm-delete-permission>
+    </msg>   
     
   </UITagPermissionInfo>
 
