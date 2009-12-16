@@ -406,7 +406,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     List<DriveData> groupDrives = new ArrayList<DriveData>();
     String groupPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_GROUPS_PATH);
     for(DriveData drive : getDriveByUserRoles(repository, userId, userRoles)) {
-      if(drive.getHomePath().startsWith(groupPath)) {
+      if(! drive.getHomePath().equals(groupPath) && drive.getHomePath().startsWith(groupPath)) {
         for(String group : groups) {
           if(drive.getHomePath().equals(groupPath + group)) {
             groupDrives.add(drive);
@@ -437,7 +437,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     String groupPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_GROUPS_PATH);
     for(DriveData drive : getDriveByUserRoles(repository, userId, userRoles)) {
       if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
-          || drive.getHomePath().equals(userPath)) {
+          || drive.getHomePath().equals(userPath) || drive.getHomePath().equals(groupPath) ) {
         generalDrives.add(drive);
       }
     }
