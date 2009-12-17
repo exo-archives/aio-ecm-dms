@@ -173,7 +173,7 @@ public class UITaggingForm extends UIForm {
       UITaggingForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-      String workspace = uiForm.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      String workspace = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepository().getConfiguration().getDefaultWorkspaceName();
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue();
       NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class);
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);

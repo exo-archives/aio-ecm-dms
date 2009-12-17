@@ -849,7 +849,9 @@ public class UIJCRExplorer extends UIContainer {
     SessionProvider sessionProvider = (ctx.getRemoteUser() == null) ?
     																	SessionProviderFactory.createAnonimProvider() :
     																	SessionProviderFactory.createSessionProvider();
-    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, getRepositoryName(), getCurrentWorkspace(), sessionProvider)) {
+    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, getRepositoryName(), 
+    																													getRepository().getConfiguration().getDefaultWorkspaceName(), 
+    																													sessionProvider)) {
       if(documentsType.contains(node.getPrimaryNodeType().getName()) &&
       	 PermissionUtil.canRead(node)) {
         documentsOnTag.add(node) ;
