@@ -3055,7 +3055,13 @@
       <UITagForm>Tag form</UITagForm>
     </title>
   </TagPopup>
-  
+		
+		<UIPopupMenu>
+  	<msg>
+  		<node-locked-editing>Node với đường dẫn {0} đang bị khóa bởi người dùng khác để chỉnh sửa!</node-locked-editing>	
+    </msg>
+  </UIPopupMenu>  
+		
   <UITagStyleForm>
     <msg>
       <error-update>Lỗi trong quá trình cập nhật!</error-update>

@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
@@ -32,6 +33,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
  */
 public class IsNotLockedFilter extends UIExtensionAbstractFilter {
 
+  private boolean checkGroup = false;
+  
   public IsNotLockedFilter() {
     this(null);
   }
@@ -39,12 +42,25 @@ public class IsNotLockedFilter extends UIExtensionAbstractFilter {
   public IsNotLockedFilter(String messageKey) {
     super(messageKey, UIExtensionFilterType.MANDATORY);
   }
+
+  public IsNotLockedFilter(boolean checkGroup) {
+    this(null);
+    this.checkGroup = checkGroup;
+  }
   
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
-    return !uiExplorer.nodeIsLocked(currentNode);
+    /*UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
+    return !uiExplorer.nodeIsLocked(currentNode);*/
+    if(!currentNode.isLocked()) return true;        
+    String lockToken = checkGroup ? LockUtil.getLockToken(currentNode): LockUtil.getLockTokenOfUser(currentNode);
+    if(lockToken != null) {
+      currentNode.getSession().addLockToken(LockUtil.getLockToken(currentNode));
+      return true;
+    }                
+    return false;
+    
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {

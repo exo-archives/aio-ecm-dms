@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -118,6 +119,23 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     uiDocumentForm.initFieldInput();
   }
 
-  public void deActivate() throws Exception {}
+  /**
+   * Remove lock if node is locked for editing
+   */
+  public void deActivate() throws Exception {
+    UIDocumentForm uiDocumentForm = getChild(UIDocumentForm.class);
+    if (uiDocumentForm != null) {
+      uiDocumentForm.releaseLock();
+    }
+  }
+
+  @Override
+  public void processRender(WebuiRequestContext context) throws Exception {
+    UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class);
+    if (uiPopup != null && !uiPopup.isShow()) {
+      deActivate();
+    }
+    super.processRender(context);
+  }
 
 }

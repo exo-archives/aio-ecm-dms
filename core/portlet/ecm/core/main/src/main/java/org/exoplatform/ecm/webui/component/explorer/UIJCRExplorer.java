@@ -461,9 +461,9 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean nodeIsLocked(Node node) throws Exception {
     if(!node.isLocked()) return false;        
-    String lockToken = LockUtil.getLockToken(node);
+    String lockToken = LockUtil.getLockTokenOfUser(node);
     if(lockToken != null) {
-      node.getSession().addLockToken(lockToken);
+      node.getSession().addLockToken(LockUtil.getLockToken(node));
       return false;
     }                
     return true;

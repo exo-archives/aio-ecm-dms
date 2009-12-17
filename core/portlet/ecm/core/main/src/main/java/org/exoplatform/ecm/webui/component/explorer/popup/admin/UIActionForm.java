@@ -79,6 +79,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   private boolean isEditInList_ = false;
   private String rootPath_ = null;
   
+  
   private static final String EXO_ACTIONS = "exo:actions".intern();
   
   public String getDriverName() {
@@ -184,39 +185,39 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      uiExplorer.addLockToken(currentNode);
-      if (!actionForm.isAddNew_) {
-        CmsService cmsService = actionForm.getApplicationComponent(CmsService.class);      
-        Node storedHomeNode = actionForm.getNode().getParent();
-        cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository);
-        
-        Node currentActionNode = storedHomeNode.getNode(sortedInputs.get("/node").getValue().toString());
-        Session session = currentActionNode.getSession();
-        session.move(currentActionNode.getPath(), storedHomeNode.getPath() + "/" + sortedInputs.get("/node/exo:name").getValue().toString());
-        session.save();
-        
-        if (!uiExplorer.getPreference().isJcrEnable()) currentNode.getSession().save();
-        if (actionForm.isEditInList_) {
-          UIActionManager uiManager = actionForm.getAncestorOfType(UIActionManager.class);
-          UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup");
-          uiPopup.setShow(false);
-          uiPopup.setRendered(false);
-          uiManager.setDefaultConfig();
-          actionForm.isEditInList_ = false;
-          //actionForm.isAddNew_ = true;
-          actionForm.setIsOnchange(false);
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
-          uiExplorer.setIsHidePopup(true);
-          uiExplorer.updateAjax(event);
-        } else {
-          uiExplorer.setIsHidePopup(false);
-          uiExplorer.updateAjax(event);
-        }
-        actionForm.setPath(storedHomeNode.getPath());
-        actionServiceContainer.removeAction(currentNode, currentActionNode.getName(), repository);
-        //return;
-      }
       try{
+        if (uiExplorer.nodeIsLocked(currentNode)) return;
+        if (!actionForm.isAddNew_) {
+          CmsService cmsService = actionForm.getApplicationComponent(CmsService.class);      
+          Node storedHomeNode = actionForm.getNode().getParent();
+          cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository);
+          
+          Node currentActionNode = storedHomeNode.getNode(sortedInputs.get("/node").getValue().toString());
+          Session session = currentActionNode.getSession();
+          session.move(currentActionNode.getPath(), storedHomeNode.getPath() + "/" + sortedInputs.get("/node/exo:name").getValue().toString());
+          session.save();
+          
+          if (!uiExplorer.getPreference().isJcrEnable()) currentNode.getSession().save();
+          if (actionForm.isEditInList_) {
+            UIActionManager uiManager = actionForm.getAncestorOfType(UIActionManager.class);
+            UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup");
+            uiPopup.setShow(false);
+            uiPopup.setRendered(false);
+            uiManager.setDefaultConfig();
+            actionForm.isEditInList_ = false;
+            //actionForm.isAddNew_ = true;
+            actionForm.setIsOnchange(false);
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
+            uiExplorer.setIsHidePopup(true);
+            uiExplorer.updateAjax(event);
+          } else {
+            uiExplorer.setIsHidePopup(false);
+            uiExplorer.updateAjax(event);
+          }
+          actionForm.setPath(storedHomeNode.getPath());
+          actionServiceContainer.removeAction(currentNode, currentActionNode.getName(), repository);
+          //return;
+        }
         JcrInputProperty rootProp = sortedInputs.get("/node");
         if(rootProp == null) {
           rootProp = new JcrInputProperty();
@@ -263,7 +264,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class);
         actionForm.reset();
-        actionForm.isEditInList_ = false;
       } catch(RepositoryException repo) {      
         String key = "UIActionForm.msg.repository-exception";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
@@ -282,7 +282,13 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }      
+      } finally {
+        if (actionForm.isEditInList_) {
+          actionForm.releaseLock();
+          actionForm.isEditInList_ = false;          
+        }
+      }
+      
     }
   }
   
@@ -365,6 +371,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
       } else {
         if(uiForm.isEditInList_) {
+          uiForm.releaseLock();
           uiManager.setRenderedChild(UIActionListContainer.class);
           uiManager.setDefaultConfig();
           UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class);

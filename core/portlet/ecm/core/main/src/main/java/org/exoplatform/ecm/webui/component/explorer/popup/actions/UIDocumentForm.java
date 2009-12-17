@@ -29,6 +29,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
@@ -115,6 +116,12 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   
   public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
     listTaxonomyName = listTaxonomyNameNew;
+  }
+  
+  public void releaseLock() throws Exception {
+    if (isEditing()) {
+      super.releaseLock();
+    }
   }
   
   public String getDMSWorkspace() throws Exception {
@@ -384,7 +391,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }      
+      } finally {
+         documentForm.releaseLock();
+      }
       event.getRequestContext().setAttribute("nodePath",newNode.getPath());
       uiExplorer.refreshExplorer();
       uiExplorer.updateAjax(event);      

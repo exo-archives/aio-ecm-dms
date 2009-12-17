@@ -130,6 +130,19 @@ public class LockUtil {
   }
   
   @SuppressWarnings("unchecked")
+  public static String getLockTokenOfUser(Node node) throws Exception {    
+    ExoCache lockcache = getLockCache();
+    String key = createLockKey(node);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
+    if ((lockedNodesInfo != null) && (lockedNodesInfo.get(key) != null)) { 
+      return lockedNodesInfo.get(key);
+    }
+    return null;
+  }
+  
+  @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
     ExoCache lockcache = getLockCache();
     String key = createLockKey(node);

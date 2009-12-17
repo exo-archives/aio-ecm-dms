@@ -31,6 +31,7 @@ import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.lock.LockException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -50,6 +51,7 @@ import org.exoplatform.ecm.webui.form.field.UIFormWYSIWYGField;
 import org.exoplatform.ecm.webui.form.field.UIMixinField;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -143,6 +145,40 @@ public class UIDialogForm extends UIForm {
   public boolean isEditing() { return !isAddNew;}
   public boolean isAddNew() { return isAddNew;}
   public void addNew(boolean b) { this.isAddNew = b; }  
+  
+  private boolean isKeepinglock = false;
+  
+  public boolean isKeepinglock() {
+    return isKeepinglock;
+  }
+
+  public void setIsKeepinglock(boolean isKeepinglock) {
+    this.isKeepinglock = isKeepinglock;
+  }
+
+  public void releaseLock() throws Exception {
+    if (isKeepinglock()) {
+      Node currentNode = getNode();
+      if (currentNode.isLocked()) {
+        try {
+          if(currentNode.holdsLock()) {
+            String lockToken = LockUtil.getLockTokenOfUser(currentNode);        
+            if(lockToken != null) {
+              currentNode.getSession().addLockToken(LockUtil.getLockToken(currentNode));
+            }
+            currentNode.unlock();   
+            currentNode.removeMixin(Utils.MIX_LOCKABLE);
+            currentNode.save();
+            //remove lock from Cache
+            LockUtil.removeLock(currentNode);
+          }
+        } catch(LockException le) {
+          LOG.error("Fails when unlock node that is editing", le);
+        }
+      }
+    }
+    setIsKeepinglock(false);
+  }
   
   public List<String> getListTaxonomy() {
     return listTaxonomy;

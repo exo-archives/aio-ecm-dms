@@ -16,10 +16,24 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import javax.jcr.Node;
+import java.util.List;
 
+import javax.jcr.Node;
+import javax.jcr.lock.Lock;
+
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.control.action.EditDocumentActionComponent;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.lock.LockService;
+import org.exoplatform.services.organization.MembershipType;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -49,7 +63,53 @@ public class UIActionListContainer extends UIContainer {
     uiActionForm.setIsUpdateSelect(false) ;
 //    uiActionForm.setNode(actionNode) ;
     uiActionForm.setNodePath(actionNode.getPath()) ;
+    actionNode.refresh(true);
+    // Check document is lock for editing
+    uiActionForm.setIsKeepinglock(false);
+    if (!actionNode.isLocked()) {
+      synchronized (EditDocumentActionComponent.class) {
+        actionNode.refresh(true);
+        if (!actionNode.isLocked()) {
+          if(actionNode.canAddMixin(Utils.MIX_LOCKABLE)){
+            actionNode.addMixin(Utils.MIX_LOCKABLE);
+            actionNode.save();
+          }
+          Lock lock = actionNode.lock(false, false);
+          LockUtil.keepLock(lock);
+          LockService lockService = uiExplorer.getApplicationComponent(LockService.class);
+          List<String> settingLockList = lockService.getAllGroupsOrUsersForLock();
+          for (String settingLock : settingLockList) {
+            LockUtil.keepLock(lock, settingLock);
+            if (!settingLock.startsWith("*"))
+              continue;
+            String lockTokenString = settingLock;
+            ExoContainer container = ExoContainerContext.getCurrentContainer();
+            OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);
+            List<MembershipType> memberships = (List<MembershipType>) service.getMembershipTypeHandler().findMembershipTypes();
+            for (MembershipType membership : memberships) {
+              lockTokenString = settingLock.replace("*", membership.getName());
+              LockUtil.keepLock(lock, lockTokenString);
+            }
+          }      
+          actionNode.save();
+          uiActionForm.setIsKeepinglock(true);
+        }
+      }
+    }
+    // Update data avoid concurrent modification by other session
+    actionNode.refresh(true);      
+    // Check again after node is locking by current user or another
+    if (LockUtil.getLockTokenOfUser(actionNode) == null) {
+      Object[] arg = { actionNode.getPath() };
+      UIApplication uiApp = getAncestorOfType(UIApplication.class);
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-editing", arg,
+          ApplicationMessage.WARNING));
+      ((WebuiRequestContext)(WebuiRequestContext.getCurrentInstance())).addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    
     uiActionForm.setIsEditInList(true) ;
+    uiActionForm.setIsKeepinglock(true);
     uiPopup.setWindowSize(650, 450);
     uiPopup.setUIComponent(uiActionForm) ;
     uiPopup.setRendered(true);

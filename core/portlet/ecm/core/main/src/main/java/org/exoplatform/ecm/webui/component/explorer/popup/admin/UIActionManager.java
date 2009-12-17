@@ -16,13 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import org.exoplatform.webui.core.UIPageIterator;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupWindow;
 
 /**
  * Created by The eXo Platform SARL
@@ -46,7 +46,23 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
     uiActionList.updateGrid(getAncestorOfType(UIJCRExplorer.class).getCurrentNode(), uiActionList.getChild(UIPageIterator.class).getCurrentPage());
   }
   
+  /**
+   * Remove lock if node is locked for editing
+   */
   public void deActivate() throws Exception {
+    UIActionForm uiForm = findFirstComponentOfType(UIActionForm.class);
+    if (uiForm != null) {
+      uiForm.releaseLock();
+    }
+  }
+
+  @Override
+  public void processRender(WebuiRequestContext context) throws Exception {
+    UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class);
+    if (uiPopup != null && !uiPopup.isShow()) {
+      deActivate();
+    }
+    super.processRender(context);
   }
   
   public void setDefaultConfig() throws Exception {
@@ -57,10 +73,4 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
     uiActionContainer.setRenderedChildrenOfTypes(renderClasses) ;
   }
   
-  static public class CancelActionListener extends EventListener<UIActionManager> {
-    public void execute(Event<UIActionManager> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction() ;
-    }
-  }
 }

@@ -3050,7 +3050,13 @@
     </msg>
   </UITagStyleForm>
   
-  <UIPopupMenu>
+		<UIPopupMenu>
+  	<msg>
+  		<node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing>	
+    </msg>
+  </UIPopupMenu> 
+		
+		<UIPopupMenu>
     <msg>
       <editTagAccessDenied>Access denied!</editTagAccessDenied>
     </msg>

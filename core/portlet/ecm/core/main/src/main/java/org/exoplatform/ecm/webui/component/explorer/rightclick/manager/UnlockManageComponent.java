@@ -71,7 +71,7 @@ public class UnlockManageComponent extends UIAbstractManagerComponent {
   																						new CanSetPropertyFilter(), 
   																						new IsNotSameNameSiblingFilter(), 
   																						new IsHoldsLockFilter(), 
-  																						new IsNotLockedFilter(), 
+  																						new IsNotLockedFilter(true), 
   																						new IsCheckedOutFilter(),
   																						new IsNotTrashHomeNodeFilter() });
   

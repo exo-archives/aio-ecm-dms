@@ -3005,7 +3005,12 @@
       <UITagForm>Tag form</UITagForm>
     </title>
   </TagPopup>
-  
+		
+		<UIPopupMenu>
+  	<msg>
+  		<node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing>	
+    </msg>
+  </UIPopupMenu>
   <UITagStyleForm>
     <msg>
       <error-update>Error when updating</error-update>

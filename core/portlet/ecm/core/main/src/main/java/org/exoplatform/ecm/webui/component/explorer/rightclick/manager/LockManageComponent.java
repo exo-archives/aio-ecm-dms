@@ -138,18 +138,16 @@ public class LockManageComponent extends UIAbstractManagerComponent {
       LockService lockService = uiExplorer.getApplicationComponent(LockService.class);
       List<String> settingLockList = lockService.getAllGroupsOrUsersForLock();
       for (String settingLock : settingLockList) {
-        if (!settingLock.startsWith("*")) 
-          LockUtil.keepLock(lock, settingLock);
-        else {
-          LockUtil.keepLock(lock, settingLock);
-          String lockTokenString = settingLock;
-          ExoContainer container = ExoContainerContext.getCurrentContainer();
-          OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);    
-          List<MembershipType> memberships = (List<MembershipType>) service.getMembershipTypeHandler().findMembershipTypes();
-          for (MembershipType membership : memberships) {
-            lockTokenString = settingLock.replace("*", membership.getName());
-            LockUtil.keepLock(lock, lockTokenString);
-          }
+        LockUtil.keepLock(lock, settingLock);
+        if (!settingLock.startsWith("*"))
+          continue;
+        String lockTokenString = settingLock;
+        ExoContainer container = ExoContainerContext.getCurrentContainer();
+        OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);
+        List<MembershipType> memberships = (List<MembershipType>) service.getMembershipTypeHandler().findMembershipTypes();
+        for (MembershipType membership : memberships) {
+          lockTokenString = settingLock.replace("*", membership.getName());
+          LockUtil.keepLock(lock, lockTokenString);
         }
       }      
       session.save();

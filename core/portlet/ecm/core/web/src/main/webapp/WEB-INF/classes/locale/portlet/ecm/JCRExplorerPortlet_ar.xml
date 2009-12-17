@@ -2714,4 +2714,9 @@
       <AddCategory>Add category</AddCategory>
     </tooltip>
 	 </UIActionBar>
+  <UIPopupMenu>
+  	<msg>
+  		<node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing>	
+    </msg>
+  </UIPopupMenu>
 </bundle>

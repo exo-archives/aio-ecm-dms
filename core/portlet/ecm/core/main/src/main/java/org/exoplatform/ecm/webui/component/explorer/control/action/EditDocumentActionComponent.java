@@ -26,7 +26,10 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.ValueFormatException;
+import javax.jcr.lock.Lock;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -43,7 +46,11 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.lock.LockService;
+import org.exoplatform.services.organization.MembershipType;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -105,25 +112,68 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
       }else {
         nodeType = selectedNode.getPrimaryNodeType().getName();
       }        
-        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-        UIDocumentFormController uiController = 
-          event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
-        UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class);
-        uiDocumentForm.setRepositoryName(uiExplorer.getRepositoryName());
-        uiDocumentForm.setContentType(nodeType);
-        if(uiDocumentForm.getTemplate() == null) {
-          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
-        uiDocumentForm.setNodePath(selectedNode.getPath());
-        uiDocumentForm.addNew(false);
-        uiDocumentForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
-        uiDocumentForm.setStoredPath(selectedNode.getPath());
-        uiController.setRenderedChild(UIDocumentForm.class);
-        UIPopupContainer.activate(uiController, 800, 600);          
-        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIDocumentFormController uiController = 
+        event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
+      UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class);
+      uiDocumentForm.setRepositoryName(uiExplorer.getRepositoryName());
+      uiDocumentForm.setContentType(nodeType);
+      if(uiDocumentForm.getTemplate() == null) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      }
+      selectedNode.refresh(true);
+      // Check document is lock for editing
+      uiDocumentForm.setIsKeepinglock(false);
+      if (!selectedNode.isLocked()) {
+        synchronized (EditDocumentActionComponent.class) {
+          selectedNode.refresh(true);
+          if (!selectedNode.isLocked()) {
+            if(selectedNode.canAddMixin(Utils.MIX_LOCKABLE)){
+              selectedNode.addMixin(Utils.MIX_LOCKABLE);
+              selectedNode.save();
+            }
+            Lock lock = selectedNode.lock(false, false);
+            LockUtil.keepLock(lock);
+            LockService lockService = uiExplorer.getApplicationComponent(LockService.class);
+            List<String> settingLockList = lockService.getAllGroupsOrUsersForLock();
+            for (String settingLock : settingLockList) {
+              LockUtil.keepLock(lock, settingLock);
+              if (!settingLock.startsWith("*"))
+                continue;
+              String lockTokenString = settingLock;
+              ExoContainer container = ExoContainerContext.getCurrentContainer();
+              OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);
+              List<MembershipType> memberships = (List<MembershipType>) service.getMembershipTypeHandler().findMembershipTypes();
+              for (MembershipType membership : memberships) {
+                lockTokenString = settingLock.replace("*", membership.getName());
+                LockUtil.keepLock(lock, lockTokenString);
+              }
+            }      
+            selectedNode.save();
+            uiDocumentForm.setIsKeepinglock(true);
+          }
+        }
+      }
+      // Update data avoid concurrent modification by other session
+      selectedNode.refresh(true);      
+      // Check again after node is locking by current user or another
+      if (LockUtil.getLockTokenOfUser(selectedNode) == null) {
+        Object[] arg = { selectedNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-editing", arg,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      uiDocumentForm.setNodePath(selectedNode.getPath());
+      uiDocumentForm.addNew(false);
+      uiDocumentForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
+      uiDocumentForm.setStoredPath(selectedNode.getPath());
+      uiController.setRenderedChild(UIDocumentForm.class);
+      UIPopupContainer.activate(uiController, 800, 600);          
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+      return;
     }
   }
   
