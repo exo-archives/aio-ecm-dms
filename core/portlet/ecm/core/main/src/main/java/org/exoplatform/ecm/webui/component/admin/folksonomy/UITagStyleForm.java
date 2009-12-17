@@ -19,8 +19,10 @@ package org.exoplatform.ecm.webui.component.admin.folksonomy;
 import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -56,7 +58,7 @@ public class UITagStyleForm extends UIForm {
   final static public String STYLE_NAME = "styleName" ;
   final static public String DOCUMENT_RANGE = "documentRange" ;
   final static public String STYLE_HTML = "styleHTML" ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.UITagStyleForm");
   private Node selectedTagStyle_ ;
 
   public UITagStyleForm() throws Exception {
@@ -84,7 +86,7 @@ public class UITagStyleForm extends UIForm {
     try {
       vars = StringUtils.split(range,"..") ;
     } catch(Exception e) {  
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
       return false ;        
     }                  
     if(vars == null || vars.length!= 2) return false ;

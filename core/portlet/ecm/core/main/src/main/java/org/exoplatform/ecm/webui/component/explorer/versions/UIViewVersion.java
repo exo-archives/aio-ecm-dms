@@ -102,8 +102,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       originalNode_ = node ;
       String nodeType = node.getPrimaryNodeType().getName();
       if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName, getRepository()) ;
-    } catch (Exception e) {
-      // e.printStackTrace();
+    } catch (Exception e) {      
     }
     return null ;
   }
