@@ -74,8 +74,11 @@ public class UITagPermissionInfo extends UIContainer {
 			tagPermissions.add(new TagPermissionData(usersOrGroups));
 		}
 		UIGrid uiGrid = findFirstComponentOfType(UIGrid.class);
+		int currentPage = uiGrid.getUIPageIterator().getCurrentPage();
 		ObjectPageList objPageList = new ObjectPageList(tagPermissions, 10);
 		uiGrid.getUIPageIterator().setPageList(objPageList);
+		int total = uiGrid.getUIPageIterator().getAvailablePage();
+		uiGrid.getUIPageIterator().setCurrentPage(currentPage < total ? currentPage : total);
 	}
 	
 	public static class DeleteActionListener extends EventListener<UITagPermissionInfo> {

@@ -2313,7 +2313,7 @@
   
   <UITagPermissionInfo>
     <header>
-      <usersOrGroups>Users or groups</usersOrGroups>
+      <usersOrGroups>Memberships</usersOrGroups>
       <action>Action</action>
     </header>
     <action>
@@ -2331,7 +2331,8 @@
       <Save>Save</Save>
     </action>
     <label>
-      <userOrGroup>Users or groups</userOrGroup>
+      <userOrGroup>Memberships: </userOrGroup>
+      <permission></permission>
     </label>
     <msg>
       <userOrGroup-alreadyExists>Membership already exists. Please choose another one!</userOrGroup-alreadyExists>

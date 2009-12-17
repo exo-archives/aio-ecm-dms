@@ -2316,7 +2316,7 @@
   
   <UITagPermissionInfo>
     <header>
-      <usersOrGroups>Người dùng hoặc nhóm</usersOrGroups>
+      <usersOrGroups>Kiểu thành viên</usersOrGroups>
       <action>Thao tác</action>
     </header>
     <action>
@@ -2336,7 +2336,8 @@
       <Save>Lưu</Save>
     </action>
     <label>
-      <userOrGroup>Người dùng hoặc nhóm</userOrGroup>
+      <userOrGroup>Kiểu thành viên: </userOrGroup>
+      <permission></permission>
     </label>
     <msg>
       <userOrGroup-alreadyExists>Kiểu thành viên đã tồn tại, xin chọn lại kiểu khác!</userOrGroup-alreadyExists>
