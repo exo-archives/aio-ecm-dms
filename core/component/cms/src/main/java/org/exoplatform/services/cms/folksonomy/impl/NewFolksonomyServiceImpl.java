@@ -673,9 +673,14 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
 	public boolean canEditTag(int scope, List<String> memberships) {
 		if (scope == PUBLIC) {
 			if (tagPermissionList != null)
-				for (String membership : memberships)
+				for (String membership : memberships) {
 					if (tagPermissionList.contains(membership))
 						return true;
+					if (membership.contains(":")) {
+						if (tagPermissionList.contains("*" + membership.substring(membership.indexOf(":"))))
+							return true;
+					}
+				}
 			return false;
 		}
 		return true;
