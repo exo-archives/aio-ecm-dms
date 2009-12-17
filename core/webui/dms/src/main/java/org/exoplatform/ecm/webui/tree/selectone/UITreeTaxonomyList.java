@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UITreeTaxonomyBuilder;
@@ -36,6 +37,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -69,7 +71,7 @@ public class UITreeTaxonomyList extends UIForm {
   static private String ROOT_NODE_INFO = "rootNodeInfo";
   static private String ROOT_NODE_PATH = "rootNodePath";
   public static String TAXONOMY_TREE = "taxonomyTree";
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.UITreeTaxonomyList");
   private boolean isShowSystem_ = true;
 
   public UITreeTaxonomyList() throws Exception {    
@@ -151,7 +153,7 @@ public class UITreeTaxonomyList extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         } catch(Exception e) {
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
           return;
         }
       } else {

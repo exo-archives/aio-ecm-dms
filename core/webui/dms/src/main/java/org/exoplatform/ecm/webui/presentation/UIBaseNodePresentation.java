@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -41,6 +42,7 @@ import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 
@@ -58,7 +60,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
 
   /** The language_. */
   private String language_ ;
-
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIBaseNodePresentation");
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getNode()
    */
@@ -123,7 +125,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
       Class object = loader.loadClass(className);
       service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error("Unexpected error", ex);
     } 
     return service;
   }

@@ -20,11 +20,13 @@ import java.util.Comparator;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL
@@ -39,7 +41,7 @@ public class StringComparator implements Comparator<Node> {
   public static final String DESCENDING_ORDER = "Descending" ;
   private String order_;
   private String type_ ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.StringComparator");
   public StringComparator(String order, String type) {
     this.order_ = order ;
     this.type_ = type;
@@ -109,7 +111,7 @@ public class StringComparator implements Comparator<Node> {
         returnCompare = compare(auditing1, auditing2);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }    
     return returnCompare;
   }

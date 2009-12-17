@@ -24,6 +24,9 @@ import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
+
 /**
  * Created by The eXo Platform SARL Author : Hoang Van Hung hunghvit@gmail.com
  * Mar 8, 2009
@@ -37,7 +40,7 @@ public class PropertyValueComparator implements Comparator<Node> {
   private String             propertyName;
 
   private String             orderType;
-
+  private static final Log LOG  = ExoLogger.getLogger("webui.PropertyValueComparator");
   public PropertyValueComparator(String propertyName, String orderType) {
     this.propertyName = propertyName;
     this.orderType = orderType;
@@ -70,7 +73,7 @@ public class PropertyValueComparator implements Comparator<Node> {
         throw new RepositoryException("Unknown type " + requireType);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return 0;
     }
   }
@@ -82,7 +85,7 @@ public class PropertyValueComparator implements Comparator<Node> {
       }
       return -1;
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return -1;
     }
   }
@@ -96,7 +99,7 @@ public class PropertyValueComparator implements Comparator<Node> {
       }
       return propertyValue1.compareToIgnoreCase(propertyValue0);
     } catch(RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return 0;
     }
   }
@@ -110,7 +113,7 @@ public class PropertyValueComparator implements Comparator<Node> {
         }
         return date1.compareTo(date0) ;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }    
     return 0;
   }

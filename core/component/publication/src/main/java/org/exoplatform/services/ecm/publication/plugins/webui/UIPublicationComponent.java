@@ -22,9 +22,11 @@ import java.util.Locale;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
@@ -43,7 +45,7 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 public class UIPublicationComponent extends UIComponent {
 
   private Node node_;
-
+  private static final Log LOG  = ExoLogger.getLogger("component.UIPublicationComponent");
   public UIPublicationComponent() throws Exception {
   }
 
@@ -63,7 +65,7 @@ public class UIPublicationComponent extends UIComponent {
     try {
       return node_.getName();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getNodeName";
     }
   }
@@ -73,7 +75,7 @@ public class UIPublicationComponent extends UIComponent {
       PublicationService service = getApplicationComponent(PublicationService.class) ;
       return service.getNodeLifecycleName(node_);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getLifeCycleName";
     }
   }
@@ -83,7 +85,7 @@ public class UIPublicationComponent extends UIComponent {
       PublicationService service = getApplicationComponent(PublicationService.class) ;
       return service.getCurrentState(node_);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getStateName";
     }
   }
@@ -98,7 +100,7 @@ public class UIPublicationComponent extends UIComponent {
       String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
       return dS.getDownloadLink(id);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getStateImage";
     }
   }

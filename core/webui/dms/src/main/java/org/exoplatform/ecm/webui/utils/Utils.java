@@ -38,6 +38,7 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.download.DownloadService;
@@ -51,6 +52,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
@@ -197,7 +199,7 @@ public class Utils {
   final static public String GROUP   = "Group";
   final static public String SITE 	 = "Site";
   final static public String PRIVATE = "Private";
-  
+  private static final Log LOG  = ExoLogger.getLogger("webui.Utils");
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {
@@ -280,7 +282,7 @@ public class Utils {
         }            
       }
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return nodeTypes;
   }
@@ -393,7 +395,6 @@ public class Utils {
         return node.getProperty(EXO_OWNER).getString();
       }
     } catch (Exception e) {
-      //e.printStackTrace();
     } 
     return null;
   }

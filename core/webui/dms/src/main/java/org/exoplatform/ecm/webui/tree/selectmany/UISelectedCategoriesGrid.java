@@ -21,8 +21,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -53,6 +55,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
   public final static String[] BEAN_FIELD = {"categoryName"} ;
   public final static String[] BEAN_ACTIONS = {"Delete"} ;
   public final static String[] ACTIONS = {"SaveCategories", "Cancel"} ;
+  private static final Log LOG  = ExoLogger.getLogger("admin.UISelectedCategoriesGrid");
 
   private List<String> selectedCategories = new ArrayList<String>();
   private boolean isDeleteAllCategory;
@@ -171,7 +174,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       try {
         ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategoriesName);
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
       }

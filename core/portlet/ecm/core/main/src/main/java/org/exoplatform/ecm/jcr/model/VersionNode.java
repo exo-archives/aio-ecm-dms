@@ -28,12 +28,15 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.Version;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
+
 public class VersionNode {
 
   private boolean isExpanded = true ;
   private Version version_ ;
   private List<VersionNode> children_ = new ArrayList<VersionNode>() ;
-
+  private static final Log LOG  = ExoLogger.getLogger("model.VersionNode");
   public VersionNode(Version version, Session session) {
     version_ = version;
     try {      
@@ -47,7 +50,7 @@ public class VersionNode {
         children_.add(new VersionNode(version1, session));
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 

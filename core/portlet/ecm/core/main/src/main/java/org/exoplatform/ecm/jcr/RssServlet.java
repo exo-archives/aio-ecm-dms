@@ -31,10 +31,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 /**
  * Created by The eXo Platform SARL        .
  * @author: Nguyen Quang Hung
@@ -42,6 +44,7 @@ import org.exoplatform.services.jcr.RepositoryService;
  */
 @SuppressWarnings({"serial","unused"})
 public class RssServlet extends HttpServlet {
+  private static final Log LOG  = ExoLogger.getLogger("RssServlet");
   public void init(ServletConfig config) throws ServletException {}  
 	public void service(HttpServletRequest request, HttpServletResponse response) 
           throws ServletException, IOException {
@@ -101,7 +104,7 @@ public class RssServlet extends HttpServlet {
         }
       } else throw new Exception("Invalid node type, expected nt:file or exo:rss-enable type");
     }catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
       throw new ServletException(e) ;
     }finally{
       if(session != null) {

@@ -33,11 +33,13 @@ import javax.portlet.ResourceURL;
 
 import org.apache.commons.chain.Catalog;
 import org.apache.commons.chain.Command;
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.frameworks.jcr.cli.CliAppContext;
 import org.exoplatform.services.command.impl.CommandService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 
 
 /**
@@ -50,6 +52,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 public class JcrConsole extends GenericPortlet {
 
   //private CliAppContext context;
+  private static final Log LOG  = ExoLogger.getLogger("JcrConsole");
   
   protected void doView(RenderRequest renderRequest,
       RenderResponse renderResponse) throws PortletException, IOException {
@@ -113,7 +116,7 @@ public class JcrConsole extends GenericPortlet {
         }
       }
     } catch (Exception exception) {
-      exception.printStackTrace();
+      LOG.error("Unexpected error", exception);
     }
   }
 
@@ -167,7 +170,7 @@ public class JcrConsole extends GenericPortlet {
         printWriter.print("Command not found \n");
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       System.out.println("[ERROR] [jcr-concole] Can't execute command - " + e.getMessage());
       printWriter.print("Invalid command\n");
     }
