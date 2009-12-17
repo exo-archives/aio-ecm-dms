@@ -43,12 +43,12 @@ function getModule(params) {
   
   module.gadgets = 
     new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.gadgets", "war", module.version).
-    addDependency(new Project("org.exoplatform.ws", "exo.ws.frameworks.json", "jar", "1.3.4"));  
+    addDependency(ws.frameworks.json);  
     module.gadgets.deployName = "eXoDMSGadgets";
   
   module.application = {}
   module.application.rest = new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.component.publication","jar", module.version).
-  	addDependency(new Project("org.exoplatform.ws", "exo.ws.frameworks.json", "jar", "1.3.4"));
+  	addDependency(ws.frameworks.json);
   
   module.web = {}
   module.web.eXoDMSResources = 
