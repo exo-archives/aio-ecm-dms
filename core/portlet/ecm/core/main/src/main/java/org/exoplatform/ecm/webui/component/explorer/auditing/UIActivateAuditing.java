@@ -2,6 +2,8 @@ package org.exoplatform.ecm.webui.component.explorer.auditing;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -30,7 +32,7 @@ import org.exoplatform.webui.event.EventListener;
   )
 
 public class UIActivateAuditing extends UIContainer implements UIPopupComponent {
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIActivateAuditing");
   public UIActivateAuditing() throws Exception {}
   
   public void activate() throws Exception {}
@@ -56,7 +58,7 @@ public class UIActivateAuditing extends UIContainer implements UIPopupComponent 
         currentNode.getSession().refresh(true) ;      
         uiExplorer.updateAjax(event) ;  
       }catch(Exception e){
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         UIActivateAuditing uiActivateAuditing = event.getSource();
         UIJCRExplorer uiExplorer = uiActivateAuditing.getAncestorOfType(UIJCRExplorer.class) ;
         WebuiRequestContext contx = event.getRequestContext();     

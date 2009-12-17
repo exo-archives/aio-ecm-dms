@@ -29,6 +29,7 @@ import java.util.Map;
 
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
@@ -57,6 +58,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.ext.registry.RegistryService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -101,7 +103,7 @@ import org.jdom.output.XMLOutputter;
 )
 public class UIRepositoryForm extends UIForm implements UIPopupComponent {  
   private ConfigurationManager configurationManager;
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIRepositoryForm");
   final  static public String ST_ADD = "AddRepoPopup";
   final  static public String ST_EDIT = "EditRepoPopup";
   final static public String POPUP_WORKSPACE = "PopupWorkspace";
@@ -278,7 +280,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           }
         }
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         return;
       }
       initServices(repositoryEntry.getName());        
@@ -307,7 +309,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(ManageViewService.class).init(repository);
       getApplicationComponent(ActionServiceContainer.class).init(repository);
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
   

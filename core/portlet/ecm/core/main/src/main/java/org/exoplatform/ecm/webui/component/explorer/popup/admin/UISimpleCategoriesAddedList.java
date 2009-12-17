@@ -21,11 +21,13 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -51,7 +53,7 @@ import org.exoplatform.webui.exception.MessageException;
 )
 public class UISimpleCategoriesAddedList extends UIContainer implements UISelectable {
   private UIPageIterator uiPageIterator_;
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UISimpleCategoriesAddedList");
   public UISimpleCategoriesAddedList() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "SimpleCategoriesAddedList");
   }
@@ -88,7 +90,7 @@ public class UISimpleCategoriesAddedList extends UIContainer implements UISelect
       updateGrid(1);
       setRenderSibbling(UISimpleCategoriesAddedList.class);
     } catch(Exception e) {
-    e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
     }
   }
   

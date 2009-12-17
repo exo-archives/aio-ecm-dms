@@ -28,6 +28,7 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
@@ -42,6 +43,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -56,7 +58,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
   template = "app:/groovy/webui/component/explorer/UIJCRExplorerContainer.gtmpl"
 )
 public class UIJcrExplorerContainer extends UIContainer {
-  
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJcrExplorerContainer");
   public UIJcrExplorerContainer() throws Exception {
     addChild(UIJCRExplorer.class, null, null);
   }
@@ -167,7 +169,7 @@ public class UIJcrExplorerContainer extends UIContainer {
       uiAddressBar.setSelectedViewName(viewList.get(0));
       uiActionbar.setTabOptions(viewList.get(0));
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 } 

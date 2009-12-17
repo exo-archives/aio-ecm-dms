@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -31,6 +32,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -56,7 +58,7 @@ import org.jdom.output.XMLOutputter;
     @EventConfig(listeners = UIRepositoryControl.AddRepositoryActionListener.class) })
 public class UIRepositoryControl extends UIContainer {
   private ConfigurationManager configurationManager;
-
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIRepositoryControl");
   public UIRepositoryControl() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext
         .getCurrentInstance();
@@ -89,7 +91,7 @@ public class UIRepositoryControl extends UIContainer {
     try {
       removeElement(options);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return options;
   }

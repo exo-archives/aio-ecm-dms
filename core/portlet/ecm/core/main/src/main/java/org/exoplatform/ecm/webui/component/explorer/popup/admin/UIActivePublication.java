@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
@@ -29,6 +30,7 @@ import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -69,7 +71,7 @@ import org.exoplatform.webui.form.UIForm;
 
   /** The Constant LIFECYCLE_SELECTED. */
   public final static String LIFECYCLE_SELECTED = "LifecycleSelected";
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIActivePublication");
   /**
    * Instantiates a new uI active publication.
    * 
@@ -134,7 +136,7 @@ import org.exoplatform.webui.form.UIForm;
       requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.unknow-error",
           new String[] { e.getMessage() }, ApplicationMessage.ERROR));
       requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

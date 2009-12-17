@@ -28,6 +28,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -38,6 +39,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -84,7 +86,7 @@ public class UIQueryConfig extends UIForm {
   final private static String SHARED_QUERY = "Shared Query".intern();
   final private static String EMPTYQUERY = "Query not found".intern();  
   protected boolean isEdit_ = false;
-
+  private static final Log LOG  = ExoLogger.getLogger("browsecontent.UIQueryConfig");
   public UIQueryConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>();
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null));
@@ -371,7 +373,7 @@ public class UIQueryConfig extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
           return;
         }catch(Exception e){
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
         }
       }
       try{

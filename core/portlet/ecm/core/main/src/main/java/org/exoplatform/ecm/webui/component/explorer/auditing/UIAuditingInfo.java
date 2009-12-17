@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditRecord;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -33,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
   private UIPageIterator uiPageIterator_ ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIAuditingInfo");
   public UIAuditingInfo() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "AuditingInfoIterator");
   }
@@ -76,7 +78,7 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
         }    
       }
     } catch(Exception e){
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return listRec;
   }

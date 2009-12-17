@@ -858,7 +858,7 @@ public class UIBrowseContainer extends UIContainer {
         }
       }
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return new ArrayList<Node>();
     }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
@@ -1869,7 +1869,7 @@ public class UIBrowseContainer extends UIContainer {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
           return;
         } catch (Exception e) {
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
         } 
       }
       TemplateService templateService = uiContainer.getApplicationComponent(TemplateService.class);

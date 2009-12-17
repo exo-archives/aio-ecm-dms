@@ -471,7 +471,6 @@ public class UISingleUploadForm extends UIForm implements UIPopupComponent, UISe
         uiExplorer.updateAjax(event) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } catch(ConstraintViolationException con) {
-        con.printStackTrace();
         Object[] args = {name, } ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
                                                            args, ApplicationMessage.WARNING)) ;

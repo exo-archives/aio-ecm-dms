@@ -27,6 +27,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
@@ -58,6 +59,7 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -105,7 +107,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public static final String POPUP_COMPONENT = "PopupComponent";
 
   public static final String EXO_ACTIONS   = "exo:actions".intern();
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIActionForm");
   public UIActionForm() throws Exception {
     setActions(new String[] {  "PreviousViewPermission", "Save", "NextViewTree"});
   }
@@ -184,7 +186,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       try {
         dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName);
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
     }
     return dialogPath;    
@@ -413,7 +415,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         } catch (Exception e) {
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
           uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null));
           return;
         }

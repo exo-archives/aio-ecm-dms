@@ -25,6 +25,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.ReferentialIntegrityException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
@@ -34,6 +35,7 @@ import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -68,7 +70,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
   private UIPageIterator   uiPageIterator_;
 
   private List<Node>       taxonomyNodes_;
-
+  private static final Log LOG  = ExoLogger.getLogger("admin.UITaxonomyTreeWorkingArea");
   private ClipboardCommand clipboard_ = new ClipboardCommand();
 
   private String           selectedPath_;
@@ -174,7 +176,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         Object[] arg = { path };
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.path-error", arg,
             ApplicationMessage.WARNING));

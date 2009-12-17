@@ -30,10 +30,12 @@ import javax.jcr.query.QueryResult;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -67,7 +69,7 @@ public class UICBSearchForm extends UIForm {
   final static public String FIELD_OPTION = "option";
   final static public String FIELD_CB_REF = "referencesDoc";
   final static public String FIELD_CB_CHILD = "childDoc";
-
+  private static final Log LOG  = ExoLogger.getLogger("browsecontent.UICBSearchForm");
   public static final String CATEGORY_SEARCH = "Category";
   public static final String DOCUMENT_SEARCH = "Content";  
   public static final String CATEGORY_QUERY = "select * from $0 where jcr:path like '%/$1[%]' " ;
@@ -166,7 +168,7 @@ public class UICBSearchForm extends UIForm {
     try{
       queryManager = session.getWorkspace().getQueryManager();
     }catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return resultList;
     }
     ResultData result;
@@ -211,7 +213,7 @@ public class UICBSearchForm extends UIForm {
           }
         }
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         return resultList;
       }
     }

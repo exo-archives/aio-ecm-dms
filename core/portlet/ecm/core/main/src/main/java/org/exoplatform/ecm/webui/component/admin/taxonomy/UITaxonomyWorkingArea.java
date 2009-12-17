@@ -21,16 +21,16 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.ReferentialIntegrityException;
-import javax.jcr.RepositoryException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionManager;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -64,7 +64,7 @@ public class UITaxonomyWorkingArea extends UIContainer {
   private List<Node> taxonomyNodes_ ;
   private ClipboardCommand clipboard_ = new ClipboardCommand() ;
   private String selectedPath_ ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("admin.UITaxonomyWorkingArea");
   public UITaxonomyWorkingArea() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
   }
@@ -138,7 +138,7 @@ public class UITaxonomyWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       } catch(Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
         Object[] arg = { path } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.path-error", arg, 
                                                 ApplicationMessage.WARNING)) ;

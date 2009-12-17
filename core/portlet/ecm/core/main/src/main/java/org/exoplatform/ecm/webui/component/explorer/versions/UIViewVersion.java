@@ -28,6 +28,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -48,6 +49,7 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -84,7 +86,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
   private Node node_ ;
   protected Node originalNode_ ;
   private String language_ ;
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIViewVersion");
   final private static String COMMENT_COMPONENT = "Comment".intern();
   
   public UIViewVersion() throws Exception {    
@@ -211,7 +213,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       String value = node.getProperty(property).getString() ;
       if(value.length() > 0) return true ;
     } catch (Exception e) {
-      e.printStackTrace() ;      
+      LOG.error("Unexpected error", e);      
     }
     return false ;
   }
@@ -235,7 +237,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       Class object = loader.loadClass(className);
       service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error("Unexpected error", ex);
     } 
     return service;
   }

@@ -1765,7 +1765,7 @@
       <in-versioning>Cần checkout node hiện thời trước khi thêm node mới.</in-versioning>
       <not-support>Không thể tải mẫu của '{0}'.</not-support>
       <value-invalid>'{0}' là giá trị cần thiết.</value-invalid>
-      <repository-exception>Không thể lưu tài liệu này. Tên của tài liệu không chứa chỉ mục trên phần tử cuối cùng cửa nó.</repository-exception>
+      <repository-exception>Không thể lưu tài liệu này. Một vài ràng buộc dữ liệu sai trong quá trình thực hiện hành động này.</repository-exception>
       <!--DMS 2.4.x; ECM-3543-->
       <repository-exception-permission>Bạn không có đủ quyền để thêm mới document cho node này</repository-exception-permission>
       <not-allowed-same-name-sibling>Không thể lưu tài liệu này.Node này không được phép trùng tên.</not-allowed-same-name-sibling>

@@ -24,6 +24,7 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.permission.PermissionBean;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
@@ -43,6 +44,7 @@ import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -83,7 +85,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
   public static final String POPUP_SELECT    = "TaxoTreeSelectUserOrGroupPopup";
 
   public static final String SELECT_GROUP_ID = "TaxoTreeSelectUserOrGroup";
-
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIPermissionTreeForm");
   private Node               currentNode;
 
   private PermissionBean     permBean;
@@ -191,7 +193,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
       lockForm(value.toString().equals(getExoOwner(node)));
       getUIStringInput(selectField).setValue(value.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 

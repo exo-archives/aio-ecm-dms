@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
@@ -46,6 +47,7 @@ import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.util.StringNumberParser;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -119,7 +121,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   final static public String KEY_TREE_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage" ;
   final static public String KEY_QUERYHANDLER = "org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex" ;
   final static public String KEY_LOCKMANAGER = "org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister";
-
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIWorkspaceWizard");
   public UIWorkspaceWizard() throws Exception {
     super("UIWorkspaceWizard");
     chidrenMap_.put(1, FIELD_STEP1) ;
@@ -758,7 +760,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           systemSession.logout();
         }
         catch (Exception e) {
-          e.printStackTrace() ;
+          LOG.error("Unexpected error", e);
           return;
         }
       }

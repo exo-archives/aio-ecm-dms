@@ -30,6 +30,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -37,6 +38,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -77,7 +79,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelectable {
   final static public String WORKSPACE_NAME = "workspaceName" ;
   final static public String REPOSITORY_NAME = "repositoryName" ;
   final static public String DEFAULT_REPOSITORY = "repository" ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("fastcontentcreator.UIEditModeConfiguration");
   public UIEditModeConfiguration() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox uiRepositoryList = new UIFormSelectBox(REPOSITORY_NAME, REPOSITORY_NAME, options) ; 
@@ -219,11 +221,11 @@ public class UIEditModeConfiguration extends UIForm implements UISelectable {
           uiSelectTemplate.setValue(defaultValue);
         } 
       } catch(Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
       }
       session.logout();
     } catch(Exception ex) {
-      ex.printStackTrace() ;
+      LOG.error("Unexpected error", ex);
     }
   }
   
@@ -234,7 +236,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelectable {
     try {
       setTemplateOptions(value.toString(), repoName, wsName) ;
     } catch(Exception ex) {
-      ex.printStackTrace() ;
+      LOG.error("Unexpected error", ex);
     }
     UIFastContentCreatorPortlet uiDialog = getParent() ;
     UIPopupWindow uiPopup = uiDialog.getChild(UIPopupWindow.class) ;

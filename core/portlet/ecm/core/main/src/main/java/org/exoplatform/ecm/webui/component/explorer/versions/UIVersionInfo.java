@@ -21,11 +21,13 @@ import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.jcr.impl.storage.JCRInvalidItemStateException;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -63,7 +65,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   protected VersionNode rootVersion_ ;
   protected VersionNode curentVersion_;
   protected Node node_ ;
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIVersionInfo");
   public UIVersionInfo() throws Exception {
     addChild(UILabelForm.class, null, null).setRendered(false);   
     addChild(UIRemoveLabelForm.class, null, null).setRendered(false);
@@ -211,12 +213,12 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupContainer.class)) ;
       } catch (ReferentialIntegrityException rie) {
-        rie.printStackTrace() ;
+        LOG.error("Unexpected error", rie);
         app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return;
       } catch (Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
         app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return;

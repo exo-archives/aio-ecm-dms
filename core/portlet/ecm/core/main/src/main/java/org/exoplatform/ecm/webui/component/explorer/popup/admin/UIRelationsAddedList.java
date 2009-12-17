@@ -21,12 +21,14 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.relations.RelationsService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -52,7 +54,7 @@ import org.exoplatform.webui.exception.MessageException;
     }
 )
 public class UIRelationsAddedList extends UIContainer implements UISelectable {
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIRelationsAddedList");
   private static String[] RELATE_BEAN_FIELD = {"path"} ;
   private static String[] ACTION = {"Delete"} ;
 
@@ -94,7 +96,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
           uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()), 1);      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
     }
   }
 

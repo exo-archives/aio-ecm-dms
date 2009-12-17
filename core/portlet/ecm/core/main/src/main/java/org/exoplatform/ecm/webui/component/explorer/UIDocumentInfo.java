@@ -424,7 +424,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       Class clazz = loader.loadClass(className);
       service = getApplicationComponent(clazz);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error("Unexpected error", ex);
     } 
     return service;
   }

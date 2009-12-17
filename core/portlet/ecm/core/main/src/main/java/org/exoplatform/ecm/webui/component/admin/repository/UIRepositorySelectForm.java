@@ -22,9 +22,11 @@ import javax.jcr.AccessDeniedException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -51,7 +53,8 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 )
 
 public class UIRepositorySelectForm extends UIForm {
-  final public static String FIELD_SELECTREPO = "selectRepo" ; 
+  final public static String FIELD_SELECTREPO = "selectRepo" ;
+  private static final Log LOG  = ExoLogger.getLogger("admin.UIRepositorySelectForm");
   public UIRepositorySelectForm() {
     addChild(new UIFormSelectBox(FIELD_SELECTREPO, FIELD_SELECTREPO, null)) ;
   }
@@ -91,7 +94,6 @@ public class UIRepositorySelectForm extends UIForm {
       try {
         uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
       } catch (AccessDeniedException ade) {
-        ade.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-accessdenied", new Object[]{selectRepo}))  ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         portletPref.setValue(Utils.REPOSITORY, oldRepository) ;
@@ -100,7 +102,7 @@ public class UIRepositorySelectForm extends UIForm {
         uiForm.setSelectedValue(oldRepository) ;
         rservice.setCurrentRepositoryName(oldRepository) ;
       } catch (Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
         uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-editError", new Object[]{selectRepo}))  ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         portletPref.setValue(Utils.REPOSITORY, oldRepository) ;

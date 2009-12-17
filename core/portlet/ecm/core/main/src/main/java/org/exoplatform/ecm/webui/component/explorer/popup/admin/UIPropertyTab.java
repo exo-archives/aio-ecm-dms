@@ -32,8 +32,10 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -64,7 +66,7 @@ public class UIPropertyTab extends UIContainer {
   private static String[] PRO_BEAN_FIELD = {"icon", "name", "multiValue", "value", "action"} ;
   private final static String PRO_KEY_BINARYTYPE = "binary" ;
   private final static String PRO_KEY_CANNOTGET = "cannotget" ;
-  
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIPropertyTab");
   private List<String> propertiesName_ = new ArrayList<String>();
   
   public String[] getBeanFields() { return PRO_BEAN_FIELD ;}
@@ -206,7 +208,7 @@ public class UIPropertyTab extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         return;
       }
     }

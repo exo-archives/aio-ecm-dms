@@ -23,6 +23,7 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.selector.UIGroupMemberSelector;
@@ -34,6 +35,7 @@ import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -71,6 +73,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   final static public String POPUP_SELECT = "SelectUserOrGroup";
 
   private Node               currentNode;
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIPermissionForm");
   
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
@@ -143,7 +146,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       lockForm(value.toString().equals(getExoOwner(node)));
       getUIStringInput(selectField).setValue(value.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
   

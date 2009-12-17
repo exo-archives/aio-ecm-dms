@@ -23,12 +23,14 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -60,6 +62,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     }
 )
 public class UIMultiLanguageForm extends UIForm {
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIMultiLanguageForm");
   public UIMultiLanguageForm() throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
     addUIFormInput(new UIFormSelectBox(Utils.LANGUAGES, Utils.LANGUAGES, languages)) ;
@@ -132,7 +135,7 @@ public class UIMultiLanguageForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       }

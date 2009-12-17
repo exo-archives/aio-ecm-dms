@@ -25,8 +25,10 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -67,7 +69,7 @@ public class UISimpleSearch extends UIForm {
   final static public String FIRST_OPERATOR = "firstOperator";
   final static public String OR = "or".intern();
   final static public String AND = "and".intern();
-  
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UISimpleSearch");
   private List<String> constraints_ = new ArrayList<String>();
   private List<String> virtualConstraints_ = new ArrayList<String>();
   private List<String> categoryPathList = new ArrayList<String>();
@@ -244,7 +246,7 @@ public class UISimpleSearch extends UIForm {
         uiSearchResult.setQueryResults(queryResult);
         uiSearchResult.updateGrid(true);
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

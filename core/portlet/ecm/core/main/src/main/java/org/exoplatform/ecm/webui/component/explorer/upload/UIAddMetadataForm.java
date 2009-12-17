@@ -24,10 +24,12 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -57,7 +59,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     }
 )
 public class UIAddMetadataForm extends UIDialogForm {
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIAddMetadataForm");
   private String nodeType_ ;
   public UIAddMetadataForm() throws Exception {
     setActions(ACTIONS) ;
@@ -72,7 +74,7 @@ public class UIAddMetadataForm extends UIDialogForm {
     try {
       return metadataService.getMetadataPath(nodeType_, true, repositoryName) ;
     } catch (Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
     } 
     return null ;
   }

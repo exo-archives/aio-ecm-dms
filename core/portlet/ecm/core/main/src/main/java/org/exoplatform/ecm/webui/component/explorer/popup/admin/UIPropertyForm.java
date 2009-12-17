@@ -28,11 +28,13 @@ import javax.jcr.Value;
 import javax.jcr.ValueFactory;
 import javax.jcr.nodetype.NodeType;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -79,7 +81,7 @@ public class UIPropertyForm extends UIForm {
   final static public String FIELD_MULTIPLE = "multiple";
   final static private String FALSE = "false";
   final static private String TRUE = "true";
-
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIPropertyForm");
   private String repositoryName_;
   private String propertyName_;
   private boolean isAddNew_ = true;
@@ -438,7 +440,7 @@ public class UIPropertyForm extends UIForm {
         currentNode.save();
         currentNode.getSession().save();
       } catch(NullPointerException ne) {
-        ne.printStackTrace();
+        LOG.error("Unexpected error", ne);
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -449,7 +451,7 @@ public class UIPropertyForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
         JCRExceptionManager.process(uiApp, e);
         return;
       }
