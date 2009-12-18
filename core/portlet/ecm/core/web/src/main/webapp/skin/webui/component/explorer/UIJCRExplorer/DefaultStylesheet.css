@@ -167,6 +167,12 @@
 	* minh.js.exo
 	*/
 
+.UIJCRExplorerPortlet .RightContainer {  
+  margin-left: 246px;
+  width: 964px;
+  overflow: hidden;
+}
+	
 .UIJCRExplorerPortlet .UIDocumentWorkspace {  
   overflow: auto;
   height: 475px;
@@ -197,7 +203,61 @@
 	line-height: 19px; height: 19px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .LeftColumn {
+.UIJCRExplorerPortlet .UIListGrid .ColumnIcon {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnName {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnAuditing {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnVersion {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnOwner {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnModified {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 19px; 
+	overflow: hidden;
+  white-space: nowrap;
+  padding-left: 3px;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .ColumnCreated {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 19px; 
@@ -210,20 +270,58 @@
 	line-height: 19px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn {
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnIcon {
 	padding: 2px 0px 2px 3px; 
  	border-right: none; /* orientation=lt */
  	border-left: none; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIListGrid .LeftColumn .Icon16x16 {
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnName {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnAuditing {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnVersion {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnOwner {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnModified {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ColumnCreated {
+	padding: 2px 0px 2px 3px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+
+.UIJCRExplorerPortlet .UIListGrid .Icon16x16 {
 	float: none;
 	margin: auto;
 	width: 20px;
 	line-height: 16px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .LeftColumn .LinkSmall {
+.UIJCRExplorerPortlet .UIListGrid .LinkSmall {
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom; /* orientation=lt */
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom; /* orientation=rt */
   width: 20px;
