@@ -22,6 +22,9 @@ import javax.jcr.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -97,11 +100,18 @@ public class FCKUtils {
     return false ;
   }
   
+  public static String getPortalName() {
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    PortalContainerInfo containerInfo = 
+      (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class) ;      
+    return containerInfo.getContainerName() ; 
+  }
+  
   public static String createWebdavURL(final Node node) throws Exception {
     String repository = ((ManageableRepository) node.getSession().getRepository()).getConfiguration().getName();
     String workspace = node.getSession().getWorkspace().getName();
     String currentPath = node.getPath();
-    String url = "/portal/rest/jcr/" + repository + "/" + workspace + currentPath;
+    String url = "/" + getPortalName() + "/rest/jcr/" + repository + "/" + workspace + currentPath;
     return url;
   }
 }
