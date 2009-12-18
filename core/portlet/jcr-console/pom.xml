@@ -20,7 +20,7 @@
     <dependency>
       <groupId>org.exoplatform.portletcontainer</groupId> 
       <artifactId>exo.pc.component.plugins.pc</artifactId> 
-      <version>${org.exoplatform.pc.version}</version> 
+      <version>${org.exoplatform.portletcontainer.version}</version> 
       <scope>provided</scope> 
     </dependency>
   
