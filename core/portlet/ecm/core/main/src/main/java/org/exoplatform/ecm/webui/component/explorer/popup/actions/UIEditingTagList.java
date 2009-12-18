@@ -23,7 +23,6 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITagExplorer;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -47,7 +46,7 @@ public class UIEditingTagList extends UIGrid {
 		configure("name", BEAN_FIELD, ACTIONS);
 	}
 
-	private static String[] BEAN_FIELD = {"name", "relatedDocuments" };
+	private static String[] BEAN_FIELD = {"name"};
 	private static String[] ACTIONS = {"EditTag", "RemoveTag"};
 	
   final static public String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
@@ -68,7 +67,7 @@ public class UIEditingTagList extends UIGrid {
 											newFolksonomyService.getAllPublicTags(publicTagNodePath, repository, workspace);
 		List<TagData> tagDataList = new ArrayList<TagData>();		
 		for (Node tag : tags) {
-			tagDataList.add(new TagData(tag.getName(), (int)tag.getProperty(EXO_TOTAL).getLong()));
+			tagDataList.add(new TagData(tag.getName()));
 		}
 
     ObjectPageList objPageList = new ObjectPageList(tagDataList, 10) ;
@@ -78,15 +77,12 @@ public class UIEditingTagList extends UIGrid {
 	
 	static public class TagData {
 		private String tagName;
-		private int relatedDocuments;
 		
-		public TagData(String tagName, int relatedDocuments) {
+		public TagData(String tagName) {
 			this.tagName = tagName;
-			this.relatedDocuments = relatedDocuments;
 		}
 		
 		public String getName() { return tagName; }
-		public String getRelatedDocuments() { return relatedDocuments + ""; }
 	}
 
 

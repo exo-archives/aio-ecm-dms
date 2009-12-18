@@ -23,7 +23,6 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITagExplorer;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -57,7 +56,6 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
 public class UITagForm extends UIForm {
 
   final static public String TAG_NAME = "tagName" ;
-  final static public String RELATED_DOCUMENTS = "relatedDocuments" ;
   final static public String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
   
   private Node selectedTag_ ;
@@ -66,23 +64,18 @@ public class UITagForm extends UIForm {
   
   public UITagForm() throws Exception {
     addUIFormInput(new UIFormStringInput(TAG_NAME, TAG_NAME, null).addValidator(MandatoryValidator.class)) ;
-    addUIFormInput(new UIFormStringInput(RELATED_DOCUMENTS , RELATED_DOCUMENTS , null)) ;
   }
   
   public Node getTag() { return selectedTag_; }
   
   public void setTag(Node selectedTag) throws Exception { 
     selectedTag_ = selectedTag;
-    getUIStringInput(RELATED_DOCUMENTS).setEditable(false);
     if (selectedTag != null) {
     	oldTagPath_ = selectedTag_.getPath();
     	oldName_ = selectedTag_.getName();
 	    getUIStringInput(TAG_NAME).setValue(oldName_);
 //	    getUIStringInput(TAG_NAME).setEditable(false) ;
-	    long relatedDocuments = selectedTag_.getProperty(UIEditingTagList.EXO_TOTAL).getValue().getLong();    
-	    getUIStringInput(RELATED_DOCUMENTS).setValue(relatedDocuments + "") ;
-    } else 
-    	getUIStringInput(RELATED_DOCUMENTS).setRendered(false);    
+    } 
   }
   
   static public class UpdateTagActionListener extends EventListener<UITagForm> {

@@ -456,9 +456,24 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
 		map.put(GROUP, groups);
 		map.put(SITE, "");
 		for (int scope : scopes) {
-			List<Node> tags = getLinkedTagsOfDocumentByScope(scope, map.get(scope), node, repository, workspace);
-			for (Node tag : tags)
-				removeTagOfDocument(tag.getPath(), node, repository, workspace);
+			for (Node child : getAllNodes(node)) {
+				List<Node> tags = getLinkedTagsOfDocumentByScope(scope, map.get(scope), child, repository, workspace);
+					for (Node tag : tags)
+						removeTagOfDocument(tag.getPath(), child, repository, workspace);
+			}
+		}
+	}
+	
+	private List<Node> getAllNodes(Node node) throws Exception {
+		List<Node> ret = new ArrayList<Node>();
+		getAllNodes(node, ret);
+		return ret;
+	}
+	
+	private void getAllNodes(Node node, List<Node> list) throws Exception {
+		list.add(node);
+		for (NodeIterator iter = node.getNodes(); iter.hasNext();) {
+			getAllNodes(iter.nextNode(), list);
 		}
 	}
   
@@ -568,7 +583,6 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
   	}
   }
 
-  @Deprecated
 	public List<Node> getLinkedTagsOfDocument(Node documentNode,
 			String repository, String workspace) throws Exception {
 

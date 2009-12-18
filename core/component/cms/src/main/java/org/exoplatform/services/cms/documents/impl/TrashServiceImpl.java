@@ -26,7 +26,11 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.documents.TrashService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -37,11 +41,16 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public class TrashServiceImpl implements TrashService {
 
+  final static public String EXO_TOTAL = "exo:total".intern();	
+	
 	private RepositoryService repositoryService;
+	private LinkManager linkManager;
 
-	public TrashServiceImpl(RepositoryService repositoryService)
+	public TrashServiceImpl(RepositoryService repositoryService,
+			LinkManager linkManager)
 			throws Exception {
 		this.repositoryService = repositoryService;
+		this.linkManager = linkManager;
 	}
 
 	/**
@@ -71,8 +80,25 @@ public class TrashServiceImpl implements TrashService {
 				trashSession.getWorkspace().move(node.getPath(),
 						actualTrashPath);
 			} else {
+				//clone node in trash folder
 				trashSession.getWorkspace().clone(nodeWorkspaceName,
 						node.getPath(), actualTrashPath, true);
+				Node clonedNode = trashSession.getNodeByUUID(node.getUUID());
+				//remove link from tag to node
+				ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+				NewFolksonomyService newFolksonomyService = (NewFolksonomyService)
+						myContainer.getComponentInstanceOfType(NewFolksonomyService.class);
+				
+				String tagWorkspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+				List<Node> tags = newFolksonomyService.getLinkedTagsOfDocument(node, repository, tagWorkspace);
+				for (Node tag : tags) {
+					newFolksonomyService.removeTagOfDocument(tag.getPath(), node, repository, tagWorkspace);
+					linkManager.createLink(tag, clonedNode);
+					long total = tag.hasProperty(EXO_TOTAL) ?
+							tag.getProperty(EXO_TOTAL).getLong() : 0;
+					tag.setProperty(EXO_TOTAL, total + 1);
+					tag.getSession().save();					
+				}				
 				node.remove();
 			}
 			nodeSession.save();
@@ -107,8 +133,27 @@ public class TrashServiceImpl implements TrashService {
 		if (restoreWorkspace.equals(trashWorkspace)) {
 			trashNodeSession.getWorkspace().move(trashNodePath, restorePath);
 		} else {
+			//clone node
 			restoreSession.getWorkspace().clone(
 					trashWorkspace, trashNodePath, restorePath, true);
+			Node restoredNode = restoreSession.getNodeByUUID(trashNode.getUUID());
+
+			//remove link from tag to node in trash
+			ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+			NewFolksonomyService newFolksonomyService = (NewFolksonomyService)
+					myContainer.getComponentInstanceOfType(NewFolksonomyService.class);
+			
+			String tagWorkspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+			List<Node> tags = newFolksonomyService.getLinkedTagsOfDocument(trashNode, repository, tagWorkspace);
+			for (Node tag : tags) {
+				newFolksonomyService.removeTagOfDocument(tag.getPath(), trashNode, repository, tagWorkspace);
+				linkManager.createLink(tag, restoredNode);
+				long total = tag.hasProperty(EXO_TOTAL) ?
+						tag.getProperty(EXO_TOTAL).getLong() : 0;
+				tag.setProperty(EXO_TOTAL, total + 1);
+				tag.getSession().save();
+			}				
+
 			trashNodeSession.getItem(trashNodePath).remove();
 		}
 	

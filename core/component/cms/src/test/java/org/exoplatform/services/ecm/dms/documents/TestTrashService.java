@@ -3,8 +3,12 @@ package org.exoplatform.services.ecm.dms.documents;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.documents.impl.TrashServiceImpl;
+import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.impl.LinkManagerImpl;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -35,7 +39,9 @@ public class TestTrashService extends BaseDMSTestCase {
 
 		sessionProvider = sessionProviderService_.getSessionProvider(null);
 		
-		trashService = new TrashServiceImpl(repositoryService);
+		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+		LinkManager linkManager = (LinkManager)myContainer.getComponentInstanceOfType(LinkManager.class);
+		trashService = new TrashServiceImpl(repositoryService, linkManager);
 	}
 	
 	/**
