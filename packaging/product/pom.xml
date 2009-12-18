@@ -32,8 +32,8 @@
    <name>eXo DMS Packaging Product</name>
 
    <properties>
-        <exobuild.name>dms</exobuild.name>
-        <exobuild.type>product</exobuild.type>
+      <exobuild.name>dms</exobuild.name>
+      <exobuild.type>product</exobuild.type>
    </properties>
 
    <dependencies>
@@ -88,6 +88,12 @@
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.gifbackport</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.document</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.database</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
+			<dependency><groupId>org.exoplatform.portal</groupId><artifactId>exo.portal.gadgets-server</artifactId><version>${org.exoplatform.portal.version}</version><type>war</type></dependency>
+			<dependency><groupId>org.exoplatform.tool</groupId><artifactId>exo.tool.webunit</artifactId><version>1.0.0</version><type>jar</type></dependency>
+			<dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.organization.ldap</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
+			<dependency><groupId>org.exoplatform.portal</groupId><artifactId>exo.portal.eXoGadgets</artifactId><version>${org.exoplatform.portal.version}</version><type>war</type></dependency><!-- 2.5.7-SNAPSHOT-->
+			<dependency><groupId>org.exoplatform.portal</groupId><artifactId>exo.portal.web.eXoSkinMac</artifactId><version>${org.exoplatform.portal.version}</version><type>war</type></dependency><!-- 2.5.7-SNAPSHOT-->
+			<dependency><groupId>org.slf4j</groupId><artifactId>slf4j-jdk14</artifactId><version>1.5.6</version><type>jar</type></dependency><!-- 1.5.6-->
    </dependencies>
 
    <!-- Attach .js to the pom -->
