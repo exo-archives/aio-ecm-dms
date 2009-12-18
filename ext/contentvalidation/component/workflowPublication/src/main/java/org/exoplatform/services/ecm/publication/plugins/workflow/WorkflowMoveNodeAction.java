@@ -50,7 +50,6 @@ public class WorkflowMoveNodeAction {
         }
         if(destSession !=null) {
           destSession.logout();
-          //e.printStackTrace();
         }
       }
     }else {
@@ -69,7 +68,6 @@ public class WorkflowMoveNodeAction {
       } catch(Exception e){
         if(session !=null && session.isLive()) {
           session.logout(); 
-          //e.printStackTrace();
         }
       }
     }

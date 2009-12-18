@@ -103,7 +103,6 @@ public class ProcessUtil {
       requestNode.getSession().save();      
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }    
     provider.close();
   }
@@ -131,7 +130,6 @@ public class ProcessUtil {
       validatedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -159,7 +157,6 @@ public class ProcessUtil {
       disapprovedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }    
     provider.close();
   } 
@@ -190,7 +187,6 @@ public class ProcessUtil {
       publishedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -217,7 +213,6 @@ public class ProcessUtil {
       pendingNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -247,7 +242,6 @@ public class ProcessUtil {
       delegateNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -271,7 +265,6 @@ public class ProcessUtil {
       backupNode.getSession().save();      
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
    provider.close(); 
   }
@@ -296,7 +289,6 @@ public class ProcessUtil {
       trashNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   } 

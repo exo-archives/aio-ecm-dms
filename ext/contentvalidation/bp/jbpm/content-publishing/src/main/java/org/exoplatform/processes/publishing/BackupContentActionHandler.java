@@ -16,7 +16,9 @@
  */
 package org.exoplatform.processes.publishing;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.ActionHandler;
 import org.jbpm.graph.exe.ExecutionContext;
 
@@ -31,6 +33,7 @@ public class BackupContentActionHandler implements ActionHandler {
   private static final long serialVersionUID = 1L;
 
   private boolean executed = false;
+  private static final Log LOG  = ExoLogger.getLogger(BackupContentActionHandler.class);
 
   public void execute(ExecutionContext context) {    
     try {
@@ -39,7 +42,7 @@ public class BackupContentActionHandler implements ActionHandler {
       executed = true;
       backupContent(context);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     } finally {
       context.getSchedulerInstance().cancel("backupTimer", context.getToken());
       context.getToken().signal("backup-done");      

@@ -32,6 +32,7 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -52,6 +53,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -61,9 +63,9 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.workflow.webui.component.controller.UITaskManager;
 import org.exoplatform.webui.ext.UIExtension;
 import org.exoplatform.webui.ext.UIExtensionManager;
+import org.exoplatform.workflow.webui.component.controller.UITaskManager;
 
 /**
  * Created by The eXo Platform SARL
@@ -84,6 +86,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
   private Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
+  private static final Log LOG  = ExoLogger.getLogger(UIDocumentContent.class);
   public UIDocumentContent() throws Exception {}
   
   public void setNode(Node node)  { 
@@ -110,7 +113,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
       if(isNodeTypeSupported()) return getTemplatePath() ;
       return super.getTemplate() ;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return null ;
   }
@@ -121,7 +124,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
       String wsName = dmsConfiguration.getConfig(getRepository()).getSystemWorkspace();
       return new JCRResourceResolver(getRepository(), wsName, Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return super.getTemplateResourceResolver(context, template);
   }
@@ -231,7 +234,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
         }            
       }
     } catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
     }
     return nodeTypes ;
   }
@@ -358,7 +361,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
       Class object = loader.loadClass(className);
       service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error("Unexpected error", ex);
     } 
     return service;
   }

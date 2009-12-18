@@ -15,6 +15,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
@@ -28,8 +29,7 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.workflow.Process;
-import org.exoplatform.services.workflow.Task;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -85,6 +85,7 @@ public class UIWorkflowPublicationActionForm extends UIForm implements UISelecta
   private final String FIELD_DESTPATH_EDIT = "fieldDestPathEdit";
   private final String FIELD_BACKUPWORKSPACE_EDIT = "fieldBackupWorkspaceEdit";
   private final String FIELD_BACKUP_EDIT = "fieldBackupEdit";
+  private static final Log LOG  = ExoLogger.getLogger(UIWorkflowPublicationActionForm.class);
   
   public UIWorkflowPublicationActionForm() throws Exception {
     repositoryService = getApplicationComponent(RepositoryService.class);
@@ -140,7 +141,7 @@ public class UIWorkflowPublicationActionForm extends UIForm implements UISelecta
       String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
       return dS.getDownloadLink(id);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getStateImage";
     }
   }

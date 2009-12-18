@@ -16,6 +16,7 @@
  */
 package org.exoplatform.processes.publishing;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.ActionHandler;
@@ -30,7 +31,8 @@ import org.jbpm.graph.exe.ExecutionContext;
 public class ManagePublicationActionHandler implements ActionHandler {
 
   private static final long serialVersionUID = 1L;    
-  private boolean executed = false;  
+  private boolean executed = false;
+  private static final Log LOG  = ExoLogger.getLogger(ManagePublicationActionHandler.class);
 
   public void execute(ExecutionContext context) {
     try {      
@@ -40,7 +42,7 @@ public class ManagePublicationActionHandler implements ActionHandler {
       executed = true;
       publishContent(context);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       ExoLogger.getLogger(this.getClass()).error(e);
     } finally {               
       context.getSchedulerInstance().cancel("publicationTimer", context.getToken());      

@@ -13,6 +13,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
@@ -20,6 +21,7 @@ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -57,7 +59,8 @@ public class UIWorkflowPublicationViewForm extends UIForm {
   private String repositoryName = "";
   private Node currentNode = null;
   private final String EXO_PUBLISH = "exo:published"; 
-  private IdentityRegistry identityRegistry; 
+  private IdentityRegistry identityRegistry;
+  private static final Log LOG  = ExoLogger.getLogger(UIWorkflowPublicationViewForm.class);
   
   public UIWorkflowPublicationViewForm() throws Exception {
     identityRegistry = getApplicationComponent(IdentityRegistry.class);
@@ -99,7 +102,7 @@ public class UIWorkflowPublicationViewForm extends UIForm {
       String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
       return dS.getDownloadLink(id);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return "Error in getStateImage";
     }
   }

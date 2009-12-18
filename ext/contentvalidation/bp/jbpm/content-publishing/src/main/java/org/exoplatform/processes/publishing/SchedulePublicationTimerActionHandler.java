@@ -46,7 +46,6 @@ public class SchedulePublicationTimerActionHandler extends ManagePublicationActi
       try {
         publishContent(context);                
       } catch (Exception e) {
-        e.printStackTrace();
         log.error(e);
       }
       context.getToken().signal("publication-done");
@@ -54,7 +53,6 @@ public class SchedulePublicationTimerActionHandler extends ManagePublicationActi
       try{
         moveToPending(context);        
       }catch (Exception e) {
-        e.printStackTrace();
         log.error(e);
       }        
       //Create and save the Action object 

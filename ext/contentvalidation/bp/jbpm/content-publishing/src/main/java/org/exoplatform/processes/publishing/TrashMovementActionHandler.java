@@ -17,7 +17,9 @@
 
 package org.exoplatform.processes.publishing;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.ActionHandler;
 import org.jbpm.graph.exe.ExecutionContext;
 
@@ -32,6 +34,7 @@ public class TrashMovementActionHandler implements ActionHandler {
   private static final long serialVersionUID = 1L;
 
   private boolean executed = false;
+  private static final Log LOG  = ExoLogger.getLogger(TrashMovementActionHandler.class);
 
   public void execute(ExecutionContext context) {    
     try {
@@ -40,7 +43,7 @@ public class TrashMovementActionHandler implements ActionHandler {
       executed = true;
       moveTrash(context);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     } finally {
       context.getToken().signal("move-done");
     }

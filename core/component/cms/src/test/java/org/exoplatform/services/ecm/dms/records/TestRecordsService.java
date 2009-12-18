@@ -744,7 +744,6 @@ public class TestRecordsService extends BaseDMSTestCase {
       testNode.remove();
       session.save();
     } catch (Exception e) {
-      e.printStackTrace();
     }
     super.tearDown();
   }

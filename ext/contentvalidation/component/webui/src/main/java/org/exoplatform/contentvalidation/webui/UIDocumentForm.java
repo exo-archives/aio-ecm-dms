@@ -24,6 +24,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
@@ -33,6 +34,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -65,6 +67,7 @@ import org.exoplatform.workflow.webui.component.controller.UITaskManager;
 public class UIDocumentForm extends UIDialogForm {
 
   private String documentType_ ;
+  private static final Log LOG  = ExoLogger.getLogger(UIDocumentForm.class);
   
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;    
@@ -89,7 +92,7 @@ public class UIDocumentForm extends UIDialogForm {
     try {
       return templateService.getTemplatePathByUser(true, documentType_, userName, getRepository()) ;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       return null ;
     } 
   }
@@ -99,7 +102,7 @@ public class UIDocumentForm extends UIDialogForm {
       String workspaceName = getCurrentNode().getSession().getWorkspace().getName() ;
       return new JCRResourceResolver(getRepository(), workspaceName, Utils.EXO_TEMPLATEFILE);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     return super.getTemplateResourceResolver(context, template);
   }
@@ -123,16 +126,16 @@ public class UIDocumentForm extends UIDialogForm {
         homeNode.save() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
       } catch (AccessControlException ace) {
-        ace.printStackTrace() ;
+        LOG.error("Unexpected error", ace);
         throw new AccessDeniedException(ace.getMessage());
       } catch(VersionException ve) {
-        ve.printStackTrace() ;
+        LOG.error("Unexpected error", ve);
         uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       } catch(Exception e) {
-        e.printStackTrace() ;
+        LOG.error("Unexpected error", e);
         String key = "UIDocumentForm.msg.cannot-save" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

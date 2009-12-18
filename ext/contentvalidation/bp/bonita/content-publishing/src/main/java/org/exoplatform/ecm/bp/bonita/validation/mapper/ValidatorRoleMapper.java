@@ -20,10 +20,10 @@ package org.exoplatform.ecm.bp.bonita.validation.mapper;
 import hero.mapper.ExoOrganizationMapper;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl;
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
 import org.ow2.bonita.definition.RoleMapper;
 import org.ow2.bonita.facade.QueryAPIAccessor;
 import org.ow2.bonita.facade.exception.InstanceNotFoundException;
@@ -47,6 +47,7 @@ public class ValidatorRoleMapper implements RoleMapper {
   
   public static final String DELEGATOR_NAME = "delegator";
   public static final String DELEGATE_NAME = "delegate";
+  private static final Log LOG  = ExoLogger.getLogger(ValidatorRoleMapper.class);
   
   public Set<String> searchMembers(QueryAPIAccessor readonlyapiaccessor, ProcessInstanceUUID instanceId, String roleId) {
     
@@ -61,9 +62,9 @@ public class ValidatorRoleMapper implements RoleMapper {
       delegate = (Boolean) readonlyapiaccessor.getQueryRuntimeAPI().getProcessInstanceVariable(
           instanceId, DELEGATE_NAME);
     } catch (InstanceNotFoundException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     } catch (VariableNotFoundException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     // Delegate the call
     Set<String> candidats = ExoOrganizationMapper.GetUsersFromMembershipAndGroup(roleName);

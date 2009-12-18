@@ -18,6 +18,7 @@ package org.exoplatform.processes.publishing;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.workflow.impl.jbpm.WorkflowServiceContainerImpl;
 import org.jbpm.db.JbpmSession;
@@ -35,6 +36,7 @@ import org.jbpm.scheduler.exe.Timer;
 public class ScheduleBackupTimerActionHandler extends BackupContentActionHandler {
 
   private static final long serialVersionUID = 1L;
+  private static final Log LOG  = ExoLogger.getLogger(ScheduleBackupTimerActionHandler.class);
   
   public void execute(ExecutionContext context) {    
     try {              
@@ -78,7 +80,7 @@ public class ScheduleBackupTimerActionHandler extends BackupContentActionHandler
       }
     } catch (Exception ex) {
       ExoLogger.getLogger(this.getClass()).equals(ex);
-      ex.printStackTrace();
+      LOG.error("Unexpected error", ex);
     }
   }
 

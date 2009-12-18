@@ -56,7 +56,7 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
   public static final String PUBLISHED = "published".intern();
   public static final String CONTENT_VALIDATION = "content publishing";
   public static final String BACKUP = "backup";
-  
+  private static final Log LOG  = ExoLogger.getLogger(WorkflowPublicationPlugin.class);
   
   public static final String PUBLICATION = "publication:publication".intern();
   public static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
@@ -241,7 +241,7 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
         jcrSession.logout();
         
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
     } else if (newState.equals(BACKUP)) {
       node.setProperty(WorkflowPublicationPlugin.CURRENT_STATE, WorkflowPublicationPlugin.BACKUP);

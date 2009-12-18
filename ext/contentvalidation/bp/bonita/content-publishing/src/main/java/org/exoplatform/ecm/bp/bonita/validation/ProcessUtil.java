@@ -114,7 +114,6 @@ public class ProcessUtil {
       requestNode.getSession().save();      
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }    
     provider.close();
   }
@@ -148,7 +147,6 @@ public class ProcessUtil {
       validatedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -182,7 +180,6 @@ public class ProcessUtil {
       disapprovedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }    
     provider.close();
   } 
@@ -219,7 +216,6 @@ public class ProcessUtil {
       publishedNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -252,7 +248,6 @@ public class ProcessUtil {
       pendingNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -289,7 +284,6 @@ public class ProcessUtil {
       delegateNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   }
@@ -319,7 +313,6 @@ public class ProcessUtil {
       backupNode.getSession().save();      
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
    provider.close(); 
   }
@@ -356,7 +349,6 @@ public class ProcessUtil {
       trashNode.getSession().save();
     } catch (Exception e) {
       log.error(e);
-      e.printStackTrace();
     }
     provider.close();
   } 
@@ -373,10 +365,8 @@ public class ProcessUtil {
 		return (String)api.getQueryRuntimeAPI().getProcessInstanceVariable(activity.getProcessInstanceUUID(),"initiator");
 	} catch (InstanceNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	} catch (VariableNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	}
 	return "";
   }
@@ -389,13 +379,10 @@ public class ProcessUtil {
 		api.getRuntimeAPI().setVariable(activity.getUUID(),CURRENT_LOCATION,locationBuilder.toString());
 	} catch (ActivityNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	} catch (VariableNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	} catch (InstanceNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	}
   }
   
@@ -405,10 +392,8 @@ public class ProcessUtil {
 		return currentLocation.split("::");
 	} catch (InstanceNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	} catch (VariableNotFoundException e) {
 		log.error(e);
-		e.printStackTrace();
 	}
     return new String[3];
   }
