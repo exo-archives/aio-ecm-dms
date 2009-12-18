@@ -74,6 +74,10 @@ public class UITreeExplorer extends UIContainer {
     return "" ;
   }
   
+  public String getDriveName() {
+	    return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;
+  }  
+  
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
     return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
