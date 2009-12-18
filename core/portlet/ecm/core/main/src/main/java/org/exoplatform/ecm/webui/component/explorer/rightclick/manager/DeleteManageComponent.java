@@ -216,7 +216,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     	uiExplorer.updateAjax(event);	   
     } catch (AccessDeniedException e) {
-    	LOG.error("access denied, can't add favourite to node:" + node.getPath());
+    	LOG.error("access denied, can't add move to trash to node:" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);
     	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     	uiExplorer.updateAjax(event);

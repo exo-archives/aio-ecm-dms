@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
@@ -42,9 +43,10 @@ public class CanDeleteNodeFilter  extends UIExtensionAbstractFilter {
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context==null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    return (!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode)) || 
-      (IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && 
-        IsCheckedOutFilter.isCheckedOut(currentNode));
+    return PermissionUtil.canRemoveNode(currentNode) && 
+    		((!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode)) || 
+      	(IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && 
+        IsCheckedOutFilter.isCheckedOut(currentNode)));
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
