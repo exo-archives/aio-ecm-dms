@@ -26,6 +26,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -37,6 +38,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -121,6 +123,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   * DMS configuration which used to store informations
   */   
   private DMSConfiguration dmsConfiguration_;
+  private static final Log LOG  = ExoLogger.getLogger(MetadataServiceImpl.class);
 
   /**
    * Constructor method
@@ -144,7 +147,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     try {      
       init();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }    
   }
 
@@ -173,7 +176,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
         plugin.setBasePath(baseMetadataPath_);
         plugin.init();
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
     }
   }
@@ -187,7 +190,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
         plugin.setBasePath(baseMetadataPath_);
         plugin.init(repository);
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
     }
   }

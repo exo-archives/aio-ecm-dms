@@ -33,6 +33,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
@@ -41,6 +42,7 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.rest.HTTPMethod;
 import org.exoplatform.services.rest.OutputTransformer;
 import org.exoplatform.services.rest.QueryParam;
@@ -66,6 +68,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
   private ManageDriveService manageDriveService_;
   
   final static public String DEFAULT_ITEM = "5";
+  private static final Log LOG  = ExoLogger.getLogger(PublicationGetDocumentRESTService.class);
   
   public PublicationGetDocumentRESTService(RepositoryService repositoryService,
       PublicationService publicationService, ManageDriveService manageDriveService) {
@@ -180,7 +183,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
         Date date2 = formatter.parse(getDateTime(node2));
         return date2.compareTo(date1);
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
       return 0;
     }

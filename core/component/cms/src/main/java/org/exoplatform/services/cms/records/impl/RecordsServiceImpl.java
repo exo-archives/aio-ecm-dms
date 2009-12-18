@@ -76,7 +76,7 @@ public class RecordsServiceImpl implements RecordsService {
    * AuditService object
    */
   private AuditService auditService_;
-
+  private static final Log LOG  = ExoLogger.getLogger(RecordsServiceImpl.class);
   
   /**
    * Constructor method
@@ -381,7 +381,7 @@ public class RecordsServiceImpl implements RecordsService {
         filePlan.save() ;
       }
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -401,7 +401,7 @@ public class RecordsServiceImpl implements RecordsService {
       record.save() ;
       filePlan.save() ;
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -426,7 +426,7 @@ public class RecordsServiceImpl implements RecordsService {
       record.save() ;
       filePlan.save() ;
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -669,7 +669,7 @@ public class RecordsServiceImpl implements RecordsService {
       record.save() ;
       filePlan.save() ;        
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -761,7 +761,7 @@ public class RecordsServiceImpl implements RecordsService {
         filePlan.save() ;         
       }
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 

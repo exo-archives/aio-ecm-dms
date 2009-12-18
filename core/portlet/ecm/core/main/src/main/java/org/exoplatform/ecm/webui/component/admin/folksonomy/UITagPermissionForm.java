@@ -16,11 +16,12 @@
  */
 package org.exoplatform.ecm.webui.component.admin.folksonomy;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.selector.UIGroupMemberSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
-import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -51,6 +52,7 @@ public class UITagPermissionForm extends UIForm implements UISelectable {
   final static public String PERMISSION   = "permission";
 
   final static public String POPUP_SELECT = "SelectUserOrGroup";
+  private static final Log LOG  = ExoLogger.getLogger(UITagPermissionForm.class);
 
 	public UITagPermissionForm() throws Exception {
 		addChild(new UITagPermissionInputSet(PERMISSION));
@@ -101,7 +103,7 @@ public class UITagPermissionForm extends UIForm implements UISelectable {
     try {
       getUIStringInput(selectField).setValue(value.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
   

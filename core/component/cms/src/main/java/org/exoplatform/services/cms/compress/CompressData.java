@@ -33,6 +33,9 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
@@ -48,6 +51,7 @@ public class CompressData {
   protected static final int EOF    = -1;
 
   protected static final int BUFFER = 2048;
+  private static final Log LOG  = ExoLogger.getLogger(CompressData.class);
 
   public CompressData() {
 
@@ -66,7 +70,7 @@ public class CompressData {
       InputStream is = new FileInputStream(file);
       datas_.add(new InputStreamDataInstance(entryName, is));
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -248,7 +252,7 @@ public class CompressData {
         try {
           getZipOut(true, zos);
         } catch (Exception e) {
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
         }
       } else {
         JarOutputStream jos;
@@ -256,7 +260,7 @@ public class CompressData {
           jos = new JarOutputStream(baos);
           getJarOut(true, jos);
         } catch (Exception e) {
-          e.printStackTrace();
+          LOG.error("Unexpected error", e);
         }
       }
       InputStream is = new ByteArrayInputStream(baos.toByteArray());
@@ -264,7 +268,7 @@ public class CompressData {
       try {
         baos.close();
       } catch (IOException e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
 
       return is;

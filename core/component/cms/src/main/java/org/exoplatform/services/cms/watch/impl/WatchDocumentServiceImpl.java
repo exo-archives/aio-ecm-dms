@@ -26,18 +26,19 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.observation.Event;
 import javax.jcr.observation.EventListener;
-import javax.jcr.observation.EventListenerIterator;
 import javax.jcr.observation.ObservationManager;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 
@@ -58,6 +59,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   private RepositoryService repoService_ ;
   private MessageConfig messageConfig_ ;
   private TemplateService templateService_ ;
+  private static final Log LOG  = ExoLogger.getLogger(WatchDocumentServiceImpl.class);
 
   /**
    * Constructor Method 
@@ -228,7 +230,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         try{
           queryManager = session.getWorkspace().getQueryManager() ;
         } catch (Exception e) { 
-          e.printStackTrace() ;
+          LOG.error("Unexpected error", e);
         }
         if(queryManager == null) { 
           session.logout(); 
@@ -250,7 +252,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         } catch (Exception e) {
           System.out.println("==>>> Cannot init observer for node: " 
               +e.getLocalizedMessage() + " in '"+repo.getName()+"' repository");
-          e.printStackTrace() ;
+          LOG.error("Unexpected error", e);
         }
       }
     }
@@ -271,7 +273,6 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       reInitObserver() ;
     }catch (Exception e) {
       System.out.println("==>>> Exeption when startd WatchDocumentSerice!!!!");
-      //e.printStackTrace() ;
     }
   }
 

@@ -27,6 +27,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
@@ -48,6 +49,7 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -75,7 +77,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   private InitParams             params_;
   
   private DMSConfiguration dmsConfiguration_;
-
+  private static final Log LOG  = ExoLogger.getLogger(TaxonomyPlugin.class);
+  
   public TaxonomyPlugin(InitParams params, RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, TaxonomyService taxonomyService,
       ActionServiceContainer actionServiceContainer, 
@@ -201,7 +204,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     try {
       taxonomyService_.addTaxonomyTree(taxonomyStorageNodeSystem);
     } catch (TaxonomyAlreadyExistsException e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
     session.save();
     session.logout();

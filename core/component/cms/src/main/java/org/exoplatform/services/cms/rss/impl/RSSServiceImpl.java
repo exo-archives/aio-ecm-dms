@@ -34,6 +34,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -42,6 +43,7 @@ import org.exoplatform.services.cms.rss.RSSService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -103,7 +105,7 @@ public class RSSServiceImpl implements RSSService{
   static private String MIX_VERSIONABLE = "mix:versionable".intern() ;
 
   private RepositoryService repositoryService_;
-  
+  private static final Log LOG  = ExoLogger.getLogger(RSSServiceImpl.class);
   /**
    * Constructor method
    * Init repositoryService, nodeHierarchyCreator    
@@ -202,7 +204,7 @@ public class RSSServiceImpl implements RSSService{
       feedXML = StringUtils.replace(feedXML,"&amp;","&");
       storeXML(feedXML, storePath, feedName, repository);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     } finally {
       if(session != null) session.logout();
     }
@@ -394,7 +396,7 @@ public class RSSServiceImpl implements RSSService{
       String feedXML = output.outputString(feed);      
       storeXML(feedXML, storePath, feedName, repository);
     }catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
     } finally {
       if(session != null) session.logout();
     }
@@ -456,7 +458,7 @@ public class RSSServiceImpl implements RSSService{
         rss.checkin() ;        
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     } finally {
       if(session != null) session.logout();
     }

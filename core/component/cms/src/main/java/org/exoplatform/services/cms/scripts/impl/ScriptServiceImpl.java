@@ -33,6 +33,7 @@ import javax.jcr.observation.EventIterator;
 import javax.jcr.observation.EventListener;
 import javax.jcr.observation.ObservationManager;
 
+import org.apache.commons.logging.Log;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -52,6 +53,7 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -60,7 +62,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private NodeHierarchyCreator nodeHierarchyCreator_ ;   
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
   private DMSConfiguration dmsConfiguration_;
-
+  private static final Log LOG  = ExoLogger.getLogger(ScriptServiceImpl.class);
+  
   /**
    * Constructor method
    * Init repositoryService, configurationManager, nodeHierarchyCreator, caService, dmsConfiguration   
@@ -88,7 +91,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     try {
       initPlugins();      
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
     }
   }
 
@@ -408,7 +411,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
           }
         }        
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error", e);
       }
     }
   }

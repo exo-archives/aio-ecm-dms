@@ -39,6 +39,7 @@ import javax.jcr.observation.Event;
 import javax.jcr.observation.ObservationManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -46,6 +47,7 @@ import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
 import org.exoplatform.services.scheduler.PeriodInfo;
@@ -85,6 +87,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   final static String executableVar = "executable".intern() ;  
 
   protected Map<String, ECMEventListener> listeners_ = new HashMap<String, ECMEventListener>();
+  private static final Log LOG  = ExoLogger.getLogger(BaseActionPlugin.class);
 
   abstract protected String getRepositoryName();  
   abstract protected List<RepositoryEntry> getRepositories();
@@ -200,7 +203,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     try {
       activationJobClass = Class.forName(jobClassName) ;
     }catch (Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
       return ;
     }
     String actionName = storedActionNode.getProperty(NODE_NAME_PROP).getString() ;    
@@ -312,7 +315,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     try {
       activationJob = Class.forName(jobClass) ;
     }catch (Exception e) {
-      e.printStackTrace() ;      
+      LOG.error("Unexpected error", e);      
     }    
     if(activationJob == null) return  ;
     JobInfo jinfo = new JobInfo(jobName,jobGroup,activationJob) ; 
