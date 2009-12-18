@@ -11,7 +11,7 @@ var ZeroClipboard = {
 	$: function(thingy) {
 		// simple DOM lookup utility function
 		if (typeof(thingy) == 'string') thingy = document.getElementById(thingy);
-		if (!thingy.addClass) {
+		if (thingy && !thingy.addClass) {
 			// extend element with a few useful methods
 			thingy.hide = function() { this.style.display = 'none'; };
 			thingy.show = function() { this.style.display = ''; };
@@ -92,7 +92,6 @@ ZeroClipboard.Client.prototype = {
 		// glue to DOM element
 		// elem can be ID or actual DOM element object
 		this.domElement = ZeroClipboard.$(elem);
-		
 		// float just above object, or zIndex 99 if dom element isn't set
 		var zIndex = 99;
 		if (this.domElement.style.zIndex) {

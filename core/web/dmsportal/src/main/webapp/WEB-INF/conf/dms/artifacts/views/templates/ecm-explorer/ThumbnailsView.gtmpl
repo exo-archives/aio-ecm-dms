@@ -11,6 +11,7 @@
   int i = 0;
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
+  def size = uicomponent.getChildrenList().size();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');");
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
