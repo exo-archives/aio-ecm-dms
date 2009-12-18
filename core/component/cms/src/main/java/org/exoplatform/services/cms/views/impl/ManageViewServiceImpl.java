@@ -329,9 +329,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     List<Node> list = new ArrayList<Node>() ;
     if(templateHomNode == null) return list ;
     for(NodeIterator iter = templateHomNode.getNodes() ; iter.hasNext() ;) {
-    	Node node = iter.nextNode();
-    	System.out.println(node.getPath() + "--");
-      list.add(node) ;
+      list.add(iter.nextNode()) ;
     }
     return list;
   }
