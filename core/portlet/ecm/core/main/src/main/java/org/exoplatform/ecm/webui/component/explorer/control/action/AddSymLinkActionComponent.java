@@ -36,6 +36,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.CanAddNodeFil
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSymlinkFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.symlink.UISymLinkManager;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -64,9 +65,14 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
 public class AddSymLinkActionComponent extends UIAbstractManagerComponent {
 
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanAddNodeFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter(), new IsNotSymlinkFilter()});
+  private static final List<UIExtensionFilter> FILTERS = 
+  	Arrays.asList(new UIExtensionFilter[]{new CanAddNodeFilter(), 
+  																				new IsNotLockedFilter(), 
+  																				new IsCheckedOutFilter(), 
+  																				new IsNotSymlinkFilter(),
+  																				new IsNotTrashHomeNodeFilter()});
   
-  private static final Log                 LOG                      = ExoLogger.getLogger(AddSymLinkActionComponent.class);
+	private static final Log LOG = ExoLogger.getLogger(AddSymLinkActionComponent.class);
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
