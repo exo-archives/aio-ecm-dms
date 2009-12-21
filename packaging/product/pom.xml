@@ -81,6 +81,20 @@
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.component.publication</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.component.deployment</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.component.cms</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+
+      <!-- jbpm -->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.component.jbpmconfig</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation.bp</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.bp.jbpm.content.publishing</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.component.plugin</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.component.workflowPublication</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.component.webui</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.workflow</groupId><artifactId>exo.ecm.workflow.component.workflow.impl.jbpm.engine</artifactId><version>${org.exoplatform.ecm.jbpm.version}</version><type>jar</type></dependency><!-- 3.0.1-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.workflow.bp</groupId><artifactId>exo.ecm.workflow.bp.jbpm.payraise</artifactId><version>${org.exoplatform.ecm.workflow.version}</version><type>jar</type></dependency><!-- 1.0.5-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.workflow.bp</groupId><artifactId>exo.ecm.workflow.bp.jbpm.holiday</artifactId><version>${org.exoplatform.ecm.workflow.version}</version><type>jar</type></dependency><!-- 1.0.5-SNAPSHOT-->
+      <!-- bonita -->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.component.bonitaconfig</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+      <dependency><groupId>org.exoplatform.ecm.dms.ext.contentvalidation.bp</groupId><artifactId>exo.ecm.dms.ext.contentvalidation.bp.bonita.content-publishing</artifactId><version>2.5.3-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
+
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.xml-processing</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.security.core</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.core</groupId><artifactId>exo.core.component.organization.jdbc</artifactId><version>${org.exoplatform.core.version}</version><type>jar</type></dependency><!-- 2.1.7-SNAPSHOT-->
