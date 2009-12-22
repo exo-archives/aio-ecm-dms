@@ -211,7 +211,8 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
       destPath = destPath.concat("/").concat(selectedNode.getName());  
       Workspace srcWorkspace = srcSession.getWorkspace();
       Workspace destWorkspace = destNode.getSession().getWorkspace();
-    
+    	if (srcPath.indexOf(":/") > -1)
+    		srcPath = srcPath.substring(srcPath.indexOf(":/") + 1);
       if (srcWorkspace.equals(destWorkspace)) {
         srcWorkspace.move(srcPath, destPath);
       } else {
