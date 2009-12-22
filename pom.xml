@@ -13,6 +13,12 @@
   <packaging>pom</packaging>
   <name>eXo ECM DMS Parent</name>
 
+  <scm>
+    <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.x</connection>
+    <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.x</developerConnection>
+    <url>http://fisheye.exoplatform.org/browse/projects/ecm/dms/branches/2.5.x</url>
+  </scm>
+
   <properties>
     <org.exoplatform.kernel.version>2.0.9-SNAPSHOT</org.exoplatform.kernel.version>
     <org.exoplatform.core.version>2.1.7-SNAPSHOT</org.exoplatform.core.version>
