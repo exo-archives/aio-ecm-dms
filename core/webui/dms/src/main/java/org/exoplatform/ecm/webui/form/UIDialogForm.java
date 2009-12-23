@@ -755,14 +755,7 @@ public class UIDialogForm extends UIForm {
         if(childNode.hasProperty(propertyName)) {
           Value[] values = childNode.getProperty(propertyName).getValues();
           for(Value value : values) {
-            if(propertyName.equals("exo:category")){
-              String pathTaxonomy = getPathTaxonomy() + "/";
-              String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath().replaceAll(pathTaxonomy, "");
-              valueList.add(getCategoryLabel(categoryPath));
-              getListTaxonomy().add(categoryPath);
-            } else {
-              valueList.add(value.getString());
-            }            
+            valueList.add(value.getString());
           }
           uiMulti.setEditable(formTextField.isEditable());
           uiMulti.setValue(valueList);
@@ -774,14 +767,7 @@ public class UIDialogForm extends UIForm {
           Value[] values = node.getProperty(propertyPath).getValues();
           for(Value vl : values) {
             if (vl != null) {
-              if(propertyPath.equals("exo:category")){
-                String pathTaxonomy = getPathTaxonomy() + "/";
-                String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath().replaceAll(pathTaxonomy, "");
-                valueList.add(getCategoryLabel(categoryPath));
-                getListTaxonomy().add(categoryPath);
-              } else {
-                valueList.add(vl.getString());
-              }
+              valueList.add(vl.getString());
             }
           }
         }
