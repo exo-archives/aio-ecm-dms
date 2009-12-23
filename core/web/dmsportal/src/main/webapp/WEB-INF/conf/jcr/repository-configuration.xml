@@ -42,6 +42,7 @@
               <property name="index-dir" value="../temp/jcrlucenedb/system"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
+              <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker"/>
             </properties>
           </query-handler>
           <lock-manager>
@@ -90,6 +91,7 @@
               <property name="index-dir" value="../temp/jcrlucenedb/collaboration"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
+              <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker"/>              
             </properties>
           </query-handler>
           <lock-manager>
@@ -138,6 +140,7 @@
               <property name="index-dir" value="../temp/jcrlucenedb/backup"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
+              <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker"/>              
             </properties>
           </query-handler>
           <lock-manager>
@@ -187,6 +190,7 @@
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
               <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
+              <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker"/>              
             </properties>
           </query-handler>
           <lock-manager>
@@ -235,6 +239,7 @@
               <property name="index-dir" value="../temp/jcrlucenedb/dms-system"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
+              <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker"/>              
             </properties>
           </query-handler>
           <lock-manager>
