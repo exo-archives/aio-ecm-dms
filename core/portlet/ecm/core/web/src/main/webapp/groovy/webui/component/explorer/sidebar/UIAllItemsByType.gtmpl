@@ -13,17 +13,19 @@
 			</div>
 		</div>
 		<div class="SideContent">
-		<% 
-	    def supportedTypes = uicomponent.getAllSupportedType();  
-	    for (type in supportedTypes) {                                  
-      	String supportedLink = uicomponent.event("ShowDocumentType", type) ;                 
-    %>
-			<div class="ArrowSidContent TextSiderContent">
-				<a href="$supportedLink" title="<%=_ctx.appRes("UIAllItemsByType.title.Show"+type)%>">
-	        <%=_ctx.appRes("DocumentType.label." + type)%>
-	      </a>
-			</div>
-		<%}%>
+  		<div class="UIAllItem">
+  		<% 
+  	    def supportedTypes = uicomponent.getAllSupportedType();  
+  	    for (type in supportedTypes) {                                  
+        	String supportedLink = uicomponent.event("ShowDocumentType", type) ;                 
+      %>
+  			<div class="ArrowSidContent TextSiderContent">
+  				<a href="$supportedLink" title="<%=_ctx.appRes("UIAllItemsByType.title.Show"+type)%>">
+  	        <%=_ctx.appRes("DocumentType.label." + type)%>
+  	      </a>
+  			</div>
+  		<%}%>
+  		</div>
 		</div>	
 	</div>
 </div>

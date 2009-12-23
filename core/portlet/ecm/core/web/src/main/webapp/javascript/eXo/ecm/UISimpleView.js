@@ -840,21 +840,18 @@ var SimpleView = function() {
 		var actionArea = document.getElementById(Self.actionAreaId);
 		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
-		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
 	}
 	
 	SimpleView.prototype.setHeight = function() {
 		var root = document.getElementById("UIDocumentInfo");
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIThumbnailsView");
-		var workingArea = document.getElementById('UIWorkingArea');
-		var documentWorkspace = document.getElementById('UIDocumentWorkspace');
+		var workingArea = document.getElementById('UIWorkingArea');		
 		var workingContainer = document.getElementById('UIDocumentContainer');		
-		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
-		
+		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");		
 		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
 		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
-		sizeBarContainer.style.height = documentWorkspace.offsetHeight + 'px';	
-		resizeButton.style.height = documentWorkspace.offsetHeight + 'px';
+		sizeBarContainer.style.height = workingArea.offsetHeight + 'px';	
+		resizeButton.style.height = workingArea.offsetHeight + 'px';
 		if (page) {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
 				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight + 'px';

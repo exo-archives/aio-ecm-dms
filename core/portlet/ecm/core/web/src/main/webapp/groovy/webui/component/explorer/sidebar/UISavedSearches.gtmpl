@@ -2,9 +2,11 @@
 	import javax.jcr.query.Query;
   import javax.jcr.Node;
   import org.exoplatform.ecm.webui.utils.Utils ;
-	
+  
+  def rcontext = _ctx.getRequestContext() ;
 	def hasPrivateQueries = uicomponent.hasQueries() ;
   def hasSharedQueries = uicomponent.hasSharedQueries() ;
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight()");
 %>
 <div class="SideBarContent">
    <div class="BarContent">

@@ -766,21 +766,22 @@ var ListView = function() {
 		var actionArea = document.getElementById(Self.actionAreaId);
 		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
-		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
+		
 	}
 	
 	ListView.prototype.setHeight = function() {
 		var root = document.getElementById("UIDocumentInfo");
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
-		var workingArea = document.getElementById('UIWorkingArea');
-		var documentWorkspace = document.getElementById('UIDocumentWorkspace');
-		var workingContainer = document.getElementById('UIDocumentContainer');
+		var workingArea = document.getElementById('UIWorkingArea');		
+		var workingContainer = document.getElementById('UIDocumentContainer');								
 		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
 		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");				
 		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
 		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
-		sizeBarContainer.style.height = documentWorkspace.offsetHeight + 'px';	
-		resizeButton.style.height = documentWorkspace.offsetHeight + 'px';
+		
+		var uiResizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");		
+		sizeBarContainer.style.height = workingArea.offsetHeight + 'px';	
+		resizeButton.style.height = workingArea.offsetHeight + 'px';
 						
 	  if (page) {
 				if (parseInt(page.getAttribute('pageAvailable')) > 1) {

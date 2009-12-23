@@ -114,18 +114,16 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
-	height: 475px;	
+		
 	/*
   * minh.js.exo
   */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIResizableBlock {
-	width: 204px;
-	height: 100%;
+	width: 204px;	
 	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	overflow: auto;	
+	float: right; /* orientation=rt */	
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent {
@@ -394,4 +392,15 @@
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+}
+
+
+
+/*############################## -- UIAllItem   -- ##############################*/
+.UIJCRExplorerPortlet .UIAllItem {
+	padding-bottom: 20px;
+	_overflow: auto;
+	height: 105px;
+	_overflow-x: hidden;
+	_width: 183px;
 }

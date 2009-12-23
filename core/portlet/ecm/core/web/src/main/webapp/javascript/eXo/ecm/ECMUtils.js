@@ -592,23 +592,48 @@
     var event = event || window.event;
 		eXo.ecm.ECMUtils.currentMouseY = event.clientY;
 		var container = document.getElementById("UITreeExplorer");
-		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;
+		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;		
+						
+		// updated by lampt	
+		var workingArea = document.getElementById('UIWorkingArea');
+		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
+		var uiResizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");	
+		eXo.ecm.ECMUtils.defaultHeight = uiResizableBlock.offsetHeight;					
+		eXo.ecm.ECMUtils.resizableHeight = uiResizableBlock.offsetHeight;			
+		// end
+		
 		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveItemsInSideBar;
 		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpItemsInSideBar;
+		
 	}
 
 	ECMUtils.prototype.resizeMouseMoveItemsInSideBar = function(event) {
 		var event = event || window.event;
-		var container = document.getElementById("UITreeExplorer");
+		var container = document.getElementById("UITreeExplorer");		
 		var deltaY = event.clientY - eXo.ecm.ECMUtils.currentMouseY ;
-		container.style.height = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";
-		eXo.ecm.ECMUtils.savedTreeSizeMouseY = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";
+		container.style.height = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";	
+						
+		// update by lampt
+		var workingArea = document.getElementById('UIWorkingArea');
+		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
+		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
+		
+		if (eXo.ecm.ECMUtils.resizableHeight + deltaY >= eXo.ecm.ECMUtils.defaultHeight) {				
+			sizeBarContainer.style.height = eXo.ecm.ECMUtils.resizableHeight + deltaY + 20 + "px";
+			resizeButton.style.height = eXo.ecm.ECMUtils.resizableHeight + deltaY + 20 + "px";		
+		}
+		//end
+		
+		eXo.ecm.ECMUtils.savedTreeSizeMouseY = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";		
 	}
 	
 	ECMUtils.prototype.resizeMouseUpItemsInSideBar = function(event) {
 		document.onmousemove = null;
 		delete eXo.ecm.ECMUtils.currentHeight;
 		delete eXo.ecm.ECMUtils.currentMouseY;
+		
+		// updated by lampt
+		delete eXo.ecm.ECMUtils.resizableHeight		
 	}
 	
 	ECMUtils.prototype.showHideItemsInSideBar = function(event) {
