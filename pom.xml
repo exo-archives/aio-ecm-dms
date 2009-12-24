@@ -32,7 +32,7 @@
     <org.exoplatform.mvnexobuild.version>1.2.0</org.exoplatform.mvnexobuild.version>
     <org.shindig.version>0.8.1-1-r719456</org.shindig.version>    
 
-    <org.exoplatform.ecm.jbpm.version>3.0.1</org.exoplatform.ecm.jbpm.version>
+    <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
     <bonita.version>4.0</bonita.version>        
 
     <!-- tests default config -->
