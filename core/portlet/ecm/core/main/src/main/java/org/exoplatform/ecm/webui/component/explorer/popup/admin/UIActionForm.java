@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
@@ -52,6 +54,8 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -67,6 +71,8 @@ import org.exoplatform.webui.form.UIFormInputBase;
       @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.BackActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
@@ -103,9 +109,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   private Node getParentNode() throws Exception{ return (Node) getSession().getItem(parentPath_); }
   
-  public void doSelect(String selectField, Object value) {
+  public void doSelect(String selectField, Object value) throws Exception {
     isUpdateSelect = true;
-    getUIStringInput(selectField).setValue(value.toString());
+    UIComponent uicomponent = getChildById(selectField);
+    if (UIFormStringInput.class.isInstance(uicomponent))
+      ((UIFormStringInput)uicomponent).setValue(value.toString());
+    else if (UIFormMultiValueInputSet.class.isInstance(uicomponent)) {
+      ((UIFormMultiValueInputSet)uicomponent).setValue((ArrayList<String>)value);
+    }
     if(isEditInList_) {
       UIActionManager uiManager = getAncestorOfType(UIActionManager.class);
       UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class);
@@ -188,12 +199,13 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       try{
         if (uiExplorer.nodeIsLocked(currentNode)) return;
         if (!actionForm.isAddNew_) {
-          CmsService cmsService = actionForm.getApplicationComponent(CmsService.class);      
+          CmsService cmsService = actionForm.getApplicationComponent(CmsService.class);
           Node storedHomeNode = actionForm.getNode().getParent();
-          cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository);
-          
           Node currentActionNode = storedHomeNode.getNode(sortedInputs.get("/node").getValue().toString());
+          if (uiExplorer.nodeIsLocked(currentActionNode)) return;
+          cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository);
           Session session = currentActionNode.getSession();
+          if (uiExplorer.nodeIsLocked(currentActionNode)) return; // We add LockToken again because CMSService did logout session cause lost lock information
           session.move(currentActionNode.getPath(), storedHomeNode.getPath() + "/" + sortedInputs.get("/node/exo:name").getValue().toString());
           session.save();
           
@@ -339,7 +351,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath);
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
+      } else if (uiComp instanceof UINodeTypeSelector) {
+        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+        ((UINodeTypeSelector)uiComp).setRepositoryName(explorer.getRepositoryName());
+        UIFormMultiValueInputSet uiFormMultiValueInputSet = uiForm.getChildById(fieldName);
+        List values = uiFormMultiValueInputSet.getValue();
+        ((UINodeTypeSelector)uiComp).init(1, values);
       }
+      
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp);
       else ((UIActionContainer)uiContainer).initPopup(uiComp);
       String param = "returnField=" + fieldName;
@@ -357,7 +376,27 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIActionForm uiForm = event.getSource();
       uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiForm.getUIStringInput(fieldName).setValue(null);
+      UIComponent uicomponent = uiForm.getChildById(fieldName);
+      if (UIFormStringInput.class.isInstance(uicomponent))
+        ((UIFormStringInput)uicomponent).setValue(null);
+      else if (UIFormMultiValueInputSet.class.isInstance(uicomponent)) {
+        ((UIFormMultiValueInputSet)uicomponent).setValue(new ArrayList<String>());
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }
+  
+  public static class AddActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm uiForm = event.getSource();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }
+
+  public static class RemoveActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm uiForm = event.getSource();
+      uiForm.isRemoveActionField = true;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

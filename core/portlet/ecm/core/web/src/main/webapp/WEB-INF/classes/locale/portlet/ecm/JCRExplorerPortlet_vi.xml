@@ -3079,5 +3079,10 @@
       <UITaggingFormContainer>Quản lý nhãn</UITaggingFormContainer>
     </title>
   </UIPopupWindow>
-  
+
+		<PopupComponent>
+    <title>
+      <UINodeTypeSelector>Lựa chọn kiểu node</UINodeTypeSelector>
+    </title>
+  </PopupComponent>  
 </bundle>

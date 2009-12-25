@@ -33,6 +33,7 @@ import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
@@ -72,6 +73,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
@@ -88,6 +90,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionForm.NextViewTreeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
@@ -122,9 +126,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     if (parentNode != null) parentPath_ = parentNode.getPath();
   }
   
-  public void doSelect(String selectField, Object value) {
+  public void doSelect(String selectField, Object value) throws Exception {
     isUpdateSelect = true;
-    getUIStringInput(selectField).setValue(value.toString());
+    UIComponent uicomponent = getChildById(selectField);
+    if (UIFormStringInput.class.isInstance(uicomponent))
+      ((UIFormStringInput)uicomponent).setValue(value.toString());
+    else if (UIFormMultiValueInputSet.class.isInstance(uicomponent)) {
+      ((UIFormMultiValueInputSet)uicomponent).setValue((ArrayList<String>)value);
+    }
     UITaxonomyManagerTrees uiTaxoManageTree = getAncestorOfType(UITaxonomyManagerTrees.class);
     uiTaxoManageTree.removeChildById(POPUP_COMPONENT);
   }
@@ -467,8 +476,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Class clazz = Class.forName(classPath, true, cl);
       UIComponent uiComp = uiManager.createUIComponent(clazz, null, null);
+      String repositoryName = uiForm.getTaxoTreeData().getRepository();
       if (uiComp instanceof UIOneNodePathSelector) {
-        String repositoryName = uiForm.getTaxoTreeData().getRepository();
         SessionProvider provider = SessionProviderFactory.createSessionProvider();
         String wsFieldName = (String) fieldPropertiesMap.get("workspaceField");
         String wsName = "";
@@ -498,7 +507,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         ((UIOneNodePathSelector) uiComp).setRootNodeLocation(repositoryName, wsName, rootPath);
         ((UIOneNodePathSelector) uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector) uiComp).init(provider);
-      }
+        } else if (uiComp instanceof UINodeTypeSelector) {
+          ((UINodeTypeSelector)uiComp).setRepositoryName(repositoryName);
+          UIFormMultiValueInputSet uiFormMultiValueInputSet = uiForm.getChildById(fieldName);
+          List values = uiFormMultiValueInputSet.getValue();
+          ((UINodeTypeSelector)uiComp).init(1, values);
+        }
       uiManager.initPopupComponent(uiComp, UIActionForm.POPUP_COMPONENT);
       String param = "returnField=" + fieldName;
       ((ComponentSelector) uiComp).setSourceComponent(uiForm, new String[] { param });
@@ -515,8 +529,28 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIActionForm uiForm = event.getSource() ;
       uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiForm.getUIStringInput(fieldName).setValue(null);
+      UIComponent uicomponent = uiForm.getChildById(fieldName);
+      if (UIFormStringInput.class.isInstance(uicomponent))
+        ((UIFormStringInput)uicomponent).setValue(null);
+      else if (UIFormMultiValueInputSet.class.isInstance(uicomponent)) {
+        ((UIFormMultiValueInputSet)uicomponent).setValue(new ArrayList<String>());
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
+  
+  public static class AddActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm uiForm = event.getSource();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }
+
+  public static class RemoveActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm uiForm = event.getSource();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }
+  
 }

@@ -720,5 +720,61 @@
 	<quarterly>Quarterly</quarterly>
 	<yearly>Yearly</yearly>
 	<ten-years>Ten Years</ten-years>
-	<read>User Action</read> 
+	<read>User Action</read>
+	
+  <ScriptAction>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </ScriptAction>
+  	
+  <Getmail>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Getmail>
+  	
+  <Rss>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Rss>
+  	
+  <AddMetadata>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </AddMetadata>
+		
+  <ReloadAction>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </ReloadAction>
+		
+  <Transform>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Transform>
+
+  <EnableVersioning>
+   <dialog>
+     <label> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </EnableVersioning>
 </bundle>

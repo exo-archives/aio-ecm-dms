@@ -7,7 +7,7 @@
       <td class="FieldLabel"><%=_ctx.appRes("ReloadAction.dialog.label.id")%></td>
       <td class="FieldComponent">
 	      <%
-	        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+	        String[] fieldId = ["jcrPath=/node", "mixintype=mix:actionNodeTypeNames", "editable=false", "visible=if-not-null"] ;
 	        uicomponent.addMixinField("id", fieldId) ;  
 	      %>
 	    </td>
@@ -38,6 +38,15 @@
 	        uicomponent.addTextAreaField("description", fieldDescription) ;
 	      %>
 	    </td>
+	  </tr>
+	  <tr>                       
+      <td class="FieldLabel"><%=_ctx.appRes("ReloadAction.dialog.label.affectedNodeTypeNames")%></td>
+      <td class="FieldComponent">
+      <% 
+        String[] fieldnodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
+        uicomponent.addActionField("nodetypes", fieldnodetypes);
+      %>
+    </tr>  
     </table>
     <%/* start render action*/%>
 		<%uiform.processRenderAction()%>

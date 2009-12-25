@@ -2719,4 +2719,10 @@
   		<node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing>	
     </msg>
   </UIPopupMenu>
+
+		<PopupComponent>
+    <title>
+      <UINodeTypeSelector>Select node type</UINodeTypeSelector>
+    </title>
+  </PopupComponent>
 </bundle>

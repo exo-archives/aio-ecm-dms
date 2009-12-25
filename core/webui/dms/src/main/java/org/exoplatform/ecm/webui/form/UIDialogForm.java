@@ -78,6 +78,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
+import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
@@ -86,6 +87,8 @@ import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SAS
@@ -112,6 +115,7 @@ public class UIDialogForm extends UIForm {
   protected String contentType; 
   protected boolean isAddNew = true;
   protected boolean isRemovePreference;
+  protected boolean isRemoveActionField;
   protected boolean isShowingComponent;
   protected boolean isUpdateSelect;
   protected Map<String, JcrInputProperty> properties = new HashMap<String, JcrInputProperty>();
@@ -226,69 +230,70 @@ public class UIDialogForm extends UIForm {
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty);    
+    Node node = getNode();
     if(formActionField.isReference()) isReference = true; 
-    else isReference = false;      
+    else isReference = false;  
+    UIComponent uiInput;
     if(formActionField.isMultiValues()) {      
-      renderMultiValuesInput(UIFormStringInput.class,name,label);      
-      return;
+      uiInput = findComponentById(name);/// remove??
+      if (uiInput == null) uiInput = addMultiValuesInput(UIFormStringInput.class,name,label);
+      ((UIFormMultiValueInputSet)uiInput).setEditable(formActionField.isEditable());
+      if (node == null) {
+        renderField(name);
+        return;
+      }
+    } else {
+      uiInput = findComponentById(name);
+      if(uiInput == null) {
+        uiInput = formActionField.createUIFormInput();            
+        addUIFormInput((UIFormInput)uiInput);
+      }    
+      ((UIFormStringInput)uiInput).setEditable(formActionField.isEditable());
     }
-    UIFormStringInput uiInput = findComponentById(name);
-    if(uiInput == null) {
-      uiInput = formActionField.createUIFormInput();            
-      addUIFormInput(uiInput);
-    }    
     String propertyName = getPropertyName(jcrPath);
-    uiInput.setEditable(formActionField.isEditable());
     propertiesName.put(name, propertyName);
     fieldNames.put(propertyName, name);
-    Node node = getNode();
-    if(node != null && !isShowingComponent && !isRemovePreference) {
+    if(node != null && !isShowingComponent && !isRemovePreference && !isRemoveActionField) {
       if(jcrPath.equals("/node") && (!formActionField.isEditable() || formActionField.isEditableIfNull())) {
-        uiInput.setValue(node.getName());
-        uiInput.setEditable(false);
+        ((UIFormStringInput)uiInput).setValue(node.getName());
+        ((UIFormStringInput)uiInput).setEditable(false);
       } else if(node.hasProperty(propertyName) && !isUpdateSelect) {
         String relPath = "";
         String itemRelPath = "";
-        if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
-          PropertyType.REFERENCE) {          
-          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
-            StringBuffer buffer = new StringBuffer();            
-            Value[] values = node.getProperty(propertyName).getValues();            
-            for(Value value : values) {
+        if (node.getProperty(propertyName).getDefinition().isMultiple()) {
+          StringBuffer buffer = new StringBuffer();
+          Value[] values = node.getProperty(propertyName).getValues();
+          if (UIFormStringInput.class.isInstance(uiInput)) {
+            for (Value value : values) {
               buffer.append(value).append(",");
             }
-            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);            
-            uiInput.setValue(buffer.toString());
-          } else{
-            String path = 
-              getNodePathByUUID(node.getProperty(propertyName).getValue().getString());
-            uiInput.setValue(path);
-          }          
+            if (buffer.toString().endsWith(","))
+              buffer.deleteCharAt(buffer.length() - 1);
+            ((UIFormStringInput) uiInput).setValue(buffer.toString());
+          }
+          if (UIFormMultiValueInputSet.class.isInstance(uiInput)) {
+            List<String> lstValues = new ArrayList<String>();
+            for (Value value : values) {
+              lstValues.add(value.getString());
+            }
+            ((UIFormMultiValueInputSet) uiInput).setValue(lstValues);
+          }
         } else {
-          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
-            Value[] values = node.getProperty(propertyName).getValues();
-            StringBuffer buffer = new StringBuffer();            
-            for(Value value : values) {
-              buffer.append(value).append(",");
-            }
-            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);                        
-            uiInput.setValue(buffer.toString());
-          } else {
-            String path = getNodePathByUUID(node.getProperty(propertyName).getValue().getString());
-            if (path == null) uiInput.setValue(node.getProperty(propertyName).getValue().getString());
-            else uiInput.setValue(path);  
-          }          
+          String value = node.getProperty(propertyName).getValue().getString();
+          if (node.getProperty(propertyName).getDefinition().getRequiredType() == PropertyType.REFERENCE)
+            value = getNodePathByUUID(value);
+          ((UIFormStringInput) uiInput).setValue(value);
         }
-      } 
+      }
     }
     Node childNode = getChildNode();
-    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference && !isRemoveActionField) {
       if(childNode != null) {
-        uiInput.setValue(propertyName);
+        ((UIFormInput)uiInput).setValue(propertyName);
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
-        uiInput.setValue(node.getName());
+        ((UIFormInput)uiInput).setValue(node.getName());
       } else {
-        uiInput.setValue(null);
+        ((UIFormInput)uiInput).setValue(null);
       }
     }
     renderField(name);
@@ -1015,7 +1020,15 @@ public class UIDialogForm extends UIForm {
     UIComponent uiInput = findComponentById(name);
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     Writer w = context.getWriter();
-    uiInput.processRender(context);
+    if(componentSelectors.get(name) != null && name.equals(componentSelectors.get(name).get("returnField"))) {
+      w.write("<table style=\"width: auto;\">");
+      w.write("<tr>");
+      w.write("<td>");
+      uiInput.processRender(context);
+      w.write("</td>");
+    } else {
+      uiInput.processRender(context);
+    }
     if(componentSelectors.get(name) != null) {
       Map<String,String> fieldPropertiesMap = componentSelectors.get(name);
       String fieldName = fieldPropertiesMap.get("returnField");
@@ -1025,12 +1038,18 @@ public class UIDialogForm extends UIForm {
       }
 
       if(name.equals(fieldName)) {
+        w.write("<td class=\"MultiValueContainerShow\">");
         w.write("<a style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
             + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>");
-        w.write("<a style=\"cursor:pointer;\" "
-            + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
-            + "" + getId() +"','RemoveReference','&objectId="+ fieldName +"' )\"><img class='ActionIcon Remove16x16Icon' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>");
+        /* Not need Remove action if uiInput is UIFormMultiValueInputSet */
+        if (!UIFormMultiValueInputSet.class.isInstance(uiInput))
+          w.write("<a style=\"cursor:pointer;\" "
+              + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
+              + "" + getId() +"','RemoveReference','&objectId="+ fieldName +"' )\"><img class='ActionIcon Remove16x16Icon' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>");
+        w.write("</td>");
+        w.write("</tr>");
+        w.write("</table>");
       } 
     }
   }
@@ -1158,14 +1177,20 @@ public class UIDialogForm extends UIForm {
     return repositoryService.getRepository(repositoryName);
   } 
 
+  
   private void renderMultiValuesInput(Class type, String name,String label) throws Exception{
+    addMultiValuesInput(type, name, label);
+    renderField(name);
+  }
+
+  private UIFormMultiValueInputSet addMultiValuesInput(Class type, String name,String label) throws Exception{
     UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
     uiMulti.setId(name);
     uiMulti.setName(name);
     uiMulti.setType(type);    
     addUIFormInput(uiMulti);
     if(label != null) uiMulti.setLabel(label);
-    renderField(name);
+    return uiMulti;
   }
 
   static  public class OnchangeActionListener extends EventListener<UIDialogForm> {

@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.actions.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.Session;
@@ -89,6 +90,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
           return;
         }
         String path = event.getPath();
+        if (!checkAffectedNodeType(actionNode, jcrSession, path)) {
+          jcrSession.logout();
+          return;
+        }
         Map<String, String> variables = new HashMap<String, String>();
         variables.put("initiator", userId);
         variables.put("actionName", actionName_);
@@ -107,10 +112,8 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
             }
           }
           String nodeType = node.getPrimaryNodeType().getName();
-          if (templateService.getDocumentTemplates(repository_).contains(nodeType)) {                    
-            variables.put("document-type", nodeType);
-            triggerAction(userId, variables, repository_);
-          }          
+          variables.put("document-type", nodeType);
+          triggerAction(userId, variables, repository_);
         } else {
           triggerAction(userId, variables, repository_);
         }
@@ -154,4 +157,19 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     }
     return false ;
   }    
+  
+  private boolean checkAffectedNodeType(Node actionNode, Session session, String path)
+      throws Exception {
+    if (!session.itemExists(path)) return true;
+    Item item = session.getItem(path);
+    if (!item.isNode()) return true;
+    if (!actionNode.hasProperty("")) return true;
+    Value[] nodeTypes = actionNode.getProperty("exo:affectedNodeTypeNames").getValues();
+    for (Value nodeType : nodeTypes) {
+      if (((Node) item).isNodeType(nodeType.getString()))
+        return true;
+    }
+    return false;
+  }    
+  
 }      

@@ -142,3 +142,31 @@
 .UIFolderForm {
 	padding: 10px;
 }
+
+.UINodeTypeList {
+  padding: 10px;
+}
+
+.UINodeTypeSearh {
+		padding-bottom: 5px;
+}
+
+.UINodeTypeSearh .UIBarStyle .FieldLabel {
+  padding: 0px 0px 0px 25px;
+}
+
+.UINodeTypeSearh .UIBarStyle .GroupInput {
+  padding: 0pt 5px;
+}
+
+.UINodeTypeSearh .UIBarStyle .SearchIcon {
+		background: transparent url(/ecm/skin/icons/24x24/DefaultSkin/Search.gif) no-repeat scroll left center;
+		height: 24px;
+		width: 24px;
+		padding: 10px;
+}
+
+.UIJCRExplorer .UIActionListContainer .MultiValueContainerShow {
+		padding-bottom:5px;
+		vertical-align:bottom;
+}

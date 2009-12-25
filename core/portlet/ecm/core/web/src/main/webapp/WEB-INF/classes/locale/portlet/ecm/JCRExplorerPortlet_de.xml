@@ -3068,4 +3068,9 @@
     </title>
   </UIPopupWindow>
   
+		<PopupComponent>
+    <title>
+      <UINodeTypeSelector>Select node type</UINodeTypeSelector>
+    </title>
+  </PopupComponent>
 </bundle>
