@@ -70,7 +70,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     
     TemplateService templateService = 
       (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
-    if (events.hasNext()) {
+    while (events.hasNext()) {
       Event event = events.nextEvent();  
       Node node = null;      
       Session jcrSession = null;
