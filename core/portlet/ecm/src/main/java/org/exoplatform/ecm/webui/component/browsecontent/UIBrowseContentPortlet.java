@@ -71,6 +71,12 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet');");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context;
+    PortletRequest portletRequest = portletReqContext.getRequest();
+    String userAgent = portletRequest.getProperty("User-Agent");
+    if(userAgent != null && userAgent.contains("MSIE 6.0")) {
+      context.getJavascriptManager().importJavascript("eXo.ecm.Select_fix","/ecm/javascript/") ;
+      context.getJavascriptManager().addJavascript("SelectFix.autoRepairFloatingElements(100) ;") ;
+    }
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class);
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class);
     UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class);

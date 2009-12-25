@@ -30,6 +30,7 @@ import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -79,6 +80,12 @@ public class UIJcrExplorerContainer extends UIContainer {
   public void setFlag(boolean flag) {
     this.flag = flag;
   }
+  
+  public String getUserAgent() {
+    PortletRequestContext requestContext = PortletRequestContext.getCurrentInstance();
+    PortletRequest portletRequest = requestContext.getRequest();
+    return portletRequest.getProperty("User-Agent");
+  } 
 
   public void init() throws Exception {
     PortletPreferences portletPref = getPreference();

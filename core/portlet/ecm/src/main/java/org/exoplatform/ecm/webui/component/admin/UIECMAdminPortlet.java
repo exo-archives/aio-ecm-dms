@@ -73,6 +73,12 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     }        
   }
   
+  public String getUserAgent() {
+    PortletRequestContext requestContext = PortletRequestContext.getCurrentInstance();
+    PortletRequest portletRequest = requestContext.getRequest();
+    return portletRequest.getProperty("User-Agent");
+  }   
+  
   public void initChilds() throws Exception{
     UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
     if(controlPanel == null) addChild(UIECMAdminControlPanel.class, null, null) ;
