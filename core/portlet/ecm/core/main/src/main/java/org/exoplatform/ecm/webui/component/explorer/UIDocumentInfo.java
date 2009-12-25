@@ -40,6 +40,8 @@ import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
+import javax.jcr.PropertyType;
 import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -725,6 +727,29 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         return true;
     }
     return false;
+  }
+  
+  public String getPropertyNameWithoutNamespace(String propertyName) {
+    if(propertyName.indexOf(":") > -1) {
+      return propertyName.split(":")[1];
+    }
+    return propertyName;
+  }
+  
+  public String getPropertyValue(Node node, String propertyName) throws Exception {
+    Property property = node.getProperty(propertyName);
+    if(property != null) {
+      int requiredType = property.getDefinition().getRequiredType();
+      switch (requiredType) {
+      case PropertyType.STRING:
+        return property.getString();
+      case PropertyType.DATE:
+        return getSimpleDateFormat().format(property.getDate().getTime());
+      }
+    } else {
+      if(propertyName.equals(Utils.EXO_OWNER)) return SystemIdentity.ANONIM;
+    }
+    return "";
   }
   
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {

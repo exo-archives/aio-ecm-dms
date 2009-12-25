@@ -382,7 +382,7 @@ var ListView = function() {
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		if (!rightClick) {
+		if (!rightClick && eXo.ecm.UIListView.objResize == null) {
 			resetArrayItemsSelected();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
@@ -433,7 +433,7 @@ var ListView = function() {
 					if (mask.offsetHeight > bottom) {
 						mask.style.height = bottom + "px";
 					}
-					mask.style.top = mask.storeY + "px";	
+					mask.style.top = mask.storeY -20 + "px";	
 					if (mask.offsetWidth > left) {
 						mask.style.width = left + "px";
 						mask.style.left = 0 + "px";
@@ -446,8 +446,9 @@ var ListView = function() {
 						mask.style.height = top + "px";
 						mask.style.top = 0 + "px";
 					} else {
-						mask.style.top = mask.Y + "px";
+						mask.style.top = mask.Y - 20 + "px";
 					}
+					
 					if (mask.offsetWidth > left) {
 						mask.style.width = left + "px";
 						mask.style.left = 0 + "px";
@@ -480,7 +481,7 @@ var ListView = function() {
 						mask.style.height = top + "px";
 						mask.style.top = 0 + "px";
 					} else {
-						mask.style.top = mask.Y + "px";
+						mask.style.top = mask.Y - 20 + "px";
 					}	
 					if (mask.offsetWidth > right) {
 						mask.style.width = right + "px";
@@ -511,7 +512,7 @@ var ListView = function() {
 					if (mask.offsetHeight > bottom) {
 						mask.style.height = bottom + "px";
 					}
-					mask.style.top = mask.storeY + "px";	
+					mask.style.top = mask.storeY -20 + "px";	
 					if (mask.offsetWidth > right) {
 						mask.style.width = right + "px";
 					}
@@ -787,11 +788,68 @@ var ListView = function() {
 				if (parseInt(page.getAttribute('pageAvailable')) > 1) {
 					if (view) view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
 				}
-			} else {
+		} else {
 			  if (view) view.style.height = workingArea.offsetHeight + 'px';												
-			}
-		};
+		}
+	}
 	
+	ListView.prototype.resizeColumn = function(obj, event) {
+		var event = event || window.event;
+		var previousClass = DOM.findPreviousElementByTagName(obj, "div");
+		var listGrid = DOM.findAncestorByClass(previousClass, "UIListGrid");
+		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");
+		eXo.ecm.UIListView.listColumns = [];
+		eXo.ecm.UIListView.currentMouseX = event.clientX;
+		eXo.ecm.UIListView.objResize = previousClass;
+		eXo.ecm.UIListView.objRowClazz = rowClazz;
+		eXo.ecm.UIListView.objResizeValue = previousClass.offsetWidth;
+		document.onmousemove = eXo.ecm.UIListView.resizeMouseMoveListView;
+		document.onmouseup = eXo.ecm.UIListView.resizeMouseUpListView;
+	}
+	
+	ListView.prototype.resizeMouseMoveListView = function(event) {
+		var event = event || window.event;
+		var objResize = eXo.ecm.UIListView.objResize;
+		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
+		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;
+		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+		if (eXo.ecm.UIListView.listColumns) {
+			for(var i in eXo.ecm.UIListView.listColumns) {
+				if(eXo.ecm.UIListView.listColumns[i] == objResize) {
+					eXo.ecm.UIListView.listColumns.remove(eXo.ecm.UIListView.listColumns[i]);
+				} 
+			}
+		}
+		eXo.ecm.UIListView.listColumns.push(objResize);
+		for (var i in objResizeClazz) {
+			var objColumn = DOM.findFirstDescendantByClass(objResizeClazz[i], "div", objResize.className);
+			objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+		}
+	}
+		
+	ListView.prototype.resizeMouseUpListView = function(event) {
+		document.onmousemove = null;
+		delete eXo.ecm.UIListView.currentMouseX;
+		delete eXo.ecm.UIListView.objResize;
+		delete eXo.ecm.UIListView.objClumnResize;
+	}	
+	
+	ListView.prototype.loadEffectedWidthColumn = function() {
+		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
+		if(eXo.ecm.UIListView.listColumns) {
+			for(var j in eXo.ecm.UIListView.listColumns) {
+				document.title = eXo.ecm.UIListView.listColumns[j];
+			}
+		}
+		if (objResizeClazz) {
+			for (var i in objResizeClazz) {
+				//document.title = "aaaa==" + objResizeClazz[i];
+				//var objColumn = DOM.findFirstDescendantByClass(objResizeClazz[i], "div", objResize.className);
+				//objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+			}
+		}
+		
+	}
 };
 
 eXo.ecm.UIListView = new ListView();

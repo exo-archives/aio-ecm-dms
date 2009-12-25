@@ -239,7 +239,7 @@
   padding-left: 3px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .ColumnOwner {
+.UIJCRExplorerPortlet .UIListGrid .Columnowner {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 19px; 
@@ -248,7 +248,7 @@
   padding-left: 3px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .ColumnModified {
+.UIJCRExplorerPortlet .UIListGrid .ColumndateModified {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 19px; 
@@ -257,7 +257,7 @@
   padding-left: 3px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .ColumnCreated {
+.UIJCRExplorerPortlet .UIListGrid .ColumndateCreated {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 19px; 
