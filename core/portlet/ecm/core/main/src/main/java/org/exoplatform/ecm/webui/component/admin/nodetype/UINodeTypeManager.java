@@ -37,6 +37,7 @@ public class UINodeTypeManager extends UIAbstractManager {
   final static public String EXPORT_POPUP = "NodeTypeExportPopup" ;
 
   public UINodeTypeManager() throws Exception {
+    addChild(UINodeTypeSearchForm.class, null, "NodeTypeSearchForm") ;
     addChild(UINodeTypeList.class, null, "ListNodeType") ;
   }
   

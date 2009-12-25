@@ -26,6 +26,7 @@
     </thead>
     <tbody>
       <%
+      if (nodeTypes.size() > 0) {
         def rowClass = null ;
   	    boolean even = true ;
   	    boolean found = false ;
@@ -127,7 +128,12 @@
               </td>	                    
             <% } %>
           </tr>
-      <%}%>  
+      <%  }
+  	    } else {%>
+      <tr class="OddRow"> 
+        <td colspan="6" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UINodeTypeList.msg.no-list")%></td>
+      </tr>
+      <%}%>
     </tbody>
   </table>
   <% if(totalPages>1){ %>
