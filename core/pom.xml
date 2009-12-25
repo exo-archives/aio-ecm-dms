@@ -16,6 +16,7 @@
     <module>component/cms</module>
     <module>component/deployment</module>
     <module>component/publication</module>
+		<module>component/migration</module>
     <module>connectors/fckeditor</module>
     <module>webui/dms</module>
     <module>webui/ext</module>

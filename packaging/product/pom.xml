@@ -73,6 +73,7 @@
       <dependency><groupId>org.exoplatform.jcr</groupId><artifactId>exo.jcr.framework.command</artifactId><version>${org.exoplatform.jcr.version}</version><type>jar</type></dependency><!-- 1.10.6-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.jcr</groupId><artifactId>exo.jcr.component.ftp</artifactId><version>${org.exoplatform.jcr.version}</version><type>jar</type></dependency><!-- 1.10.6-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.jcr</groupId><artifactId>exo.jcr.component.ext</artifactId><version>${org.exoplatform.jcr.version}</version><type>jar</type></dependency><!-- 1.10.6-SNAPSHOT-->
+			<dependency><groupId>org.exoplatform.jcr</groupId><artifactId>exo.jcr.framework.web</artifactId><version>${org.exoplatform.jcr.version}</version><type>jar</type></dependency><!-- 1.10.6-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.webui.ext</artifactId><version>2.5.4-SNAPSHOT</version><type>jar</type></dependency><!-- 2.5.3-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.web.portal</artifactId><version>2.5.4-SNAPSHOT</version><type>war</type></dependency><!-- 2.5.3-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ecm.dms.core</groupId><artifactId>exo.ecm.dms.core.portlet.jcr-console</artifactId><version>2.5.4-SNAPSHOT</version><type>war</type></dependency><!-- 2.5.3-SNAPSHOT-->
