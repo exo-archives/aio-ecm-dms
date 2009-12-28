@@ -83,7 +83,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
     addChild(UIWorkspaceList.class, null, null);
     addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode());
-    addChild(UISelectPathPanel.class, null, null);
+    addChild(UISelectPathPanel.class, null, null).setShowTrashHomeNode(false);
   }
   
   public String getRootTaxonomyName() { return rootTaxonomyName; }

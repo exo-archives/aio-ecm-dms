@@ -65,6 +65,7 @@ public class UISelectPathPanel extends UIContainer {
   private boolean allowPublish = false;
   private PublicationService publicationService_ = null;
   private List<String> templates_ = null;
+  private boolean _showTrashHomeNode = true;
   
   public UISelectPathPanel() throws Exception { 
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPathIterate");
@@ -74,6 +75,10 @@ public class UISelectPathPanel extends UIContainer {
   
   public boolean isAllowPublish() {
     return allowPublish;
+  }
+  
+  public void setShowTrashHomeNode(boolean value) {
+  	_showTrashHomeNode = value;
   }
 
   public void setAllowPublish(boolean allowPublish, PublicationService publicationService, List<String> templates) {
@@ -138,6 +143,7 @@ public class UISelectPathPanel extends UIContainer {
     for (NodeIterator iterator = realNode.getNodes();iterator.hasNext();) {
       Node child = iterator.nextNode();
       if(child.isNodeType("exo:hiddenable")) continue;
+      if(Utils.isTrashHomeNode(child) && !_showTrashHomeNode) continue;
       if(matchMimeType(Utils.getNodeSymLink(child)) && matchNodeType(Utils.getNodeSymLink(child))) {
         list.add(child);
       }
