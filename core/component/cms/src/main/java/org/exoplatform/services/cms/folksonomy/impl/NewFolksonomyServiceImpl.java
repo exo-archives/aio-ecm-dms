@@ -51,6 +51,8 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
@@ -699,6 +701,29 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
 		}
 		return true;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+  public List<String> getAllTagNames(String repository, String workspace,
+  		int scope, String value) throws Exception {
+  	List<String> ret = new ArrayList<String>();
+  	List<Node> tags = new ArrayList<Node>();
+  	switch(scope) {
+  		case PUBLIC	 : tags = getAllPublicTags(value, repository, workspace);
+  		break;
+  		case PRIVATE : tags = getAllPrivateTags(value, repository, workspace);
+			break;  		
+  		case GROUP 	 : tags = getAllGroupTags(value, repository, workspace);
+			break;  		
+  		case SITE		 : tags = getAllSiteTags(value, repository, workspace);
+  	}
+  	for (Node tag : tags) 
+ 			ret.add(tag.getName());
+  	Collections.sort(ret);
+  	return ret;
+  }
+	
 	
 	private void createSiteTagPath() throws Exception {
   	if (sitesTagPath == null) {

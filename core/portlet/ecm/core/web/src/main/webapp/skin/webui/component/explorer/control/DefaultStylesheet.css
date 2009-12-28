@@ -243,6 +243,19 @@
   display: none;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UITaggingForm .UIFormTextAreaInput {
+  border: solid 1px #716f64;
+  border-top: none;
+  position: absolute;
+  height: 50px;
+  width: 50%;
+  overflow: auto;
+  background: white;
+  left: -1px; /* orientation=lt */
+  right: -1px; /* orientation=rt */
+  display: none;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent .AddressItem {
   line-height: 18px;
   margin: 2px;

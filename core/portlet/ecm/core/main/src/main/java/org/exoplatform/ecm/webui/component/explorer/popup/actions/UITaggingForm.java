@@ -39,6 +39,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
+import org.exoplatform.webui.application.WebuiApplication;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -51,6 +53,7 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.UIFormTextAreaInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -72,6 +75,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UITaggingForm extends UIForm {
   
+	final static public String TAG_NAME_LIST = "tagNameList";  
   final static public String TAG_NAMES = "names";
   final static public String TAG_SCOPES = "tagScopes";
   final static public String SCOPE_VALUES = "scopeValues"; 
@@ -90,8 +94,9 @@ public class UITaggingForm extends UIForm {
   String[] users;
   
   public UITaggingForm() throws Exception {
-    UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET);
+    UIFormInputSetWithActionForTaggingForm uiInputSet = new UIFormInputSetWithActionForTaggingForm(LINKED_TAGS_SET);
     uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null));
+		uiInputSet.addUIFormInput(new UIFormTextAreaInput(TAG_NAME_LIST, TAG_NAME_LIST, null));
     
     RequestContext context = RequestContext.getCurrentInstance();
     ResourceBundle res = context.getApplicationResourceBundle();
@@ -153,6 +158,28 @@ public class UITaggingForm extends UIForm {
   	else if (Utils.GROUP.equals(scope)) return NewFolksonomyService.GROUP;
   	else if (Utils.PRIVATE.equals(scope)) return NewFolksonomyService.PRIVATE;
   	return NewFolksonomyService.SITE;
+  }
+  
+  public List<String> getAllTagNames() throws Exception {
+  	ExoContainer container = ExoContainerContext.getCurrentContainer();  	
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+		RepositoryService repositoryService	= (RepositoryService) 
+								container.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepo = repositoryService.getRepository(repository);
+    String workspace = manageableRepo.getConfiguration().getDefaultWorkspaceName();    
+    NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class);
+
+    String tagScope = this.getUIFormSelectBox(TAG_SCOPES).getValue();    
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    
+    return folksonomyService.getAllTagNames(repository, workspace, getIntValue(tagScope), getStrValue(tagScope, currentNode));
+  }
+  
+  @Override
+  public void processRender(WebuiRequestContext context) throws Exception {
+    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.disableAutocomplete('UITaggingForm');");
+  	super.processRender(context);
   }
   
   private String getStrValue(String scope, Node node) throws Exception {
@@ -400,7 +427,6 @@ public class UITaggingForm extends UIForm {
   static public class EditActionListener extends EventListener<UITaggingForm> {
     public void execute(Event<UITaggingForm> event) throws Exception {
       UITaggingForm uiForm = event.getSource();
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);      
       NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class);
       String tagScope = uiForm.getUIFormSelectBox(TAG_SCOPES).getValue();      
       List<String> memberships = Utils.getMemberships();

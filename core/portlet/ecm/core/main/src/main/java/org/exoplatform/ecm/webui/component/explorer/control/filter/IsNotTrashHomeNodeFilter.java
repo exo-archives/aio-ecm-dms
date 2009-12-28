@@ -20,7 +20,10 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
@@ -42,8 +45,11 @@ public class IsNotTrashHomeNodeFilter extends UIExtensionAbstractFilter {
   }
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context == null) return true;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    LinkManager linkManager = (LinkManager)
+    	container.getComponentInstanceOfType(LinkManager.class);
     Node currentNode = (Node) context.get(Node.class.getName());
-    return !Utils.isTrashHomeNode(currentNode);
+    return linkManager.isLink(currentNode) || !Utils.isTrashHomeNode(currentNode);
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {

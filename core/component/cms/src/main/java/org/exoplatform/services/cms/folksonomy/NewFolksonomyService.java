@@ -314,4 +314,14 @@ public interface NewFolksonomyService {
    */
   public boolean canEditTag(int scope, List<String> memberships);
   
+  /**
+   * Get all tag names which start within given scope
+   * @param repository		Repository
+	 * @param workspace			Workspace
+	 * @param scope					scope of tags
+	 * @param	value					value, according to scope, can be understood differently
+   * @return true 				If it is possible
+   */
+  public List<String> getAllTagNames(String repository, String workspace,
+  						int scope, String value) throws Exception;
 }
