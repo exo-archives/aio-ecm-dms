@@ -12,7 +12,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("ScriptAction.dialog.label.id")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move, mix:actionNodeTypeNames", "editable=false", "visible=if-not-null"] ;
+		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move, mix:affectedNodeTypes", "editable=false", "visible=if-not-null"] ;
 		        uicomponent.addMixinField("id", fieldId) ;  
 		      %>
 		    </td>

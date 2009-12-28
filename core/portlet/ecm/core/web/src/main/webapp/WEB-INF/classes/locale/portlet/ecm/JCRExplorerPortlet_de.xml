@@ -3073,4 +3073,16 @@
       <UINodeTypeSelector>Select node type</UINodeTypeSelector>
     </title>
   </PopupComponent>
+		<UIActionForm>
+  	<title>
+  		<ShowComponent>Show component</ShowComponent>
+  		<removeReference>Remove</removeReference>
+  	</title>
+  </UIActionForm>		 
+		<EditFormAction>
+  	<title>
+  		<ShowComponent>Show component</ShowComponent>
+  		<removeReference>Remove</removeReference>
+  	</title>
+  </EditFormAction>
 </bundle>

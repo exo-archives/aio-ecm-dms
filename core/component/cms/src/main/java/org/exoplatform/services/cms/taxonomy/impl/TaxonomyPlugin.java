@@ -25,9 +25,12 @@ import java.util.Set;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
@@ -48,6 +51,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 
@@ -212,6 +216,10 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
 
   private void addAction(ActionConfig.TaxonomyAction action, Node srcNode, String repository)
       throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    RepositoryService repositoryService = (RepositoryService) container
+        .getComponentInstanceOfType(RepositoryService.class);
+    ManageableRepository manageRepo = repositoryService.getRepository(repository);
     Map<String, JcrInputProperty> sortedInputs = new HashMap<String, JcrInputProperty>();
     JcrInputProperty jcrInputName = new JcrInputProperty();
     jcrInputName.setJcrPath("/node/exo:name");
@@ -259,14 +267,23 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     }
     
     Iterator mixins = action.getMixins().iterator();
+    NodeType nodeType;
+    String value;
     while (mixins.hasNext()) {
       ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
       actionNode.addMixin(mixin.getName());
       Map<String, String> props = mixin.getParsedProperties();
       Set keys = props.keySet();
+      nodeType = manageRepo.getNodeTypeManager().getNodeType(mixin.getName());
       for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
         String key = (String) iterator.next();
-        actionNode.setProperty(key, props.get(key));
+        if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
+            .isMultiple()) {
+          value = props.get(key);
+          if (value != null)
+            actionNode.setProperty(key, value.split(","));
+        } else
+          actionNode.setProperty(key, props.get(key));
       }
     }
     actionNode.getSession().save();

@@ -22,6 +22,10 @@
 	        	<name>repository</name>
 	        	<value>repository</value>
 	        </value-param>	 
+									<value-param>
+									 <name>workspace</name>
+							   <value>dms-system</value>
+									</value-param>
 	        <value-param>
 	        	<name>treeName</name>
 	        	<value>System</value>
@@ -77,6 +81,18 @@
                       <field  name="targetPath"><string>/Documents</string></field>
                       <field  name="lifecyclePhase"><string>add</string></field>
                       <field  name="roles"><string>*:/platform/administrators</string></field>
+																						<field  name="mixins">
+												            <collection type="java.util.ArrayList">
+												            	<value>
+                    						<object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
+                    							<field  name="name"><string>mix:affectedNodeTypes</string></field>
+                    							<field  name="properties">
+                    								<string>exo:affectedNodeTypeNames=ALL_DOCUMENT_TYPES</string>
+																												</field>
+																										</object>
+                    					</value>		
+												            </collection>
+												          </field>   
                     </object>  
                   </value>                                  
                 </collection>   

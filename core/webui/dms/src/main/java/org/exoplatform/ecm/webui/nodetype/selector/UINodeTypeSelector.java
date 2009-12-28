@@ -152,10 +152,9 @@ public class UINodeTypeSelector extends UIForm implements ComponentSelector {
   }
   
   private boolean getCheckedValue(List<String> values, String name) {
-    for(String value : values) {
-      if(value.equals(name)) return true ;
-    }
-    return false ;
+    if (values.contains(name))
+      return true;
+    return false;
   }
   
   public void init(int currentPage, List<String> values) throws Exception {
@@ -172,23 +171,27 @@ public class UINodeTypeSelector extends UIForm implements ComponentSelector {
       uiPageIterator_.setCurrentPage(currentPage - 1);
     else
       uiPageIterator_.setCurrentPage(currentPage);
+    UIFormCheckBoxInput<String> uiCheckbox = new UIFormCheckBoxInput<String>("ALL_DOCUMENT_TYPES", null, "ALL_DOCUMENT_TYPES");
+    uiCheckbox.setOnChange("OnChange");
+    if (values != null && values.contains(uiCheckbox.getValue())) {
+     uiCheckbox.setChecked(true);
+     if (!getSelectedNodetypes().contains(uiCheckbox.getValue())) getSelectedNodetypes().add(uiCheckbox.getValue());
+    } 
+    addChild(uiCheckbox);  
     for(NodeType nt : lstNodetype) {
       String ntName = nt.getName();
-      UIFormCheckBoxInput<String> uiCheckbox = new UIFormCheckBoxInput<String>(ntName, ntName, null);
+      uiCheckbox = new UIFormCheckBoxInput<String>(ntName, ntName, ntName);
       uiCheckbox.setOnChange("OnChange");
       if(values != null) {
-        if(getCheckedValue(values, ntName)) {
+        if(values.contains(ntName)) {
           uiCheckbox.setChecked(true);
           if (!getSelectedNodetypes().contains(ntName)) getSelectedNodetypes().add(ntName);
         }
-      } else {
-        uiCheckbox.setChecked(false);
-        if (getSelectedNodetypes().contains(ntName)) uiCheckbox.setChecked(true);
       }
-      uiCheckbox.setValue(ntName);
       removeChildById(ntName);
       addChild(uiCheckbox);  
     }
+    if (values == null) getSelectedNodetypes().clear();
   }
 
   public void setSelectedNodetypes(List<String> selectedNodetypes) {
@@ -263,19 +266,25 @@ public class UINodeTypeSelector extends UIForm implements ComponentSelector {
   }
 
   public static class OnChangeActionListener extends EventListener<UINodeTypeSelector> {
+    
+    private void updateCheckBox(List<String> selectedNodetypes, UIFormCheckBoxInput uiCheckBox) {
+      if (uiCheckBox.isChecked()) {
+        if (!selectedNodetypes.contains(uiCheckBox.getValue().toString()))
+        selectedNodetypes.add(uiCheckBox.getValue().toString());
+      } else {
+        selectedNodetypes.remove(uiCheckBox.getValue().toString());
+      }
+    }
+    
     public void execute(Event<UINodeTypeSelector> event) throws Exception {
       UINodeTypeSelector uiNodeTypeSelect = event.getSource();
       List<String> selectedNodetypes = uiNodeTypeSelect.getSelectedNodetypes();
       List<NodeType> lstNodeType = uiNodeTypeSelect.getNodeTypeList();
-      UIFormCheckBoxInput uiCheckBox = null;
+      UIFormCheckBoxInput uiCheckBox = (UIFormCheckBoxInput)uiNodeTypeSelect.getChildById("ALL_DOCUMENT_TYPES");;
+      updateCheckBox(selectedNodetypes, uiCheckBox);
       for (NodeType nodetype : lstNodeType) {
         uiCheckBox = (UIFormCheckBoxInput)uiNodeTypeSelect.getChildById(nodetype.getName());
-        if (uiCheckBox.isChecked()) {
-          if (!selectedNodetypes.contains(uiCheckBox.getValue().toString()))
-          selectedNodetypes.add(uiCheckBox.getValue().toString());
-        } else {
-          selectedNodetypes.remove(uiCheckBox.getValue().toString());
-        }
+        updateCheckBox(selectedNodetypes, uiCheckBox);
       }
       UIPopupWindow uiPopup = event.getSource().getAncestorOfType(UIPopupWindow.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup);

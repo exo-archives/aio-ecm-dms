@@ -7,7 +7,7 @@
 			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.id")%></td>
 			  <td class="FieldComponent">
 				  <%
-					 String[] fieldId = ["jcrPath=/node", "mixintype=mix:actionNodeTypeNames", "editable=false", "visible=if-not-null"] ;
+					 String[] fieldId = ["jcrPath=/node", "mixintype=mix:affectedNodeTypes", "editable=false", "visible=if-not-null"] ;
 					 uicomponent.addMixinField("id", fieldId) ;  
 				  %>
 				</td>

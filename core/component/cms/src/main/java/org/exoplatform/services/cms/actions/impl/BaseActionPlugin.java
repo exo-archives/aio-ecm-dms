@@ -45,8 +45,10 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
@@ -391,9 +393,12 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     Node srcNode = (Node) session.getItem(action.getSrcPath());
     Node actionNode = null;
     boolean firstImport = false;
-    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
-    ActionServiceContainer actionContainer = 
-      (ActionServiceContainer) container.getComponentInstanceOfType(ActionServiceContainer.class) ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    ActionServiceContainer actionContainer = (ActionServiceContainer) container
+        .getComponentInstanceOfType(ActionServiceContainer.class);
+    RepositoryService repositoryService = (RepositoryService) container
+    .getComponentInstanceOfType(RepositoryService.class);
+    ManageableRepository manageRepo = repositoryService.getRepository(getRepositoryName());
     Node actionNodeName = null;
     try {
       actionNodeName = actionContainer.getAction(srcNode, action.getName()) ;
@@ -427,14 +432,23 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         actionNode.setProperty("exo:roles", roles);
       }
       Iterator mixins = action.getMixins().iterator();
+      NodeType nodeType;
+      String value;
       while (mixins.hasNext()) {
         ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
         actionNode.addMixin(mixin.getName());
         Map<String, String> props = mixin.getParsedProperties();
         Set keys = props.keySet();
+        nodeType = manageRepo.getNodeTypeManager().getNodeType(mixin.getName());
         for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
           String key = (String) iterator.next();
-          actionNode.setProperty(key, props.get(key));
+          if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
+              .isMultiple()) {
+            value = props.get(key);
+            if (value != null)
+              actionNode.setProperty(key, value.split(","));
+          } else
+            actionNode.setProperty(key, props.get(key));
         }
       }
     } else {

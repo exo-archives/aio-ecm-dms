@@ -929,7 +929,7 @@
     </propertyDefinitions>      
   </nodeType>
 
-  <nodeType name="mix:actionNodeTypeNames" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  <nodeType name="mix:affectedNodeTypes" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
   	<propertyDefinitions>          
     <propertyDefinition name="exo:affectedNodeTypeNames" requiredType="String" autoCreated="false" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="true">

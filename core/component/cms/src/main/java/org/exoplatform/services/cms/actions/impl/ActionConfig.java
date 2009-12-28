@@ -79,6 +79,7 @@ public class ActionConfig {
     private String targetPath;
     private String lifecyclePhase;
     private String roles;
+    private List<String> affectedNodeTypes;
     private List mixins = new ArrayList(10);
     
     public String getDescription() {
@@ -152,6 +153,14 @@ public class ActionConfig {
     public void setType(String type) {
       this.type = type;
     }
+    
+    public List<String> getAffectedNodeTypes() {
+      return affectedNodeTypes;
+    }
+    public void setAffectedNodeTypes(List<String> affectedNodeTypes) {
+      this.affectedNodeTypes = affectedNodeTypes;
+    }    
+    
   }
   
   static public class Action {
@@ -166,6 +175,7 @@ public class ActionConfig {
     private String lifecyclePhase;
     private String roles;
     private String variables;
+    private List<String> affectedNodeTypes;
     private List mixins = new ArrayList(10);
     
     public String getType() { return type; }
@@ -204,6 +214,13 @@ public class ActionConfig {
     public List getMixins() { return mixins; }
     public void setMixins(List mixins) { this.mixins = mixins; }
     
+    public List<String> getAffectedNodeTypes() {
+      return affectedNodeTypes;
+    }
+    
+    public void setAffectedNodeTypes(List<String> affectedNodeTypes) {
+      this.affectedNodeTypes = affectedNodeTypes;
+    }    
   }
 
 }

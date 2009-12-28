@@ -1036,15 +1036,17 @@ public class UIDialogForm extends UIForm {
       if(fieldPropertiesMap.get("selectorIcon") != null) {
         iconClass = fieldPropertiesMap.get("selectorIcon");
       }
-
+      ResourceBundle rs = context.getApplicationResourceBundle();
+      String showComponent = rs.getString(getId().concat(".title.ShowComponent"));
+      String removeReference = rs.getString(getId().concat(".title.removeReference"));
       if(name.equals(fieldName)) {
         w.write("<td class=\"MultiValueContainerShow\">");
-        w.write("<a style=\"cursor:pointer;\" "
+        w.write("<a style=\"cursor:pointer;\" title=\"" + showComponent + "\""
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
             + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>");
         /* Not need Remove action if uiInput is UIFormMultiValueInputSet */
         if (!UIFormMultiValueInputSet.class.isInstance(uiInput))
-          w.write("<a style=\"cursor:pointer;\" "
+          w.write("<a style=\"cursor:pointer;\" title=\"" + removeReference + "\""
               + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
               + "" + getId() +"','RemoveReference','&objectId="+ fieldName +"' )\"><img class='ActionIcon Remove16x16Icon' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>");
         w.write("</td>");

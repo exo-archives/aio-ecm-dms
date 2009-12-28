@@ -65,7 +65,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
 
   @SuppressWarnings("unchecked")
   public void onEvent(EventIterator events) {
-    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
     RepositoryService repositoryService = 
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
@@ -158,18 +158,39 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     return false ;
   }    
   
+  /**
+   * Check node added/edited (if available) is one of affected node types 
+   * If exo:affectedNodeTypeNames contains value ALL_DOCUMENT_TYPES then 
+   * all document types (base on template service) will be affected
+   * @param actionNode
+   * @param session
+   * @param path
+   * @return
+   * @throws Exception
+   */
   private boolean checkAffectedNodeType(Node actionNode, Session session, String path)
       throws Exception {
     if (!session.itemExists(path)) return true;
     Item item = session.getItem(path);
     if (!item.isNode()) return true;
-    if (!actionNode.hasProperty("")) return true;
+    if (!actionNode.hasProperty("exo:affectedNodeTypeNames")) return true;
     Value[] nodeTypes = actionNode.getProperty("exo:affectedNodeTypeNames").getValues();
     for (Value nodeType : nodeTypes) {
-      if (((Node) item).isNodeType(nodeType.getString()))
+      if (nodeType.getString().equals("ALL_DOCUMENT_TYPES")) {
+        if (checkDocumentType(((Node) item).getPrimaryNodeType().getName()))
+          return true;
+      } else if (((Node) item).isNodeType(nodeType.getString()))
         return true;
     }
     return false;
-  }    
+  }
+  
+  private boolean checkDocumentType(String nodeType) throws Exception {
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
+    TemplateService templateService = (TemplateService)exoContainer.getComponentInstanceOfType(TemplateService.class);
+    if (templateService.getDocumentTemplates(repository_).contains(nodeType))
+      return true;
+    return false;
+  }
   
 }      

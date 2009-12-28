@@ -2366,5 +2366,10 @@
       </title>
     </action>
   </UIFolksonomyManager>  
-  
+		<UIActionForm>
+  	<title>
+  		<ShowComponent>Mở cửa sổ chọn</ShowComponent>
+  		<removeReference>Loại bỏ</removeReference>
+  	</title>
+  </UIActionForm>		   
 </bundle>

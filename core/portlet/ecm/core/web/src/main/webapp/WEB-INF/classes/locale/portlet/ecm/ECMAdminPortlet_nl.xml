@@ -2299,5 +2299,11 @@
 				<Previous>Previous</Previous>
 			</action>
 		</UITaxonomyTreeWorkingArea>  
+		<UIActionForm>
+  	<title>
+  		<ShowComponent>Mở cửa sổ chọn</ShowComponent>
+  		<removeReference>Loại bỏ</removeReference>
+  	</title>
+  </UIActionForm>		 
 </bundle>
 

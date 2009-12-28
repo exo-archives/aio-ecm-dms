@@ -3085,4 +3085,16 @@
       <UINodeTypeSelector>Lựa chọn kiểu node</UINodeTypeSelector>
     </title>
   </PopupComponent>  
+		<UIActionForm>
+  	<title>
+  		<ShowComponent>Mở cửa sổ chọn</ShowComponent>
+  		<removeReference>Loại bỏ</removeReference>
+  	</title>
+  </UIActionForm>		 
+		<EditFormAction>
+  	<title>
+  		<ShowComponent>Mở cửa sổ chọn</ShowComponent>
+  		<removeReference>Loại bỏ</removeReference>
+  	</title>
+  </EditFormAction>		 
 </bundle>

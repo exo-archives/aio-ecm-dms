@@ -170,3 +170,12 @@
 		padding-bottom:5px;
 		vertical-align:bottom;
 }
+
+.UIJCRExplorer .AllDocument {
+		height: 38px;
+		line-height: 38px;
+		margin: 5px 0px 5px 0px;
+		border: 1px solid #B7B7B7;
+		background: #FBFBFB none repeat scroll 0 0;
+		padding-top: 5px;
+}
