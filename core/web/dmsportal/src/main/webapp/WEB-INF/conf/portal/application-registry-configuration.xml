@@ -99,22 +99,6 @@
 								        						</collection>
 						          				</field>                 
 		                </object>
-	               </value>	               
-	               <value>                 
-		                <object type="org.exoplatform.application.registry.Application">                     
-		                  <field name="applicationName"><string>ECMAdminPortlet</string></field>
-		                  <field  name="categoryName"><string>administration</string></field>
-						          				<field name="displayName"><string>ECM Administrator</string></field>
-						          				<field name="description"><string>ECM Administrator</string></field>
-		                  <field name="applicationType"><string>portlet</string></field>
-		                  <field name="applicationGroup"><string>exoadmin</string></field>
-		                  <field name="accessPermissions">
-								        						<collection type="java.util.ArrayList" item-type="java.lang.String">													
-																								<value><string>*:/platform/administrators</string></value>
-																								<value><string>*:/organization/management/executive-board</string></value>
-								        						</collection>
-						          				</field>                 
-		                </object>
 	               </value>
 		            </collection>                               
 	            </field> 
@@ -234,10 +218,10 @@
 	        </object-param>
 	        
 	        <object-param>
-	          <name>contentManagement</name>
+	          <name>ecm</name>
 	          <description>description</description>
 	          <object type="org.exoplatform.application.registry.ApplicationCategory">
-	            <field name="name"><string>contentManagement</string></field>
+	            <field name="name"><string>ecm</string></field>
 	            <field name="displayName"><string>Content Management</string></field> 
 	            <field name="description"><string>Content Management</string></field>
              <field name="accessPermissions">
@@ -247,14 +231,30 @@
 		          	</field>                 	             
 	            <field  name="applications">
 		            	<collection type="java.util.ArrayList">
-	                <value>                 
-		                	<object type="org.exoplatform.application.registry.Application">                     
-		                  	<field name="categoryName"><string>contentManagement</string></field>
-		                  	<field name="applicationName"><string>BrowseContentPortlet</string></field>
-						          					<field name="displayName"><string>Browse Content Portlet</string></field>
-						          					<field name="description"><string>Browse Content Portlet</string></field>
+		               <value>                 
+			                <object type="org.exoplatform.application.registry.Application">                     
+			                  <field name="applicationName"><string>ECMAdminPortlet</string></field>
+			                  <field name="categoryName"><string>ecm</string></field>
+							          				<field name="displayName"><string>ECM Administrator</string></field>
+							          				<field name="description"><string>ECM Administrator</string></field>
+			                  <field name="applicationType"><string>portlet</string></field>
+			                  <field name="applicationGroup"><string>ecm</string></field>
+			                  <field name="accessPermissions">
+									        						<collection type="java.util.ArrayList" item-type="java.lang.String">													
+																									<value><string>*:/platform/administrators</string></value>
+																									<value><string>*:/organization/management/executive-board</string></value>
+									        						</collection>
+							          				</field>                 
+			                </object>
+		               </value>
+		               <value>                 
+		                	<object type="org.exoplatform.application.registry.Application">
+		                			<field name="applicationName"><string>FastContentCreatorPortlet</string></field>                     
+		                  	<field name="categoryName"><string>ecm</string></field>		                  	
+						          					<field name="displayName"><string>Fast Content Creator Portlet</string></field>
+						          					<field name="description"><string>Fast Content Creator Portlet</string></field>
 		                  	<field name="applicationType"><string>portlet</string></field>
-		                  	<field name="applicationGroup"><string>contentManagement</string></field>
+		                  	<field name="applicationGroup"><string>ecm</string></field>
 		                  	<field name="accessPermissions">
 								        							<collection type="java.util.ArrayList" item-type="java.lang.String">													
 																									<value><string>*:/platform/users</string></value>													
@@ -263,28 +263,28 @@
 		                	</object>
 	                </value>
 	                <value>                 
-		                	<object type="org.exoplatform.application.registry.Application">                     
-		                  	<field name="categoryName"><string>contentManagement</string></field>
-		                  	<field name="applicationName"><string>JCRExplorerPortlet</string></field>
-						          					<field name="displayName"><string>JCR Explorer Portlet</string></field>
-						          					<field name="description"><string>JCR Explorer Portlet</string></field>
+		                	<object type="org.exoplatform.application.registry.Application">
+		                			<field name="applicationName"><string>ContentBrowserPortlet</string></field>                     
+		                  	<field name="categoryName"><string>ecm</string></field>		                  	
+						          					<field name="displayName"><string>Content Browser Portlet</string></field>
+						          					<field name="description"><string>Content Browser Portlet</string></field>
 		                  	<field name="applicationType"><string>portlet</string></field>
-		                  	<field name="applicationGroup"><string>contentManagement</string></field>
+		                  	<field name="applicationGroup"><string>ecm</string></field>
 		                  	<field name="accessPermissions">
 								        							<collection type="java.util.ArrayList" item-type="java.lang.String">													
 																									<value><string>*:/platform/users</string></value>													
 								        							</collection>
 						          					</field>                 
 		                	</object>
-	                </value>	                
+	                </value>
 	                <value>                 
-		                	<object type="org.exoplatform.application.registry.Application">                     
-		                  	<field name="categoryName"><string>contentManagement</string></field>
-		                  	<field name="applicationName"><string>FastContentCreatorPortlet</string></field>
-						          					<field name="displayName"><string>Fast Content Creator Portlet</string></field>
-						          					<field name="description"><string>Fast Content Creator Portlet</string></field>
+		                	<object type="org.exoplatform.application.registry.Application">
+		                			<field name="applicationName"><string>FileExplorerPortlet</string></field>                     
+		                  	<field name="categoryName"><string>ecm</string></field>		                  	
+						          					<field name="displayName"><string>File Explorer Portlet</string></field>
+						          					<field name="description"><string>File Explorer Portlet</string></field>
 		                  	<field name="applicationType"><string>portlet</string></field>
-		                  	<field name="applicationGroup"><string>contentManagement</string></field>
+		                  	<field name="applicationGroup"><string>ecm</string></field>
 		                  	<field name="accessPermissions">
 								        							<collection type="java.util.ArrayList" item-type="java.lang.String">													
 																									<value><string>*:/platform/users</string></value>													
