@@ -674,15 +674,13 @@
 		  }
 		}
 	}	
-	
+
 	ECMUtils.prototype.disableAutocomplete = function(id) {
 		var clickedElement = document.getElementById(id);		
 		tagNameInput = DOM.findFirstDescendantByClass(clickedElement,"div", "UITagNameInput");
 		DOM.findDescendantById(tagNameInput, "names").setAttribute("autocomplete", "off");
 	}
 	
-	
-		
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();
