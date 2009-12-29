@@ -35,6 +35,7 @@ public class DialogFormActionListeners {
       UIDialogForm uiForm = event.getSource();
       uiForm.isRemovePreference = true;
       String referenceNodePath = event.getRequestContext().getRequestParameter(UIDialogForm.OBJECTID);
+      uiForm.releaseLock();
       if (referenceNodePath.startsWith("/")) {
         Node referenceNode = (Node)uiForm.getSession().getItem(uiForm.getNodePath() + referenceNodePath);
         if(referenceNode.hasProperty(Utils.JCR_DATA)) {
@@ -42,7 +43,7 @@ public class DialogFormActionListeners {
           uiForm.setDataRemoved(true);
         }
       } else {
-        Node currentNode = (Node) uiForm.getSession().getItem(uiForm.getNodePath());
+        Node currentNode = uiForm.getNode();
         if (currentNode.hasProperty(referenceNodePath)) {
           currentNode.setProperty(referenceNodePath, "");
           uiForm.setDataRemoved(true);
