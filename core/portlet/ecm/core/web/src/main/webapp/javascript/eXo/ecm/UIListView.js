@@ -799,6 +799,7 @@ var ListView = function() {
 		var listGrid = DOM.findAncestorByClass(previousClass, "UIListGrid");
 		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");
 		eXo.ecm.UIListView.listColumns = [];
+		eXo.ecm.UIListView.mapColumn = new eXo.core.HashMap(); 
 		eXo.ecm.UIListView.currentMouseX = event.clientX;
 		eXo.ecm.UIListView.objResize = previousClass;
 		eXo.ecm.UIListView.objRowClazz = rowClazz;

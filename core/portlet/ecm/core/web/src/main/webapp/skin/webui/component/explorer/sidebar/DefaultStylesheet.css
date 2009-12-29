@@ -13,6 +13,11 @@
   background: url('DefaultSkin/background/BgSideBar-rt.gif') repeat-y top left; /* orientation=rt */
 }
 
+.UIJCRExplorerPortlet .UISideBar .SelectItem {
+  overflow: auto;
+	height: 275px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer{
   background: url('DefaultSkin/background/ResizeTreeExplorer.gif') repeat-x;
 	height: 7px;

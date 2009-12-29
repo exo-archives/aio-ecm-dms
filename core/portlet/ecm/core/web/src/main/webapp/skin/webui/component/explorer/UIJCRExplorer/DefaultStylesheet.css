@@ -11,6 +11,9 @@
 .UIJCRExplorerPortlet .UIJCRExplorer {
 }
 
+#fileexplorer .UIApplication {
+	overflow:hidden;
+}
 
 .UIJCRExplorerPortlet .MoveNode {
 	background: url('DefaultSkin/background/MoveNode.gif') no-repeat center center;
@@ -193,8 +196,7 @@
 	*/
 
 .UIJCRExplorerPortlet .RightContainer {  
-  margin-left: 246px;
-  width: 964px;
+  width: 1964px;
   overflow: hidden;
 }
 	
