@@ -10,6 +10,12 @@
 <%
   import org.exoplatform.webui.form.UIFormRadioBoxInput;
 	import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
+
+	def context = _ctx.getRequestContext() ;
+  context.getJavascriptManager().importJavascript('eXo.ecm.AutoComplete','/ecm/javascript/') ;
+//  context.getJavascriptManager().addJavascript("eXo.ecm.AutoComplete.createTags('UITaggingForm');") ;
+	context.getJavascriptManager().addOnLoadJavascript("eXo.ecm.AutoComplete.disposeCount"); 
+	
 %>
 <div class="$uicomponent.id">
  <div class="UIFormInputSet">
@@ -23,19 +29,19 @@
       String confirm = _ctx.appRes("UIFormInputSetWithAction.msg.confirm-delete") ;
       for(inputEntry in uicomponent.getChildren()) {
         if(inputEntry.isRendered()) {
-        	if (inputEntry.getName().equals(UITaggingForm.TAG_NAME_LIST)) { %>			
-        		<div class="FormContainer UIFormTextAreaInput"> <%
+        	if (inputEntry.getName().equals(UITaggingForm.TAG_NAME_LIST)) { %>		
+        		<div class="FormContainer UIFormTextAreaInput"> 
+        			<select><%
     					for (tagName in uicomponent.getTagNames()) { %>
-    						<div class="Item" style="height:20px;" value="$tagName" 
-    								 onclick="eXo.ecm.ECMUtils.clickTagName(event, this)">
+    						<option class="Item" style="height:20px;" value="$tagName">
     							<%=tagName%>
-    						</div>  <%
-  						} %>        		
-    				</div>	<% 
+    						</option>  <%
+  						} %>
+  						</select>
+    				</div> <% 
   				} else {
 	        	if (inputEntry.getName().equals(UITaggingForm.TAG_NAMES)) {	%>
-    					<div class="FormContainer UITagNameInput" onkeyup="eXo.ecm.ECMUtils.tagKeyDown(event,this,2,1)"
-    																									  onkeydown="event.cancelBubble = true;"> <%
+    					<div class="FormContainer UITagNameInput" onkeydown="eXo.ecm.AutoComplete.createTags(event, this)"> <%
     	   	} else { %>
     	      <div class="FormContainer">  <%		
   	      }	%>

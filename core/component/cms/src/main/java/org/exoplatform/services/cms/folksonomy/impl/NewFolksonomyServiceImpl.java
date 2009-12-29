@@ -714,7 +714,8 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
   		break;
   		case PRIVATE : tags = getAllPrivateTags(value, repository, workspace);
 			break;  		
-  		case GROUP 	 : tags = getAllGroupTags(value, repository, workspace);
+  		case GROUP 	 : tags = value.indexOf(";") >= 0 ? getAllGroupTags(value.split(";"), repository, workspace) :
+  																										getAllGroupTags(value, repository, workspace);
 			break;  		
   		case SITE		 : tags = getAllSiteTags(value, repository, workspace);
   	}

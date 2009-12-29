@@ -29,7 +29,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * 5:20:02 PM
  */
 @ComponentConfig(
-	   template = "app:/groovy/webui/component/explorer/popup/action//UIFormInputSetWithActionForTaggingForm.gtmpl"
+	   template = "app:/groovy/webui/component/explorer/popup/action/UIFormInputSetWithActionForTaggingForm.gtmpl"
 	)
 public class UIFormInputSetWithActionForTaggingForm extends UIFormInputSetWithAction {
 

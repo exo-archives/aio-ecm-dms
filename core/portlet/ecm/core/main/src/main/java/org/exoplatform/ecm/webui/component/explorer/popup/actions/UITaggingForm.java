@@ -179,6 +179,7 @@ public class UITaggingForm extends UIForm {
   public void processRender(WebuiRequestContext context) throws Exception {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.disableAutocomplete('UITaggingForm');");
+//    context.getJavascriptManager().addJavascript("eXo.ecm.AutoComplete.createTags(event, this);");
   	super.processRender(context);
   }
   
@@ -190,8 +191,11 @@ public class UITaggingForm extends UIForm {
   		for (String group : Utils.getGroups())
   			ret.append(group).append(';');
   		ret.deleteCharAt(ret.length() - 1);
+  	} else if (Utils.PUBLIC.equals(scope)) {
+  		NodeHierarchyCreator nodeHierarchyCreator = (NodeHierarchyCreator)
+  				this.getApplicationComponent(NodeHierarchyCreator.class);
+			ret.append(nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH));
   	}
-  	
   	return ret.toString();
   }
   
