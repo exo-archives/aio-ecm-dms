@@ -50,7 +50,7 @@ public class IllegalDMSCharValidator implements Validator {
     } 
     for(int i = 0; i < s.length(); i ++){
       char c = s.charAt(i);
-      if(c=='[' || c==']' || c=='/') {
+      if(c=='[' || c==']' || c=='/' || c=='"') {
         Object[] args = { label };
         throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
       }

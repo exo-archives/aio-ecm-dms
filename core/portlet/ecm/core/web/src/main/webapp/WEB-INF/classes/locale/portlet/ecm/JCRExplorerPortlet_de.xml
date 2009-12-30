@@ -814,6 +814,7 @@
       <fileName-error><![CDATA[Bitte vergewissern Sie sich, dass sie die gew&auml;hlte Datei mit Hilfe des Uploadpiktogramms auf den Server hochgeladen haben.]]></fileName-error>
       <taxonomyPath-error>Bitte wählen Sie die Taxonomie!</taxonomyPath-error>
       <fileName-invalid><![CDATA[Ung&uuml;ltige Symbole in Dateinamen. Dateinamen eingeben oder andere Datei hochladen.]]></fileName-invalid>
+      <fileName-invalid-with-name><![CDATA[Ung&uuml;ltige Symbole in Dateinamen. Dateinamen eingeben oder andere Datei hochladen '{0}'.]]></fileName-invalid-with-name>      
       <fileSize-too-big><![CDATA[Datei zu gro&szlig;. Sie sollten die Datei in kleinere Teile aufteilen oder WebDav Upload benutzen.]]></fileSize-too-big>
       <name-is-exist><![CDATA[Der Name '{0}' existiert. Sie k&ouml;nnen nicht die selbe Namensdatei hochladen au&szlig;er f&uuml;r 'nt:file']]></name-is-exist>
       <contraint-violation><![CDATA[Kann Knoten '{0}' nicht zu diesem Knoten hinzuf&uuml;gen, weil er nicht Nachfolger den Vorg&auml;ngerknotentypen sein kann]]></contraint-violation>

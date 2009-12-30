@@ -420,8 +420,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           else name = name.trim();
           
           if (!passNameValidation(name)) {
-            uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, 
-                ApplicationMessage.WARNING));
+            uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid-with-name", 
+            		new Object[] {name}, ApplicationMessage.WARNING));
 						event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
 						return;
           }
@@ -702,7 +702,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   }
   
   private boolean passNameValidation(String name) throws Exception {
-  	if (name == null || name.contains("[") || name.contains("]")) 
+  	if (name == null || name.contains("[") || name.contains("]") || 
+  			name.contains("\"") || name.contains("/")) 
   		return false;
   	
   	int count = 0;

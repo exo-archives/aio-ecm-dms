@@ -856,6 +856,7 @@
       <fileName-error>Xin vui lòng chắc chắn rằng bạn đã lên tập tin đã chọn lên máy chủ bằng cách sử dụng biểu tượng tải lên.</fileName-error>
       <taxonomyPath-error>Vui lòng chọn danh mục!</taxonomyPath-error>
       <fileName-invalid>Có một số kí tự không hợp lệ trong tên tập tin. Vui lòng gõ lại tên tập tin hoặc tải một tập tin khác.</fileName-invalid>
+      <fileName-invalid-with-name>Có một số kí tự không hợp lệ trong tên tập tin '{0}'. Vui lòng gõ lại tên tập tin hoặc tải một tập tin khác.</fileName-invalid-with-name>      
       <fileSize-too-big>Kích thước của tập tin là quá lớn. Bạn cần chia thành một số tập tin nhỏ hơn hoặc sử dung tải kiểu WebDav.</fileSize-too-big>
       <name-is-exist>Tên '{0}' đã tồn tại. Bạn không thể tải một tập tin trùng tên ngoại trừ 'nt:file'</name-is-exist>
       <contraint-violation>Không thể thêm node '{0}' vào node này bởi vì nó không được phép là loại node con của node cha này.</contraint-violation>
