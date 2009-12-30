@@ -795,6 +795,7 @@ var ListView = function() {
 	
 	ListView.prototype.resizeColumn = function(obj, event) {
 		var event = event || window.event;
+		event.cancelBubble = true;
 		var previousClass = DOM.findPreviousElementByTagName(obj, "div");
 		var listGrid = DOM.findAncestorByClass(previousClass, "UIListGrid");
 		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");
@@ -812,7 +813,6 @@ var ListView = function() {
 	ListView.prototype.resizeMouseMoveListView = function(event) {
 		var event = event || window.event;
 		var objResize = eXo.ecm.UIListView.objResize;
-		document.title = "Reize column name===" + objResize.className;
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
 		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;
 		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
@@ -822,10 +822,9 @@ var ListView = function() {
 		} else {
 			eXo.ecm.UIListView.mapColumn.put(objResize.className, eXo.ecm.UIListView.objResizeValue + resizeValue + "px");
 		}
-		
 		for (var i in objResizeClazz) {
 			var objColumn = DOM.findFirstDescendantByClass(objResizeClazz[i], "div", objResize.className);
-			objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+		  objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
 		}
 	}
 		
@@ -838,16 +837,24 @@ var ListView = function() {
 	
 	ListView.prototype.loadEffectedWidthColumn = function() {
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
-		document.title = eXo.ecm.UIListView.mapColumn.length;
-		if (objResizeClazz) {
-			for (var i in objResizeClazz) {
-				document.title = "aaaa==" + objResizeClazz[i].className;
-				//var objColumn = DOM.findFirstDescendantByClass(objResizeClazz[i], "div", objResize.className);
-				//objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+		if(!eXo.ecm.UIListView.mapColumn) return;
+		var root = document.getElementById("UIDocumentInfo");
+		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
+		for(var name in eXo.ecm.UIListView.mapColumn.properties) {
+			var objColumn = DOM.findFirstDescendantByClass(listGrid, "div", name);
+			objColumn.style.width = eXo.ecm.UIListView.mapColumn.properties[name];
+			var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");
+			for (var i in rowClazz) {
+				try {
+					var objColumnInRow = DOM.findFirstDescendantByClass(rowClazz[i], "div", name);
+					objColumnInRow.style.width = eXo.ecm.UIListView.mapColumn.properties[name];
+				} catch(err) {
+				}
 			}
 		}
 		
 	}
+	
 };
 
 eXo.ecm.UIListView = new ListView();
