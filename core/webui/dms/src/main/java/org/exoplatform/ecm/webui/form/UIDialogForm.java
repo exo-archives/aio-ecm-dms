@@ -235,7 +235,7 @@ public class UIDialogForm extends UIForm {
     else isReference = false;  
     UIComponent uiInput;
     if(formActionField.isMultiValues()) {      
-      uiInput = findComponentById(name);/// remove??
+      uiInput = findComponentById(name);
       if (uiInput == null) uiInput = addMultiValuesInput(UIFormStringInput.class,name,label);
       ((UIFormMultiValueInputSet)uiInput).setEditable(formActionField.isEditable());
       if (node == null) {
@@ -346,6 +346,7 @@ public class UIDialogForm extends UIForm {
     if (findComponentById(name) == null) addUIFormInput(uiDateTime);
     if(calendarField.isVisible()) renderField(name);
   }
+  
   public void addCalendarField(String name, String[] arguments) throws Exception {
     addCalendarField(name,null,arguments);
   }
@@ -411,9 +412,15 @@ public class UIDialogForm extends UIForm {
     UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
     if(uiCheckBoxInput == null){
       uiCheckBoxInput = new UIFormCheckBoxInput(name, name, null);
-      if(defaultValue != null) {
-        uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
-        uiCheckBoxInput.setValue(defaultValue);
+      Node  node = getNode();
+      if(node != null && node.hasProperty(propertyName)) {
+        uiCheckBoxInput.setChecked(node.getProperty(propertyName).getBoolean());
+        uiCheckBoxInput.setValue(uiCheckBoxInput.isChecked());
+      } else {
+        if(defaultValue != null) {
+          uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
+          uiCheckBoxInput.setValue(defaultValue);
+        }
       }
     }
     if(formCheckBoxField.isOnchange()){
@@ -1016,6 +1023,19 @@ public class UIDialogForm extends UIForm {
     }
   }
 
+  private String getResourceBundle(WebuiRequestContext context, String key) {
+    try {
+      ResourceBundle rs = context.getApplicationResourceBundle();
+      return rs.getString(key);
+    } catch(MissingResourceException e) {
+      if (LOG.isDebugEnabled()) {
+        LOG.warn("Missing resource " + key);
+        
+      }
+      key = key.contains(".") ? key.substring(key.lastIndexOf(".") + 1) : key;
+      return key;
+    }
+  }
   public void renderField(String name) throws Exception {
     UIComponent uiInput = findComponentById(name);
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
@@ -1037,8 +1057,8 @@ public class UIDialogForm extends UIForm {
         iconClass = fieldPropertiesMap.get("selectorIcon");
       }
       ResourceBundle rs = context.getApplicationResourceBundle();
-      String showComponent = rs.getString(getId().concat(".title.ShowComponent"));
-      String removeReference = rs.getString(getId().concat(".title.removeReference"));
+      String showComponent = getResourceBundle(context, getId().concat(".title.ShowComponent"));
+      String removeReference = getResourceBundle(context, getId().concat(".title.removeReference"));
       if(name.equals(fieldName)) {
         w.write("<td class=\"MultiValueContainerShow\">");
         w.write("<a style=\"cursor:pointer;\" title=\"" + showComponent + "\""

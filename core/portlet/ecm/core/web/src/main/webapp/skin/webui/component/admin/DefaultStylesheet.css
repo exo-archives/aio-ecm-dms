@@ -852,7 +852,7 @@ float: left;
 }
 
 .UINodeTypeSearh {
-  padding: 10px;
+  padding: 0 0 10px;
 }
 
 .UINodeTypeSearh .UIBarStyle .FieldLabel {

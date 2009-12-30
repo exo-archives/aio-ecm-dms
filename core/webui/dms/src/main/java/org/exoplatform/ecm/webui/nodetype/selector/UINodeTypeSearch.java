@@ -17,10 +17,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.nodetype.selector;
 
+import org.exoplatform.ecm.webui.form.validator.NodeTypeNameValidator;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInputContainer;
 import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
@@ -34,10 +35,11 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template =  "classpath:groovy/ecm/webui/nodetype/selector/UINodeTypeSearch.gtmpl"
 )
 
-public class UINodeTypeSearch extends UIContainer {
+public class UINodeTypeSearch extends UIFormInputContainer<String> {
 
   public void init() throws Exception {
     addChild(new UIFormStringInput("NodeTypeText", "NodeTypeText", null));
+    addValidator(NodeTypeNameValidator.class);
   }
 
   public String event(String name) throws Exception {
@@ -50,5 +52,14 @@ public class UINodeTypeSearch extends UIContainer {
     } catch (Exception e) {
       return key;
     }
+  }
+
+  @Override
+  public String getValue() throws Exception { 
+    return getChild(UIFormStringInput.class).getValue(); 
+ }
+  
+  public Class getTypeValue() {
+    return String.class;
   }
 }

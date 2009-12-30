@@ -2365,5 +2365,11 @@
   		<removeReference>Loại bỏ</removeReference>
   	</title>
   </UIActionForm>		 
+  <NodeTypeNameValidator>
+    <msg>
+      <Invalid-char>There are some invalid characters. Type another value, please!</Invalid-char>
+      <empty-input>The value of field is null or empty!</empty-input>
+    </msg>
+  </NodeTypeNameValidator>	
 </bundle>
 

@@ -3098,4 +3098,10 @@
   		<removeReference>Loại bỏ</removeReference>
   	</title>
   </EditFormAction>		 
+  <NodeTypeNameValidator>
+    <msg>
+      <Invalid-char>Kí tự không hợp lệ</Invalid-char>
+      <empty-input>Giá trị bị rỗng</empty-input>
+    </msg>
+  </NodeTypeNameValidator>	
 </bundle>
