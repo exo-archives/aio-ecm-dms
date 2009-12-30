@@ -713,6 +713,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   	}
   	
   	if (count == 1) {
+			if (name.split(":").length < 2) return false;  		
   		String namespace = name.split(":")[0];
       NamespaceRegistry namespaceRegistry = getApplicationComponent(RepositoryService.class)
       .getRepository(getAncestorOfType(UIJCRExplorer.class).getRepositoryName()).getNamespaceRegistry() ;
