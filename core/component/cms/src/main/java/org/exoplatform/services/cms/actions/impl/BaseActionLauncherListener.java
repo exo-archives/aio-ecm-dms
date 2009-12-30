@@ -175,11 +175,9 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     if (!item.isNode()) return true;
     if (!actionNode.hasProperty("exo:affectedNodeTypeNames")) return true;
     Value[] nodeTypes = actionNode.getProperty("exo:affectedNodeTypeNames").getValues();
+    if (nodeTypes.length == 0) return true;
     for (Value nodeType : nodeTypes) {
-      if (nodeType.getString().equals("ALL_DOCUMENT_TYPES")) {
-        if (checkDocumentType(((Node) item).getPrimaryNodeType().getName()))
-          return true;
-      } else if (((Node) item).isNodeType(nodeType.getString()))
+      if (((Node) item).isNodeType(nodeType.getString()))
         return true;
     }
     return false;

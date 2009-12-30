@@ -714,5 +714,84 @@
 	<daily>Daily</daily>
 	<quarterly>Quarterly</quarterly>
 	<yearly>Yearly</yearly>
-	<ten-years>Ten Years</ten-years>  
+	<ten-years>Ten Years</ten-years>
+	  <SendMail>
+   <dialog>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </SendMail>
+
+  <ScriptAction>
+   <dialog>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </ScriptAction>
+  	
+  <Getmail>
+   <dialog>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Getmail>
+  	
+  <Rss>
+   <dialog>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Rss>
+  	
+  <AddMetadata>
+   <dialog>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </AddMetadata>
+		
+  <ReloadAction>
+   <dialog>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </ReloadAction>
+		
+  <Transform>
+   <dialog>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </Transform>
+
+  <EnableVersioning>
+   <dialog>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </EnableVersioning>  
 </bundle>

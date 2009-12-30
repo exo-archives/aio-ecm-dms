@@ -111,20 +111,38 @@
 				  }
 			 %>	
 			<tr>		          					
-			  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.description")%></td>
+			  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.isDeep")%></td>
 			  <td class="FieldComponent">	
 			  <% 
-					String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
-					uicomponent.addTextAreaField("description", fieldDescription) ;
+					String[] fieldDeep = ["jcrPath=/node/exo:isDeep", "defaultValues=true"];         
+					uicomponent.addCheckBoxField("isDeep", fieldDeep);
 			  %>
 			  </td>
 			</tr>
+			<tr>		          					
+  			<td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.nodetypes")%></td>
+  			<td class="FieldComponent">	
+  			<% 
+    			String[] fieldnodetypes = ["jcrPath=/node/exo:nodeTypeName", "selectorAction=selectNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];         
+    			uicomponent.addActionField("nodetypes", fieldnodetypes);
+  			%>
+  			</td>
+			</tr>
+			<tr>		          					
+			<td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.description")%></td>
+			<td class="FieldComponent">	
+			<% 
+			String[] fieldDescription = ["jcrPath=/node/exo:description"];         
+			uicomponent.addTextAreaField("description", fieldDescription);
+			%>
+			</td>
+			</tr>
       <tr>                       
-  			<td class="FieldLabel"><%=_ctx.appRes("ScriptAction.dialog.label.affectedNodeTypeNames")%></td>
+  			<td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.affectedNodeTypeNames")%></td>
         <td class="FieldComponent">
         <% 
-          String[] fieldnodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
-          uicomponent.addActionField("nodetypes", fieldnodetypes);
+          String[] fieldAffectedNodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
+          uicomponent.addActionField("affectedNodetypes", fieldAffectedNodetypes);
         %>
       </tr>		          					
 			<tr>		          					

@@ -720,60 +720,84 @@
 	<ten-years>10 năm</ten-years>
 	<read>Người dùng hành động</read>    		
 
-	<ScriptAction>
+	 <SendMail>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label>  
+   </dialog>
+  </SendMail>
+
+  <ScriptAction>
+   <dialog>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </ScriptAction>
   	
   <Getmail>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </Getmail>
   	
   <Rss>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </Rss>
   	
   <AddMetadata>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </AddMetadata>
 		
   <ReloadAction>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </ReloadAction>
 		
   <Transform>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
-     </label> 
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label>  
    </dialog>
   </Transform>
 
   <EnableVersioning>
    <dialog>
-     <label> 
-							<affectedNodeTypeNames>Các nodetype bị tác động</affectedNodeTypeNames>
+     <label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
      </label> 
    </dialog>
   </EnableVersioning>
-  	
+
 </bundle>

@@ -46,6 +46,7 @@ import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Permission;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Taxonomy;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -54,6 +55,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -79,6 +82,10 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   private ActionServiceContainer actionServiceContainer_;
 
   private InitParams             params_;
+  
+  final static String MIX_AFFECTED_NODETYPE  = "mix:affectedNodeTypes".intern();
+  final static String AFFECTED_NODETYPE      = "exo:affectedNodeTypeNames".intern();
+  final static String ALL_DOCUMENT_TYPES     = "ALL_DOCUMENT_TYPES".intern();
   
   private DMSConfiguration dmsConfiguration_;
   private static final Log LOG  = ExoLogger.getLogger(TaxonomyPlugin.class);
@@ -220,6 +227,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     RepositoryService repositoryService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);
     ManageableRepository manageRepo = repositoryService.getRepository(repository);
+    TemplateService templateService = (TemplateService) container
+        .getComponentInstanceOfType(TemplateService.class);
+
     Map<String, JcrInputProperty> sortedInputs = new HashMap<String, JcrInputProperty>();
     JcrInputProperty jcrInputName = new JcrInputProperty();
     jcrInputName.setJcrPath("/node/exo:name");
@@ -280,8 +290,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
         if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
             .isMultiple()) {
           value = props.get(key);
-          if (value != null)
+          if (value != null) {
             actionNode.setProperty(key, value.split(","));
+          }
         } else
           actionNode.setProperty(key, props.get(key));
       }

@@ -722,9 +722,21 @@
 	<ten-years>Ten Years</ten-years>
 	<read>User Action</read>
 	
+  <SendMail>
+   <dialog>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </dialog>
+  </SendMail>
+
   <ScriptAction>
    <dialog>
      <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -732,7 +744,9 @@
   	
   <Getmail>
    <dialog>
-     <label> 
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -741,6 +755,8 @@
   <Rss>
    <dialog>
      <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -748,7 +764,9 @@
   	
   <AddMetadata>
    <dialog>
-     <label> 
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -756,7 +774,9 @@
 		
   <ReloadAction>
    <dialog>
-     <label> 
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -765,6 +785,8 @@
   <Transform>
    <dialog>
      <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>
@@ -772,7 +794,9 @@
 
   <EnableVersioning>
    <dialog>
-     <label> 
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
 							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
      </label> 
    </dialog>

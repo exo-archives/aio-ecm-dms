@@ -40,6 +40,7 @@ import javax.jcr.version.OnParentVersionAction;
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -444,7 +445,20 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
   
   public void addAction(Node storeActionNode, String repository, String actionType, Map mappings) throws Exception {
-    addAction(storeActionNode, repository, actionType, true, null, null, mappings);
+    boolean isDeep = true;
+    String[] nodeTypeName = null;
+    String[] uuid = null;
+    if (mappings.containsKey("/node/exo:isDeep")) {
+      isDeep = (Boolean) ((JcrInputProperty) mappings.get("/node/exo:isDeep")).getValue();
+    }
+    if (mappings.containsKey("/node/exo:uuid")) {
+      uuid = (String[]) ((JcrInputProperty) mappings.get("/node/exo:uuid")).getValue();
+    }
+    if (mappings.containsKey("/node/exo:nodeTypeName")) {
+      nodeTypeName = (String[]) ((JcrInputProperty) mappings.get("/node/exo:nodeTypeName"))
+          .getValue();
+    }
+    addAction(storeActionNode, repository, actionType, isDeep, uuid, nodeTypeName, mappings);
   }
 
   /**

@@ -214,6 +214,24 @@
 		    </td>
 	    </tr>
 	    <tr>                        
+        <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.isDeep")%></td>
+        <td class="FieldComponent"> 
+        <% 
+          String[] fieldDeep = ["jcrPath=/node/exo:isDeep", "defaultValues=true"];         
+          uicomponent.addCheckBoxField("isDeep", fieldDeep);
+        %>
+        </td>
+      </tr>
+      <tr>                        
+        <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.nodetypes")%></td>
+        <td class="FieldComponent"> 
+        <% 
+          String[] fieldnodetypes = ["jcrPath=/node/exo:nodeTypeName", "selectorAction=selectNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];         
+          uicomponent.addActionField("nodetypes", fieldnodetypes);
+        %>
+        </td>
+      </tr>
+	    <tr>                        
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.description")%></td>
 	      <td class="FieldComponent">
 		      <%
@@ -298,8 +316,8 @@
         <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.affectedNodeTypeNames")%></td>
         <td class="FieldComponent">
         <% 
-          String[] fieldnodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
-          uicomponent.addActionField("nodetypes", fieldnodetypes);
+          String[] fieldAffectedNodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
+        uicomponent.addActionField("affectedNodetypes", fieldAffectedNodetypes);
         %>
       </tr> 
 	    <%

@@ -45,6 +45,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -54,6 +55,8 @@ import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
 import org.exoplatform.services.scheduler.PeriodInfo;
 import org.quartz.JobDataMap;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 abstract public class BaseActionPlugin implements ActionPlugin {
     
@@ -87,6 +90,10 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   final static String initiatorVar = "initiator".intern() ;
   final static String srcPathVar = "srcPath".intern() ;
   final static String executableVar = "executable".intern() ;  
+
+  final static String MIX_AFFECTED_NODETYPE  = "mix:affectedNodeTypes".intern();
+  final static String AFFECTED_NODETYPE      = "exo:affectedNodeTypeNames".intern();
+  final static String ALL_DOCUMENT_TYPES     = "ALL_DOCUMENT_TYPES".intern(); 
 
   protected Map<String, ECMEventListener> listeners_ = new HashMap<String, ECMEventListener>();
   private static final Log LOG  = ExoLogger.getLogger(BaseActionPlugin.class);
@@ -398,6 +405,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         .getComponentInstanceOfType(ActionServiceContainer.class);
     RepositoryService repositoryService = (RepositoryService) container
     .getComponentInstanceOfType(RepositoryService.class);
+    TemplateService templateService = (TemplateService) container
+    .getComponentInstanceOfType(TemplateService.class);
     ManageableRepository manageRepo = repositoryService.getRepository(getRepositoryName());
     Node actionNodeName = null;
     try {
@@ -445,8 +454,9 @@ abstract public class BaseActionPlugin implements ActionPlugin {
           if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
               .isMultiple()) {
             value = props.get(key);
-            if (value != null)
-              actionNode.setProperty(key, value.split(","));
+            if (value != null) {
+              actionNode.setProperty(key, value.split(";"));
+            }
           } else
             actionNode.setProperty(key, props.get(key));
         }
