@@ -37,6 +37,7 @@
    </properties>
 
    <dependencies>
+	<dependency><groupId>org.apache.axis</groupId><artifactId>axis-saaj</artifactId><version>1.4</version><type>jar</type></dependency>
       <dependency><groupId>org.exoplatform.ws</groupId><artifactId>exo.ws.rest.core</artifactId><version>${org.exoplatform.ws.version}</version><type>jar</type></dependency><!-- 1.3.5-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ws</groupId><artifactId>exo.ws.frameworks.servlet</artifactId><version>${org.exoplatform.ws.version}</version><type>jar</type></dependency><!-- 1.3.5-SNAPSHOT-->
       <dependency><groupId>org.exoplatform.ws</groupId><artifactId>exo.ws.commons</artifactId><version>${org.exoplatform.ws.version}</version><type>jar</type></dependency><!-- 1.3.5-SNAPSHOT-->

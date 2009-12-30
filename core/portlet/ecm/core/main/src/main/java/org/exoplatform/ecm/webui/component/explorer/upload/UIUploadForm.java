@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
+import javax.jcr.NamespaceRegistry;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -43,6 +44,7 @@ import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
+import org.exoplatform.ecm.webui.form.validator.IllegalDMSCharValidator;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
@@ -55,6 +57,7 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
@@ -133,7 +136,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
+    		addValidator(IllegalDMSCharValidator.class));
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String limitPref = portletPref.getValue(Utils.UPLOAD_SIZE_LIMIT_MB, "");
@@ -266,6 +270,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     String name = getUIStringInput(FIELD_NAME).getValue();
     if (name == null) name = fileName;
     else name = name.trim();
+    if (!passNameValidation(name)) {
+      uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", 
+      		new Object[] {name}, ApplicationMessage.WARNING));
+			event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+			return;
+    }
+    
     name = Text.escapeIllegalJcrChars(name);
     
     UIFormMultiValueInputSet uiSet = getChild(UIFormMultiValueInputSet.class);
@@ -519,13 +530,38 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     uiFormMultiValueInputSet.setValue(listTaxonomyName);
   }
   
+  private boolean passNameValidation(String name) throws Exception {
+		if (name == null || name.contains("[") || name.contains("]") || 
+				name.contains("\"") || name.contains("/")) 
+		return false;
+	
+		int count = 0;
+		for (char c : name.toCharArray()) {
+			if (c == ':') count ++;
+			if (count > 1) return false;
+		}
+	
+		if (count == 1) {
+			if (name.split(":").length < 2) return false;
+			String namespace = name.split(":")[0];
+	    NamespaceRegistry namespaceRegistry = getApplicationComponent(RepositoryService.class)
+	    .getRepository(getAncestorOfType(UIJCRExplorer.class).getRepositoryName()).getNamespaceRegistry() ;
+	    String[] prefixs = namespaceRegistry.getPrefixes();
+	    for (String prefix : prefixs)
+	    	if (namespace.equals(prefix))
+	    		return true;
+	    return false;
+  	}
+  	return true;
+  }
+  
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIUploadForm uiForm = event.getSource();
       UIUploadManager uiManager = uiForm.getParent();
       Node selectedNode = uiForm.getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
       String name = uiForm.getUploadName();
-      if(selectedNode.hasNode(name)) {
+      if (uiForm.passNameValidation(name) && selectedNode.hasNode(name)) {
         UIPopupWindow uiPopupWindow = uiManager.initPopupWhenHaveSameName();
         UIUploadBehaviorWithSameName uiUploadBehavior = 
           uiManager.createUIComponent(UIUploadBehaviorWithSameName.class, null, null);
