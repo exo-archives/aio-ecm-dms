@@ -26,6 +26,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -128,12 +129,8 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     addUIFormInput(uiToDate) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(NODETYPE_PROPERTY, NODETYPE_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
-    /*
-     * Add category
-     */
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(CATEGORY_PROPERTY, CATEGORY_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(CATEGORY_TYPE, CATEGORY_TYPE, null)) ;
-    
   }
 
   private String getContainQueryString(String property, String type, boolean isContain) {
@@ -144,6 +141,16 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
       return " fn:not(jcr:contains(@" + property.trim() + ", '"+ value.trim() + "'))" ;
     }
     return "" ;
+  }
+  
+  private String getContainSQLQueryString(String property, String type, boolean isContain) {
+    String value = getUIStringInput(type).getValue();
+    if(value == null) return "";
+    if(value.trim().length() > 0) {
+      if(isContain) return " CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
+      return " NOT CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
+    }
+    return "";
   }
   
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
@@ -169,6 +176,29 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     return "" ;
   }
   
+  private String getDateTimeSQLQueryString(String beforeDate, String afterDate, String type) {
+    Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar();
+    if(afterDate != null && afterDate.trim().length() > 0) {
+      Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar();
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"') and (documents created to '"+afterDate+"')";
+        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateCreated < TIMESTAMP '"+ISO8601.format(afDate)+"'";
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') and (documents modified to '"+afterDate+"')";
+        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateModified < TIMESTAMP '"+ISO8601.format(afDate)+"'";
+      }
+    } else {
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"')";
+        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"')";
+        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
+      }
+    }
+    return "" ;
+  }
+  
   private String getNodeTypeQueryString(String nodeTypes) {
     String advanceQuery = "" ;
     String[] arrNodeTypes = {} ;
@@ -184,18 +214,34 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     return advanceQuery;
   }
   
+  private String getNodeTypeSQLQueryString(String nodeTypes) {
+    String advanceQuery = "";
+    String[] arrNodeTypes = {};
+    if(nodeTypes.indexOf(",") > -1) arrNodeTypes = nodeTypes.split(",");
+    if(arrNodeTypes.length > 0) {
+      for(String nodeType : arrNodeTypes) {
+        if(advanceQuery.length() == 0) advanceQuery = "jcr:primaryType = '" + nodeType + "'";
+        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "jcr:primaryType = '" + nodeType + "'";
+      }
+    } else {
+      advanceQuery = "jcr:primaryType = '" + nodeTypes + "'";
+    }
+    return advanceQuery;
+  }
+  
   /**
    * Create query string for category
    * @param category
    * @return
    */
   private String getCategoryQueryString(String categoryPath) {
-    /*
-    if (categoryPath == null || categoryPath.length() == 0) return "";    
-    return ("@jcr:mixinTypes = 'mix:referenceable'");
-    */
     if (categoryPath == null || categoryPath.length() == 0) return "";
     return ("@exo:category = '" + categoryPath + "'");
+  }
+  
+  private String getCategorySQLQueryString(String categoryPath) {    
+    if (categoryPath == null || categoryPath.length() == 0) return "";
+    return ("exo:category = '" + categoryPath + "'");
   }
   
   private void addConstraint(int opt) throws Exception {
@@ -203,33 +249,54 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     String property ;
     virtualDateQuery_ = null ;
     UISimpleSearch uiSimpleSearch = ((UISearchContainer)getParent()).getChild(UISimpleSearch.class) ;
+    UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
+    Preference pref = uiExplorer.getPreference();
+    String queryType = pref.getQueryType();
     switch (opt) {
       case 0:
         property = getUIStringInput(PROPERTY1).getValue() ;
         String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
-        advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
+        else
+          advanceQuery = " CONTAINS(" + property + ", '" + value.trim() + "')" ;
         break;
       case 1:
-        property = getUIStringInput(PROPERTY2).getValue() ; 
-        advanceQuery = getContainQueryString(property, CONTAIN, true) ;
+        property = getUIStringInput(PROPERTY2).getValue() ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getContainQueryString(property, CONTAIN, true);
+        else
+          advanceQuery = getContainSQLQueryString(property, CONTAIN, true);
         break;
       case 2:
-        property = getUIStringInput(PROPERTY3).getValue() ; 
-        advanceQuery = getContainQueryString(property, NOT_CONTAIN, false) ;
+        property = getUIStringInput(PROPERTY3).getValue();
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getContainQueryString(property, NOT_CONTAIN, false);
+        else
+          advanceQuery = getContainSQLQueryString(property, NOT_CONTAIN, false);
         break;
       case 3:
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
-        advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getDateTimeQueryString(fromDate, toDate, type);
+        else
+          advanceQuery = getDateTimeSQLQueryString(fromDate, toDate, type);
         break ;
       case 4:
-        property = getUIStringInput(DOC_TYPE).getValue() ;
-        advanceQuery = getNodeTypeQueryString(property) ;
+        property = getUIStringInput(DOC_TYPE).getValue();
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getNodeTypeQueryString(property);
+        else
+          advanceQuery = getNodeTypeSQLQueryString(property);
         break;
       case 5:
-        property = getUIStringInput(CATEGORY_TYPE).getValue() ;
-        advanceQuery = getCategoryQueryString(property) ;
+        property = getUIStringInput(CATEGORY_TYPE).getValue();
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getCategoryQueryString(property);
+        else
+          advanceQuery = getCategorySQLQueryString(property);
         if (!uiSimpleSearch.getCategoryPathList().contains(property))
           uiSimpleSearch.getCategoryPathList().add(property);
         break;
@@ -367,11 +434,7 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
           return ;
         }
         uiForm.addConstraint(4) ;
-      }
-      
-      /*
-       * Add category in constrain
-       */
+      }      
       if (isCategory) {
         String category = uiForm.getUIStringInput(CATEGORY_TYPE).getValue();
         if (category == null || category.length() < 1) {

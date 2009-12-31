@@ -3103,5 +3103,13 @@
       <Invalid-char>Kí tự không hợp lệ</Invalid-char>
       <empty-input>Giá trị bị rỗng</empty-input>
     </msg>
-  </NodeTypeNameValidator>	
+  </NodeTypeNameValidator>
+  
+  <UIPreferencesForm>
+  		<label>
+						<queryType>Kiểu truy vấn</queryType>
+						<SQL>SQL</SQL>
+						<XPATH>XPATH</XPATH>  			
+  		</label>
+  </UIPreferencesForm>	
 </bundle>

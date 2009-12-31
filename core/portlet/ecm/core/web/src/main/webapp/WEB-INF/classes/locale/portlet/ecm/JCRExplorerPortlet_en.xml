@@ -3055,5 +3055,13 @@
       <Invalid-char>There are some invalid characters. Type another value, please!</Invalid-char>
       <empty-input>The value of field is null or empty!</empty-input>
     </msg>
-  </NodeTypeNameValidator>		    
+  </NodeTypeNameValidator>
+  
+  <UIPreferencesForm>
+  		<label>
+						<queryType>Query Type</queryType>
+						<SQL>SQL</SQL>
+						<XPATH>XPATH</XPATH>  			
+  		</label>
+  </UIPreferencesForm>		    
 </bundle>

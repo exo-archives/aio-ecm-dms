@@ -3058,4 +3058,11 @@
     </msg>
   </NodeTypeNameValidator>	
 		
+		<UIPreferencesForm>
+  		<label>
+						<queryType>Query Type</queryType>
+						<SQL>SQL</SQL>
+						<XPATH>XPATH</XPATH>  			
+  		</label>
+  </UIPreferencesForm>
 </bundle>
