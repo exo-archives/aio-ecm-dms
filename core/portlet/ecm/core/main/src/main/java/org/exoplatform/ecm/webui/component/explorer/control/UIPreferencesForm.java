@@ -69,6 +69,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_PROPERTY         = "property".intern();
 
   final static public String NODES_PER_PAGE         = "nodesPerPage".intern();
+  
+  final static public String FIELD_QUERY_TYPE       = "queryType".intern();
 
   public UIPreferencesForm() throws Exception {
     RequestContext context = RequestContext.getCurrentInstance();
@@ -79,6 +81,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     String sortByModifiedDate;
     String ascendingOrder;
     String descendingOrder;
+    String SQLQuery;
+    String XPathQuery;    
     try {
       sortByNodeName = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_NODENAME);
       sortByNodeType = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_NODETYPE);
@@ -86,6 +90,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       sortByModifiedDate = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_MODIFIED_DATE);
       ascendingOrder = res.getString("UIPreferencesForm.label." + Preference.ASCENDING_ORDER);
       descendingOrder = res.getString("UIPreferencesForm.label." + Preference.DESCENDING_ORDER);
+      SQLQuery = res.getString("UIPreferencesForm.label." + Preference.SQL_QUERY);
+      XPathQuery = res.getString("UIPreferencesForm.label." + Preference.XPATH_QUERY);
     } catch (Exception e) {
       sortByNodeName = Preference.SORT_BY_NODENAME;
       sortByNodeType = Preference.SORT_BY_NODETYPE;
@@ -93,6 +99,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       sortByModifiedDate = Preference.SORT_BY_MODIFIED_DATE;
       ascendingOrder = Preference.ASCENDING_ORDER;
       descendingOrder = Preference.DESCENDING_ORDER;
+      SQLQuery = Preference.SQL_QUERY;
+      XPathQuery = Preference.XPATH_QUERY;
     }    
     List<SelectItemOption<String>> sortOptions = new ArrayList<SelectItemOption<String>>();        
     sortOptions.add(new SelectItemOption<String>(sortByNodeName, Preference.SORT_BY_NODENAME));
@@ -112,6 +120,10 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     nodesPerPagesOptions.add(new SelectItemOption<String>("30", "30"));
     nodesPerPagesOptions.add(new SelectItemOption<String>("40", "40"));
     nodesPerPagesOptions.add(new SelectItemOption<String>("50", "50"));
+    
+    List<SelectItemOption<String>> queryOption = new ArrayList<SelectItemOption<String>>();
+    queryOption.add(new SelectItemOption<String>(SQLQuery, Preference.SQL_QUERY));
+    queryOption.add(new SelectItemOption<String>(XPathQuery, Preference.XPATH_QUERY));
 
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ENABLESTRUCTURE, FIELD_ENABLESTRUCTURE,
         null));
@@ -124,6 +136,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
         null));
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_ITEMS_BY_USER, 
     																							  FIELD_SHOW_ITEMS_BY_USER, null));
+    addUIFormInput(new UIFormSelectBox(FIELD_QUERY_TYPE, FIELD_QUERY_TYPE, queryOption));
     addUIFormInput(new UIFormSelectBox(FIELD_SHORTBY, FIELD_SHORTBY, sortOptions));
     addUIFormInput(new UIFormSelectBox(FIELD_ORDERBY, FIELD_ORDERBY, orderOption));
     addUIFormInput(new UIFormSelectBox(NODES_PER_PAGE, NODES_PER_PAGE, nodesPerPagesOptions));
@@ -145,6 +158,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     getUIFormSelectBox(FIELD_SHORTBY).setValue(pref.getSortType());
     getUIFormSelectBox(FIELD_ORDERBY).setValue(pref.getOrder());
     getUIFormSelectBox(NODES_PER_PAGE).setValue(Integer.toString(pref.getNodesPerPage()));
+    getUIFormSelectBox(FIELD_QUERY_TYPE).setValue(pref.getQueryType());
   }
 
   @SuppressWarnings("unused")
@@ -161,6 +175,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       pref.setShowHiddenNode(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).isChecked());
       pref.setShowItemsByUser(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER).isChecked());
       pref.setSortType(uiForm.getUIFormSelectBox(FIELD_SHORTBY).getValue());
+      pref.setQueryType(uiForm.getUIFormSelectBox(FIELD_QUERY_TYPE).getValue());
       pref.setOrder(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue());
       pref.setNodesPerPage(Integer.parseInt(uiForm.getUIFormSelectBox(NODES_PER_PAGE).getValue()));
       uiExplorer.refreshExplorer();
