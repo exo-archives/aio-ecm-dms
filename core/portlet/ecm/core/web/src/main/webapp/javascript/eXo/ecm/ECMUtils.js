@@ -592,6 +592,7 @@
     var event = event || window.event;
 		eXo.ecm.ECMUtils.currentMouseY = event.clientY;
 		var container = document.getElementById("UITreeExplorer");
+		document.title = container.offsetHeight;
 		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;		
 						
 		// The block are updated by lampt	
