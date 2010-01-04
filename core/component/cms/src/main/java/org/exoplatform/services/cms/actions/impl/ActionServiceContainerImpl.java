@@ -39,6 +39,7 @@ import javax.jcr.version.OnParentVersionAction;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
@@ -99,6 +100,17 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    * Define query statement
    */
   private static final String         ACTION_QUERY         = "//element(*, exo:action)".intern() ;
+  
+  /**
+   * Define sql query statement
+   */
+  private static final String ACTION_SQL_QUERY = 
+                "select * from exo:action where jcr:path like ".intern() ;
+  
+  /**
+   * Sql query single quote.
+   */
+  private static final String SINGLE_QUOTE = "'";
   
   /**
    * Define nodetype SCHEDULABLE_MIXIN
@@ -655,12 +667,20 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       Session session = node.getSession();
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       String queryStr;
+      
+      // In case of special character, sql query will use
       if (node.getPath() != "/") {
-        queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
+        queryStr = ACTION_SQL_QUERY + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
       } else {
         queryStr = ACTION_QUERY;
       }
-      Query query = queryManager.createQuery(queryStr, Query.XPATH);
+            
+      /*if (node.getPath() != "/") {
+        queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
+      } else {
+        queryStr = ACTION_QUERY;
+      }*/
+      Query query = queryManager.createQuery(queryStr, Query.SQL);
       QueryResult queryResult = query.execute();
       for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
         Node actionNode = iter.nextNode();
