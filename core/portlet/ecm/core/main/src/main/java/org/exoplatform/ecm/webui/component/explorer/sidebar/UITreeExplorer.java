@@ -71,7 +71,7 @@ public class UITreeExplorer extends UIContainer {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("dms.UIJCRExplorer");	
+  private static final Log LOG  = ExoLogger.getLogger(UITreeExplorer.class);	
   private TreeNode treeRoot_ ;
   public UITreeExplorer() throws Exception { 
   }
@@ -254,9 +254,9 @@ public class UITreeExplorer extends UIContainer {
       UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      try {
-    	// Check if the path exists
+      try {      
+      	Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      	// Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
         nodeFinder.getItem(session, path);
       } catch(PathNotFoundException pa) {
@@ -275,6 +275,7 @@ public class UITreeExplorer extends UIContainer {
 	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 	      return ;    	  
       } catch(RepositoryException e) {
+    		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -295,8 +296,8 @@ public class UITreeExplorer extends UIContainer {
       UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      try {
+      try {      
+      	Session session = uiExplorer.getSessionByWorkspace(workspaceName);
         // Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
         nodeFinder.getItem(session, path);
@@ -319,7 +320,8 @@ public class UITreeExplorer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(RepositoryException e) {
-        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.repository-error", null, 
+    		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 			  return ;    	  
@@ -344,6 +346,7 @@ public class UITreeExplorer extends UIContainer {
 	      uiExplorer.setSelectNode(path) ;
 	      uiExplorer.updateAjax(event);
     	} catch(RepositoryException e) {
+    		LOG.error("Repository cannot be found");
         uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

@@ -37,6 +37,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
@@ -74,6 +75,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -114,6 +116,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   final private static String COMMENT_COMPONENT        = "Comment".intern();
 
   private UIPageIterator      pageIterator_;
+  
+  private static final Log LOG  = ExoLogger.getLogger(UIDocumentInfo.class);  
 
   public UIDocumentInfo() throws Exception {
     pageIterator_ = addChild(UIPageIterator.class, null, CONTENT_PAGE_ITERATOR_ID);
@@ -634,6 +638,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      uiExplorer.updateAjax(event);
 	      event.broadcast();
       } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -676,6 +681,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -712,6 +718,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      }
 	      uiExplorer.updateAjax(event);
       } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -733,6 +740,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      uiExplorer.setLanguage(selectedLanguage);
 	      uiExplorer.updateAjax(event);
       } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -754,6 +762,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      VotingService votingService = uiComp.getApplicationComponent(VotingService.class);
 	      votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage());
       } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
             ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -774,6 +783,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript(
 	          "ajaxRedirect('" + downloadLink + "');");
 		  } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");		  	
 		    uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
 		        ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -802,6 +812,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      extendedPageIterator.setCurrentPage(page);
 	      event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);
 		  } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");		  	
 		    uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
 		        ApplicationMessage.WARNING)) ;
 			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

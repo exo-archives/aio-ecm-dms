@@ -349,10 +349,6 @@ public class UIJCRExplorer extends UIContainer {
 
   public ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-//    String repoName = currentDriveRepositoryName_ == null ?
-//    		repositoryService.getDefaultRepository().getConfiguration().getName() :
-//    		currentDriveRepositoryName_;
-//    System.out.println("repoName: " + repoName);
     return repositoryService.getRepository(currentDriveRepositoryName_);
   }
 
