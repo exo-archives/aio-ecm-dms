@@ -35,6 +35,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
@@ -269,10 +270,18 @@ public class UITreeExplorer extends UIContainer {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
       } catch(AccessDeniedException ace) {
-          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.access-denied", null, 
+          uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.access-denied", null, 
                   ApplicationMessage.WARNING)) ;
 	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 	      return ;    	  
+      } catch(RepositoryException e) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
       }
       uiExplorer.setSelectNode(workspaceName, path) ; 
       uiExplorer.updateAjax(event) ;      
@@ -309,6 +318,14 @@ public class UITreeExplorer extends UIContainer {
                                                 ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(RepositoryException e) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
       }
       if (uiExplorer.getPreference().isShowSideBar()) {
         uiTreeExplorer.buildTree(path);
@@ -319,11 +336,22 @@ public class UITreeExplorer extends UIContainer {
   static public class CollapseActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer treeExplorer = event.getSource();
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;
-      path = LinkUtils.getParentPath(path) ;
-      uiExplorer.setSelectNode(path) ;
-      uiExplorer.updateAjax(event) ;      
+      UIApplication uiApp = treeExplorer.getAncestorOfType(UIApplication.class);
+    	try {
+	      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+	      UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;
+	      path = LinkUtils.getParentPath(path) ;
+	      uiExplorer.setSelectNode(path) ;
+	      uiExplorer.updateAjax(event);
+    	} catch(RepositoryException e) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }
   }
 }

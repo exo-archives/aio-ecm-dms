@@ -2554,5 +2554,16 @@
     <tooltip>
       <AddCategory>Thêm danh mục</AddCategory>
     </tooltip>
-	 </UIActionBar>
+  </UIActionBar>
+  <UIDocumentInfo>
+  	<msg>
+  		<repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
+  	</msg>
+  </UIDocumentInfo>
+  
+  <UITreeExplorer>
+  	<msg>
+  	  <repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
+  	</msg>
+  </UITreeExplorer>  
 </bundle>
