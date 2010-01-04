@@ -755,14 +755,25 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
-      
-      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);      
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
-      uiExplorer.setSelectNode(workspaceName, uri) ;
-      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
-      uiExplorer.updateAjax(event) ;           
-      event.broadcast();      
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);      
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      try {
+	      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
+	      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
+	      uiExplorer.setSelectNode(workspaceName, uri) ;
+	      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+	      uiExplorer.updateAjax(event) ;           
+	      event.broadcast();
+      } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }
   }
 
@@ -799,10 +810,16 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.access-denied", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;          
-      } catch(Exception e) {    
-        JCRExceptionManager.process(uiApp, e);
-        return ;
-      }
+		  } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");		  	
+		    uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+		        ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+		  } catch (Exception e) {
+		    JCRExceptionManager.process(uiApp, e);
+		    return;
+		  }
     }
   }
   
@@ -810,22 +827,34 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      String sortParam = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String[] array = sortParam.split(";");
-      String order = "";
-      if (array[0].trim().equals(Preference.ASCENDING_ORDER)) order = Preference.BLUE_DOWN_ARROW;
-      else order = Preference.BLUE_UP_ARROW;
-      uicomp.setSortOrder(order);
-      uicomp.setTypeSort(array[1]);
-      
-      Preference pref = uiExplorer.getPreference();
-      if (array.length == 2) {
-        pref.setSortType(array[1].trim());
-        pref.setOrder(array[0].trim()); 
-      } else {
-        return ;
-      }       
-      uiExplorer.updateAjax(event) ;
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
+      try {
+	      String sortParam = event.getRequestContext().getRequestParameter(OBJECTID) ;
+	      String[] array = sortParam.split(";");
+	      String order = "";
+	      if (array[0].trim().equals(Preference.ASCENDING_ORDER)) order = Preference.BLUE_DOWN_ARROW;
+	      else order = Preference.BLUE_UP_ARROW;
+	      uicomp.setSortOrder(order);
+	      uicomp.setTypeSort(array[1]);
+	      
+	      Preference pref = uiExplorer.getPreference();
+	      if (array.length == 2) {
+	        pref.setSortType(array[1].trim());
+	        pref.setOrder(array[0].trim()); 
+	      } else {
+	        return ;
+	      }       
+	      uiExplorer.updateAjax(event) ;
+      } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }
   }
 
@@ -833,27 +862,63 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiDocumentInfo = event.getSource() ;
       UIJCRExplorer uiExplorer = uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class) ;
-      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiExplorer.setLanguage(selectedLanguage) ;
-      uiExplorer.updateAjax(event) ;
+      UIApplication uiApp = uiDocumentInfo.getAncestorOfType(UIApplication.class);      
+      try {
+	      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+	      uiExplorer.setLanguage(selectedLanguage) ;
+	      uiExplorer.updateAjax(event) ;
+      } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }   
   }
 
   static public class VoteActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
-      UIDocumentInfo uiComp = event.getSource() ;
-      String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
-      VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
+      UIDocumentInfo uiComp = event.getSource();
+      UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class);      
+      try {
+	      String userName = Util.getPortalRequestContext().getRemoteUser() ;
+	      double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
+	      VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
+	      votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
+      } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }
   }
 
   static public class DownloadActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
-      UIDocumentInfo uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
-      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
+      UIDocumentInfo uiComp = event.getSource();
+      UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class);      
+      try {
+	      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
+	      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
+		  } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");		  	
+		    uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+		        ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+		  } catch (Exception e) {
+		    JCRExceptionManager.process(uiApp, e);
+		    return;
+		  }
     }
   }
   
@@ -875,8 +940,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
       }
   
-      Session session = uiExplorer.getSessionByWorkspace(wsName);
+      Session session = null;
       try {
+        session = uiExplorer.getSessionByWorkspace(wsName);      	
         // Use the method getNodeByPath because it is link aware
         node = uiExplorer.getNodeByPath(srcPath, session, false);
         // Reset the path to manage the links that potentially create virtual path
@@ -889,6 +955,15 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
         return;
       }
   
@@ -977,7 +1052,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         uiDocumentInfo.timeLineSortByName = "";
         uiDocumentInfo.timeLineSortByDate = Preference.BLUE_DOWN_ARROW;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
     }
   }
   
@@ -998,11 +1072,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         uiDocumentInfo.timeLineSortByName = "";
         uiDocumentInfo.timeLineSortByDate = Preference.BLUE_UP_ARROW;
       }
-//      Collections.sort(uiDocumentInfo.todayNodes, new SearchComparator());
-//      Collections.sort(uiDocumentInfo.yesterdayNodes, new SearchComparator());
-//      Collections.sort(uiDocumentInfo.earlierThisWeekNodes, new SearchComparator());
-//      Collections.sort(uiDocumentInfo.earlierThisMonthNodes, new SearchComparator());
-//      Collections.sort(uiDocumentInfo.earlierThisYearNodes, new SearchComparator());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
     }
   }  
@@ -1010,15 +1079,27 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static public class ShowPageActionListener extends EventListener<UIPageIterator> {
     public void execute(Event<UIPageIterator> event) throws Exception {      
       UIPageIterator uiPageIterator = event.getSource() ;
-      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);      
+      UIApplication uiApp = uiPageIterator.getAncestorOfType(UIApplication.class);      
+      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);
       UITreeExplorer treeExplorer = explorer.findFirstComponentOfType(UITreeExplorer.class);
-      if(treeExplorer == null || !treeExplorer.isRendered()) return;
-      String componentId = explorer.getCurrentNode().getPath();
-      UITreeNodePageIterator extendedPageIterator = treeExplorer.getUIPageIterator(componentId);
-      if(extendedPageIterator == null) return;      
-      int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;      
-      extendedPageIterator.setCurrentPage(page);
-      event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
+      try {
+	      if(treeExplorer == null || !treeExplorer.isRendered()) return;
+	      String componentId = explorer.getCurrentNode().getPath();
+	      UITreeNodePageIterator extendedPageIterator = treeExplorer.getUIPageIterator(componentId);
+	      if(extendedPageIterator == null) return;      
+	      int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;      
+	      extendedPageIterator.setCurrentPage(page);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);
+		  } catch(RepositoryException e) {
+     		LOG.error("Repository cannot be found");		  	
+		    uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.repository-error", null, 
+		        ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+		  } catch (Exception e) {
+		    JCRExceptionManager.process(uiApp, e);
+		    return;
+		  }
     }
   } 
   

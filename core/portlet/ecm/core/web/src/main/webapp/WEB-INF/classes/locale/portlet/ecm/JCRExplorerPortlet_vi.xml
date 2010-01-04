@@ -3111,5 +3111,18 @@
 						<SQL>SQL</SQL>
 						<XPATH>XPATH</XPATH>  			
   		</label>
-  </UIPreferencesForm>	
+  </UIPreferencesForm>
+  	
+  <UIDocumentInfo>
+    <msg>
+      <repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
+    </msg>
+  </UIDocumentInfo>
+  
+  <UITreeExplorer>
+    <msg>
+      <repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
+    </msg>
+  </UITreeExplorer>  
+  	
 </bundle>

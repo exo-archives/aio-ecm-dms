@@ -3063,5 +3063,18 @@
 						<SQL>SQL</SQL>
 						<XPATH>XPATH</XPATH>  			
   		</label>
-  </UIPreferencesForm>		    
+  </UIPreferencesForm>
+  
+  <UIDocumentInfo>
+    <msg>
+      <repository-error>Error, information about repository lost!</repository-error>
+    </msg>
+  </UIDocumentInfo>
+  
+  <UITreeExplorer>
+    <msg>
+      <repository-error>Error, information about repository lost!</repository-error>
+    </msg>
+  </UITreeExplorer>
+  		    
 </bundle>
