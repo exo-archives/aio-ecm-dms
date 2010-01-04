@@ -297,7 +297,8 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
           advanceQuery = getCategoryQueryString(property);
         else
           advanceQuery = getCategorySQLQueryString(property);
-        if (!uiSimpleSearch.getCategoryPathList().contains(property))
+        String firstOperator = uiSimpleSearch.getUIStringInput(UISimpleSearch.FIRST_OPERATOR).getValue();
+        if (!uiSimpleSearch.getCategoryPathList().contains(property) && firstOperator.equals("and"))
           uiSimpleSearch.getCategoryPathList().add(property);
         break;
       default:
