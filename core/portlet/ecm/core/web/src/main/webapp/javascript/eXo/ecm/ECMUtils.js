@@ -65,6 +65,7 @@
 		var uiWorkingArea = DOM.findFirstDescendantByClass(portlet, 'div', 'UIWorkingArea');
 		if (!uiWorkingArea) return;
 		var delta = document.body.scrollHeight - eXo.core.Browser.getBrowserHeight();
+		var uiDocumentWorkspace = DOM.findFirstDescendantByClass(portlet, 'div', 'UIDocumentWorkspace');
 		if (delta < 0) {
 			var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
 			if(resizeObj.length) {
@@ -72,9 +73,9 @@
 					resizeObj[i].style.height = resizeObj[i].offsetHeight - delta + "px" ;
 				}
 			}
-			var uiDocumentWorkspace = DOM.findFirstDescendantByClass(portlet, 'div', 'UIDocumentWorkspace');
 			if (uiDocumentWorkspace) uiDocumentWorkspace.style.height = uiDocumentWorkspace.offsetHeight - delta + "px";
 		}
+		if (uiDocumentWorkspace) uiDocumentWorkspace.style.height = uiWorkingArea.offsetHeight + "px";
 		eXo.core.Browser.addOnResizeCallback('controlLayout', function(){eXo.ecm.ECMUtils.controlLayout(portletId)});
 	};
 	

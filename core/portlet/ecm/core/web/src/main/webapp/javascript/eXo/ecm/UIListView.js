@@ -853,8 +853,9 @@ var ListView = function() {
 	
 	ListView.prototype.loadEffectedWidthColumn = function() {
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
-		var root = document.getElementById("UIDocumentInfo");
+		var root = document.getElementById("UIDocumentWorkspace");
 		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
+		root.style.overflow = "hidden";
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
 		if(eXo.ecm.UIListView.widthListView) {
 			rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
