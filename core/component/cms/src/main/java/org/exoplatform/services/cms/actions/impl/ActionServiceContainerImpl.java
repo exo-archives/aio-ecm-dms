@@ -106,7 +106,22 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    * Define sql query statement
    */
   private static final String ACTION_SQL_QUERY = 
-                "select * from exo:action where jcr:path like ".intern() ;
+                "select * from exo:action".intern() ;
+  
+  /**
+   * Define sql append query operator.
+   */
+  private static final String WHERE_OPERATOR = " where".intern() ;
+  
+  /**
+   * Define sql path.
+   */
+  private static final String JCR_PATH = " jcr:path".intern() ;
+  
+  /**
+   * Define sql like operator.
+   */
+  private static final String LIKE_OPERATOR = " like".intern() ;
   
   /**
    * Sql query single quote.
@@ -678,7 +693,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       
       // In case of special character, sql query will use
       if (node.getPath() != "/") {
-        queryStr = ACTION_SQL_QUERY + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
+        queryStr = ACTION_SQL_QUERY + WHERE_OPERATOR + JCR_PATH + LIKE_OPERATOR 
+                                      + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
       } else {
         queryStr = ACTION_SQL_QUERY;
       }
@@ -687,7 +703,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
       } else {
         queryStr = ACTION_QUERY;
-      }*/
+      }      
+      Query query = queryManager.createQuery(queryStr, Query.XPATH); */
       Query query = queryManager.createQuery(queryStr, Query.SQL);
       QueryResult queryResult = query.execute();
       for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
