@@ -35,7 +35,6 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
-import javax.jcr.observation.Event;
 import javax.jcr.observation.ObservationManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -148,7 +147,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   
   public void initiateActionObservation(Node storedActionNode, String repository) throws Exception {
     String actionName = storedActionNode.getProperty("exo:name").getString() ;
-    String[] lifecyclePhase = storedActionNode.hasProperty("exo:uuid") ? parseValuesToArray(storedActionNode
+    String[] lifecyclePhase = storedActionNode.hasProperty("exo:lifecyclePhase") ? parseValuesToArray(storedActionNode
         .getProperty("exo:lifecyclePhase").getValues())
         : null;
     if (DMSEvent.getEventTypes(lifecyclePhase) == DMSEvent.READ)
