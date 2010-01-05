@@ -136,7 +136,11 @@
 	                  <field  name="description"><string>content publishing workflow</string></field>
 	                  <field  name="srcWorkspace"><string>collaboration</string></field>
 	                  <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
-	                  <field  name="lifecyclePhase"><string>add</string></field>                      
+																			<field  name="lifecyclePhase">
+																				<collection type="java.util.ArrayList">
+									           	<value><string>node_added</string></value>		
+									           </collection>
+																			</field>
 	                  <field  name="roles"><string>*:/platform/users</string></field>                     
 	                  <field  name="variables">
 	                    <string>exo:supervisor=*:/organization/management/executive-board;exo:validator=*:/platform/administrators</string>

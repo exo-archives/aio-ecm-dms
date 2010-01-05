@@ -56,8 +56,6 @@ import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
  * quang.ly@exoplatform.com xxx5669@gmail.com Mar 31, 2009
@@ -242,7 +240,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     
     JcrInputProperty jcrInputLife = new JcrInputProperty();
     jcrInputLife.setJcrPath("/node/exo:lifecyclePhase");
-    jcrInputLife.setValue(action.getLifecyclePhase());
+    jcrInputLife.setValue(action.getLifecyclePhase().toArray(new String[0]));
     sortedInputs.put("/node/exo:lifecyclePhase", jcrInputLife);
     
     JcrInputProperty jcrInputHomePath = new JcrInputProperty();

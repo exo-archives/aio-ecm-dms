@@ -19,7 +19,7 @@
 	  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.initEvent('$viewComponentId')");
 	  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.setHeight");
 %>
-	<div id="$uicomponent.id" class="UICoverFlowView">
+<div id="$uicomponent.id" class="UICoverFlowView">
 		<div class="TLBox">
 			<div class="TRBox">
 				<div class="TMBox"><span></span></div>
@@ -176,4 +176,4 @@
 			</div>
 		</div>	
 	</div>
-<%}%>	
+	<%}%>	

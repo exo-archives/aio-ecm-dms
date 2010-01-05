@@ -12,7 +12,7 @@
       <component-plugin>
         <name>addTemplates</name>
         <set-method>addTemplates</set-method>
-        <type>org.exoplatform.services.cms.templates.impl.TemplatePlugin</type>    
+        <type>org.exoplatform.services.cms.templates.impl.TemplatePlugin</type>
         <init-params>
 	        <value-param>
 	        	<name>autoCreateInNewRepository</name>

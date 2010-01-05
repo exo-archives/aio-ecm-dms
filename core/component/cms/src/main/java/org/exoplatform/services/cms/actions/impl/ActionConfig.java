@@ -77,7 +77,7 @@ public class ActionConfig {
     private String homePath;
     private String targetWspace;
     private String targetPath;
-    private String lifecyclePhase;
+    private List<String> lifecyclePhase = new ArrayList<String>();
     private String roles;
     private List<String> affectedNodeTypes;
     private List mixins = new ArrayList(10);
@@ -98,14 +98,14 @@ public class ActionConfig {
       this.homePath = homePath;
     }
     
-    public String getLifecyclePhase() {
+    public List<String> getLifecyclePhase() {
       return lifecyclePhase;
     }
-    
-    public void setLifecyclePhase(String lifecyclePhase) {
+
+    public void setLifecyclePhase(List<String> lifecyclePhase) {
       this.lifecyclePhase = lifecyclePhase;
     }
-    
+
     public List getMixins() {
       return mixins;
     }
@@ -170,9 +170,9 @@ public class ActionConfig {
     private String srcWorkspace;
     private String srcPath;
     private boolean isDeep = true;
-    private String uuid;
-    private String nodeTypeName;
-    private String lifecyclePhase;
+    private List<String> uuid = new ArrayList<String>();
+    private List<String> nodeTypeName = new ArrayList<String>();
+    private List<String> lifecyclePhase = new ArrayList<String>();
     private String roles;
     private String variables;
     private List<String> affectedNodeTypes;
@@ -199,14 +199,14 @@ public class ActionConfig {
     public boolean isDeep() { return isDeep; }
     public void setDeep(boolean isDeep) { this.isDeep = isDeep; }
     
-    public String getUuid() { return uuid; }
-    public void setUuid(String uuid) { this.uuid = uuid; }
+    public List<String> getUuid() { return uuid; }
+    public void setUuid(List<String> uuid) { this.uuid = uuid; }
     
-    public String getNodeTypeName() { return nodeTypeName; }
-    public void setNodeTypeName(String nodeTypeName) { this.nodeTypeName = nodeTypeName; }
+    public List<String> getNodeTypeName() { return nodeTypeName; }
+    public void setNodeTypeName(List<String> nodeTypeName) { this.nodeTypeName = nodeTypeName; }
     
-    public String getLifecyclePhase() { return lifecyclePhase; }
-    public void setLifecyclePhase(String lifecyclePhase) { this.lifecyclePhase = lifecyclePhase; }
+    public List<String> getLifecyclePhase() { return lifecyclePhase; }
+    public void setLifecyclePhase(List<String> lifecyclePhase) { this.lifecyclePhase = lifecyclePhase; }
 
     public String getRoles() { return roles; }
     public void setRoles(String roles) { this.roles = roles; }

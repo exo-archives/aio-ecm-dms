@@ -25,16 +25,18 @@
 				  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.lifecycle")%></td>
 				  <td class="FieldComponent">				  
 				  <% 
-						String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
+						String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", 
+						                           "options=read,schedule,node_added,node_removed,property_added,property_removed,property_changed",
+						                           "multiValues=true", "onchange=true","size=5"] ;
 						uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ;
 				  %>				  
 				  </td>
 				</tr>
 								
 				<%
-					String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;					
+					def selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;					
 					if(selectValue != null) {		
-						if(selectValue.equals("schedule")) { 
+						if(selectValue.contains("schedule")) { 
 				%>		<tr>
 							  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.schedule-type")%></td>	          					
 							  <td class="FieldComponent">	

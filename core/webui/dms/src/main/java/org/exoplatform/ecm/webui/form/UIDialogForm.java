@@ -531,6 +531,9 @@ public class UIDialogForm extends UIForm {
     String propertyName = getPropertyName(jcrPath);
     if(node != null && arrNodes.length == 4) childNode = node.getNode(arrNodes[2]);    
     if(formSelectBoxField.isMultiValues()) {
+      if (formSelectBoxField.getSize() != null && StringUtils.isAlphanumeric(formSelectBoxField.getSize())) {
+        uiSelectBox.setSize(Integer.parseInt(formSelectBoxField.getSize()));
+      }
       uiSelectBox.setMultiple(true);      
       StringBuffer buffer = new StringBuffer();
       if(childNode != null) {      
@@ -543,14 +546,21 @@ public class UIDialogForm extends UIForm {
       } else {
         if(node != null && node.hasProperty(propertyName)) {
           List<String> valueList = new ArrayList<String>();
-          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+          if(node.getProperty(propertyName).getDefinition().isMultiple() && (!onchange.equals("true") || !isOnchange)) {
             Value[] values = node.getProperty(propertyName).getValues();
             for(Value value : values) {
               buffer.append(value.getString()).append(",");
             }          
           } else if(onchange.equals("true") && isOnchange) {
-            String values = uiSelectBox.getValue();
-            buffer.append(values).append(",");
+            if (uiSelectBox.isMultiple()) {
+              String[] values = uiSelectBox.getSelectedValues();
+              for (String value : values) {
+                buffer.append(value).append(",");
+              }
+            } else {
+              String values = uiSelectBox.getValue();
+              buffer.append(values).append(",");
+            }
           } else {
             Value[] values = node.getProperty(propertyName).getValues();          
             for(Value value : values) {
@@ -961,6 +971,12 @@ public class UIDialogForm extends UIForm {
   public String getSelectBoxFieldValue(String name) {
     UIFormSelectBox uiSelectBox = findComponentById(name);
     if (uiSelectBox != null) return uiSelectBox.getValue();
+    return null;
+  }
+
+  public List<String> getSelectedBoxFieldValue(String name) {
+    UIFormSelectBox uiSelectBox = findComponentById(name);
+    if (uiSelectBox != null) return Arrays.asList(uiSelectBox.getSelectedValues());
     return null;
   }
 

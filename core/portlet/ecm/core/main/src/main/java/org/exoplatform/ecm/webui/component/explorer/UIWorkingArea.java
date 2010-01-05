@@ -336,8 +336,7 @@ public class UIWorkingArea extends UIContainer {
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     String userName = context.getRemoteUser();
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class);
-    List<Node> unsafeActions = actionContainer.getCustomActionsNode(node,
-        ActionServiceContainer.READ_PHASE);
+    List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, "read");
     if (unsafeActions == null)
       return new ArrayList<Node>();
     for (Node actionNode : unsafeActions) {

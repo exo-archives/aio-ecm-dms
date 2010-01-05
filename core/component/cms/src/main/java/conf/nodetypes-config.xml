@@ -52,7 +52,7 @@
         <valueConstraints/>
       </propertyDefinition>
       <propertyDefinition name="exo:lifecyclePhase" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
+        onParentVersion="COPY" protected="false" multiple="true">
         <valueConstraints/>
         <defaultValues>
           <defaultValue>add</defaultValue>

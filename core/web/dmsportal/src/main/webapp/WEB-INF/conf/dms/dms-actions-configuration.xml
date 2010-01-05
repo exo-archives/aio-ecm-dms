@@ -29,7 +29,12 @@
                       <field  name="description"><string>send a notification mail</string></field>
                       <field  name="srcWorkspace"><string>collaboration</string></field>
                       <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
-                      <field  name="lifecyclePhase"><string>read</string></field>
+                      <field  name="isDeep"><boolean>true</boolean></field>
+                      <field  name="lifecyclePhase">
+																							<collection type="java.util.ArrayList">
+												           	<value><string>read</string></value>		
+												           </collection>
+																						</field>
                       <field  name="roles"><string>*:/platform/administrators</string></field>
                       <field  name="variables">
                         <string>exo:to=benjamin.mestrallet@exoplatform.com</string>

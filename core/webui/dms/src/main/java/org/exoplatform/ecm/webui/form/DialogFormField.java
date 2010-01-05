@@ -52,6 +52,7 @@ public abstract class DialogFormField {
   protected final String DEFAULT_VALUES = "defaultValues" + SEPARATOR ;
   protected final String ROW_SIZE = "rows" + SEPARATOR ;
   protected final String COL_SIZE = "columns" + SEPARATOR ;
+  protected final String SIZE = "size" + SEPARATOR ;
   
   protected String editable;
   protected String defaultValue;
@@ -76,6 +77,7 @@ public abstract class DialogFormField {
   protected String groovyScript;
   protected String[] scriptParams;
   protected String type;
+  protected String size;
   
   public DialogFormField(String name, String label, String[] arguments) {
     HashMap<String,String> parsedArguments = parseArguments(arguments) ;
@@ -99,6 +101,7 @@ public abstract class DialogFormField {
     this.onchange = parsedArguments.get(ONCHANGE);
     this.groovyScript = parsedArguments.get(SCRIPT);
     this.type = parsedArguments.get(TYPE);    
+    this.size = parsedArguments.get(SIZE);    
     String scriptParam = parsedArguments.get(SCRIPT_PARAMS);
     if(scriptParam != null) {
       scriptParams = scriptParam.split(",");
@@ -205,6 +208,9 @@ public abstract class DialogFormField {
 
   public String getType() { return type; }
   public void setType(String type) { this.type = type;}
+
+  public String getSize() { return size; }
+  public void setSize(String size) { this.size = size;}
   
   public boolean isMultiValues() { return "true".equalsIgnoreCase(multiValues); }
   public boolean isReference() { return "true".equalsIgnoreCase(reference); }
@@ -264,6 +270,9 @@ public abstract class DialogFormField {
         map.put(MIXINTYPE, value); continue;
       } else if(argument.startsWith(NODETYPE)) {
         map.put(NODETYPE, value) ;
+        continue ;
+      } else if(argument.startsWith(SIZE)) {
+        map.put(SIZE, value) ;
         continue ;
       } else {
         map.put(DEFAULT_VALUES,argument);

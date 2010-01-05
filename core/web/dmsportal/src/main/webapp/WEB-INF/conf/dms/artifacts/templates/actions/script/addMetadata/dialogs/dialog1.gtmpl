@@ -24,10 +24,12 @@
 			<tr>
 			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.lifecycle")%></td>
 			  <td class="FieldComponent">
-				  <% 
-					String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add"] ;
-					uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
-				  %>
+			  <% 
+          String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", 
+                                     "options=read,schedule,node_added,node_removed,property_added,property_removed,property_changed",
+                                     "multiValues=true", "onchange=true","size=5"] ;
+          uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ;
+        %>
 				</td>
 			</tr>	
 			<tr>		          					

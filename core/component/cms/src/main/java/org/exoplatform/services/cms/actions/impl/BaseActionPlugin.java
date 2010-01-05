@@ -45,6 +45,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.actions.DMSEvent;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -56,14 +57,12 @@ import org.exoplatform.services.scheduler.JobSchedulerService;
 import org.exoplatform.services.scheduler.PeriodInfo;
 import org.quartz.JobDataMap;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 abstract public class BaseActionPlugin implements ActionPlugin {
     
   final static String JOB_NAME_PREFIX = "activate_".intern() ;
   final static String PERIOD_JOB = "period".intern() ;
   final static String CRON_JOB = "cron".intern() ;
-
+  
   final static String SCHEDULABLE_INFO_MIXIN = "exo:schedulableInfo".intern() ;
   final static String SCHEDULED_INITIATOR = "exo:scheduledInitiator".intern() ;
   final static String JOB_NAME_PROP = "exo:jobName".intern() ;
@@ -118,58 +117,55 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String actionName = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:name")).getValue();    
     mappings.remove("/node/exo:name");
-    String type = 
-      (String) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();               
+    String[] type = 
+      (String[]) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();
+    if (DMSEvent.getEventTypes(type) == DMSEvent.SCHEDULE)
+      return;
     String actionExecutable = getActionExecutable(actionType);
-    if (ActionServiceContainer.READ_PHASE.equals(type)) return;    
-    else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
-      scheduleActionActivationJob(repository, srcWorkspace, srcPath, actionName,
-          actionType, actionExecutable, mappings) ;
-    }else {
-      Map<String,Object> variables = getExecutionVariables(mappings) ;
-      ECMEventListener listener = createEventListener(actionName, actionExecutable, repository,
-          srcWorkspace, srcPath, variables, actionType);
-      Session session = getSystemSession(repository, srcWorkspace);
-      ObservationManager obsManager = session.getWorkspace().getObservationManager();
-    //TODO all actions are stored at srcNode/exo:actions node
-      String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;
-      if(listeners_.containsKey(listenerKey)){
-        obsManager.removeEventListener(listeners_.get(listenerKey));
-        listeners_.remove(listenerKey);      
-      }
-      
-      if (ActionServiceContainer.ADD_PHASE.equals(type)) {
-        obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeNames, false);
-      } else if (ActionServiceContainer.REMOVE_PHASE.equals(type)) {
-        obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeNames, false);
-      } else {
-        obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeNames, false);
-      }
-      
-      session.logout();
-      listeners_.put(listenerKey, listener);
-    }        
+    if (DMSEvent.getEventTypes(type) == DMSEvent.READ) return;
+    if ((DMSEvent.getEventTypes(type) & DMSEvent.SCHEDULE) > 0) {
+      scheduleActionActivationJob(repository, srcWorkspace, srcPath, actionName, actionType,
+          actionExecutable, mappings);
+    }
+    if (DMSEvent.getEventTypes(type) == DMSEvent.SCHEDULE)
+      return;
+    Map<String, Object> variables = getExecutionVariables(mappings);
+    ECMEventListener listener = createEventListener(actionName, actionExecutable, repository,
+        srcWorkspace, srcPath, variables, actionType);
+    Session session = getSystemSession(repository, srcWorkspace);
+    ObservationManager obsManager = session.getWorkspace().getObservationManager();
+    // TODO all actions are stored at srcNode/exo:actions node
+    String listenerKey = repository + ":" + srcPath + "/exo:actions/" + actionName;
+    if (listeners_.containsKey(listenerKey)) {
+      obsManager.removeEventListener(listeners_.get(listenerKey));
+      listeners_.remove(listenerKey);
+    }
+    obsManager.addEventListener(listener, DMSEvent.getEventTypes(type), srcPath, isDeep, uuid,
+        nodeTypeNames, false);
+    session.logout();
+    listeners_.put(listenerKey, listener);
   }
   
   public void initiateActionObservation(Node storedActionNode, String repository) throws Exception {
     String actionName = storedActionNode.getProperty("exo:name").getString() ;
-    String lifecyclePhase = storedActionNode.getProperty("exo:lifecyclePhase").getString();
+    String[] lifecyclePhase = storedActionNode.hasProperty("exo:uuid") ? parseValuesToArray(storedActionNode
+        .getProperty("exo:lifecyclePhase").getValues())
+        : null;
+    if (DMSEvent.getEventTypes(lifecyclePhase) == DMSEvent.READ)
+      return;
     String[] uuid = storedActionNode.hasProperty("exo:uuid") ? 
                      parseValuesToArray(storedActionNode.getProperty("exo:uuid").getValues())
                      : null;
     boolean isDeep = storedActionNode.hasProperty("exo:isDeep") ?
                       storedActionNode.getProperty("exo:isDeep").getBoolean()
                       : true;
-    String[] nodeTypeName = storedActionNode.hasProperty("exo:nodeTypeName") ?
+    String[] nodeTypeNames = storedActionNode.hasProperty("exo:nodeTypeName") ?
                              parseValuesToArray(storedActionNode.getProperty("exo:nodeTypeName").getValues())
                              : null;
     String actionType = storedActionNode.getPrimaryNodeType().getName() ;
     String srcWorkspace = storedActionNode.getSession().getWorkspace().getName() ;
     //TODO all actions are stored in srcNode/exo:actions
     String srcPath = storedActionNode.getParent().getParent().getPath() ;    
-    if (ActionServiceContainer.READ_PHASE.equals(lifecyclePhase)) {
-      return;
-    }    
     Map<String,Object> variables = new HashMap<String,Object>() ;
     NodeType nodeType = storedActionNode.getPrimaryNodeType() ;
     PropertyDefinition[] defs = nodeType.getPropertyDefinitions() ;
@@ -195,13 +191,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       obsManager.removeEventListener(listeners_.get(listenerKey));
       listeners_.remove(listenerKey) ;      
     }
-    if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
-      obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeName, false);
-    } else if (ActionServiceContainer.REMOVE_PHASE.equals(lifecyclePhase)) {
-      obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeName, false);
-    } else {
-      obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeName, false);
-    }
+    obsManager.addEventListener(listener, DMSEvent.getEventTypes(lifecyclePhase), srcPath, isDeep, uuid,
+        nodeTypeNames, false);
     session.logout();
     listeners_.put(listenerKey, listener);
   }
@@ -431,11 +422,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       actionNode.setProperty("exo:description", action.getDescription());
       actionNode.setProperty("exo:isDeep", action.isDeep());
       if (action.getUuid() != null)
-        actionNode.setProperty("exo:uuid", StringUtils.split(action.getUuid(), ";"));
+        actionNode.setProperty("exo:uuid", action.getUuid().toArray(new String[0]));
       if (action.getNodeTypeName() != null)
-        actionNode.setProperty("exo:nodeTypeName", StringUtils.split(action.getNodeTypeName(), ";"));
+        actionNode.setProperty("exo:nodeTypeName", action.getNodeTypeName().toArray(new String[0]));
       if (action.getLifecyclePhase() != null)
-        actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
+        actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase().toArray(new String[0]));
       if (action.getRoles() != null) {
         String[] roles = StringUtils.split(action.getRoles(), ";");
         actionNode.setProperty("exo:roles", roles);
@@ -603,7 +594,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String[] valueToString = new String[values.length];
     int i = 0;
     for(Value value : values) {
-      valueToString[i++] = value.toString();
+      valueToString[i++] = value.getString();
     }
     return valueToString;
   }

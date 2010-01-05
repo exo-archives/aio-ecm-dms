@@ -28,6 +28,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
@@ -39,11 +40,11 @@ import javax.jcr.version.OnParentVersionAction;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.actions.DMSEvent;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -377,8 +378,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     for (NodeIterator iter = actionStorage.getNodes(); iter.hasNext();) {
       Node tmpNode = iter.nextNode();
       if (tmpNode.isNodeType(ACTION)
-          && (lifecyclePhase == null || lifecyclePhase.equals(tmpNode.getProperty(
-              LIFECYCLE_PHASE_PROP).getString()))) {
+          && (lifecyclePhase == null || parseValuesToList(
+              tmpNode.getProperty(LIFECYCLE_PHASE_PROP).getValues()).contains(lifecyclePhase))) {
         actions.add(tmpNode);
       }
     }
@@ -399,7 +400,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   public void removeAction(Node node, String actionName, String repository) throws Exception {
     if(!node.isNodeType(ACTIONABLE)) return  ;    
     Node action2Remove = getAction(node, actionName);
-    String lifecyclePhase = action2Remove.getProperty(LIFECYCLE_PHASE_PROP).getString();
+    String[] lifecyclePhase = parseValuesToArray(action2Remove.getProperty(LIFECYCLE_PHASE_PROP)
+        .getValues());
     String jobName = null, jobGroup = null, jobClassName = null;
     if (action2Remove.isNodeType(SCHEDULABLE_MIXIN)) {
       jobName = action2Remove.getProperty(JOB_NAME_PROP).getString();
@@ -412,11 +414,10 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       String actionServiceName = plugin.getName();
       ActionPlugin actionService = getActionPlugin(actionServiceName);
       if (actionService.isActionTypeSupported(actionTypeName)) {
-        if (lifecyclePhase.equals(ActionServiceContainer.SCHEDULE_PHASE)) {
+        if ((DMSEvent.getEventTypes(lifecyclePhase) & DMSEvent.SCHEDULE) > 0) {
           actionService.removeActivationJob(jobName, jobGroup, jobClassName);
-        } else {
-          actionService.removeObservation(repository, actionPath);
         }
+        actionService.removeObservation(repository, actionPath);
       }
     }
     action2Remove.remove();
@@ -448,6 +449,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     try {
       actionService.addAction(actionType, repository, srcWorkspace, srcPath, isDeep, uuid, nodeTypeNames, mappings);
     } catch (Exception e) {
+      if (LOG.isDebugEnabled()) LOG.error(e);
       Session session = getSystemSession(repository, storeActionNode.getSession().getWorkspace().getName());
       Node actionNode = (Node) session.getItem(newActionPath);
       actionNode.remove();
@@ -465,10 +467,12 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
     if (mappings.containsKey("/node/exo:uuid")) {
       uuid = (String[]) ((JcrInputProperty) mappings.get("/node/exo:uuid")).getValue();
+      if(uuid.length == 0) uuid = null;
     }
     if (mappings.containsKey("/node/exo:nodeTypeName")) {
       nodeTypeName = (String[]) ((JcrInputProperty) mappings.get("/node/exo:nodeTypeName"))
           .getValue();
+      if(nodeTypeName.length == 0) nodeTypeName = null;
     }
     addAction(storeActionNode, repository, actionType, isDeep, uuid, nodeTypeName, mappings);
   }
@@ -642,17 +646,21 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       QueryResult queryResult = query.execute();
       for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
         Node actionNode = iter.nextNode();
-        String lifecyclePhase = actionNode.getProperty(LIFECYCLE_PHASE_PROP).getString();
+        String[] lifecyclePhase = parseValuesToArray(actionNode.getProperty(LIFECYCLE_PHASE_PROP)
+            .getValues());
         String actionType = actionNode.getPrimaryNodeType().getName();
         for (ComponentPlugin plugin : actionPlugins) {
           String actionServiceName = plugin.getName();
           ActionPlugin actionService = getActionPlugin(actionServiceName);
           if (actionService.isActionTypeSupported(actionType)) {
-            if (lifecyclePhase.equals(ActionServiceContainer.SCHEDULE_PHASE)) {
+            if (DMSEvent.getEventTypes(lifecyclePhase) == DMSEvent.READ)
+              return;
+            if ((DMSEvent.getEventTypes(lifecyclePhase) & DMSEvent.SCHEDULE) > 0) {
               actionService.reScheduleActivations(actionNode, repository);
-            } else {
-              actionService.initiateActionObservation(actionNode, repository);
             }
+            if (DMSEvent.getEventTypes(lifecyclePhase) == DMSEvent.SCHEDULE)
+              return;
+              actionService.initiateActionObservation(actionNode, repository);
           }
         }
       }
@@ -672,9 +680,9 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       if (node.getPath() != "/") {
         queryStr = ACTION_SQL_QUERY + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
       } else {
-        queryStr = ACTION_QUERY;
+        queryStr = ACTION_SQL_QUERY;
       }
-            
+      // Error XPath when path of node has '%'      
       /*if (node.getPath() != "/") {
         queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
       } else {
@@ -701,5 +709,17 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     } catch (Exception ex) {
       LOG.error("Can not launch action listeners inside " + node.getPath() + " node.", ex);
     }
+  }
+  
+  private String[] parseValuesToArray(Value[] values) throws Exception {
+    return parseValuesToList(values).toArray(new String[0]);
+  }
+
+  private List<String> parseValuesToList(Value[] values) throws Exception {
+    List<String> lstValues = new ArrayList<String>();
+    for(Value value : values) {
+      lstValues.add(value.getString());
+    }
+    return lstValues;
   }
 }

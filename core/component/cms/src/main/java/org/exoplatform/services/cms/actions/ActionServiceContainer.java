@@ -31,31 +31,6 @@ import javax.jcr.nodetype.NodeType;
 public interface ActionServiceContainer {  
   
   /**
-   * Define READ_PHASE in exo:lifecyclePhase property of node
-   */
-  public static final String READ_PHASE = "read";
-  
-  /**
-   * Define ADD_PHASE in exo:lifecyclePhase property of node
-   */
-  public static final String ADD_PHASE = "add";
-  
-  /**
-   * Define MODIFY_PHASE in exo:lifecyclePhase property of node
-   */
-  public static final String MODIFY_PHASE = "modify";
-  
-  /**
-   * Define REMOVE_PHASE in exo:lifecyclePhase property of node
-   */
-  public static final String REMOVE_PHASE = "remove";
-  
-  /**
-   * Define SCHEDULE_PHASE in exo:lifecyclePhase property of node
-   */
-  public static final String SCHEDULE_PHASE = "schedule" ;
-
-  /**
    * Collection of String
    * @return collection of ActionPlugin namess
    */
