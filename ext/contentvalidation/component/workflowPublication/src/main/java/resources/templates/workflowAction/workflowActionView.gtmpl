@@ -1,4 +1,7 @@
-<%def node = uicomponent.getNode() ;%>
+<%
+  def node = uicomponent.getNode();
+  StringBuilder sB;
+%>
 <style>
 	.WorkWorkFlow {
 		margin: 10px;
@@ -17,13 +20,55 @@
 	    </td>
 	  </tr>
 	  <tr>
-			<td style="width:25%"><%=_ctx.appRes("Workflow.view.label.lifecycle")%></td>
-			<td>
-	      <%if(node.hasProperty("exo:lifecyclePhase")) {%>
-			    <%=node.getProperty("exo:lifecyclePhase").getString()%>
-			  <%}%>
-	    </td>
-	  </tr>
+    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.isDeep")%></td>
+    <td>
+    <%if(node.hasProperty("exo:isDeep")){%>
+      <%=node.getProperty("exo:isDeep").getString()%>
+    <%}%> 
+    </td>
+  </tr>
+  <tr>
+    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.nodeTypeName")%></td>
+    <td>
+    <%if(node.hasProperty("exo:nodeTypeName")){
+      sB = new StringBuilder();
+      def values = node.getProperty("exo:nodeTypeName").getValues();          
+      for(value in values) {
+        sB.append(value.getString()).append(",");
+      } 
+      %>
+      <%= sB.deleteCharAt(sB.length()-1)%>        
+    <%}%>
+    </td> 
+  </tr>
+  <tr>
+    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.lifecycle")%></td>
+    <td>
+      <%if(node.hasProperty("exo:lifecyclePhase")){
+        sB = new StringBuilder();
+        def values = node.getProperty("exo:lifecyclePhase").getValues();          
+        for(value in values) {
+          sB.append(value.getString()).append(",");
+        } 
+        %>
+        <%= sB.deleteCharAt(sB.length()-1)%>        
+      <%}%>
+    </td>         
+  </tr>
+  <tr>
+    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.affectedNodeTypeNames")%></td>
+    <td>
+    <%if(node.hasProperty("exo:affectedNodeTypeNames")){
+      sB = new StringBuilder();
+      def values = node.getProperty("exo:affectedNodeTypeNames").getValues();          
+      for(value in values) {
+        sB.append(value.getString()).append(",");
+      } 
+      %>
+      <%= sB.deleteCharAt(sB.length()-1)%>        
+    <%}%>
+    </td> 
+  </tr>
 	  <tr>
 	    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.description")%></td>
 	    <td>

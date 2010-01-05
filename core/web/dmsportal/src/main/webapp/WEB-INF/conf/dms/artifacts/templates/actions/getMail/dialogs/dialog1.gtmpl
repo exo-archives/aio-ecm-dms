@@ -129,7 +129,7 @@
         <td class="FieldComponent">
         <% 
           String[] fieldAffectedNodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
-        uicomponent.addActionField("affectedNodetypes", fieldAffectedNodetypes);
+          uicomponent.addActionField("affectedNodetypes", fieldAffectedNodetypes);
         %>
       </tr> 
 		</table>

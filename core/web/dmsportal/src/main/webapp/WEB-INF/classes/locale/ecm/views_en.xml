@@ -622,4 +622,84 @@
       </label>
     </dialog>
   </ContentPublishing>
+		
+		<SendMail>
+   <view>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </SendMail>
+
+  <ScriptAction>
+   <view>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </ScriptAction>
+  	
+  <Getmail>
+   <view>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </Getmail>
+  	
+  <Rss>
+   <view>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </Rss>
+  	
+  <AddMetadata>
+   <view>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </AddMetadata>
+		
+  <ReloadAction>
+   <view>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </ReloadAction>
+		
+  <Transform>
+   <view>
+     <label> 
+							<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes>
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </Transform>
+
+  <EnableVersioning>
+   <view>
+     <label>
+     		<isDeep>Is deep</isDeep>
+							<nodetypes>NodeTypes</nodetypes> 
+							<affectedNodeTypeNames>Affected NodeTypes</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </EnableVersioning>
 </bundle>

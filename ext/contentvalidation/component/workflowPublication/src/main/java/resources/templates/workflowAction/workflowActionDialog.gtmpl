@@ -12,7 +12,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.id")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move", "editable=false", "visible=if-not-null"] ;
+		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move,mix:affectedNodeTypes", "editable=false", "visible=if-not-null"] ;
 		        uicomponent.addMixinField("id", fieldId) ;  
 		      %>
 		    </td>
@@ -26,15 +26,35 @@
 		      %>
 		    </td>
 		  </tr>
+		  <tr>                        
+      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.isDeep")%></td>
+      <td class="FieldComponent"> 
+      <% 
+        String[] fieldDeep = ["jcrPath=/node/exo:isDeep", "defaultValues=true"];         
+        uicomponent.addCheckBoxField("isDeep", fieldDeep);
+      %>
+      </td>
+    </tr>
+    <tr>                        
+      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.nodetypes")%></td>
+      <td class="FieldComponent"> 
+      <% 
+        String[] fieldnodetypes = ["jcrPath=/node/exo:nodeTypeName", "selectorAction=selectNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];         
+        uicomponent.addActionField("nodetypes", fieldnodetypes);
+      %>
+      </td>
+    </tr>
 		  <tr>
-	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.lifecycle")%></td>
-	      <td class="FieldComponent">
-		      <% 
-		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add"] ;
-		        uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
-		      %>
-		    </td>
-		  </tr>
+        <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.lifecycle")%></td>
+        <td class="FieldComponent">
+        <% 
+          String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", 
+                                     "options=read,schedule,node_added,node_removed,property_added,property_removed,property_changed",
+                                     "multiValues=true", "onchange=true","size=5"] ;
+          uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ;
+        %>
+        </td>
+      </tr>
 		  <tr>
 	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.description")%></td>
 	      <td class="FieldComponent">
@@ -44,6 +64,14 @@
 		      %>
 		    </td>
 		  </tr>
+      <tr>                       
+        <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.affectedNodeTypeNames")%></td>
+        <td class="FieldComponent">
+        <% 
+          String[] fieldAffectedNodetypes = ["jcrPath=/node/exo:affectedNodeTypeNames", "selectorAction=selectAffectedNodeTypes", "multiValues=true", "selectorClass=org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"];
+          uicomponent.addActionField("affectedNodetypes", fieldAffectedNodetypes);
+        %>
+      </tr>
 		  <tr>
 	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.validator")%></td>
 	      <td class="FieldComponent">

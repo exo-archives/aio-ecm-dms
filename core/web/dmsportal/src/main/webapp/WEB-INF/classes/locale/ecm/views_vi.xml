@@ -622,4 +622,84 @@
       </label>
     </dialog>
   </ContentPublishing>
+	 <SendMail>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label>  
+   </view>
+  </SendMail>
+
+  <ScriptAction>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </ScriptAction>
+  	
+  <Getmail>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </Getmail>
+  	
+  <Rss>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </Rss>
+  	
+  <AddMetadata>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </AddMetadata>
+		
+  <ReloadAction>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </ReloadAction>
+		
+  <Transform>
+   <view>
+					<label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label>  
+   </view>
+  </Transform>
+
+  <EnableVersioning>
+   <view>
+     <label>
+     		<isDeep>Độ sâu</isDeep>
+							<nodetypes>Kiểu node</nodetypes> 
+							<affectedNodeTypeNames>Các kiểu node bị tác động</affectedNodeTypeNames>
+     </label> 
+   </view>
+  </EnableVersioning>
+
 </bundle>
