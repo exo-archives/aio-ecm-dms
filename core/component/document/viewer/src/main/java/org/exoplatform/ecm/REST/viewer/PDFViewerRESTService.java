@@ -86,12 +86,12 @@ public class PDFViewerRESTService implements ResourceContainer {
       @URIParam("pageNumber") String pageNumber,
       @URIParam("rotation") String rotation,
       @URIParam("scale") String scale) throws Exception {
-
     return getImageByPageNumber(repoName, wsName, uuid, pageNumber, rotation, scale);
   }
 
   private Response getImageByPageNumber(String repoName, String wsName, String uuid, 
       String pageNumber, String strRotation, String strScale) throws Exception {
+    System.setProperty("org.icepdf.core.awtFontLoading", "true");
     Document document = new Document();
     ManageableRepository repository = repositoryService_.getRepository(repoName);
     Session session = getSystemProvider().getSession(wsName, repository);
