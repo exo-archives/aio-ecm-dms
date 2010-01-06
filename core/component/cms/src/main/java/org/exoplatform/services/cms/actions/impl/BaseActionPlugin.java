@@ -118,8 +118,6 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     mappings.remove("/node/exo:name");
     String[] type = 
       (String[]) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();
-    if (DMSEvent.getEventTypes(type) == DMSEvent.SCHEDULE)
-      return;
     String actionExecutable = getActionExecutable(actionType);
     if (DMSEvent.getEventTypes(type) == DMSEvent.READ) return;
     if ((DMSEvent.getEventTypes(type) & DMSEvent.SCHEDULE) > 0) {
