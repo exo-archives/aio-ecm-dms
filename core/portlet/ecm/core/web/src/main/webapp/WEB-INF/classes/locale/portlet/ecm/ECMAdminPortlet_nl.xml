@@ -2310,6 +2310,11 @@
       <Invalid-char>There are some invalid characters. Type another value, please!</Invalid-char>
       <empty-input>The value of field is null or empty!</empty-input>
     </msg>
-  </NodeTypeNameValidator>	
+  </NodeTypeNameValidator>
+  <UIActionForm>
+  		<msg>
+  				<constraint-violation-exception>Can not add node '{0}' to '{1}' in workspace '{2}' because you have problem with permission or contraints condition</constraint-violation-exception>
+  		</msg>	
+  </UIActionForm>	
 </bundle>
 

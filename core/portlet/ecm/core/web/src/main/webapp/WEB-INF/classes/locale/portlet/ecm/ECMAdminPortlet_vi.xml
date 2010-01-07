@@ -2381,6 +2381,11 @@
       <Invalid-char>Kí tự không hợp lệ</Invalid-char>
       <empty-input>Giá trị bị rỗng</empty-input>
     </msg>
-  </NodeTypeNameValidator>	
+  </NodeTypeNameValidator>
+  <UIActionForm>
+  		<msg>
+  				<constraint-violation-exception>Không thể thêm node '{0}' vào '{1}' trong vùng làm việc '{2}' Bởi vì bạn có vài vấn đề với quyền và ràng buộc dữ liệu</constraint-violation-exception>
+  		</msg>	
+  </UIActionForm>	
 </bundle>
 

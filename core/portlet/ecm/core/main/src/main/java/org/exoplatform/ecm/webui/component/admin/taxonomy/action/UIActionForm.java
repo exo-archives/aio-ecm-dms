@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -329,7 +330,13 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }
+      } catch (ConstraintViolationException cViolationException) {
+        Object[] args = {name, homePath, workspace};
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.constraint-violation-exception", args,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
       
       Node currentNode = taxonomyService.getTaxonomyTree(repository, name, true);
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
