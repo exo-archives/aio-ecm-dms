@@ -23,10 +23,10 @@ import java.util.Locale;
 import javax.jcr.Node;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
@@ -45,7 +45,7 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 public class UIPublicationComponent extends UIComponent {
 
   private Node node_;
-  private static final Log LOG  = ExoLogger.getLogger("component.UIPublicationComponent");
+  private static final Log LOG  = LogFactory.getLog("component.UIPublicationComponent");
   public UIPublicationComponent() throws Exception {
   }
 

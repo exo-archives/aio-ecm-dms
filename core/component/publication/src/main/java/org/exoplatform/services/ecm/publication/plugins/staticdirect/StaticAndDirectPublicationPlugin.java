@@ -39,6 +39,7 @@ import javax.jcr.Value;
 import javax.jcr.version.Version;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
@@ -49,7 +50,6 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.resources.ResourceBundleService;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
@@ -87,7 +87,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   private final String localeFile = "locale.portlet.publication.PublicationService";
 
   public StaticAndDirectPublicationPlugin() {
-    log = ExoLogger.getLogger("portal:StaticAndDirectPublicationPlugin");
+    log = LogFactory.getLog("portal:StaticAndDirectPublicationPlugin");
   }
 
   //@Override
