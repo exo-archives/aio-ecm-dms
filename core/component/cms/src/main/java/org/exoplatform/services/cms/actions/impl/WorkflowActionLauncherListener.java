@@ -17,6 +17,7 @@ import javax.jcr.observation.Event;
 import javax.jcr.observation.EventIterator;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -53,7 +54,7 @@ public abstract class WorkflowActionLauncherListener implements ECMEventListener
   private static final String DESTPATH = "exo:destPath".intern();
   private static final String BACUP_PATH = "publication:backupPath".intern();
   private static final String DOCUMENT_BACUPUP = "documentsBackupPath";
-  private static final Log LOG  = ExoLogger.getLogger(WorkflowActionLauncherListener.class);
+  private static final Log LOG  = LogFactory.getLog(WorkflowActionLauncherListener.class);
   
   public WorkflowActionLauncherListener(String actionName, String executable,
       String repository, String srcWorkspace, String srcPath, Map actionVariables)

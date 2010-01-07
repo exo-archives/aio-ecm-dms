@@ -18,6 +18,7 @@
 package org.exoplatform.services.ecm.dms.voting;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +34,6 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by eXo Platform

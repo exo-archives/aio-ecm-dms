@@ -33,6 +33,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -49,7 +50,6 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
@@ -68,7 +68,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   private String group_;
   private DMSConfiguration dmsConfiguration_;
   
-  private static final Log LOG = ExoLogger.getLogger(QueryServiceImpl.class);
+  private static final Log LOG = LogFactory.getLog(QueryServiceImpl.class);
 
   /**
    * Constructor method

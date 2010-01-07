@@ -25,12 +25,12 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.records.RecordsService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.scheduler.BaseJob;
 import org.exoplatform.services.scheduler.JobContext;
 
@@ -41,7 +41,7 @@ public class RecordsJob extends BaseJob {
   /**
    * Logger.
    */
-  private static final Log          LOG  = ExoLogger.getLogger("job.RecordsJob");
+  private static final Log          LOG  = LogFactory.getLog("job.RecordsJob");
 
   private RepositoryService   repositoryService_;
 

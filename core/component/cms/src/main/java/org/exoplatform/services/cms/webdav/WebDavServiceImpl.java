@@ -23,6 +23,7 @@ import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.PathNotFoundException;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.common.util.HierarchicalProperty;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.link.LinkUtils;
@@ -63,7 +64,7 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
   /**
    * Logger.
    */
-  private static Log log = ExoLogger.getLogger("cms.webdav.WebDavServiceImpl");
+  private static Log log = LogFactory.getLog("cms.webdav.WebDavServiceImpl");
   
   private final NodeFinder nodeFinder;
   

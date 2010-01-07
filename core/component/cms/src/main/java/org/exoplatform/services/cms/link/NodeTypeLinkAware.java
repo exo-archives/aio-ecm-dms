@@ -24,7 +24,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.services.log.ExoLogger;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by The eXo Platform SAS
@@ -37,7 +37,7 @@ public class NodeTypeLinkAware implements NodeType {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("services.cms.link.NodeTypeLinkAware");
+  private static final Log LOG  = LogFactory.getLog("services.cms.link.NodeTypeLinkAware");
   
   private final String name;
   

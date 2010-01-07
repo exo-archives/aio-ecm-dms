@@ -22,7 +22,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.services.log.ExoLogger;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by The eXo Platform SAS
@@ -35,7 +35,7 @@ public class PropertyIteratorLinkAware extends RangeIteratorLinkAware implements
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("cms.PropertyIteratorLinkAware");
+  private static final Log LOG  = LogFactory.getLog("cms.PropertyIteratorLinkAware");
   
   public PropertyIteratorLinkAware(Session originalSession,
                                    String virtualPath,

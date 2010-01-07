@@ -47,11 +47,11 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.jcr.core.ExtendedSession;
 import org.exoplatform.services.jcr.core.NamespaceAccessor;
 import org.exoplatform.services.jcr.core.SessionLifecycleListener;
 import org.exoplatform.services.jcr.impl.core.LocationFactory;
-import org.exoplatform.services.log.ExoLogger;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -66,7 +66,7 @@ public class SessionLinkAware implements ExtendedSession, NamespaceAccessor {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("services.cms.link.SessionLinkAware");
+  private static final Log LOG  = LogFactory.getLog("services.cms.link.SessionLinkAware");
   
   private ItemLinkAware itemLA;
   

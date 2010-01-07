@@ -28,6 +28,7 @@ import javax.jcr.Value;
 import javax.jcr.Workspace;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
@@ -37,7 +38,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /*
@@ -59,7 +59,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
    * DMS configuration which used to store informations
    */   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getLogger(CategoriesServiceImpl.class);
+  private static final Log LOG  = LogFactory.getLog(CategoriesServiceImpl.class);
   
   public CategoriesServiceImpl(RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, 

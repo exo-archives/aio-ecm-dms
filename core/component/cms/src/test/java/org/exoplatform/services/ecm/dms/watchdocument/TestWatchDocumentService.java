@@ -17,6 +17,7 @@
  **************************************************************************/
 package org.exoplatform.services.ecm.dms.watchdocument;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -28,8 +29,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by eXo Platform

@@ -28,21 +28,20 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
  * minh.dang@exoplatform.com Oct 6, 2009 3:39:28 AM
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
-  private static final Log    LOG         = ExoLogger
-                                               .getLogger("cms.documents.DocumentTypeServiceImpl");
+  private static final Log    LOG         = LogFactory.getLog("cms.documents.DocumentTypeServiceImpl");
 
   private final static String         OWNER         = "exo:owner".intern();
 

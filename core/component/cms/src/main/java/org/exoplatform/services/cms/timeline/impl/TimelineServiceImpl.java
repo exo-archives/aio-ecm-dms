@@ -31,6 +31,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.timeline.TimelineService;
@@ -39,7 +40,6 @@ import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
-import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL
@@ -50,7 +50,7 @@ import org.exoplatform.services.log.ExoLogger;
  */
 public class TimelineServiceImpl implements TimelineService {
 
-  private static final Log LOG = ExoLogger.getLogger("cms.timeline.TimelineServiceImpl");
+  private static final Log LOG = LogFactory.getLog("cms.timeline.TimelineServiceImpl");
   private static final String EXO_DATETIME = "exo:datetime";
   private static final String EXO_MODIFIED_DATE = "exo:dateModified";
   private static final String EXO_OWNER = "exo:owner";

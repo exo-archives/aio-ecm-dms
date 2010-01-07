@@ -32,6 +32,7 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -45,7 +46,6 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -70,7 +70,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getLogger(TaxonomyServiceImpl.class);
+  private static final Log LOG  = LogFactory.getLog(TaxonomyServiceImpl.class);
 
   /**
    * Constructor method

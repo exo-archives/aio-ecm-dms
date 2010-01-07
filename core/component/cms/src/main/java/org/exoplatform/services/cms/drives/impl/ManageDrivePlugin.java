@@ -22,6 +22,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
@@ -32,7 +33,6 @@ import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.log.ExoLogger;
 
 public class ManageDrivePlugin extends BaseComponentPlugin {
 
@@ -51,7 +51,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private NodeHierarchyCreator nodeHierarchyCreator_;
   private InitParams params_ ;
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getLogger(ManageDrivePlugin.class);
+  private static final Log LOG  = LogFactory.getLog(ManageDrivePlugin.class);
   
   public ManageDrivePlugin(RepositoryService repositoryService, InitParams params, 
       NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception {

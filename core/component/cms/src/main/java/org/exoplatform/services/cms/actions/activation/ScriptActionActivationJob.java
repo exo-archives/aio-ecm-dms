@@ -24,6 +24,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionPlugin;
@@ -31,7 +32,6 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.actions.impl.ScriptActionPlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -49,7 +49,7 @@ import org.quartz.JobExecutionException;
 public class ScriptActionActivationJob implements Job {
 
   final private static String COUNTER_PROP = "exo:counter".intern() ;
-  private static final Log LOG  = ExoLogger.getLogger(ScriptActionActivationJob.class);
+  private static final Log LOG  = LogFactory.getLog(ScriptActionActivationJob.class);
 
   public void execute(JobExecutionContext context) throws JobExecutionException {
     ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;

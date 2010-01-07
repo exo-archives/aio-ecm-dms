@@ -33,6 +33,7 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.ecm.utils.comparator.PropertyValueComparator;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -89,7 +90,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
 
   private boolean             show_gadget     = false;
 
-  private Log LOG = ExoLogger.getLogger("cms.GetEditedDocumentRESTService");
+  private Log LOG = LogFactory.getLog("cms.GetEditedDocumentRESTService");
 
   
   public GetEditedDocumentRESTService(RepositoryService repositoryService,

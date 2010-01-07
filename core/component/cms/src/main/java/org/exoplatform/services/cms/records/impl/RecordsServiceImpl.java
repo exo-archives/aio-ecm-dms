@@ -20,6 +20,7 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.records.RecordsService;
@@ -27,7 +28,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
-import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.log.ExoLogger;
 
 public class RecordsServiceImpl implements RecordsService {
@@ -55,7 +55,7 @@ public class RecordsServiceImpl implements RecordsService {
   /**
    * Construct log object
    */
-  private static Log log_ = ExoLogger.getLogger("services.cms.records");
+  private static Log log_ = LogFactory.getLog("services.cms.records");
   
   /**
    * ActionServiceContainer object: process for action with node
@@ -76,7 +76,7 @@ public class RecordsServiceImpl implements RecordsService {
    * AuditService object
    */
   private AuditService auditService_;
-  private static final Log LOG  = ExoLogger.getLogger(RecordsServiceImpl.class);
+  private static final Log LOG  = LogFactory.getLog(RecordsServiceImpl.class);
   
   /**
    * Constructor method

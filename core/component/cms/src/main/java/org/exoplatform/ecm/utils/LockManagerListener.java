@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cache.CacheService;
@@ -33,7 +34,6 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.lock.LockManager;
 import org.exoplatform.services.listener.Event;
 import org.exoplatform.services.listener.Listener;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.ConversationState;
 
@@ -45,7 +45,7 @@ import org.exoplatform.services.security.ConversationState;
  */
 public class LockManagerListener extends Listener<ConversationRegistry, ConversationState > {
   
-  protected static Log log = ExoLogger.getLogger(LockManagerListener.class);
+  protected static Log log = LogFactory.getLog(LockManagerListener.class);
   
   @Override
   @SuppressWarnings("unchecked")

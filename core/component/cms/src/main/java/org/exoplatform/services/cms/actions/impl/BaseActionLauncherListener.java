@@ -28,13 +28,13 @@ import javax.jcr.observation.Event;
 import javax.jcr.observation.EventIterator;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -47,7 +47,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
   protected String srcPath_;
   protected String executable_;
   protected Map actionVariables_;
-  private static final Log LOG  = ExoLogger.getLogger(BaseActionLauncherListener.class);
+  private static final Log LOG  = LogFactory.getLog(BaseActionLauncherListener.class);
 
   public BaseActionLauncherListener(String actionName, String executable,
       String repository, String srcWorkspace, String srcPath, Map actionVariables)

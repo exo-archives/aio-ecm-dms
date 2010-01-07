@@ -25,10 +25,10 @@ import javax.jcr.observation.EventIterator;
 import javax.jcr.observation.EventListener;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.mail.MailService;
 import org.exoplatform.services.mail.Message;
 import org.exoplatform.services.organization.OrganizationService;
@@ -45,7 +45,7 @@ public class EmailNotifyListener implements EventListener {
   
   private Node observedNode_ ;
   final public static String EMAIL_WATCHERS_PROP = "exo:emailWatcher".intern() ;
-  private static final Log LOG  = ExoLogger.getLogger(EmailNotifyListener.class);
+  private static final Log LOG  = LogFactory.getLog(EmailNotifyListener.class);
   
   public EmailNotifyListener(Node oNode) {
     observedNode_ = oNode ;

@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.lock.LockService;
-import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -38,7 +38,7 @@ public class LockServiceImpl implements LockService, Startable {
   private List<String> settingLockList = new ArrayList<String>();
   private List<String> preSettingLockList = new ArrayList<String>();
   private List<LockGroupsOrUsersPlugin> lockGroupsOrUsersPlugin_ = new ArrayList<LockGroupsOrUsersPlugin>();
-  private static final Log LOG = ExoLogger.getLogger(LockService.class);
+  private static final Log LOG = LogFactory.getLog(LockService.class);
   
   /**
    * Constructor method

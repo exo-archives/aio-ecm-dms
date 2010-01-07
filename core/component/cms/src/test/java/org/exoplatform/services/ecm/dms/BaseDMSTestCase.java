@@ -16,11 +16,10 @@
  */
 package org.exoplatform.services.ecm.dms;
 
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
@@ -29,7 +28,6 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
-import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.test.BasicTestCase;
 
 /**
@@ -41,7 +39,7 @@ import org.exoplatform.test.BasicTestCase;
  */
 public abstract class BaseDMSTestCase extends BasicTestCase {
 
-  protected static Log          log = ExoLogger.getLogger("dms.services.test");  
+  protected static Log          log = LogFactory.getLog("dms.services.test");  
 
   protected CredentialsImpl     credentials;  
 
@@ -89,7 +87,7 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
       compareMixins(mixins, nodeMixins);
     } catch (RepositoryException e) {
-      fail("Mixins isn't accessible on the node " + node.getPath());
+      fail("Mixins isn't accessible on the node " + node);
     }
   }
 
