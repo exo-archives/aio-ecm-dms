@@ -28,6 +28,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.log.ExoLogger;
 
 public class RecordsServiceImpl implements RecordsService {

@@ -283,7 +283,9 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
       return;
     }
     // Make destination path without index on final name
-    destPath = destPath.concat("/").concat(srcNode.getName());
+    if (!"/".equals(destPath))
+    	destPath = destPath.concat("/");
+    destPath = destPath.concat(srcNode.getName());
     ActionServiceContainer actionContainer = uiExplorer
         .getApplicationComponent(ActionServiceContainer.class);
     try {
