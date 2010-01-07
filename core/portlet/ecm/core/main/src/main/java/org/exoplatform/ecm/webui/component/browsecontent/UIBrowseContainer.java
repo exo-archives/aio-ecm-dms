@@ -1194,6 +1194,10 @@ public class UIBrowseContainer extends UIContainer {
           }
         }
       }catch (Exception e) { 
+        setRootPath(null);
+        setCategoryPath(null);
+        setSelectedTabPath(null);
+        setCurrentNodePath(null);
         return;
       }      
       viewDocument(documentNode, false);
@@ -1220,7 +1224,7 @@ public class UIBrowseContainer extends UIContainer {
   public void processRender(WebuiRequestContext context) throws Exception {
     try {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository());
-      super.processRender(context);
+      if (getCurrentNode() != null) super.processRender(context);
     } catch (Exception e) {
       LOG.error("An error occured while displaying the content", e);      
       getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletMode.HELP);
