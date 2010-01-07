@@ -21,10 +21,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
-import org.exoplatform.services.log.ExoLogger;
 
 /**
  * This class allows you to dynamically define new extensions
@@ -38,7 +38,7 @@ public class UIExtensionPlugin extends BaseComponentPlugin {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger(UIExtensionPlugin.class);
+  private static final Log LOG  = LogFactory.getLog(UIExtensionPlugin.class);
 
   /**
    * The initial parameter of this plugin

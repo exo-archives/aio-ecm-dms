@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.services.log.ExoLogger;
+import org.apache.commons.logging.LogFactory;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -41,7 +41,7 @@ public class UIExtension implements Comparable<UIExtension> {
   /**
    * Logger.
    */
-  private static final Log LOG = ExoLogger.getLogger(UIExtension.class);
+  private static final Log LOG = LogFactory.getLog(UIExtension.class);
 
   /**
    * Indicates whether the extension is enabled
