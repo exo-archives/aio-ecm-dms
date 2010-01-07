@@ -2230,5 +2230,10 @@
 			<Previous>Previous</Previous>
 		</action>
 	</UITaxonomyTreeWorkingArea>
+	<UIActionForm>
+  <msg>
+  		<constraint-violation-exception>Can not add node '{0}' to '{1}' in workspace '{2}' because you have problem with permission or contraints condition</constraint-violation-exception>
+  </msg>	
+ </UIActionForm>
 </bundle>
 

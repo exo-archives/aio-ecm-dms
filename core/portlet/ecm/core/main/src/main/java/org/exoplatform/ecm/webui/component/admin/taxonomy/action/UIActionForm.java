@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
@@ -312,6 +313,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         return;
       } catch (TaxonomyNodeAlreadyExistsException e) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.taxonomy-node-existed", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (ConstraintViolationException cViolationException) {
+        Object[] args = {name, homePath, workspace};
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.constraint-violation-exception", args,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
