@@ -60,8 +60,8 @@ public class AddTaxonomyActionScript implements CmsScript {
   
   public void execute(Object context) throws Exception {
     Map variables = (Map) context;       
-    String nodePath = (String)variables.get("nodePath") ;
-    String storeFullPath = (String)variables.get("exo:storeHomePath") ;
+    String nodePath = (String)variables.get("nodePath");
+    String storeFullPath = (String)variables.get("exo:storeHomePath");
     String storeHomePath = null;
     String storeWorkspace = null;
     String repository = (String)variables.get("repository");

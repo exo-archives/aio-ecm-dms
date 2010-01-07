@@ -26,13 +26,16 @@ import java.util.regex.Matcher;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Workspace;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
+import org.apache.tools.ant.taskdefs.Delete;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -42,8 +45,11 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHom
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -51,6 +57,8 @@ import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
+
+import com.mysql.jdbc.Util;
 
 /**
  * Created by The eXo Platform SARL
@@ -68,8 +76,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class MoveNodeManageComponent extends UIAbstractManagerComponent {
 
 	private static final List<UIExtensionFilter> FILTERS 
-			= Arrays.asList(new UIExtensionFilter[]{ new IsNotInTrashFilter(),
-																							 new IsNotTrashHomeNodeFilter() } );
+			= Arrays.asList(new UIExtensionFilter[]{ new IsNotTrashHomeNodeFilter() } );
 	
 	@UIExtensionFilters
 	public List<UIExtensionFilter> getFilters() {
@@ -215,8 +222,14 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
     		srcPath = srcPath.substring(srcPath.indexOf(":/") + 1);
       if (srcWorkspace.equals(destWorkspace)) {
         srcWorkspace.move(srcPath, destPath);
+      	//delete EXO_RESTORE_LOCATION if source is in trash
+        removeMixinEXO_RESTORE_LOCATION(srcSession, destPath);
+				srcSession.save();
       } else {
         destWorkspace.clone(srcWorkspace.getName(), srcPath, destPath, false);
+      	//delete EXO_RESTORE_LOCATION if source is in trash
+				removeMixinEXO_RESTORE_LOCATION(destWorkspace.getSession(), destPath);
+				destWorkspace.getSession().save();
       }
     } catch (Exception e) {
       Object[] args = { srcPath, messagePath };
@@ -226,6 +239,18 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
       return;
     }
   }
+  
+	private static void removeMixinEXO_RESTORE_LOCATION(Session session, String restorePath) throws Exception {
+		Node sameNameNode = ((Node) session.getItem(restorePath));
+		Node parent = sameNameNode.getParent();
+		String name = sameNameNode.getName();
+		NodeIterator nodeIter = parent.getNodes(name);
+		while (nodeIter.hasNext()) {
+			Node node = nodeIter.nextNode();
+			if (node.isNodeType(Utils.EXO_RESTORELOCATION))
+				node.removeMixin(Utils.EXO_RESTORELOCATION);
+		}
+	}
 
   private static void moveMultiNode(String[] srcPaths, Node destNode, Event<? extends UIComponent> event) throws Exception {
     Map<String, Node> mapNode = new HashMap <String, Node>();
@@ -249,7 +274,23 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
     public void processEvent(Event<MoveNodeManageComponent> event) throws Exception {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String destPath = event.getRequestContext().getRequestParameter("destInfo");
-      MoveNodeManageComponent.processMultipleSelection(nodePath.trim(), destPath.trim(), event);
+      
+      if (isInTrash(nodePath) && isInTrash(destPath))
+      	return;
+      else if (isInTrash(destPath))
+      	((UIWorkingArea)event.getSource().getParent()).getChild(DeleteManageComponent.class).doDelete(nodePath, event);
+      else 
+      	MoveNodeManageComponent.processMultipleSelection(nodePath.trim(), destPath.trim(), event);
+    }
+    
+    private static boolean isInTrash(String path) {
+    	PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+	  	String trashHomeNodePath = portletPref.getValue(Utils.TRASH_HOME_NODE_PATH, "");
+	  	String trashWorkspace = portletPref.getValue(Utils.TRASH_WORKSPACE, "");
+    	
+    	return (path.startsWith(trashHomeNodePath) ||
+      		path.startsWith(trashWorkspace + ":" + trashHomeNodePath));    	
     }
   }
   @Override

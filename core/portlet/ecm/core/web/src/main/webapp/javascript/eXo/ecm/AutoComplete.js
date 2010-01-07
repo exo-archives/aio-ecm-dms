@@ -12,6 +12,7 @@ function AutoComplete() {
 		}
 		eXo.ecm.AutoComplete.count = 1;
 		// Basic UA detection
+
 		isIE = document.all ? true : false;
 		isGecko = navigator.userAgent.toLowerCase().indexOf('gecko') != -1;
 		isOpera = navigator.userAgent.toLowerCase().indexOf('opera') != -1;
@@ -23,13 +24,11 @@ function AutoComplete() {
 		itemList = DOM.findDescendantsByClass(showBlock, "option", "Item");
 		tagNameInput = DOM.findFirstDescendantByClass(popupSelector,"div", "UITagNameInput");
 		inputBox = DOM.findDescendantById(tagNameInput, "names");
-
 		tags = new Array(itemList.length);
 		for (var i = 0; i < itemList.length; i++) {
-			item = itemList[i];
+			var item = itemList[i];
 			tags[i] = item.getAttributeNode("value").value;
 		}
-
 		eXo.ecm.AutoComplete.Tags = {'data':tags,
 				'isVisible':false,
 				'element': inputBox,
@@ -39,7 +38,10 @@ function AutoComplete() {
 		eXo.ecm.AutoComplete.Tags['element'].setAttribute('autocomplete', 'off');
 		eXo.ecm.AutoComplete.Tags['element'].onkeydown  = function(e) {return AutoComplete.prototype.keyDown(e);}
 		eXo.ecm.AutoComplete.Tags['element'].onkeyup    = function(e) {return AutoComplete.prototype.keyUp(e);}
-		eXo.ecm.AutoComplete.Tags['element'].onkeypress = function(e) {if (!e) e = window.event; if (e.keyCode == 13 || isOpera) return false;}
+		eXo.ecm.AutoComplete.Tags['element'].onkeypress = function(e) {
+			if (!e) e = window.event;
+			if (e.keyCode || e.which || isOpera) return false;
+		}
 		eXo.ecm.AutoComplete.Tags['element'].ondblclick = function()  {AutoComplete.prototype.showDropdown();}
 		eXo.ecm.AutoComplete.Tags['element'].onclick    = function(e) {if (!e) e = window.event; e.cancelBubble = true; e.returnValue = false;}
 
@@ -350,9 +352,8 @@ function AutoComplete() {
 		if (arguments[1] != null) {
 			event = arguments[1];
 		}
-
-		var keyCode = event.keyCode;
-
+		if (!event) event = window.event;
+		var keyCode = event.which || event.keyCode;
 		switch (keyCode) {
 
 		// Return/Enter
@@ -414,9 +415,8 @@ function AutoComplete() {
 		if (arguments[1] != null) {
 			event = arguments[1];
 		}
-
-		var keyCode = event.keyCode;
-
+		if (!event) event = window.event;
+		var keyCode = event.which || event.keyCode;
 		switch (keyCode) {
 		case 13:
 			event.returnValue = false;

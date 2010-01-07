@@ -86,4 +86,15 @@ public interface TrashService {
    */
   public List<Node> getAllNodeInTrashByUser(String trashWorkspace, String repository, 
       SessionProvider sessionProvider, String userName) throws Exception;
+  
+  /**
+   * Removes all 'relationable' property of nodes that have relation to this node
+   * @param node 
+   * @param sessionProvider
+   * @param repository
+   * @return 
+   * @throws Exception
+   */
+  public void removeRelations(Node node, SessionProvider sessionProvider, 
+  		String repository) throws Exception;
 }

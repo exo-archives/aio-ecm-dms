@@ -38,6 +38,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropert
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsDocumentFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsEditableFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
@@ -77,7 +78,7 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[] {
       new IsDocumentFilter(), new IsEditableFilter(), new CanSetPropertyFilter(),
-      new IsNotLockedFilter(), new IsCheckedOutFilter() });
+      new IsNotLockedFilter(), new IsCheckedOutFilter(), new IsNotInTrashFilter() });
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {

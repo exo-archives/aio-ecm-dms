@@ -95,6 +95,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
           return;
         }
         Map<String, String> variables = new HashMap<String, String>();
+        variables.put("eventType", event.getType() + "");
         variables.put("initiator", userId);
         variables.put("actionName", actionName_);
         variables.put("nodePath", path);

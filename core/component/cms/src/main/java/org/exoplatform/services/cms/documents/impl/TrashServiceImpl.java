@@ -187,6 +187,35 @@ public class TrashServiceImpl implements TrashService {
 	 return selectNodesByQuery(trashWorkspace, repository,
 			 				   sessionProvider, query.toString(), Query.SQL);
 	 }
+	 
+  public void removeRelations(Node node, SessionProvider sessionProvider, 
+  		String repository) throws Exception {
+		ManageableRepository manageableRepository 
+					= repositoryService.getRepository(repository);
+		String[] workspaces = manageableRepository.getWorkspaceNames();
+
+	 	String queryString = "SELECT * FROM exo:relationable WHERE exo:relation IS NOT NULL";
+	 	boolean error = false;
+		
+		for (String ws : workspaces) {
+			Session session = sessionProvider.getSession(ws, manageableRepository);
+			QueryManager queryManager = session.getWorkspace().getQueryManager();
+			Query query = queryManager.createQuery(queryString, Query.SQL);
+			QueryResult queryResult = query.execute();
+			
+			NodeIterator iter = queryResult.getNodes();
+			while (iter.hasNext()) {
+		    try {
+		     	iter.nextNode().removeMixin("exo:relationable");
+		     	session.save();
+		    } catch (Exception e) {
+		      error = true;
+		    }
+			}
+		}
+		if (error) throw new Exception("Can't remove exo:relationable of all related nodes");
+  }
+
 
 	private List<Node> selectNodesByQuery(String trashWorkspace,
 							   		  String repository, SessionProvider sessionProvider,

@@ -240,6 +240,9 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     Node currentNode = uiExplorer.getCurrentNode(); 
     Session session = node.getSession();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    
+    TrashService trashService = getApplicationComponent(TrashService.class);
+    
     try {
       uiExplorer.addLockToken(node);
     } catch (Exception e) {
@@ -261,6 +264,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       																								 getDefaultWorkspaceName(),
       																								 node.getSession().getUserID(),
 																											 getGroups());
+      trashService.removeRelations(node, uiExplorer.getSystemProvider(), uiExplorer.getRepositoryName());
       node.remove();
       parentNode.save();
     } catch (VersionException ve) {
@@ -403,8 +407,9 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       uiExplorer.getSession().save();
   }
   
-  public static void deleteManage(Event<? extends UIComponent> event, UIJCRExplorer uiExplorer) throws Exception {
+  public static void deleteManage(Event<? extends UIComponent> event) throws Exception {
     UIWorkingArea uiWorkingArea = event.getSource().getParent();
+    UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
     String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
     UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
     UIConfirmMessage uiConfirmMessage = 
@@ -444,8 +449,8 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
   
   public static class DeleteActionListener extends UIWorkingAreaActionListener<DeleteManageComponent> {
     public void processEvent(Event<DeleteManageComponent> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      deleteManage(event, uiExplorer);
+//      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      deleteManage(event);
     }
   }
   

@@ -36,6 +36,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsTrashHomeNo
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -89,9 +90,10 @@ public class EmptyTrashManageComponent extends UIAbstractManagerComponent {
 		while (nodeIter.hasNext()) {
 			try {
 				Node node = nodeIter.nextNode();
-				if (currentUser.equals(node.getProperty(Utils.EXO_LASTMODIFIER).getString())) {
-					deleteNode(node, uiExplorer, event);
-				}
+				if (node.hasProperty(Utils.EXO_LASTMODIFIER))
+					if (currentUser.equals(node.getProperty(Utils.EXO_LASTMODIFIER).getString())) {
+						deleteNode(node, uiExplorer, event);
+					}
 			} catch (Exception ex) {
 				error = true;	
 			}
@@ -145,6 +147,8 @@ public class EmptyTrashManageComponent extends UIAbstractManagerComponent {
     actionService.removeAction(node, uiExplorer.getRepositoryName());
     ThumbnailService thumbnailService = uiExplorer.getApplicationComponent(ThumbnailService.class);
     thumbnailService.processRemoveThumbnail(node);
+    TrashService trashService = uiExplorer.getApplicationComponent(TrashService.class);
+    trashService.removeRelations(node, uiExplorer.getSystemProvider(), uiExplorer.getRepositoryName());    
     node.remove();
     session.save();
     uiExplorer.updateAjax(event);

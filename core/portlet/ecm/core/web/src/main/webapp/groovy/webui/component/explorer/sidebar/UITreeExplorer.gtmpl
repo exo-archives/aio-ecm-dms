@@ -83,21 +83,23 @@
             strActs +=  "</a>";
         }  
         //Begin for WebDav action
-  	    if (node.getPrimaryNodeType().getName().equals("nt:file")) {
-  	      String mimeType = "";
-  	      if (node.hasNode("jcr:content")) {
-  	        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-  	      }
-  		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
-  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
-  		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
-  			  strActs += "</a>" ;				  	
-  		  } else {
-  		  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
-  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
-  		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
-  			  strActs += "</a>" ;				  	
-  		  }
+        if (!node.isNodeType(Utils.EXO_RESTORELOCATION) && !Utils.isTrashHomeNode(node)) {        
+	  	    if (node.getPrimaryNodeType().getName().equals("nt:file")) {
+	  	      String mimeType = "";
+	  	      if (node.hasNode("jcr:content")) {
+	  	        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+	  	      }
+	  		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
+	  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
+	  		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+	  			  strActs += "</a>" ;				  	
+	  		  } else {
+	  		  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+	  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
+	  		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+	  			  strActs += "</a>" ;				  	
+	  		  }
+        }
   		  	  
   		  //End WebDAV Action					        
   		  List customActs = uicomponent.getCustomActions(node) ;				  
@@ -116,11 +118,13 @@
   		
   			String clipboardLink = serverPath + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + node.getPath();
   			int depthChild = node.getDepth();
-  			strActs +=	"<a class='MenuItem' style='display: block;' id='${drive}_treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
-  			strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-  			strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
-  			strActs +=  "	</div>" ;
-  			strActs += "</a>" ;
+        if (!node.isNodeType(Utils.EXO_RESTORELOCATION) && !Utils.isTrashHomeNode(node)) {  			
+	  			strActs +=	"<a class='MenuItem' style='display: block;' id='${drive}_treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
+	  			strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+	  			strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+	  			strActs +=  "	</div>" ;
+	  			strActs += "</a>" ;
+        }	  			
   			strActs += "</div>" ;	    
 	    }
 	    String lastNodeClass = "" ;
