@@ -227,7 +227,7 @@ public interface TemplateService {
   public void removeTemplate(String templateType, String nodeTypeName, String templateName, String repository) throws Exception;
   
   /**
-   * Return true is the given repository has nodeTypeName
+   * Return true if the given repository has document type named 'nodeTypeName' 
    * @param nodeTypeName    String
    *                        The name of NodeType
    * @param repository      String
