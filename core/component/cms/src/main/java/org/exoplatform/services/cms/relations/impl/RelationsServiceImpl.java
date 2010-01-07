@@ -185,6 +185,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     Node relationsHome = null;
     try {
       String relationPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+      if (relationPath == null) throw new IllegalArgumentException();
       String[] repositories = repositories_.split(",") ;
       for(String repo : repositories) {
         session = getSession(repo.trim());
@@ -196,6 +197,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         relationsHome.save();
         session.save();
       }      
+    } catch (IllegalArgumentException e) {
+      LOG.error("Cannot find path by alias " + BasePath.CMS_PUBLICATIONS_PATH);
     } catch (Exception e) {
       if(session !=null && session.isLive()) session.logout();
     } finally {
@@ -215,13 +218,16 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   public void init(String repository) throws Exception {
     Session session = getSession(repository);
     String relationPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+    if (relationPath == null) throw new IllegalArgumentException();
     try {            
       Node relationsHome = (Node) session.getItem(relationPath);
       for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {
         Node rel = iterator.nextNode();
         rel.addMixin("mix:referenceable");
       }
-      relationsHome.save();      
+      relationsHome.save(); 
+    } catch (IllegalArgumentException e) {
+      LOG.error("Cannot find path by alias " + BasePath.CMS_PUBLICATIONS_PATH);
     } catch (Exception e) {
       LOG.error("Unexpected error", e);
     } finally {
