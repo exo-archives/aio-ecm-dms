@@ -2345,12 +2345,6 @@
     </msg>    
   </UITagPermissionForm>
   
-  <UIAnyPermission>
-    <label>
-      <any>Any</any>
-    </label>
-  </UIAnyPermission>
-  
   <UIGroupMemberSelector>
     <label>
       <selectGroup>Select group</selectGroup>
@@ -2367,8 +2361,8 @@
   </UIFolksonomyManager>  
 		<UIActionForm>
   	<title>
-  		<ShowComponent>Mở cửa sổ chọn</ShowComponent>
-  		<removeReference>Loại bỏ</removeReference>
+  		<ShowComponent>Open Window</ShowComponent>
+  		<removeReference>Remove</removeReference>
   	</title>
   </UIActionForm>		   
   <NodeTypeNameValidator>

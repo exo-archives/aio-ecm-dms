@@ -2343,13 +2343,7 @@
       <userOrGroup-alreadyExists>Kiểu thành viên đã tồn tại, xin chọn lại kiểu khác!</userOrGroup-alreadyExists>
     </msg>    
   </UITagPermissionForm>
-  
-  <UIAnyPermission>
-    <label>
-      <any>Bất kỳ</any>
-    </label>
-  </UIAnyPermission>
-  
+		
   <UIGroupMemberSelector>
     <label>
       <selectGroup>Chọn nhóm</selectGroup>
