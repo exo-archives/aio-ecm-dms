@@ -27,7 +27,7 @@
 			  <% 
           String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", 
                                      "options=read,schedule,node_added,node_removed,property_added,property_removed,property_changed",
-                                     "multiValues=true", "onchange=true","size=5"] ;
+                                     "multiValues=true", "onchange=true","size=5","validate=empty"] ;
           uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ;
         %>
 				</td>

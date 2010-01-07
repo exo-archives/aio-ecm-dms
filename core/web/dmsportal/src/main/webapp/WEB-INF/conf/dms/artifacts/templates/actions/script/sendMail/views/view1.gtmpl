@@ -28,9 +28,12 @@
       for(value in values) {
         sB.append(value.getString()).append(",");
       } 
-      %>
-      <%= sB.deleteCharAt(sB.length()-1)%>        
-    <%}%>
+      if (sB.length > 0) {
+        %>
+        <%= sB.deleteCharAt(sB.length()-1)%>        
+      <%
+        }
+      }%>
     </td> 
   </tr>
   <tr>
@@ -42,9 +45,12 @@
         for(value in values) {
           sB.append(value.getString()).append(",");
         } 
-        %>
-        <%= sB.deleteCharAt(sB.length()-1)%>        
-      <%}%>
+        if (sB.length > 0) {
+          %>
+          <%= sB.deleteCharAt(sB.length()-1)%>        
+        <%
+          }
+        }%>
     </td>         
   </tr>
   <tr>
@@ -56,9 +62,12 @@
       for(value in values) {
         sB.append(value.getString()).append(",");
       } 
+      if (sB.length > 0) {
       %>
-      <%= sB.deleteCharAt(sB.length()-1)%>        
-    <%}%>
+        <%= sB.deleteCharAt(sB.length()-1)%>        
+      <%
+        }
+      }%>
     </td> 
   </tr>
   <tr>

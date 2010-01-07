@@ -525,6 +525,15 @@ public class UIDialogForm extends UIForm {
     }
     propertiesName.put(name, getPropertyName(jcrPath));
     fieldNames.put(getPropertyName(jcrPath), name);
+    if (formSelectBoxField.validateType != null) {
+      String validateType = formSelectBoxField.validateType;
+      String[] validatorList = null;
+      if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+      else validatorList = new String[] {validateType};
+      for (String validator : validatorList) {
+        uiSelectBox.addValidator(DialogFormUtil.getValidator(validator.trim()));
+      }              
+    }
     String[] arrNodes = jcrPath.split("/");
     Node childNode = null;
     Node node = getNode();
