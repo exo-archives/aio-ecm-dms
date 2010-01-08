@@ -68,7 +68,7 @@ public abstract class BaseTestCase extends BasicTestCase {
 
       compareMixins(mixins, nodeMixins);
     } catch (RepositoryException e) {
-      fail("Mixins isn't accessible on the node " + node.getPath());
+      fail("Mixins isn't accessible on the node " + node);
     }
   }
 

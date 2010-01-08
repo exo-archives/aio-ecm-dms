@@ -21,14 +21,16 @@ import java.io.InputStream;
 import java.util.GregorianCalendar;
 
 import javax.jcr.Node;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.exoplatform.common.http.HTTPStatus;
 import org.exoplatform.commons.utils.IOUtil;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
-import org.exoplatform.services.rest.CacheControl;
-import org.exoplatform.services.rest.Response;
 import org.exoplatform.upload.UploadResource;
 import org.exoplatform.upload.UploadService;
 import org.w3c.dom.Document;
@@ -79,7 +81,7 @@ public class FileUploadHandler {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
     uploadService.createUploadResource(uploadId,null,contentType,contentLength,inputStream);
-    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();            
+    return Response.ok(null, new MediaType("text", "xml")).cacheControl(cacheControl).build();            
   }
 
   public Response control(String uploadId, String action) throws Exception {
@@ -87,15 +89,15 @@ public class FileUploadHandler {
     cacheControl.setNoCache(true);
     if(FileUploadHandler.PROGRESS_ACTION.equals(action)) {
       Document currentProgress = getProgress(uploadId);      
-      return Response.Builder.ok(currentProgress).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(currentProgress, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     }else if(FileUploadHandler.ABORT_ACTION.equals(action)) {
       uploadService.removeUpload(uploadId);
-      return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
+      return Response.ok(null, new MediaType("text", "xml")).cacheControl(cacheControl).build();    
     }else if(FileUploadHandler.DELETE_ACTION.equals(action)) {
       uploadService.removeUpload(uploadId);
-      return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
+      return Response.ok(null, new MediaType("text", "xml")).cacheControl(cacheControl).build();    
     }
-    return Response.Builder.badRequest().mediaType("text/xml").cacheControl(cacheControl).build();
+    return Response.status(HTTPStatus.BAD_REQUEST).cacheControl(cacheControl).build();
   }
   
   public Response saveAsNTFile(Node parent, String uploadId, String fileName, String language) throws Exception {
@@ -105,13 +107,13 @@ public class FileUploadHandler {
     if (parent == null) {
       Document fileNotUploaded = 
         fckMessage.createMessage(FCKMessage.FILE_NOT_UPLOADED, FCKMessage.ERROR, language, null);
-      return Response.Builder.ok(fileNotUploaded).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(fileNotUploaded, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     }
     if(!FCKUtils.hasAddNodePermission(parent)) {
       Object[] args = { parent.getPath() };
       Document message = 
         fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR,language,args);
-      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(message, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     }
     if((fileName == null) || (fileName.length() == 0)) {
       fileName = resource.getFileName();
@@ -120,7 +122,7 @@ public class FileUploadHandler {
       Object args[] = { fileName, parent.getPath() };
       Document fileExisted = 
         fckMessage.createMessage(FCKMessage.FILE_EXISTED, FCKMessage.ERROR, language, args);
-      return Response.Builder.ok(fileExisted).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(fileExisted, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     }                
     String location = resource.getStoreLocation();
     byte[] uploadData = IOUtil.getFileContentAsBytes(location);
@@ -132,7 +134,7 @@ public class FileUploadHandler {
     jcrContent.setProperty("jcr:mimeType",mimetype);
     parent.getSession().save();
     uploadService.removeUpload(uploadId);
-    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();
+    return Response.ok(null, new MediaType("text", "xml")).cacheControl(cacheControl).build();
   }
   
   private Document getProgress(String uploadId) throws Exception {    
