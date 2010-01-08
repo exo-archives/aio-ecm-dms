@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -48,8 +49,6 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
