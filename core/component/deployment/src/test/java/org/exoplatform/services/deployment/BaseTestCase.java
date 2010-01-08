@@ -18,12 +18,12 @@ package org.exoplatform.services.deployment;
 
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.logging.Log;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.test.BasicTestCase;
 
 /**
@@ -61,7 +61,7 @@ public abstract class BaseTestCase extends BasicTestCase {
     
   }
 
-  protected void checkMixins(String[] mixins, NodeImpl node) {
+  protected void checkMixins(String[] mixins, NodeImpl node) throws Exception {
     try {
       String[] nodeMixins = node.getMixinTypeNames();
       assertEquals("Mixins count is different", mixins.length, nodeMixins.length);

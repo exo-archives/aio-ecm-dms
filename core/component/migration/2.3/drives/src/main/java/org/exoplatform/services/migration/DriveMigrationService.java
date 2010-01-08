@@ -20,7 +20,6 @@ import java.util.List;
 
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -28,6 +27,7 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -68,7 +68,6 @@ public class DriveMigrationService implements Startable {
  * invalid characters like(|)
  * @throws Exception
  */  
-  @SuppressWarnings("unchecked")
   public void migrateProcess() throws Exception {
     int migrateNum = 0;
     for(RepositoryEntry repoEntry : repositoryService_.getConfig().getRepositoryConfigurations()) {

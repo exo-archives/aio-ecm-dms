@@ -23,12 +23,12 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**

@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.Log;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.resources.LocaleConfig;
 import org.exoplatform.services.resources.LocaleConfigService;
 import org.exoplatform.services.resources.ResourceBundleData;

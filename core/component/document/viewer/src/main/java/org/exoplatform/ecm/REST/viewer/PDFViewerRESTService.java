@@ -28,6 +28,10 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -35,15 +39,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.rest.HTTPMethod;
-import org.exoplatform.services.rest.InputTransformer;
-import org.exoplatform.services.rest.OutputTransformer;
-import org.exoplatform.services.rest.Response;
-import org.exoplatform.services.rest.URIParam;
-import org.exoplatform.services.rest.URITemplate;
-import org.exoplatform.services.rest.container.ResourceContainer;
-import org.exoplatform.services.rest.transformer.PassthroughInputTransformer;
-import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
+import org.exoplatform.services.rest.resource.ResourceContainer;
 import org.icepdf.core.exceptions.PDFException;
 import org.icepdf.core.exceptions.PDFSecurityException;
 import org.icepdf.core.pobjects.Document;
@@ -67,7 +63,7 @@ import org.icepdf.core.util.GraphicsRenderingHints;
  * {scale} Zoom factor to be applied to the rendered page 
  * Example: <img src="/portal/rest/pdfviewer/repository/collaboration/test.pdf/1/0.0f/1.0f">
  */
-@URITemplate("/pdfviewer/{repoName}/{workspaceName}/{pageNumber}/{rotation}/{scale}/{uuid}/")
+@Path("/pdfviewer/{repoName}/{workspaceName}/{pageNumber}/{rotation}/{scale}/{uuid}/")
 public class PDFViewerRESTService implements ResourceContainer {
 
   private static final String LASTMODIFIED = "Last-Modified";
@@ -77,15 +73,15 @@ public class PDFViewerRESTService implements ResourceContainer {
     repositoryService_ = repositoryService;
   }
 
-  @HTTPMethod("GET")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response getCoverImage(@URIParam("repoName") String repoName, 
-      @URIParam("workspaceName") String wsName,
-      @URIParam("uuid") String uuid,
-      @URIParam("pageNumber") String pageNumber,
-      @URIParam("rotation") String rotation,
-      @URIParam("scale") String scale) throws Exception {
+  @GET
+//  @InputTransformer(PassthroughInputTransformer.class)
+//  @OutputTransformer(PassthroughOutputTransformer.class)
+  public Response getCoverImage(@PathParam("repoName") String repoName, 
+      @PathParam("workspaceName") String wsName,
+      @PathParam("uuid") String uuid,
+      @PathParam("pageNumber") String pageNumber,
+      @PathParam("rotation") String rotation,
+      @PathParam("scale") String scale) throws Exception {
     return getImageByPageNumber(repoName, wsName, uuid, pageNumber, rotation, scale);
   }
 
@@ -135,9 +131,7 @@ public class PDFViewerRESTService implements ResourceContainer {
       InputStream is = new BufferedInputStream(new FileInputStream(file));
       String lastModified = contentNode.getProperty("jcr:lastModified").getString();
       session.logout();
-      return Response.Builder.ok().header(LASTMODIFIED, lastModified)
-                                  .entity(is, "image")
-                                  .build();
+      return Response.ok(is, "image").header(LASTMODIFIED, lastModified).build();
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
@@ -147,7 +141,7 @@ public class PDFViewerRESTService implements ResourceContainer {
       if(file != null) file.delete();
       session.logout();
     }
-    return Response.Builder.ok().build();
+    return Response.ok().build();
   }
 
   private SessionProvider getSystemProvider() {
