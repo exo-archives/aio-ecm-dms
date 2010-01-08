@@ -21,24 +21,23 @@ import java.io.InputStream;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.exoplatform.common.http.HTTPMethods;
+import org.exoplatform.common.http.HTTPStatus;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.rest.CacheControl;
-import org.exoplatform.services.rest.HTTPMethod;
-import org.exoplatform.services.rest.HeaderParam;
-import org.exoplatform.services.rest.InputTransformer;
-import org.exoplatform.services.rest.OutputTransformer;
-import org.exoplatform.services.rest.QueryParam;
-import org.exoplatform.services.rest.Response;
-import org.exoplatform.services.rest.URITemplate;
-import org.exoplatform.services.rest.container.ResourceContainer;
-import org.exoplatform.services.rest.transformer.PassthroughInputTransformer;
-import org.exoplatform.services.rest.transformer.XMLOutputTransformer;
+import org.exoplatform.services.rest.resource.ResourceContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,7 +48,7 @@ import org.w3c.dom.Element;
  * @Email hoa.pham@exoplatform.com 
  * Jun 23, 2008
  */
-@URITemplate("/fckconnector/jcr/")
+@Path("/fckconnector/jcr/")
 public class FCKCoreRESTConnector implements ResourceContainer {
 
   private FCKFileHandler fileHandler;
@@ -83,9 +82,9 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * @return the folders and files
    * @throws Exception the exception
    */
-  @HTTPMethod(HTTPMethods.GET)
-  @URITemplate("/getFoldersAndFiles/")  
-  @OutputTransformer(XMLOutputTransformer.class)  
+  @GET
+  @Path("/getFoldersAndFiles/")  
+//  @OutputTransformer(XMLOutputTransformer.class)  
   public Response getFoldersAndFiles(
       @QueryParam("repositoryName") String repoName, 
       @QueryParam("workspaceName") String workspaceName, 
@@ -96,7 +95,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
     Node currentNode = (Node)session.getItem(currentFolder);
     String ftype = folderHandler.getFolderType(currentNode);
     if(ftype == null) {
-      return Response.Builder.badRequest().build();
+      return Response.status(HTTPStatus.BAD_REQUEST).build();
     }
     Element root = FCKUtils.createRootElement(command,currentNode,ftype);
     Document document = root.getOwnerDocument();
@@ -121,7 +120,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
     session.logout();
-    return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    return Response.ok(document, new MediaType("text", "xml")).cacheControl(cacheControl).build();
   }
 
   /**
@@ -135,9 +134,9 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * @return the response
    * @throws Exception the exception
    */
-  @HTTPMethod(HTTPMethods.GET)
-  @URITemplate("/createFolder/")  
-  @OutputTransformer(XMLOutputTransformer.class)
+  @GET
+  @Path("/createFolder/")  
+  //@OutputTransformer(XMLOutputTransformer.class)
   public Response createFolder(
       @QueryParam("repositoryName") String repositoryName, 
       @QueryParam("workspaceName") String workspaceName,
@@ -146,7 +145,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
       @QueryParam("language") String language) throws Exception {
     Session session = getSession(repositoryName,workspaceName);
     Node currentNode = (Node)session.getItem(currentFolder);
-    return folderHandler.createNewFolder(currentNode,newFolderName,language);
+    return folderHandler.createNewFolder(currentNode, newFolderName, language);
   }
 
   /**
@@ -154,10 +153,10 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * 
    * @return the response
    */
-  @HTTPMethod(HTTPMethods.POST)
-  @URITemplate("/uploadFile/upload/")  
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(XMLOutputTransformer.class)
+  @POST
+  @Path("/uploadFile/upload/")  
+  //@InputTransformer(PassthroughInputTransformer.class)
+  //@OutputTransformer(XMLOutputTransformer.class)
   public Response uploadFile(
       InputStream inputStream,
       @QueryParam("repositoryName") String repositoryName, 
@@ -181,9 +180,9 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * @param language the language
    * @return the response
    */
-  @HTTPMethod(HTTPMethods.GET)
-  @URITemplate("/uploadFile/control/")  
-  @OutputTransformer(XMLOutputTransformer.class)
+  @GET
+  @Path("/uploadFile/control/")  
+//  @OutputTransformer(XMLOutputTransformer.class)
   public Response processUpload(
       @QueryParam("repositoryName") String repositoryName, 
       @QueryParam("workspaceName") String workspaceName,

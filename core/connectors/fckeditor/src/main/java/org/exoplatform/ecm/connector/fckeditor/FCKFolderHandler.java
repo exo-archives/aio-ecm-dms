@@ -18,12 +18,13 @@ package org.exoplatform.ecm.connector.fckeditor;
 
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.rest.CacheControl;
-import org.exoplatform.services.rest.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -93,13 +94,13 @@ public class FCKFolderHandler {
         Object[] args = { currentNode.getPath() };
         document = fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING, FCKMessage.ERROR,
             language, args);
-        return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+        return Response.ok(document, new MediaType("text", "xml")).cacheControl(cacheControl).build();
       }
       if (currentNode.hasNode(newFolderName)) {
         Object[] args = { currentNode.getPath(), newFolderName };
         document = fckMessage.createMessage(FCKMessage.FOLDER_EXISTED, FCKMessage.ERROR, language,
             args);
-        return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+        return Response.ok(document, new MediaType("text", "xml")).cacheControl(cacheControl).build();
       }
       currentNode.addNode(newFolderName, FCKUtils.NT_FOLDER);
       currentNode.getSession().save();
@@ -113,11 +114,11 @@ public class FCKFolderHandler {
           language));
       errorElement.setAttribute("type", FCKMessage.ERROR);
       rootElement.appendChild(errorElement);
-      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(document, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     } else {      
       document = fckMessage.createMessage(FCKMessage.FOLDER_NOT_CREATED, FCKMessage.ERROR,
           language, null);
-      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+      return Response.ok(document, new MediaType("text", "xml")).cacheControl(cacheControl).build();
     }    
   }
 }
