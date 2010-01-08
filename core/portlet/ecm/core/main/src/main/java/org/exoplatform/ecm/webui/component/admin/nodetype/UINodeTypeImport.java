@@ -60,7 +60,7 @@ import org.exoplatform.webui.form.UIFormTableInputSet;
 )
 public class UINodeTypeImport extends UIForm {
   
-  private List<NodeType> nodeTypeList_ = new ArrayList<NodeType>() ;
+  private List<NodeTypeValue> nodeTypeList_ = new ArrayList<NodeTypeValue>() ;
   final static String TABLE_NAME =  "UINodeTypeImport"; 
   final static String [] TABLE_COLUMNS = {"label", "input"};  
 
@@ -76,7 +76,7 @@ public class UINodeTypeImport extends UIForm {
   public UINodeTypeImport() throws Exception {
   }
   
-  public void update (List<NodeType> nodeTypeList) throws Exception {
+  public void update(ArrayList nodeTypeList) throws Exception {
     UIFormTableInputSet uiTableInputSet = getChild(UIFormTableInputSet.class) ;
     if(uiTableInputSet == null ) {
       uiTableInputSet = createUIComponent(UIFormTableInputSet.class, null, null) ;

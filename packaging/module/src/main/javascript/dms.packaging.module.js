@@ -5,7 +5,6 @@ function getModule(params) {
 
   var kernel = params.kernel;
   var core = params.core;
-  var eXoPortletContainer = params.eXoPortletContainer;
   var ws = params.ws;
   var jcr = params.eXoJcr;
   var portal = params.portal;  

@@ -27,7 +27,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+//import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -78,14 +78,19 @@ public class UIMetadataList extends UIContainer {
       Metadata mt = new Metadata() ;
       mt.setName(nt.getName()) ;
       mt.isTemplate(metadataService.hasMetadata(nt.getName(), repository)) ;
-      PropertyDefinition def =
-        ((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
-      if(def.getDefaultValues() != null && def.getDefaultValues()[0].getBoolean()) {
-        mt.setInternalUse("True") ;
-      } else {
-        mt.setInternalUse("False") ;
+      for(PropertyDefinition def : nt.getPropertyDefinitions()) {
+        if(def.getName().equals(INTERNAL_USE)) {
+          if(def.getDefaultValues() != null && def.getDefaultValues()[0].getBoolean()) {
+            mt.setInternalUse("True") ;
+          } else {
+            mt.setInternalUse("False") ;
+          }
+          metadatas.add(mt) ;
+          break;
+        }
       }
-      metadatas.add(mt) ;
+//      PropertyDefinition def =
+//        ((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
     }
     return metadatas ; 
   }

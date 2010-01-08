@@ -28,7 +28,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+//import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -80,9 +80,15 @@ public class UISingleExternalMetadataForm extends UIForm {
   }
   
   private boolean isExternalUse(NodeType nodeType) throws Exception{
-    PropertyDefinition def = 
-      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
-    return !def.getDefaultValues()[0].getBoolean() ;
+    for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
+      if(pro.getName().equals("exo:internalUse")) {
+        return pro.getDefaultValues()[0].getBoolean();
+      }
+    }
+    return false;
+//    PropertyDefinition def = 
+//      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
+//    return !def.getDefaultValues()[0].getBoolean() ;
   }
   
   private boolean hasExternalMetadata(String name) throws Exception {

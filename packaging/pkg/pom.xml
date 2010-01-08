@@ -70,12 +70,6 @@
          <type>js</type>
        </dependency>
        <dependency>
-         <groupId>org.exoplatform.portletcontainer</groupId>
-         <artifactId>portletcontainer.packaging.module</artifactId>
-         <version>${org.exoplatform.portletcontainer.version}</version>
-         <type>js</type>
-       </dependency>
-       <dependency>
          <groupId>org.exoplatform.portal</groupId>
          <artifactId>portal.packaging.module</artifactId>
          <version>${org.exoplatform.portal.version}</version>
@@ -90,13 +84,13 @@
        <dependency>
          <groupId>org.exoplatform.ecm.dms</groupId>
          <artifactId>dms.packaging.module</artifactId>
-         <version>2.6-SNAPSHOT</version>
+         <version>${org.exoplatform.ecm.dms.version}</version>
          <type>js</type>
        </dependency> 
        <dependency>
          <groupId>org.exoplatform.ecm.dms</groupId>
          <artifactId>dms.packaging.product</artifactId>
-         <version>2.6-SNAPSHOT</version>
+         <version>${org.exoplatform.ecm.dms.version}</version>
          <type>js</type>
        </dependency> 
    </dependencies>

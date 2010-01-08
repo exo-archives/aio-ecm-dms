@@ -19,26 +19,20 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.exoplatform.portletcontainer</groupId> 
-      <artifactId>exo.pc.component.plugins.pc</artifactId> 
-      <version>${org.exoplatform.pc.version}</version> 
-      <scope>provided</scope> 
-    </dependency>
   
-  <dependency>
+		<dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
+    <!--dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.rmi</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency-->
 
     <dependency>
       <groupId>exo-weblogic</groupId>

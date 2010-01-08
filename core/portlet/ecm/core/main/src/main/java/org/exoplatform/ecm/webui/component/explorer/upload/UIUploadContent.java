@@ -26,7 +26,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+//import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -89,9 +89,15 @@ public class UIUploadContent extends UIContainer {
   }
   
   private boolean isExternalUse(NodeType nodeType) throws Exception{
-    PropertyDefinition def = 
-      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
-    return !def.getDefaultValues()[0].getBoolean() ;
+    for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
+      if(pro.getName().equals("exo:internalUse")) {
+        return pro.getDefaultValues()[0].getBoolean();
+      }
+    }
+//    PropertyDefinition def = 
+//      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
+//    return !def.getDefaultValues()[0].getBoolean() ;
+    return false;
   }
   
   public String[] arrUploadValues() { return arrValues_ ; }

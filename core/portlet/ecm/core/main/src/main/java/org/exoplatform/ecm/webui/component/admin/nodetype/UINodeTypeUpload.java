@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.nodetype;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.zip.ZipInputStream;
 
 import javax.jcr.nodetype.NodeType;
@@ -105,7 +106,7 @@ public class UINodeTypeUpload extends UIForm {
         IBindingFactory factory = BindingDirectory.getFactory(NodeTypeValuesList.class);
         IUnmarshallingContext uctx = factory.createUnmarshallingContext();
         NodeTypeValuesList nodeTypeValuesList = (NodeTypeValuesList)uctx.unmarshalDocument(is, null);
-        List<NodeType> ntvList = nodeTypeValuesList.getNodeTypeValuesList();
+        ArrayList ntvList = nodeTypeValuesList.getNodeTypeValuesList();
         
         UINodeTypeImport uiImport = uiImportPopup.getChild(UINodeTypeImport.class) ; 
         uiImport.update(ntvList) ;

@@ -27,9 +27,10 @@
 		
 		<org.exoplatform.ecm.workflow.version>1.0.5</org.exoplatform.ecm.workflow.version>
 		<org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
-		<bonita.version>4.0</bonita.version>        
+		<bonita.version>4.0</bonita.version>
 		 
 		<!-- 3rd parties -->
+		<org.shindig.version>SNAPSHOT-r790473</org.shindig.version>
 		<commons-lang.version>2.3</commons-lang.version>
 		<javax.servlet.servlet-api.version>2.5</javax.servlet.servlet-api.version>
 		<javax.portlet.portlet-api.version>2.0</javax.portlet.portlet-api.version>
