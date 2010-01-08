@@ -141,9 +141,6 @@
     <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
   </listener>
   <listener>
-    <listener-class>org.exoplatform.ecm.webui.skin.SkinLoadConfigListener</listener-class>
-  </listener>
-  <listener>
     <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
   </listener>
   <listener>
