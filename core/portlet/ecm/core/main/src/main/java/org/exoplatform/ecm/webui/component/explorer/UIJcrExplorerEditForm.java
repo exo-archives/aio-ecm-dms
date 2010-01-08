@@ -238,11 +238,21 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
       typeSelectBox.setValue(pref.getValue(UIJCRExplorerPortlet.USECASE, ""));
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
       UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
-      stringInputDrive.setValue(pref.getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));
-      if (pref.getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {
+      stringInputDrive.setValue(pref.getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));     
+            
+      // update                  
+      UIFormInputSetWithAction uiParamPathInput = uiForm.getChildById(PARAM_PATH_ACTION);      
+      UIFormStringInput stringInputPath = uiParamPathInput.getUIStringInput(UIJCRExplorerPortlet.PARAMETERIZE_PATH);
+      stringInputPath.setValue(pref.getValue(UIJCRExplorerPortlet.PARAMETERIZE_PATH, ""));  
+      
+      if (pref.getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {               
         driveNameInput.setRendered(true);
+      } else if (pref.getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.PARAMETERIZE)) {
+        driveNameInput.setRendered(true);
+        uiParamPathInput.setRendered(true);          
       } else {
         driveNameInput.setRendered(false);
+        uiParamPathInput.setRendered(false);
       }
       UIFormStringInput uiMaxFileSize = uiForm.getUIStringInput(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD);
       uiMaxFileSize.setValue(pref.getValue(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, ""));
@@ -260,9 +270,11 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
       UIFormInputSetWithAction uiParamPathInput = uiForm.getChildById(PARAM_PATH_ACTION);
-      driveNameInput.setRendered(false);
+      driveNameInput.setRendered(false);      
       uiParamPathInput.setRendered(false);
       if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.JAILED)) {
+        UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+        stringInputDrive.setValue("");
         driveNameInput.setRendered(true);
       } else if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.SOCIAL)) {
         String groupId = uiForm.getGroupId();
@@ -282,9 +294,14 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
         stringInputDrive.setValue(personalPrivateDrive.getName());
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.personal-usecase", null));
-      } else if(typeSelectBox.getValue().equals(UIJCRExplorerPortlet.PARAMETERIZE)) {
-        driveNameInput.setRendered(true);
-        uiParamPathInput.setRendered(true);
+      } else if(typeSelectBox.getValue().equals(UIJCRExplorerPortlet.PARAMETERIZE)) {        
+        UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+        stringInputDrive.setValue("");
+        driveNameInput.setRendered(true); 
+        
+        UIFormStringInput stringInputDrivePath = uiParamPathInput.getUIStringInput(UIJCRExplorerPortlet.PARAMETERIZE_PATH);
+        stringInputDrivePath.setValue("");
+        uiParamPathInput.setRendered(true);                        
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
@@ -301,16 +318,28 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
       UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
       String nodePath = ((UIFormStringInput)uiForm.findComponentById(UIJCRExplorerPortlet.PARAMETERIZE_PATH)).getValue();
-      String driveName = stringInputDrive.getValue();
-      if ((driveName == null) || (driveName.length() == 0)) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.notNullDriveName", null, 
-            ApplicationMessage.WARNING));
-        return;
-      }
+      String driveName = stringInputDrive.getValue();      
       String useCase = typeSelectBox.getValue();
+      
+      if (useCase.equals(UIJCRExplorerPortlet.JAILED) ) {
+        if ((driveName == null) || (driveName.length() == 0)) {
+          UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+          uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.notNullDriveName", null, 
+              ApplicationMessage.WARNING));
+          return;
+        }                
+      } else if (useCase.equals(UIJCRExplorerPortlet.PARAMETERIZE)) {
+        if ((nodePath == null) || (nodePath.length() == 0)) {
+          UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+          uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.notNullPath", null, 
+              ApplicationMessage.WARNING));
+          return;
+        }        
+      }
+      
       if (useCase.equals(UIJCRExplorerPortlet.SELECTION)) {
         driveName = "";
+        nodePath = "";
       } else {
         uiForm.setFlagSelectRender(true);
       }

@@ -2805,6 +2805,7 @@
 		<msg>
 			<notNullDriveName>Drive Name is null or empty. Fill Drive Name,
 				please!</notNullDriveName>
+				<notNullPath>Path is null or empty. Fill the path, please!</notNullPath>
 		</msg>
 	</UIJcrExplorerEditForm>
 	<RemoveAttachmentComponent>

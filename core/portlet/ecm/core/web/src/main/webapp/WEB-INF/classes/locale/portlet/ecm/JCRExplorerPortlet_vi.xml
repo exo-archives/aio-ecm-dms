@@ -2700,6 +2700,7 @@
 	<UIJcrExplorerEditForm>    
 		<msg>
 			<notNullDriveName>Giá trị trường Tên ổ đĩa là null hoặc rỗng. Hãy nhập tên ổ đĩa!</notNullDriveName>
+			<notNullPath>Đường dẫn đang bị null hoặc rỗng. Hãy nhập vào đường dẫn</notNullPath>
 		</msg>
 	</UIJcrExplorerEditForm>
 	<UIViewSearchResult>
