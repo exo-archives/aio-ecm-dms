@@ -467,7 +467,10 @@ public class UIWorkingArea extends UIContainer {
       return; 
     }
     // Make destination path without index on final name
-    destPath = destPath.concat("/").concat(srcNode.getName());
+    if (!"/".equals(destPath))
+    	destPath = destPath.concat("/");
+    destPath = destPath.concat(srcNode.getName());
+
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class);
     try {
       if(ClipboardCommand.COPY.equals(type)) {
