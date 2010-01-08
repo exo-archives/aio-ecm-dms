@@ -61,6 +61,8 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
@@ -625,6 +627,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     return linkManager.isLink(node);
   }
+  
+  public DriveData getDrive(List<DriveData> lstDrive, Node node) throws RepositoryException{
+    DriveData driveData = null;
+    for (DriveData drive : lstDrive) {
+      if (node.getSession().getWorkspace().getName().equals(drive.getWorkspace())
+          && node.getPath().contains(drive.getHomePath()) && drive.getHomePath().equals("/")) {
+        driveData = drive;
+        break;
+      }
+    }
+    return driveData;
+  }
 
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
@@ -664,6 +678,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         // Just in order to check if the node exists
         nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
         uiExplorer.setSelectNode(workspaceName, uri);
+        ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
+        List<DriveData> lstDrive = manageDriveService.getAllDrives(uiExplorer.getRepositoryName());
+        uiExplorer.setDriveData(uicomp.getDrive(lstDrive, uiExplorer.getCurrentNode()));
         uiExplorer.updateAjax(event);
       } catch (ItemNotFoundException nu) {
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null,
