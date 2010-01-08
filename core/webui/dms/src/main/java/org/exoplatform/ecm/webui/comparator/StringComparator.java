@@ -20,13 +20,13 @@ import java.util.Comparator;
 
 import javax.jcr.Node;
 
-import org.exoplatform.services.log.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SARL

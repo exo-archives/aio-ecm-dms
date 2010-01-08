@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.form;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,6 @@ import javax.jcr.Value;
 import javax.jcr.lock.LockException;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.services.log.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -67,6 +67,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -87,8 +88,6 @@ import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SAS
