@@ -13,7 +13,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.Value;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;

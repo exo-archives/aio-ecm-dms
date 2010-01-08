@@ -16,7 +16,7 @@
  */
 package org.exoplatform.processes.publishing;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.ActionHandler;

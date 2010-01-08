@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 import javax.jcr.Node;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.utils.Utils;

@@ -33,7 +33,7 @@ import javax.portlet.ResourceURL;
 
 import org.apache.commons.chain.Catalog;
 import org.apache.commons.chain.Command;
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.frameworks.jcr.cli.CliAppContext;

@@ -29,7 +29,7 @@ import java.util.Map;
 
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;

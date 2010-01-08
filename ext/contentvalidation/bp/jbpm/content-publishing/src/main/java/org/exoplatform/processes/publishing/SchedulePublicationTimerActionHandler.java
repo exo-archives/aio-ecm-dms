@@ -18,7 +18,7 @@ package org.exoplatform.processes.publishing;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.Action;

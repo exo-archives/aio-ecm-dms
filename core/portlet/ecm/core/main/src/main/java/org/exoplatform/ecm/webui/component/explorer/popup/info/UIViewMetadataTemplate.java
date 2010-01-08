@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.resolver.ResourceResolver;

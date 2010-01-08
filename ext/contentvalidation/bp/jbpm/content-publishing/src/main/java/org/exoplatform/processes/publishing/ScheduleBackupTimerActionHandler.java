@@ -18,7 +18,7 @@ package org.exoplatform.processes.publishing;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.workflow.impl.jbpm.WorkflowServiceContainerImpl;
 import org.jbpm.db.JbpmSession;

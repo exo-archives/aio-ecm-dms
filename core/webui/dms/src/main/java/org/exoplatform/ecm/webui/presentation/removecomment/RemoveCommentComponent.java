@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.version.VersionException;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.action.UIPresentationEventListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;

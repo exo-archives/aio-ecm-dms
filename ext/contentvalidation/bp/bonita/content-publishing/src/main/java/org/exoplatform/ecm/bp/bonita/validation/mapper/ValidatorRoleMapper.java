@@ -22,7 +22,7 @@ import hero.mapper.ExoOrganizationMapper;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.log.ExoLogger;
 import org.ow2.bonita.definition.RoleMapper;
 import org.ow2.bonita.facade.QueryAPIAccessor;

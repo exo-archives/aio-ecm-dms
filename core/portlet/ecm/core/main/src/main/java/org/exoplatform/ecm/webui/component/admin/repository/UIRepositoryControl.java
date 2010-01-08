@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;

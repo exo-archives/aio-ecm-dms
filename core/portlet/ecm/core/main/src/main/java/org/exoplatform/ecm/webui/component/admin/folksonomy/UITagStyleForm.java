@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.folksonomy;
 import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.log.ExoLogger;
