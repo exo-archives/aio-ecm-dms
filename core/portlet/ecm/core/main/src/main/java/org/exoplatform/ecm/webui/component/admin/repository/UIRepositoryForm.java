@@ -737,6 +737,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         }
       } else {
         uiForm.workspaceMap_.remove(workspaceName);
+        uiForm.getWorkspaceMapPermission().remove(workspaceName);
         if (uiForm.isDefaultWorkspace(workspaceName)) uiForm.defaulWorkspace_ = null;
         if (uiForm.isDmsSystemWorkspace(workspaceName)) uiForm.dmsSystemWorkspace_ = null;
         uiForm.refreshWorkspaceList();      
