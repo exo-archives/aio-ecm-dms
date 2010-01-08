@@ -21,8 +21,8 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SAS
@@ -35,7 +35,7 @@ public class NodeIteratorLinkAware extends RangeIteratorLinkAware implements Nod
   /**
    * Logger.
    */
-  private static final Log LOG  = LogFactory.getLog("cms.NodeIteratorLinkAware");
+  private static final Log LOG  = ExoLogger.getExoLogger("cms.NodeIteratorLinkAware");
   
   public NodeIteratorLinkAware(Session originalSession, String virtualPath, NodeIterator nodeIterator) {
     super(originalSession, virtualPath, nodeIterator);

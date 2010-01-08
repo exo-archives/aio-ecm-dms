@@ -30,12 +30,15 @@ import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.ecm.utils.comparator.PropertyValueComparator;
-
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -46,14 +49,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.rest.HTTPMethod;
-import org.exoplatform.services.rest.OutputTransformer;
-import org.exoplatform.services.rest.QueryParam;
-import org.exoplatform.services.rest.Response;
-import org.exoplatform.services.rest.URIParam;
-import org.exoplatform.services.rest.URITemplate;
-import org.exoplatform.services.rest.container.ResourceContainer;
-import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer;
+import org.exoplatform.services.log.Log;
+import org.exoplatform.services.rest.resource.ResourceContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -63,7 +60,7 @@ import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer
  */
 
 
-@URITemplate("/presentation/document/edit/")
+@Path("/presentation/document/edit/")
 public class GetEditedDocumentRESTService implements ResourceContainer {
   
   private RepositoryService   repositoryService;
@@ -90,7 +87,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
 
   private boolean             show_gadget     = false;
 
-  private Log LOG = LogFactory.getLog("cms.GetEditedDocumentRESTService");
+  private Log LOG = ExoLogger.getExoLogger("cms.GetEditedDocumentRESTService");
 
   
   public GetEditedDocumentRESTService(RepositoryService repositoryService,
@@ -101,16 +98,16 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     this.manageDriveService = manageDriveService;
   }
   
-  @URITemplate("/{repository}/")
-  @HTTPMethod("GET")
-  @OutputTransformer(Bean2JsonOutputTransformer.class)
-  public Response getLastEditedDoc(@URIParam("repository") String repository,
+  @Path("/{repository}/")
+  @GET
+//  @OutputTransformer(Bean2JsonOutputTransformer.class)
+  public Response getLastEditedDoc(@PathParam("repository") String repository,
       @QueryParam("showItems") String showItems, @QueryParam("showGadgetWs") String showGadgetWs) throws Exception {
     List<Node> lstLastEditedNode = getLastEditedNode(repository, showItems, showGadgetWs);
     List<DocumentNode> lstDocNode = getDocumentData(repository, lstLastEditedNode);
     ListEditDocumentNode listEditDocumentNode = new ListEditDocumentNode();
     listEditDocumentNode.setLstDocNode(lstDocNode);
-    return Response.Builder.ok(listEditDocumentNode).mediaType("application/json").build();
+    return Response.ok(listEditDocumentNode, new MediaType("application", "json")).build();
   }
 
   private List<Node> getLastEditedNode(String repository, String noOfItem, String showGadgetWs) throws Exception{

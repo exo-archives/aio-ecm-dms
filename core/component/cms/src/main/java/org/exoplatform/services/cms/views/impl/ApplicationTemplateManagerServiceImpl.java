@@ -26,8 +26,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 import org.exoplatform.services.cms.BasePath;
@@ -41,6 +39,8 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -51,7 +51,7 @@ import org.picocontainer.Startable;
  */
 public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplateManagerService, Startable {
   
-  private static Log log = LogFactory.getLog(ApplicationTemplateManagerService.class);
+  private static Log log = ExoLogger.getExoLogger(ApplicationTemplateManagerService.class);
   private RepositoryService repositoryService;    
   
   private List<PortletTemplatePlugin> portletTemplatePlugins = new ArrayList<PortletTemplatePlugin>(); 

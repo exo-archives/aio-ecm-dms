@@ -26,8 +26,6 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -35,6 +33,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -48,7 +48,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   private RepositoryService repositoryService_;
   String repositories_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_;
-  private static final Log LOG  = LogFactory.getLog(RelationsServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(RelationsServiceImpl.class);
   public RelationsServiceImpl(RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, InitParams params) {
     repositoryService_ = repositoryService;

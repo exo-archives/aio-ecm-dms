@@ -38,8 +38,6 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.OnParentVersionAction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -53,6 +51,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -65,7 +65,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   /**
    * Logger.
    */
-  private static final Log LOG  = LogFactory.getLog("cms.action.ActionServiceContainerImpl");
+  private static final Log LOG  = ExoLogger.getExoLogger("cms.action.ActionServiceContainerImpl");
   
   /**
    * Define nodetype ACTIONABLE

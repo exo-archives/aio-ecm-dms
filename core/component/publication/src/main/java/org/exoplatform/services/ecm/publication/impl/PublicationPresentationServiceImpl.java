@@ -21,14 +21,14 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.publication.NotInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 
@@ -44,7 +44,7 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
   private Map<String, PublicationPlugin> publicationPlugins_ = new HashMap<String,PublicationPlugin>();
 
   public PublicationPresentationServiceImpl () {
-    log = LogFactory.getLog("portal:PublicationPresentationServiceImpl");
+    log = ExoLogger.getExoLogger("portal:PublicationPresentationServiceImpl");
     log.info("# PublicationPresentationService initialization #");
     this.publicationPlugins_ = new HashMap<String, PublicationPlugin>();
   }

@@ -33,8 +33,8 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SARL
@@ -51,7 +51,7 @@ public class CompressData {
   protected static final int EOF    = -1;
 
   protected static final int BUFFER = 2048;
-  private static final Log LOG  = LogFactory.getLog(CompressData.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(CompressData.class);
 
   public CompressData() {
 

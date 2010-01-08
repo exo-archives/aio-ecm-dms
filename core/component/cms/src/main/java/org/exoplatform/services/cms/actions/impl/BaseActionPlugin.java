@@ -38,7 +38,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 import javax.jcr.observation.ObservationManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -49,8 +48,8 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
 import org.exoplatform.services.scheduler.PeriodInfo;
@@ -439,14 +438,19 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         nodeType = manageRepo.getNodeTypeManager().getNodeType(mixin.getName());
         for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
           String key = (String) iterator.next();
-          if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
-              .isMultiple()) {
-            value = props.get(key);
-            if (value != null) {
-              actionNode.setProperty(key, value.split(";"));
-            }
-          } else
-            actionNode.setProperty(key, props.get(key));
+          for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
+        	  if (pro.getName().equals(key)) {
+        		  if (pro.isMultiple()) {
+    			  	value = props.get(key);
+    	            if (value != null) {
+    	              actionNode.setProperty(key, value.split(";"));
+    	            }		  
+        		  } else {
+        			  actionNode.setProperty(key, props.get(key));
+        		  }
+        		  break;
+        	  }
+          }
         }
       }
     } else {

@@ -30,8 +30,6 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
@@ -41,6 +39,8 @@ import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.resources.ResourceBundleService;
 
 /**
@@ -64,7 +64,7 @@ public class PublicationServiceImpl implements PublicationService {
   Map<String, PublicationPlugin> publicationPlugins_;
 
   public PublicationServiceImpl (PublicationPresentationService presentationService) {
-    log = LogFactory.getLog("portal:PublicationServiceImpl");
+    log = ExoLogger.getExoLogger("portal:PublicationServiceImpl");
     log.info("# PublicationService initialization #");
     this.publicationPresentationService = presentationService;
     publicationPlugins_ = new HashMap<String, PublicationPlugin>();

@@ -26,7 +26,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -35,10 +34,10 @@ import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -389,9 +388,13 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   public List<String> getExternalMetadataType(String repository) throws Exception {
     List<String> extenalMetaTypes = new ArrayList<String>();
     for(NodeType metadata: getAllMetadatasNodeType(repository)) {      
-      ExtendedNodeType extNT = (ExtendedNodeType)metadata;
-      PropertyDefinition internalUseDef = extNT.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition();
-      if(!internalUseDef.getDefaultValues()[0].getBoolean() && !metadata.getName().equals(METADATA_TYPE)) extenalMetaTypes.add(metadata.getName());
+      for(PropertyDefinition pro : metadata.getPropertyDefinitions()) {
+    	  if(pro.getName().equals(INTERNAL_USE)) {
+    		  if(!pro.getDefaultValues()[0].getBoolean() && !metadata.getName().equals(METADATA_TYPE))
+    			  extenalMetaTypes.add(metadata.getName());
+    		  break;
+    	  }
+      }
     }
     
     return extenalMetaTypes;

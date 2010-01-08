@@ -24,8 +24,8 @@ import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SARL
@@ -42,7 +42,7 @@ public class PropertyValueComparator implements Comparator<Node> {
   private String             propertyName;
 
   private String             orderType;
-  private static final Log LOG  = LogFactory.getLog("component.PropertyValueComparator");
+  private static final Log LOG  = ExoLogger.getExoLogger("component.PropertyValueComparator");
   public PropertyValueComparator(String propertyName, String orderType) {
     this.propertyName = propertyName;
     this.orderType = orderType;

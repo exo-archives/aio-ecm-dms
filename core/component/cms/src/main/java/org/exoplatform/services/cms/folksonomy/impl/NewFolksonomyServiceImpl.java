@@ -35,8 +35,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
@@ -49,6 +47,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -68,7 +68,7 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
   private static final String EXO_TRASH_FOLDER = "exo:trashFolder";
   private static final String EXO_HIDDENABLE = "exo:hiddenable";  
 	
-  private static final Log LOG = LogFactory.getLog(NewFolksonomyService.class);
+  private static final Log LOG = ExoLogger.getExoLogger(NewFolksonomyService.class);
 	
   private NodeHierarchyCreator nodeHierarchyCreator;
   private LinkManager linkManager;

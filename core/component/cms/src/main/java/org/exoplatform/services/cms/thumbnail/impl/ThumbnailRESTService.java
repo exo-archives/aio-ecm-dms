@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -37,16 +42,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
-import org.exoplatform.services.rest.HTTPMethod;
-import org.exoplatform.services.rest.InputTransformer;
-import org.exoplatform.services.rest.OutputTransformer;
-import org.exoplatform.services.rest.QueryTemplate;
-import org.exoplatform.services.rest.Response;
-import org.exoplatform.services.rest.URIParam;
-import org.exoplatform.services.rest.URITemplate;
-import org.exoplatform.services.rest.container.ResourceContainer;
-import org.exoplatform.services.rest.transformer.PassthroughInputTransformer;
-import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
+import org.exoplatform.services.rest.resource.ResourceContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -62,7 +58,7 @@ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
  * Example: 
  * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
  */
-@URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
+@Path("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
 public class ThumbnailRESTService implements ResourceContainer {
   
   private static final String LASTMODIFIED = "Last-Modified";
@@ -87,13 +83,11 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */  
-  @QueryTemplate("size=medium")
-  @HTTPMethod("GET")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response getThumbnailImage(@URIParam("repoName") String repoName, 
-                                    @URIParam("workspaceName") String wsName,
-                                    @URIParam("nodePath") String nodePath) throws Exception {
+  @QueryParam("size=medium")
+  @GET
+  public Response getThumbnailImage(@PathParam("repoName") String repoName, 
+                                    @PathParam("workspaceName") String wsName,
+                                    @PathParam("nodePath") String nodePath) throws Exception {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.MEDIUM_SIZE);
   }
   
@@ -106,13 +100,11 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @QueryTemplate("size=big")
-  @HTTPMethod("GET")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response getCoverImage(@URIParam("repoName") String repoName, 
-                                @URIParam("workspaceName") String wsName,
-                                @URIParam("nodePath") String nodePath) throws Exception {
+  @QueryParam("size=big")
+  @GET
+  public Response getCoverImage(@PathParam("repoName") String repoName, 
+                                @PathParam("workspaceName") String wsName,
+                                @PathParam("nodePath") String nodePath) throws Exception {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.BIG_SIZE);
   }
   
@@ -125,13 +117,11 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @QueryTemplate("size=small")
-  @HTTPMethod("GET")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response getSmallImage(@URIParam("repoName") String repoName, 
-                                @URIParam("workspaceName") String wsName,
-                                @URIParam("nodePath") String nodePath) throws Exception {
+  @QueryParam("size=small")
+  @GET
+  public Response getSmallImage(@PathParam("repoName") String repoName, 
+                                @PathParam("workspaceName") String wsName,
+                                @PathParam("nodePath") String nodePath) throws Exception {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.SMALL_SIZE);
   }
   
@@ -144,15 +134,13 @@ public class ThumbnailRESTService implements ResourceContainer {
    * @return Response data stream
    * @throws Exception
    */   
-  @QueryTemplate("size=origin")
-  @HTTPMethod("GET")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response getOriginImage(@URIParam("repoName") String repoName,
-                                 @URIParam("workspaceName") String wsName, 
-                                 @URIParam("nodePath") String nodePath) throws Exception {
+  @QueryParam("size=origin")
+  @GET
+  public Response getOriginImage(@PathParam("repoName") String repoName,
+                                 @PathParam("workspaceName") String wsName, 
+                                 @PathParam("nodePath") String nodePath) throws Exception {
     if (!thumbnailService_.isEnableThumbnail())
-      return Response.Builder.ok().build();
+      return Response.ok().build();
     Node showingNode = getShowingNode(repoName, wsName, getNodePath(nodePath));
     Node targetNode = getTargetNode(showingNode);
     if (targetNode.getPrimaryNodeType().getName().equals("nt:file")) {
@@ -165,18 +153,17 @@ public class ThumbnailRESTService implements ResourceContainer {
             String lastModified = content.getProperty("jcr:lastModified").getDate().getTime()
             .toString();
             InputStream inputStream = content.getProperty("jcr:data").getStream();
-            return Response.Builder.ok().header(LASTMODIFIED, lastModified).entity(inputStream,
-            "image").build();
+            return Response.ok(inputStream, "image").header(LASTMODIFIED, lastModified).build();
           }
         }
       }
     }
-    return Response.Builder.ok().build();
+    return Response.ok().build();
   }
     
   private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
-    if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
+    if(!thumbnailService_.isEnableThumbnail()) return Response.ok().build();
     Node showingNode = getShowingNode(repoName, wsName, getNodePath(nodePath));
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
@@ -204,9 +191,7 @@ public class ThumbnailRESTService implements ResourceContainer {
             if(thumbnailNode.hasProperty(propertyName)) {
               inputStream = thumbnailNode.getProperty(propertyName).getStream();
             }
-            return Response.Builder.ok().header(LASTMODIFIED, lastModified)
-                                        .entity(inputStream, "image")
-                                        .build();
+            return Response.ok(inputStream, "image").header(LASTMODIFIED, lastModified).build();
           }
         }
       }
@@ -221,11 +206,11 @@ public class ThumbnailRESTService implements ResourceContainer {
         Node thumbnailNode = thumbnailFolder.getNode(identifier);
         if(thumbnailNode.hasProperty(propertyName)) {
           InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
-          return Response.Builder.ok().entity(inputStream, "image").build();
+          return Response.ok(inputStream, "image").build();
         }
       }
     }
-    return Response.Builder.ok().build();
+    return Response.ok().build();
   }
   
   private String getNodePath(String nodePath) throws Exception {

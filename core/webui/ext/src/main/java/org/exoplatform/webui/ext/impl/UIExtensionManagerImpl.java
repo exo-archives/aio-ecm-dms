@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.ext.UIExtension;
@@ -46,7 +46,7 @@ public class UIExtensionManagerImpl implements UIExtensionManager {
   /**
    * Logger.
    */
-  private static final Log LOG  = LogFactory.getLog(UIExtensionManagerImpl.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(UIExtensionManagerImpl.class);
   
   /**
    * All the registered extensions

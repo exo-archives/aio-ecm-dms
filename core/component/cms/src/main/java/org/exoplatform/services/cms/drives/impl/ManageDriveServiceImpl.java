@@ -24,8 +24,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
@@ -36,6 +34,8 @@ import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 /**
@@ -126,7 +126,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = LogFactory.getLog(ManageDriveServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(ManageDriveServiceImpl.class);
   
   /**
    * Keep the drives of repository

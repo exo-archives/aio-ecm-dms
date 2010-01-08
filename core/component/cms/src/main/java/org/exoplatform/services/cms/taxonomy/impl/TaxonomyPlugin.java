@@ -26,10 +26,9 @@ import java.util.Set;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.BaseComponentPlugin;
@@ -53,8 +52,9 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -86,7 +86,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   final static String ALL_DOCUMENT_TYPES     = "ALL_DOCUMENT_TYPES".intern();
   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = LogFactory.getLog(TaxonomyPlugin.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(TaxonomyPlugin.class);
   
   public TaxonomyPlugin(InitParams params, RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, TaxonomyService taxonomyService,
@@ -285,14 +285,19 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
       nodeType = manageRepo.getNodeTypeManager().getNodeType(mixin.getName());
       for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
         String key = (String) iterator.next();
-        if (((ExtendedNodeType) nodeType).getPropertyDefinitions(key).getAnyDefinition()
-            .isMultiple()) {
-          value = props.get(key);
-          if (value != null) {
-            actionNode.setProperty(key, value.split(","));
-          }
-        } else
-          actionNode.setProperty(key, props.get(key));
+        for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
+        	if (pro.getName().equals(key)) {
+        		if (pro.isMultiple()) {
+	        		value = props.get(key);
+	                if (value != null) {
+	                  actionNode.setProperty(key, value.split(","));
+	                }	
+                } else {
+            		actionNode.setProperty(key, props.get(key));
+            	}
+        		break;
+        	}
+        }
       }
     }
     actionNode.getSession().save();

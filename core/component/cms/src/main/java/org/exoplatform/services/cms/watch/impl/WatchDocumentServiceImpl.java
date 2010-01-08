@@ -31,14 +31,14 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.picocontainer.Startable;
 
 
@@ -59,7 +59,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   private RepositoryService repoService_ ;
   private MessageConfig messageConfig_ ;
   private TemplateService templateService_ ;
-  private static final Log LOG  = LogFactory.getLog(WatchDocumentServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(WatchDocumentServiceImpl.class);
 
   /**
    * Constructor Method 

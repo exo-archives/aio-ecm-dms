@@ -31,8 +31,6 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -47,9 +45,11 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.impl.core.nodetype.NodeTypeImpl;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.resources.LocaleConfigService;
 import org.exoplatform.services.resources.Orientation;
 import org.exoplatform.services.security.Identity;
@@ -71,7 +71,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private org.exoplatform.groovyscript.text.TemplateService templateService;
   private LocaleConfigService localeConfigService_;
   
-  private static final Log LOG  = LogFactory.getLog(TemplateService.class.getName());
+  private static final Log LOG  = ExoLogger.getExoLogger(TemplateService.class.getName());
   /**
    * DMS configuration which used to store informations
    */   
@@ -231,13 +231,13 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     NodeType childNodeType = parent.getSession().getWorkspace().getNodeTypeManager().getNodeType(childNodeTypeName);
     //In some cases, the child node is mixins type of a nt:file example
     if(childNodeType.isMixin()) return true;    
-    List<ExtendedNodeType> allNodeTypes = new ArrayList<ExtendedNodeType>();
-    allNodeTypes.add((ExtendedNodeType)parent.getPrimaryNodeType());
+    List<NodeType> allNodeTypes = new ArrayList<NodeType>();
+    allNodeTypes.add((NodeType)parent.getPrimaryNodeType());
     for(NodeType mixin: parent.getMixinNodeTypes()) {
-      allNodeTypes.add((ExtendedNodeType)mixin);
+      allNodeTypes.add((NodeType)mixin);
     }
-    for (ExtendedNodeType nodetype:allNodeTypes) {      
-      if (nodetype.isChildNodePrimaryTypeAllowed(childNodeTypeName)) {
+    for (NodeType nodetype:allNodeTypes) {      
+    	if (((NodeTypeImpl)nodetype).isChildNodePrimaryTypeAllowed(childNodeTypeName)) {
         return true;
       } 
     }

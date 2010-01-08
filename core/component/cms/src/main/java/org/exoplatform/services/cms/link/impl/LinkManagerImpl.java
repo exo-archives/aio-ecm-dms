@@ -30,8 +30,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.ValueFormatException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
@@ -40,6 +38,8 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SARL
@@ -57,7 +57,7 @@ public class LinkManagerImpl implements LinkManager {
 
   private final static String    PRIMARY_TYPE = "exo:primaryType";
 
-  private final static Log       LOG  = LogFactory.getLog(LinkManagerImpl.class);
+  private final static Log       LOG  = ExoLogger.getExoLogger(LinkManagerImpl.class);
 
   private final SessionProviderService providerService_;
   

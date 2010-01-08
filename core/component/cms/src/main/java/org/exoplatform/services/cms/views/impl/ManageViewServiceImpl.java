@@ -25,8 +25,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
@@ -37,6 +35,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.webui.ext.UIExtension;
 import org.exoplatform.webui.ext.UIExtensionManager;
 import org.picocontainer.Startable;
@@ -51,7 +51,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   /**
    * Logger.
    */
-  private static final Log LOG  = LogFactory.getLog(ManageViewServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(ManageViewServiceImpl.class);
   
   protected final static String EXO_TEMPLATE = "exo:template".intern() ;
   protected final static String TEMPLATE_PROP = "exo:templateFile".intern() ;

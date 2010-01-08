@@ -49,11 +49,11 @@ import javax.jcr.version.Version;
 import javax.jcr.version.VersionException;
 import javax.jcr.version.VersionHistory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.services.jcr.access.AccessControlList;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.datamodel.InternalQName;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 /**
  * Created by The eXo Platform SAS
@@ -66,7 +66,7 @@ public class NodeLinkAware extends ItemLinkAware implements ExtendedNode {
   /**
    * Logger.
    */
-  private static final Log LOG  = LogFactory.getLog("services.cms.link.NodeLinkAware");
+  private static final Log LOG  = ExoLogger.getExoLogger("services.cms.link.NodeLinkAware");
 
   private final Node node;
 
@@ -766,5 +766,10 @@ public class NodeLinkAware extends ItemLinkAware implements ExtendedNode {
   public void setPermissions(Map<String, String[]> permissions) throws RepositoryException,
                                                                AccessControlException {
     getExtendedRealNode().setPermissions(permissions);
-  }  
+  }
+
+public String getIdentifier() throws RepositoryException {
+	// TODO Auto-generated method stub
+	return null;
+}  
 }

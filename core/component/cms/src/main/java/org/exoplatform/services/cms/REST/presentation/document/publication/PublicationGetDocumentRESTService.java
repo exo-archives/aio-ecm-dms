@@ -32,9 +32,13 @@ import javax.jcr.Value;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
@@ -44,14 +48,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.rest.HTTPMethod;
-import org.exoplatform.services.rest.OutputTransformer;
-import org.exoplatform.services.rest.QueryParam;
-import org.exoplatform.services.rest.Response;
-import org.exoplatform.services.rest.URIParam;
-import org.exoplatform.services.rest.URITemplate;
-import org.exoplatform.services.rest.container.ResourceContainer;
-import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer;
+import org.exoplatform.services.log.Log;
+import org.exoplatform.services.rest.resource.ResourceContainer;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -59,7 +57,7 @@ import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer
  * modified hunghvit@gmail.com
  * May 17, 2009  
  */
-@URITemplate("/publication/presentation/")
+@Path("/publication/presentation/")
 public class PublicationGetDocumentRESTService implements ResourceContainer {
 
   private RepositoryService  repositoryService_;
@@ -69,7 +67,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
   private ManageDriveService manageDriveService_;
   
   final static public String DEFAULT_ITEM = "5";
-  private static final Log LOG  = LogFactory.getLog(PublicationGetDocumentRESTService.class);
+  private static final Log LOG  = ExoLogger.getExoLogger(PublicationGetDocumentRESTService.class);
   
   public PublicationGetDocumentRESTService(RepositoryService repositoryService,
       PublicationService publicationService, ManageDriveService manageDriveService) {
@@ -89,11 +87,11 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
    * @return
    * @throws Exception
    */
-  @URITemplate("/{repository}/{workspace}/{state}/")
-  @HTTPMethod("GET")
-  @OutputTransformer(Bean2JsonOutputTransformer.class)
-  public Response getPublishDocument(@URIParam("repository") String repoName, @URIParam("workspace")
-  String wsName, @URIParam("state") String state, @QueryParam("showItems")
+  @Path("/{repository}/{workspace}/{state}/")
+  @GET
+//  @OutputTransformer(Bean2JsonOutputTransformer.class)
+  public Response getPublishDocument(@PathParam("repository") String repoName, @PathParam("workspace")
+  String wsName, @PathParam("state") String state, @QueryParam("showItems")
   String showItems) throws Exception {
     return getPublishDocument(repoName, wsName, state, null, showItems);
   }
@@ -110,11 +108,11 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
    * @return
    * @throws Exception
    */
-  @URITemplate("/{repository}/{workspace}/{publicationPluginName}/{state}/")
-  @HTTPMethod("GET")
-  @OutputTransformer(Bean2JsonOutputTransformer.class)
-  public Response getPublishedListDocument(@URIParam("repository") String repoName, @URIParam("workspace")
-  String wsName, @URIParam("publicationPluginName") String pluginName, @URIParam("state")
+  @Path("/{repository}/{workspace}/{publicationPluginName}/{state}/")
+  @GET
+//  @OutputTransformer(Bean2JsonOutputTransformer.class)
+  public Response getPublishedListDocument(@PathParam("repository") String repoName, @PathParam("workspace")
+  String wsName, @PathParam("publicationPluginName") String pluginName, @PathParam("state")
   String state, @QueryParam("showItems")
   String showItems) throws Exception {
     return getPublishDocument(repoName, wsName, state, pluginName, showItems);
@@ -151,7 +149,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
     }
     publishedListNode.setPublishedListNode(publishedNodes);
     session.logout();
-    return Response.Builder.ok(publishedListNode).mediaType("application/json").build();
+    return Response.ok(publishedListNode, new MediaType("application", "json")).build();
   }
 
   private List<Node> getNodePublish(NodeIterator iter, String pluginName) throws Exception {
