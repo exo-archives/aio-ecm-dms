@@ -9,23 +9,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms</groupId>
   <artifactId>ext</artifactId>
-  <name>eXo Content Validation</name>
   <packaging>pom</packaging>
-  
+  <name>eXo Content Validation</name>
+
   <modules>
     <module>contentvalidation</module>
   </modules>
   
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <property><name>default</name></property>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <exo.test.skip>true</exo.test.skip>
-      </properties>
-    </profile>
-  </profiles>
 </project>
