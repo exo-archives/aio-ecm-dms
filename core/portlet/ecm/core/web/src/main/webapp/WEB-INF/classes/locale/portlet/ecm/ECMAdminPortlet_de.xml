@@ -389,6 +389,7 @@
       <icon-not-found>Piktogramm nicht gefunden.</icon-not-found>
       <permission-null><![CDATA[Sie m&uuml;ssen eine Genehmigung f&uuml;r dieses Laufwerk ausw&auml;hlen]]></permission-null>
       <name-null>Bitte Laufwerksnamen eingeben!</name-null>
+						<allowedCreateFolder>You must choose create folder type</allowedCreateFolder>
       <fileName-invalid><![CDATA[Laufwerkname besteht aus ung&uuml;ltigen Symbolen.]]></fileName-invalid>
     </msg>
     <tab>

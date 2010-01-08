@@ -389,6 +389,7 @@
       <drive-views-invalid>Vue invalide !</drive-views-invalid>
       <icon-not-found>Icône non trouvé !</icon-not-found>
       <permission-null>Permissions invalides</permission-null>
+						<allowedCreateFolder>You must choose create folder type</allowedCreateFolder>
       <name-null>Veuillez saisir un nom de lecteur !</name-null>
       <fileName-invalid>Le nom du lecteur contient des caractères invalides</fileName-invalid>
     </msg>

@@ -391,6 +391,7 @@
       <drive-views-invalid>Moet u een toepassing uitzicht!</drive-views-invalid>
       <icon-not-found>icoon niet gevonden.</icon-not-found>
       <permission-null>U moet rechten kiezen voor deze schijf</permission-null>
+						<allowedCreateFolder>You must choose create folder type</allowedCreateFolder>
       <name-null>Enter schijf naam, please!</name-null>
       <fileName-invalid>schijf naam have some ongeldig karakters.</fileName-invalid>
     </msg>

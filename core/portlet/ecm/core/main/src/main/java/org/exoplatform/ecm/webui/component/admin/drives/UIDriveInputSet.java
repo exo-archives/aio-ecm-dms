@@ -106,7 +106,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     Set<String> setFoldertypes = templateService.getAllowanceFolderType(repository);
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>();
-    
+                
     List<SelectItemOption<String>> foldertypeOptions = new ArrayList<SelectItemOption<String>>();
     for(String wsName : wsNames) {
       workspace.add(new SelectItemOption<String>(wsName,  wsName));
@@ -120,9 +120,17 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     }
     getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
     getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setOptions(foldertypeOptions);
-    getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setMultiple(true);
+    getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setMultiple(true);        
     if(drive != null) {
+      
+      // Begin of update
+      UIDriveForm uiDriveForm =  getAncestorOfType(UIDriveForm.class);
+      String selectedWorkspace = drive.getWorkspace();
+      String wsInitRootNodeType = uiDriveForm.getWorkspaceEntries(selectedWorkspace, repository);   
+      // End of update
+      
       invokeGetBindingField(drive);
+      
       //Set value for multi-value select box
       String foldertypes = drive.getAllowCreateFolders();
       String selectedFolderTypes[];
@@ -131,6 +139,14 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
       } else {
         selectedFolderTypes = new String[] {foldertypes};
       }
+      List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>();  
+      if(wsInitRootNodeType != null && wsInitRootNodeType.equals(Utils.NT_FOLDER)) {
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER));
+      } else {
+        folderOptions.addAll(foldertypeOptions);
+      }
+            
+      getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setOptions(folderOptions);
       getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setSelectedValues(selectedFolderTypes);
       getUIStringInput(FIELD_NAME).setEditable(false);
       return;

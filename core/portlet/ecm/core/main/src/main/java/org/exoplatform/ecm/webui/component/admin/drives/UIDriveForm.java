@@ -192,7 +192,13 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked();
       //String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue();
-      String[] allowCreateFolders = driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_ALLOW_CREATE_FOLDERS).getSelectedValues();
+      String[] allowCreateFolders = driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_ALLOW_CREATE_FOLDERS).getSelectedValues();      
+      if (allowCreateFolders == null || allowCreateFolders.length == 0 ) {
+        uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.allowedCreateFolder", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       StringBuffer foldertypes = new StringBuffer();
       for (String allowCreateFolder : allowCreateFolders) {
         foldertypes.append(allowCreateFolder).append(",");
@@ -400,5 +406,20 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
         uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).setValue(defaultPath);
       }
     }
+  }
+  
+  public String getWorkspaceEntries(String selectedWorkspace, String repository) throws Exception {
+    RepositoryService repositoryService = 
+      getApplicationComponent(RepositoryService.class);
+    List<WorkspaceEntry> wsEntries = 
+      repositoryService.getRepository(repository).getConfiguration().getWorkspaceEntries();
+    String wsInitRootNodeType = null;
+    for(WorkspaceEntry wsEntry : wsEntries) {
+      if(wsEntry.getName().equals(selectedWorkspace)) {
+        wsInitRootNodeType = wsEntry.getAutoInitializedRootNt();
+        break;
+      }
+    }
+    return wsInitRootNodeType;
   }
 }

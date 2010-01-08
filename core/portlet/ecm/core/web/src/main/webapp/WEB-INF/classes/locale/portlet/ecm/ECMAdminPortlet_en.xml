@@ -385,6 +385,7 @@
       <drive-views-invalid>You must select one apply view!</drive-views-invalid>
       <icon-not-found>Icon not found.</icon-not-found>
       <permission-null>You must choose permission for this drive</permission-null>
+						<allowedCreateFolder>You must choose create folder type</allowedCreateFolder>
       <name-null>Enter drive name, please!</name-null>
       <fileName-invalid>Drive name have some invalid characters.</fileName-invalid>
     </msg>

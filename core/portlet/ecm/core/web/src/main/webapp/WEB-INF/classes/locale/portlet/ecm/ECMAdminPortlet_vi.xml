@@ -390,6 +390,7 @@
       <drive-views-invalid>Bạn phải chọn một khung nhìn!</drive-views-invalid>
       <icon-not-found>Không tìm thấy biể tượng.</icon-not-found>
       <permission-null>Bạn phải chọn quyền truy nhập cho ổ đĩa này</permission-null>
+						<allowedCreateFolder>Bạn phải chọn kiểu thư mục tạo</allowedCreateFolder>
       <name-null>Nhập tên cho ổ đĩa!</name-null>
       <fileName-invalid>Có một vài kí tự không hợp lệ trong tên của ổ đĩa.</fileName-invalid>
     </msg>
