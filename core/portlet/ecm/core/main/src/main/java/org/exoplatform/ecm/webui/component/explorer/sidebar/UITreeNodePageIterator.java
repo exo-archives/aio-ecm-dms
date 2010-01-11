@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -70,7 +71,9 @@ public class UITreeNodePageIterator extends UIPageIterator {
       
       UIPageIterator iterator = uiDocumentInfo.getContentPageIterator();
       iterator.setCurrentPage(page);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);      
+      UIDrivesArea uiDrivesArea = uiExplorer.findFirstComponentOfType(UIDrivesArea.class);
+      if (!uiDrivesArea.isRendered())
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);      
     }
   }    
 }
