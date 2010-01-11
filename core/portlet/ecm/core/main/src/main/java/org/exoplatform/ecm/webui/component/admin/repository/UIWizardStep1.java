@@ -66,6 +66,7 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
   private List<SelectItemOption<String>>  getNodeType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
     options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED));
+    options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER));
     return options;
   }
 

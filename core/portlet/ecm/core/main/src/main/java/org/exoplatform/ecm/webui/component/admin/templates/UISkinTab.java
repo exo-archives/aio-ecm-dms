@@ -69,7 +69,7 @@ public class UISkinTab extends UIContainer {
     uiGrid.configure("name", BEAN_FIELD, ACTIONS) ;
     UITemplateContent uiForm = addChild(UITemplateContent.class, null , SKIN_FORM_NAME) ;
     uiForm.setTemplateType(TemplateService.SKINS);
-    uiForm.update(null) ;
+    uiForm.update(null);
   }
   
   public void setTabRendered() {
@@ -140,7 +140,8 @@ public class UISkinTab extends UIContainer {
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       templateService.removeTemplate(TemplateService.SKINS, nodeTypeName, templateName, repository) ;
-      uiForm.update(null) ;
+      uiForm.update(null);
+      uiForm.reset();
       
       skinTab.updateGrid(nodeTypeName, repository) ;
       skinTab.setTabRendered() ;

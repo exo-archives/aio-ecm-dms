@@ -70,7 +70,7 @@ public class UIViewTab extends UIContainer {
     uiGrid.configure("name", BEAN_FIELD, ACTIONS) ;
     UITemplateContent uiForm = addChild(UITemplateContent.class, null , VIEW_FORM_NAME) ;
     uiForm.setTemplateType(TemplateService.VIEWS);
-    uiForm.update(null) ;
+    uiForm.update(null);
   }
 
   public List<String> getListView() { return listView_ ; }
@@ -142,7 +142,8 @@ public class UIViewTab extends UIContainer {
       }
       templateService.removeTemplate(TemplateService.VIEWS, nodeTypeName, templateName, viewTab.getRepository()) ;
       UITemplateContent uiForm = viewTab.findFirstComponentOfType(UITemplateContent.class) ;
-      uiForm.update(null) ;
+      uiForm.update(null);
+      uiForm.reset();
       viewTab.updateGrid(nodeTypeName) ;
       viewTab.setTabRendered() ;
       UITemplatesManager uiManager = viewTab.getAncestorOfType(UITemplatesManager.class) ;

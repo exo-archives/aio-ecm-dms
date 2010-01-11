@@ -139,7 +139,8 @@ public class UIDialogTab extends UIContainer {
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       templateService.removeTemplate(TemplateService.DIALOGS, nodeTypeName, templateName, repository) ;
-      uiForm.update(null) ;
+      uiForm.update(null);
+      uiForm.reset();      
       
       dialogTab.updateGrid(nodeTypeName, repository) ;
       dialogTab.setTabRendered() ;
