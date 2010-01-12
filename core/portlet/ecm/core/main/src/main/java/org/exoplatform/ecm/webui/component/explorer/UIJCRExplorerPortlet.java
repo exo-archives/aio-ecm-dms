@@ -275,6 +275,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     PortletRequestContext portletReqContext = (PortletRequestContext) context ;
     HashMap<String, String> map = getElementByContext(context);
     if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
+      getChild(UIJcrExplorerEditContainer.class).setRendered(false);
       if (map.size() > 0) {
         showDocument(context, map);
       } else {
@@ -298,7 +299,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
           return;
         }
       }
-      getChild(UIJcrExplorerEditContainer.class).setRendered(false);
+      
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       if (LOG.isDebugEnabled()) LOG.debug("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
