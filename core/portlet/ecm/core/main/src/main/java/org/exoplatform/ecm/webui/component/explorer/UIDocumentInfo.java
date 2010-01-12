@@ -90,8 +90,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-//import org.exoplatform.services.jcr.ext.audit.AuditHistory;
-//import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.jcr.ext.audit.AuditHistory;
+import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -522,11 +522,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
    * @author CPop
    */  
   public boolean hasAuditHistory(Node node) throws Exception{
-//    ExoContainer container = ExoContainerContext.getCurrentContainer();
-//    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
-//    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
-//    return auServ.hasHistory(node);
-    return false;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
+    return auServ.hasHistory(node);
   }
 
   /**
@@ -534,13 +533,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
    * @author CPop
    */ 
   public int getNumAuditHistory(Node node) throws Exception{
-//    ExoContainer container = ExoContainerContext.getCurrentContainer();
-//    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
-//    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
-//    if (auServ.hasHistory(node)) {
-//      AuditHistory auHistory = auServ.getHistory(node);
-//      return (auHistory.getAuditRecords()).size();
-//    }
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
+    if (auServ.hasHistory(node)) {
+      AuditHistory auHistory = auServ.getHistory(node);
+      return (auHistory.getAuditRecords()).size();
+    }
     return 0;
   }
 

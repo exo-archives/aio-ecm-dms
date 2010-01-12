@@ -15,8 +15,7 @@
       <exobuild.type>module</exobuild.type>
    </properties>
    
-   <!-- Replace versions and attach the module.js in maven repo for exobuild -->
-   <build>
+	<build>
        <plugins>
            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -43,7 +42,6 @@
            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.3</version>
                 <executions>
                   <execution>
                     <id>attach-artifacts</id>

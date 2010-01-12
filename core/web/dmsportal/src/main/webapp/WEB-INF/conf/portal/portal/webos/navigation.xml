@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <node-navigation>
-	<owner-type>portal</owner-type>
-  <owner-id>webos</owner-id>
   <priority>1</priority>
 
   <page-nodes>  	  

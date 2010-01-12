@@ -33,12 +33,15 @@ function getProduct(version) {
   product.addDependencies(dms.portlet.dms);
   product.addDependencies(dms.portlet.jcr_console);
   product.addDependencies(dms.gadgets);
+	
+	portal.starter = new Project("org.exoplatform.portal", "exo.portal.starter.war", "war", portal.version);
+  portal.starter.deployName = "starter";
+  product.addDependencies(portal.starter);
+
     
   product.addServerPatch("tomcat", portal.server.tomcat.patch) ;
   product.addServerPatch("jboss",  portal.server.jboss.patch) ;
   product.addServerPatch("jbossear",  portal.server.jbossear.patch) ;  
-  product.addServerPatch("jonas",  portal.server.jonas.patch) ;
-  product.addServerPatch("ear",  portal.server.websphere.patch) ;
 
   product.module = dms ;
   product.dependencyModule = [kernel, core, ws, eXoJcr, portal];

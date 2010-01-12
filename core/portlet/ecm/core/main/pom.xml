@@ -28,6 +28,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.exoplatform</groupId>
+      <artifactId>exo-jcr-services</artifactId>
+      <version>${org.exoplatform.jcr-services.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>

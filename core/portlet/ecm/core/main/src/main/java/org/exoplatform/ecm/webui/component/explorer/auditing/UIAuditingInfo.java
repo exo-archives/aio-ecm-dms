@@ -10,9 +10,9 @@ import org.exoplatform.services.log.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
-//import org.exoplatform.services.jcr.ext.audit.AuditHistory;
-//import org.exoplatform.services.jcr.ext.audit.AuditRecord;
-//import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.jcr.ext.audit.AuditHistory;
+import org.exoplatform.services.jcr.ext.audit.AuditRecord;
+import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -53,36 +53,36 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
   
   @SuppressWarnings("unchecked")
   public void updateGrid() throws Exception {   
-    //ObjectPageList objPageList = new ObjectPageList(getRecords(), 10);
-    //uiPageIterator_.setPageList(objPageList);
+    ObjectPageList objPageList = new ObjectPageList(getRecords(), 10);
+    uiPageIterator_.setPageList(objPageList);
   }
   
-//  public String getVersionName(AuditRecord ar) {
-//    String versionName;
-//    try {      
-//      versionName = ar.getVersionName();
-//    } catch (Exception e) {
-//      versionName = null;
-//    }
-//    return versionName;
-//  }
+  public String getVersionName(AuditRecord ar) {
+    String versionName;
+    try {      
+      versionName = ar.getVersionName();
+    } catch (Exception e) {
+      versionName = null;
+    }
+    return versionName;
+  }
   
-//  public List<AuditRecord> getRecords() throws Exception {
-//     List<AuditRecord> listRec = new ArrayList<AuditRecord>();
-//     Node currentNode = getCurrentNode(); 
-//     try {
-//      AuditService auditService = getApplicationComponent(AuditService.class);
-//      if(Utils.isAuditable(currentNode)){
-//        if (auditService.hasHistory(currentNode)){
-//          AuditHistory auHistory = auditService.getHistory(currentNode);
-//          listRec = auHistory.getAuditRecords();
-//        }    
-//      }
-//    } catch(Exception e){
-//      LOG.error("Unexpected error", e);
-//    }
-//    return listRec;
-//  }
+  public List<AuditRecord> getRecords() throws Exception {
+     List<AuditRecord> listRec = new ArrayList<AuditRecord>();
+     Node currentNode = getCurrentNode(); 
+     try {
+      AuditService auditService = getApplicationComponent(AuditService.class);
+      if(Utils.isAuditable(currentNode)){
+        if (auditService.hasHistory(currentNode)){
+          AuditHistory auHistory = auditService.getHistory(currentNode);
+          listRec = auHistory.getAuditRecords();
+        }    
+      }
+    } catch(Exception e){
+      LOG.error("Unexpected error", e);
+    }
+    return listRec;
+  }
   
   static public class CloseActionListener extends EventListener<UIAuditingInfo> {
     public void execute(Event<UIAuditingInfo> event) throws Exception {

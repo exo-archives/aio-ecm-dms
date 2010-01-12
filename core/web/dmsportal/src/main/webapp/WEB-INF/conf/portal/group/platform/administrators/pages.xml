@@ -1,111 +1,113 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <page-set>
   <page>
-  	<page-id>group::platform/administrators::newAccount</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>newAccount</name>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
-    <application>
-      <instance-id>group#platform/administrators:/exoadmin/AccountPortlet/Account</instance-id>
+    <portlet-application>
+      <portlet>
+      	<application-ref>exoadmin</application-ref>
+        <portlet-ref>AccountPortlet</portlet-ref>
+      </portlet>
       <title>New Account</title>
       <show-info-bar>false</show-info-bar>
-    </application>  
+    </portlet-application>  
   </page>           
   
   <page>
-  	<page-id>group::platform/administrators::communityManagement</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>communityManagement</name>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
-    <application>
-      <instance-id>group#platform/administrators:/exoadmin/OrganizationPortlet/Organization</instance-id>
+    <portlet-application>
+    	<portlet>
+      	<application-ref>exoadmin</application-ref>
+        <portlet-ref>OrganizationPortlet</portlet-ref>
+      </portlet>
       <title>Community Management</title>
       <show-info-bar>false</show-info-bar>      
-    </application>     
+    </portlet-application>     
   </page>           
   
   <page>
-  	<page-id>group::platform/administrators::applicationRegistry</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>applicationRegistry</name>
     <access-permissions>*:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
-    <application>
-      <instance-id>group#platform/administrators:/exoadmin/ApplicationRegistryPortlet/PortletRegistry</instance-id>
+    <portlet-application>
+    	<portlet>
+      	<application-ref>exoadmin</application-ref>
+        <portlet-ref>ApplicationRegistryPortlet</portlet-ref>
+      </portlet>
       <title>Application Registry</title>
       <show-info-bar>false</show-info-bar>
-    </application>   
+    </portlet-application>   
   </page>           
   
   <page>
-  	<page-id>group::platform/administrators::i18n</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>i18n</name>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
-    <application>
-      <instance-id>group#platform/administrators:/exoadmin/I18nPortlet/i18n</instance-id>
+    <portlet-application>
+    	<portlet>
+    		<application-ref>exoadmin</application-ref>
+				<portlet-ref>I18nPortlet</portlet-ref>
+    	</portlet>
       <title>Internationalization</title>
       <show-info-bar>false</show-info-bar>
-    </application>  
+    </portlet-application>  
   </page>           
          
   <page>
-  	<page-id>group::platform/administrators::contentAdministration</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>contentAdministration</name>
-    <factory-id>Desktop</factory-id>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>    
     <show-max-window>true</show-max-window>
     
-    <application>
-      <instance-id>group#platform/administrators:/ecm/ECMAdminPortlet/ecmadmin</instance-id>
+    <portlet-application>
+    	<portlet>
+    		<application-ref>ecm</application-ref>
+				<portlet-ref>ECMAdminPortlet</application-ref>
+    	</portlet>
       <title>ECM Administration</title>
       <show-info-bar>true</show-info-bar>      
-    </application>
+    </portlet-application>
     
-    <application>
-      <instance-id>group#platform/administrators:/workflow/WorkflowAdministrationPortlet/workflowadministration</instance-id>    
+    <portlet-application>
+    	<portlet>
+    		<application-ref>workflow</application-ref>
+				<portlet-ref>WorkflowAdministrationPortlet</application-ref>
+    	</portlet>
       <title>Workflow Administration</title>
       <show-info-bar>true</show-info-bar>      
-    </application>
+    </portlet-application>
             
   </page>
     
   <page>
-  	<page-id>group::platform/administrators::ECMAdmin</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>ECMAdmin</name>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
-    <application>
-      <instance-id>group#platform/administrators:/ecm/ECMAdminPortlet/ecmadmin</instance-id>
+    <portlet-application>
+    	<portlet>
+    		<application-ref>ecm</application-ref>
+				<portlet-ref>ECMAdminPortlet</application-ref>
+    	</portlet>
       <title>ECMAdmin</title>
       <show-info-bar>false</show-info-bar>      
-    </application>
+    </portlet-application>
   </page>
     
   <page>
-  	<page-id>group::platform/administrators::workflowAdministration</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/administrators</owner-id>
     <name>workflowAdministration</name>
     <access-permissions>manager:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
     
-    <application>
-      <instance-id>group#platform/administrators:/workflow/WorkflowAdministrationPortlet/workflowadministration</instance-id>    
+    <portlet-application>
+    	<portlet>
+    		<application-ref>workflow</application-ref>
+				<portlet-ref>WorkflowAdministrationPortlet</application-ref>
+    	</portlet>
       <title>Workflow Administration</title>
       <show-info-bar>false</show-info-bar>      
-    </application>  
+    </portlet-application>  
   </page>
 </page-set>

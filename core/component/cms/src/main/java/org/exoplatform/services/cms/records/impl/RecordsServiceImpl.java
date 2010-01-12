@@ -77,7 +77,6 @@ public class RecordsServiceImpl implements RecordsService {
    * Constructor method
    * init object
    * @param actionServiceContainer        ActionServiceContainer object
-   * @param auditService                  AuditService object  
    * @param sessionProviderService        SessionProviderService object
    * @param repositoryService             RepositoryService object
    */

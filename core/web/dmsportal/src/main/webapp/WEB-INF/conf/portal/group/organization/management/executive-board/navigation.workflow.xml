@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <node-navigation>
-	<owner-type>group</owner-type>
-  <owner-id>organization/management/executive-board</owner-id>
   <priority>5</priority>
   
   <page-nodes>
@@ -9,20 +7,20 @@
       <uri>management</uri>
       <name>management</name>
       <label>#{group.executive-board.management.title}</label>
-      <page-reference>group::organization/management/executive-board::Management</page-reference>
+      <page-reference>group::organization/management/executive-board::management</page-reference>
       
       <node>
 	      <uri>management/newStaff</uri>
 	      <name>newStaff</name>
 	      <label>#{group.executive-board.management.newStaff}</label>
-	      <page-reference>group::organization/management/executive-board::NewStaff</page-reference>
+	      <page-reference>group::organization/management/executive-board::newStaff</page-reference>
     	</node>
     	
     	<node>
 	      <uri>management/organization</uri>
 	      <name>organization</name>
 	      <label>#{group.executive-board.management.organization}</label>
-	      <page-reference>group::organization/management/executive-board::Organization</page-reference>
+	      <page-reference>group::organization/management/executive-board::organization</page-reference>
     	</node>
     	<node>
 	      <uri>management/ecmadmin</uri>
