@@ -19,7 +19,6 @@ package org.exoplatform.services.cms.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.exoplatform.container.RootContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.picocontainer.Startable;
 
@@ -45,10 +44,10 @@ public class DMSConfiguration implements Startable {
     if (dmsRepositoryConfiguration != null) {
       return dmsRepositoryConfiguration;
     }
-    DMSConfiguration rootConfig = (DMSConfiguration)RootContainer.getInstance().getComponentInstanceOfType(DMSConfiguration.class);
-    if (rootConfig.getConfig(repository) != null) {
-      dmsConfigMap_.putAll(rootConfig.getDmsConfigMap_());
-    }
+//    DMSConfiguration rootConfig = (DMSConfiguration)RootContainer.getInstance().getComponentInstanceOfType(DMSConfiguration.class);
+//    if (rootConfig.getConfig(repository) != null) {
+    dmsConfigMap_.putAll(getDmsConfigMap());
+//    }
     return dmsConfigMap_.get(repository);
   }
   
@@ -82,7 +81,7 @@ public class DMSConfiguration implements Startable {
     
   }
 
-  public Map<String, DMSRepositoryConfiguration> getDmsConfigMap_() {
+  public Map<String, DMSRepositoryConfiguration> getDmsConfigMap() {
     return dmsConfigMap_;
   }
 }
