@@ -25,6 +25,7 @@ function getModule(params) {
     addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.webui.dms", "jar", module.version)).
     addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.webui.ext", "jar", module.version)).
     addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.portlet.ecm.ext.config", "jar", module.version)).
+    addDependency(new Project("org.exoplatform", "exo-jcr-services", "jar", "1.12.0-Beta01")).
     addDependency(new Project("rome", "rome", "jar", "0.9")) .
     addDependency(new Project("com.totsp.feedpod", "itunes-com-podcast", "jar", "0.2")) .
     addDependency(new Project("ical4j", "ical4j", "jar", "0.9.20")) .
