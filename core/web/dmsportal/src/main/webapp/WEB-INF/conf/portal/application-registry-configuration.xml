@@ -539,8 +539,7 @@
 													<field name="categoryName"><string>ecm</string></field>
 													<field name="displayName"><string>ECM Administrator</string></field>
 													<field name="description"><string>ECM Administrator</string></field>
-													<field name="applicationType"><string>portlet</string></field>
-													<field name="applicationGroup"><string>ecm</string></field>
+													<field name="contentId"><string>ecm/ECMAdminPortlet</string></field>
 													<field name="accessPermissions">
 														<collection type="java.util.ArrayList" item-type="java.lang.String">													
 															<value><string>*:/platform/administrators</string></value>
@@ -555,8 +554,7 @@
 													<field name="categoryName"><string>ecm</string></field>		                  	
 													<field name="displayName"><string>Fast Content Creator Portlet</string></field>
 													<field name="description"><string>Fast Content Creator Portlet</string></field>
-													<field name="applicationType"><string>portlet</string></field>
-													<field name="applicationGroup"><string>ecm</string></field>
+													<field name="contentId"><string>ecm/FastContentCreatorPortlet</string></field>
 													<field name="accessPermissions">
 														<collection type="java.util.ArrayList" item-type="java.lang.String">													
 															<value><string>*:/platform/users</string></value>													
@@ -570,8 +568,7 @@
 													<field name="categoryName"><string>ecm</string></field>		                  	
 													<field name="displayName"><string>Content Browser Portlet</string></field>
 													<field name="description"><string>Content Browser Portlet</string></field>
-													<field name="applicationType"><string>portlet</string></field>
-													<field name="applicationGroup"><string>ecm</string></field>
+													<field name="contentId"><string>ecm/ContentBrowserPortlet</string></field>
 													<field name="accessPermissions">
 														<collection type="java.util.ArrayList" item-type="java.lang.String">													
 															<value><string>*:/platform/users</string></value>													
@@ -585,8 +582,7 @@
 													<field name="categoryName"><string>ecm</string></field>		                  	
 													<field name="displayName"><string>File Explorer Portlet</string></field>
 													<field name="description"><string>File Explorer Portlet</string></field>
-													<field name="applicationType"><string>portlet</string></field>
-													<field name="applicationGroup"><string>ecm</string></field>
+													<field name="contentId"><string>ecm/FileExplorerPortlet</string></field>
 													<field name="accessPermissions">
 														<collection type="java.util.ArrayList" item-type="java.lang.String">													
 															<value><string>*:/platform/users</string></value>													
