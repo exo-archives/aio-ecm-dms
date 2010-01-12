@@ -35,6 +35,11 @@
   </component>
 
   <component>
+    <key>org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator</key>
+    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NodeHierarchyCreatorImpl</type>
+  </component>
+
+  <component>
     <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>  
     <type>org.exoplatform.services.jcr.ext.audit.AuditServiceImpl</type>
       <init-params>

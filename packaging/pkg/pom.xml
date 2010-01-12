@@ -73,7 +73,7 @@
          <type>js</type>
        </dependency> 
        <dependency>
-         <groupId>org.exoplatform..ecm.dms</groupId>
+         <groupId>org.exoplatform.ecm.dms</groupId>
          <artifactId>dms.packaging.module</artifactId>
          <version>${project.version}</version>
          <type>js</type>
