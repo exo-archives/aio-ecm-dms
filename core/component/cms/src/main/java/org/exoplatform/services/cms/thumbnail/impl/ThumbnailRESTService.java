@@ -26,7 +26,6 @@ import javax.jcr.Session;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.exoplatform.container.ExoContainer;
@@ -58,7 +57,7 @@ import org.exoplatform.services.rest.resource.ResourceContainer;
  * Example: 
  * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
  */
-@Path("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
+@Path("/thumbnailImage/")
 public class ThumbnailRESTService implements ResourceContainer {
   
   private static final String LASTMODIFIED = "Last-Modified";
@@ -83,7 +82,8 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */  
-  @QueryParam("size=medium")
+  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=medium")
+  //@QueryParam("size=medium")
   @GET
   public Response getThumbnailImage(@PathParam("repoName") String repoName, 
                                     @PathParam("workspaceName") String wsName,
@@ -100,7 +100,8 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @QueryParam("size=big")
+  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=big")
+  //@QueryParam("size=big")
   @GET
   public Response getCoverImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -117,7 +118,8 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @QueryParam("size=small")
+  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=small")
+  //@QueryParam("size=small")
   @GET
   public Response getSmallImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -134,7 +136,8 @@ public class ThumbnailRESTService implements ResourceContainer {
    * @return Response data stream
    * @throws Exception
    */   
-  @QueryParam("size=origin")
+  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=origin")
+  //@QueryParam("size=origin")
   @GET
   public Response getOriginImage(@PathParam("repoName") String repoName,
                                  @PathParam("workspaceName") String wsName, 
