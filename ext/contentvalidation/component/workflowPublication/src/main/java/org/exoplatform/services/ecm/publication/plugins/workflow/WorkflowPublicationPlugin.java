@@ -57,16 +57,12 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
   public static final String CONTENT_VALIDATION = "content publishing";
   public static final String BACKUP = "backup";
   
-  
-  public static final String WORKFLOW_NODETYPE = "publication:workflowAction".intern();
   public static final String PUBLICATION = "publication:publication".intern();
   public static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
   public static final String CURRENT_STATE = "publication:currentState".intern();
   public static final String HISTORY = "publication:history".intern();
   public static final String VALIDATOR = "publication:validator".intern();
-  /*public static final String DEST_WORKSPACE = "exo:destWorkspace".intern();
-  public static final String DESTPATH = "exo:destPath".intern();
-  public static final String BACUP_PATH = "publication:backupPath".intern();*/
+
   public static final String PUBLISH_MIXIN_TYPE = "exo:publishLocation".intern();
 
   public static final String PENDING_MIXIN_TYPE = "exo:pendingLocation".intern();

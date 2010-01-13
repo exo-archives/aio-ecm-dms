@@ -28,17 +28,16 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.services.cms.actions.impl.ActionConfig;
+import org.exoplatform.services.cms.actions.impl.BaseActionLauncherListener;
+import org.exoplatform.services.cms.actions.impl.BaseActionPlugin;
+import org.exoplatform.services.cms.actions.impl.ECMEventListener;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.plugin.actions.activation.BPActionActivationJob;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
-import org.exoplatform.services.cms.actions.impl.BaseActionPlugin;
-import org.exoplatform.services.cms.actions.impl.ActionConfig;
-import org.exoplatform.services.cms.actions.impl.ECMEventListener;
-import org.exoplatform.services.cms.actions.impl.BaseActionLauncherListener;
-import org.exoplatform.services.cms.actions.impl.WorkflowActionLauncherListener;
-import org.exoplatform.services.plugin.actions.activation.BPActionActivationJob;
 
 public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin {
 
@@ -67,10 +66,6 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     
   protected ECMEventListener createEventListener(String actionName, String moveExecutable, 
       String repository, String srcWorkspace, String srcPath, Map variables, String actionType) throws Exception {
-    if (actionType.equals("publication:workflowAction")) {
-      return new BPWorkflowActionLauncherListener(actionName, moveExecutable, repository, 
-          srcWorkspace, srcPath, variables);
-    }
     return new BPActionLauncherListener(actionName, moveExecutable, repository, 
                                         srcWorkspace, srcPath, variables);
   }  
@@ -113,19 +108,6 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public class BPActionLauncherListener extends BaseActionLauncherListener {
     
     public BPActionLauncherListener(String actionName, String businessProcess, String repository,
-        String srcWorkspace, String srcPath, Map actionVariables) throws Exception {
-      super(actionName, businessProcess, repository, srcWorkspace, srcPath, actionVariables);
-    }    
-    
-    public void triggerAction(String userId, Map variables, String repository) {
-      executeAction(userId, super.executable_, variables, repository);
-    }  
-
-  }
-  
-  public class BPWorkflowActionLauncherListener extends WorkflowActionLauncherListener {
-    
-    public BPWorkflowActionLauncherListener(String actionName, String businessProcess, String repository,
         String srcWorkspace, String srcPath, Map actionVariables) throws Exception {
       super(actionName, businessProcess, repository, srcWorkspace, srcPath, actionVariables);
     }    
