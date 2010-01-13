@@ -33,6 +33,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -690,22 +691,24 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       Session session = node.getSession();
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       String queryStr;
-      
-      // In case of special character, sql query will use
-      if (node.getPath() != "/") {
-        queryStr = ACTION_SQL_QUERY + WHERE_OPERATOR + JCR_PATH + LIKE_OPERATOR 
-                                      + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
-      } else {
-        queryStr = ACTION_SQL_QUERY;
+      Query query = null;
+      try {
+        if (node.getPath() != "/") {
+          queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
+        } else {
+          queryStr = ACTION_QUERY;
+        }      
+        query = queryManager.createQuery(queryStr, Query.XPATH);
+      } catch(InvalidQueryException invalid) {
+      // With some special character, XPath will be invalid , try SQL  
+        if (node.getPath() != "/") {
+          queryStr = ACTION_SQL_QUERY + WHERE_OPERATOR + JCR_PATH + LIKE_OPERATOR 
+                                        + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
+        } else {
+          queryStr = ACTION_SQL_QUERY;
+        }
+        query = queryManager.createQuery(queryStr, Query.SQL);
       }
-      // Error XPath when path of node has '%'      
-      /*if (node.getPath() != "/") {
-        queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
-      } else {
-        queryStr = ACTION_QUERY;
-      }      
-      Query query = queryManager.createQuery(queryStr, Query.XPATH); */
-      Query query = queryManager.createQuery(queryStr, Query.SQL);
       QueryResult queryResult = query.execute();
       for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
         Node actionNode = iter.nextNode();
