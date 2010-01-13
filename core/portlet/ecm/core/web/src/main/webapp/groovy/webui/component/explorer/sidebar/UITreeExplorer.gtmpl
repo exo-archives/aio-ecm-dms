@@ -38,7 +38,6 @@
     if(!uicomponent.isSystemWorkspace()) {
       def rcontext = _ctx.getRequestContext();
       int depth = rootTree.getNode().getDepth() + 1;
-      if (rootTree.getNode().getPath().equals(uicomponent.getRootTreeNode().getPath())) depth++;
   		rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('${drive}_treeclip_button','$depth','$childrenSize')");
     }
 
@@ -174,7 +173,7 @@
   		<div class="BarContentR">
   			<div class="BarContentM">
 			    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
-			      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=uicomponent.getLabel()%>" $contextMenuEvent><%=uicomponent.getLabel()%></a>
+			      
 			    </div>
 			  	<%if (!uicomponent.isDirectlyDrive()) {%>
 			  		<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
