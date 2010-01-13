@@ -32,6 +32,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -119,6 +120,30 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    */
   private static final String         EXO_HIDDENABLE       = "exo:hiddenable".intern();
   
+  /**
+   * Define sql query statement
+   */
+  private static final String 		  ACTION_SQL_QUERY 	   = "select * from exo:action".intern();
+  
+  /**
+   * Define sql append query operator.
+   */
+  private static final String WHERE_OPERATOR = " where".intern() ;
+  
+  /**
+   * Define sql path.
+   */
+  private static final String JCR_PATH = " jcr:path".intern() ;
+  
+  /**
+   * Define sql like operator.
+   */
+  private static final String LIKE_OPERATOR = " like".intern() ;
+  
+  /**
+   * Sql query single quote.
+   */
+  private static final String SINGLE_QUOTE = "'";
   /**
    * RepositoryService
    */
@@ -640,12 +665,24 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       Session session = node.getSession();
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       String queryStr;
-      if (node.getPath() != "/") {
-        queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
-      } else {
-        queryStr = ACTION_QUERY;
+	    Query query = null;
+      try {
+        if (node.getPath() != "/") {
+          queryStr = "/jcr:root" + node.getPath() + ACTION_QUERY;
+        } else {
+          queryStr = ACTION_QUERY;
+        }      
+        query = queryManager.createQuery(queryStr, Query.XPATH);
+      } catch(InvalidQueryException invalid) {
+        // With some special character, XPath will be invalid , try SQL  
+        if (node.getPath() != "/") {
+          queryStr = ACTION_SQL_QUERY + WHERE_OPERATOR + JCR_PATH + LIKE_OPERATOR 
+                                        + SINGLE_QUOTE + node.getPath() + "/" + "%" + SINGLE_QUOTE;
+        } else {
+          queryStr = ACTION_SQL_QUERY;
+        }
+        query = queryManager.createQuery(queryStr, Query.SQL);
       }
-      Query query = queryManager.createQuery(queryStr, Query.XPATH);
       QueryResult queryResult = query.execute();
       for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
         Node actionNode = iter.nextNode();
