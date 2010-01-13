@@ -8,16 +8,16 @@
         <workspace name="system">
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="source-name" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
               <property name="dialect" value="${dialect}"/>
               <property name="multi-db" value="false"/>
               <property name="max-buffer-size" value="200k"/>
-              <property name="swap-directory" value="../temp/swap/system"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/system${container.name.suffix}"/>
             </properties>
             <value-storages>
               <value-storage id="system" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
-                  <property name="path" value="../temp/values/system"/>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/system${container.name.suffix}"/>
                 </properties>
                 <filters>
                   <filter property-type="Binary"/>
@@ -39,7 +39,7 @@
           </cache>
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
-              <property name="index-dir" value="../temp/jcrlucenedb/system"/>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/system${container.name.suffix}"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
             </properties>
@@ -48,7 +48,7 @@
             <time-out>15m</time-out>
             <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
               <properties>
-                <property name="path" value="../temp/lock/system"/>
+                <property name="path" value="${gatein.jcr.data.dir}/lock/system${container.name.suffix}"/>
               </properties>
             </persister>
           </lock-manager>
@@ -56,16 +56,16 @@
         <workspace name="collaboration">
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="source-name" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
               <property name="dialect" value="${dialect}"/>
               <property name="multi-db" value="false"/>
               <property name="max-buffer-size" value="200k"/>
-              <property name="swap-directory" value="../temp/swap/collaboration"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/collaboration${container.name.suffix}"/>
             </properties>
             <value-storages>
               <value-storage id="collaboration" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
-                  <property name="path" value="../temp/values/collaboration"/>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/collaboration${container.name.suffix}"/>
                 </properties>
                 <filters>
                   <filter property-type="Binary"/>
@@ -87,7 +87,7 @@
           </cache>
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
-              <property name="index-dir" value="../temp/jcrlucenedb/collaboration"/>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/collaboration${container.name.suffix}"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
             </properties>
@@ -96,7 +96,7 @@
             <time-out>15m</time-out>
             <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
               <properties>
-                <property name="path" value="../temp/lock/collaboration"/>
+                <property name="path" value="${gatein.jcr.data.dir}/lock/collaboration${container.name.suffix}"/>
               </properties>
             </persister>
           </lock-manager>
@@ -104,16 +104,16 @@
         <workspace name="backup">
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="source-name" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
               <property name="dialect" value="${dialect}"/>
               <property name="multi-db" value="false"/>
               <property name="max-buffer-size" value="200k"/>
-              <property name="swap-directory" value="../temp/swap/backup"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/backup${container.name.suffix}"/>
             </properties>
             <value-storages>
               <value-storage id="backup" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
-                  <property name="path" value="../temp/values/backup"/>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/backup${container.name.suffix}"/>
                 </properties>
                 <filters>
                   <filter property-type="Binary"/>
@@ -135,7 +135,7 @@
           </cache>
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
-              <property name="index-dir" value="../temp/jcrlucenedb/backup"/>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/backup${container.name.suffix}"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
             </properties>
@@ -144,7 +144,7 @@
             <time-out>15m</time-out>
             <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
               <properties>
-                <property name="path" value="../temp/lock/backup"/>
+                <property name="path" value="${gatein.jcr.data.dir}/lock/backup${container.name.suffix}"/>
               </properties>
             </persister>
           </lock-manager>
@@ -153,18 +153,18 @@
           <!-- for system storage -->
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="source-name" value="jdbcexo"/>
-              <property name="dialect" value="hsqldb"/>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
+              <property name="dialect" value="${dialect}"/>
               <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
               <property name="max-buffer-size" value="200k"/>
-              <property name="swap-directory" value="../temp/swap/gadgets"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/gadgets${container.name.suffix}"/>
             </properties>
             <value-storages>
               <value-storage id="gadgets" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
-                  <property name="path" value="../temp/values/gadgets"/>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/gadgets${container.name.suffix}"/>
                 </properties>
                 <filters>
                   <filter property-type="Binary"/>
@@ -186,14 +186,14 @@
           </cache>
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
-              <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/gadgets${container.name.suffix}"/>
             </properties>
           </query-handler>
           <lock-manager>
 			      <time-out>15m</time-out><!-- 15min -->
 			      <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
 			        <properties>
-			          <property name="path" value="../temp/lock/gadgets"/>
+			          <property name="path" value="${gatein.jcr.data.dir}/lock/gadgets${container.name.suffix}"/>
 			        </properties>
 			      </persister>
 			    </lock-manager>
@@ -201,16 +201,16 @@
         <workspace name="dms-system">
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="source-name" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
               <property name="dialect" value="${dialect}"/>
               <property name="multi-db" value="false"/>
               <property name="max-buffer-size" value="200k"/>
-              <property name="swap-directory" value="../temp/swap/dms-system"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/dms-system${container.name.suffix}"/>
             </properties>
             <value-storages>
               <value-storage id="dms-system" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
-                  <property name="path" value="../temp/values/dms-system"/>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/dms-system${container.name.suffix}"/>
                 </properties>
                 <filters>
                   <filter property-type="Binary"/>
@@ -232,7 +232,7 @@
           </cache>
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
-              <property name="index-dir" value="../temp/jcrlucenedb/dms-system"/>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/dms-system${container.name.suffix}"/>
               <property name="support-highlighting" value="true"/>
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
             </properties>
@@ -241,11 +241,158 @@
             <time-out>15m</time-out>
             <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
               <properties>
-                <property name="path" value="../temp/lock/dms-system"/>
+                <property name="path" value="${gatein.jcr.data.dir}/lock/dms-system${container.name.suffix}"/>
               </properties>
             </persister>
           </lock-manager>
         </workspace>
+				<!-- Portal system data -->
+        <workspace name="portal-system">
+          <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
+            <properties>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
+              <property name="dialect" value="${dialect}"/>
+              <property name="multi-db" value="false"/>
+              <property name="update-storage" value="true"/>
+              <property name="max-buffer-size" value="204800"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/portal-system${container.name.suffix}"/>
+            </properties>
+            <value-storages>
+              <value-storage id="portal-system" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+                <properties>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/portal-system${container.name.suffix}"/>
+                </properties>
+                <filters>
+                  <filter property-type="Binary"/>
+                </filters>
+              </value-storage>
+            </value-storages>
+          </container>
+          <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
+            <properties>
+              <property name="root-nodetype" value="nt:unstructured"/>
+              <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
+            </properties>
+          </initializer>
+          <cache enabled="true">
+            <properties>
+              <property name="max-size" value="20000"/>
+              <property name="live-time" value="30000"/>
+            </properties>
+          </cache>
+          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+            <properties>
+              <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/portal-system${container.name.suffix}"/>
+            </properties>
+          </query-handler>
+          <lock-manager>
+            <time-out>15m</time-out><!-- 15min -->
+            <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
+              <properties>
+                <property name="path" value="${gatein.jcr.data.dir}/lock/portal-system${container.name.suffix}"/>
+              </properties>
+            </persister>
+          </lock-manager>
+        </workspace>
+
+        <!-- Portal work data -->
+        <workspace name="portal-work">
+          <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
+            <properties>
+              <property name="source-name" value="jdbcexo${container.name.suffix}"/>
+              <property name="dialect" value="${dialect}"/>
+              <property name="multi-db" value="false"/>
+              <property name="update-storage" value="true"/>
+              <property name="max-buffer-size" value="204800"/>
+              <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/portal-work${container.name.suffix}"/>
+            </properties>
+            <value-storages>
+              <value-storage id="portal-work" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+                <properties>
+                  <property name="path" value="${gatein.jcr.data.dir}/values/portal-work${container.name.suffix}"/>
+                </properties>
+                <filters>
+                  <filter property-type="Binary"/>
+                </filters>
+              </value-storage>
+            </value-storages>
+          </container>
+          <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
+            <properties>
+              <property name="root-nodetype" value="nt:unstructured"/>
+              <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
+            </properties>
+          </initializer>
+         <cache enabled="true">
+          <properties>
+            <property name="max-size" value="20000"/>
+            <property name="live-time" value="30000"/>
+          </properties>
+         </cache>
+         <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+          <properties>
+            <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/portal-work${container.name.suffix}"/>
+          </properties>
+         </query-handler>
+         <lock-manager>
+          <time-out>15m</time-out><!-- 15min -->
+           <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
+             <properties>
+               <property name="path" value="${gatein.jcr.data.dir}/lock/portal-work${container.name.suffix}"/>
+             </properties>
+           </persister>
+         </lock-manager>
+       </workspace>
+       <!-- Workspace for WSRP -->
+       <workspace name="wsrp-system">
+         <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
+           <properties>
+             <property name="source-name" value="jdbcexo${container.name.suffix}"/>
+               <property name="dialect" value="${dialect}"/>
+               <property name="multi-db" value="false"/>
+               <property name="update-storage" value="true"/>
+               <property name="max-buffer-size" value="204800"/>
+               <property name="swap-directory" value="${gatein.jcr.data.dir}/swap/wsrp${container.name.suffix}"/>
+             </properties>
+             <value-storages>
+               <value-storage id="gadgets"
+                  class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+                 <properties>
+                   <property name="path" value="${gatein.jcr.data.dir}/values/wsrp${container.name.suffix}"/>
+                 </properties>
+                 <filters>
+                    <filter property-type="Binary"/>
+                 </filters>
+               </value-storage>
+             </value-storages>
+           </container>
+           <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
+             <properties>
+               <property name="root-nodetype" value="nt:unstructured"/>
+                 <property name="root-permissions"
+                       value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
+             </properties>
+           </initializer>
+           <cache enabled="true">
+             <properties>
+               <property name="max-size" value="20000"/>
+               <property name="live-time" value="30000"/>
+             </properties>
+           </cache>
+           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+             <properties>
+               <property name="index-dir" value="${gatein.jcr.data.dir}/jcrlucenedb/wsrp${container.name.suffix}"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+             <time-out>15m</time-out>
+             <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
+               <properties>
+                 <property name="path" value="${gatein.jcr.data.dir}/lock/wsrp${container.name.suffix}"/>
+               </properties>
+             </persister>
+           </lock-manager>
+         </workspace>
       </workspaces>
     </repository>
   </repositories>

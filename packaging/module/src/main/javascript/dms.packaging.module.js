@@ -57,12 +57,18 @@ function getModule(params) {
     new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.web.eXoDMSResources", "war", module.version) ;  
   module.web.eXoDMSResources.deployName = "eXoDMSResources" ;
       
+	module.extension = {};
+  module.extension.webapp = new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.extension.webapp", "war", module.version).
+		addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.extension.config", "jar", module.version));
+  module.extension.webapp.deployName = "dms-extension";	
+	
+	/*
   module.web.dmsportal = 
     new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.web.portal", "exo-portal", module.version).
     addDependency(portal.web.eXoResources) .
     addDependency(portal.webui.portal) .
     addDependency(jcr.frameworks.command) .
     addDependency(jcr.frameworks.web) ;   
-  
+  */
   return module;
 }

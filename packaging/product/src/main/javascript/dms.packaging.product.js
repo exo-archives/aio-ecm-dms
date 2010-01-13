@@ -21,18 +21,27 @@ function getProduct(version) {
   var eXoJcr = Module.GetModule("jcr", {kernel : kernel, core : core, ws : ws}) ;
   var portal = Module.GetModule("portal", {kernel : kernel, ws:ws, core : core, eXoJcr : eXoJcr });
   var dms = Module.GetModule("dms", {kernel : kernel, core : core, ws : ws, eXoJcr : eXoJcr, portal : portal});
-    
+
+	portal.starter = new Project("org.exoplatform.portal", "exo.portal.starter.war", "war", portal.version);
+  portal.starter.deployName = "starter";
+  product.addDependencies(portal.starter);  
+  //product.addDependencies(dms.web.dmsportal);
+  
   product.addDependencies(portal.web.rest);
-  product.addDependencies(dms.web.dmsportal);
-  product.addDependencies(dms.web.eXoDMSResources);
-  product.addDependencies(portal.portlet.exoadmin);
+	product.addDependencies(portal.portlet.exoadmin);
   product.addDependencies(portal.portlet.web);
+	product.addDependencies(portal.web.portal);
   product.addDependencies(portal.portlet.dashboard);
 	product.addDependencies(portal.eXoGadgetServer);
 	product.addDependencies(portal.eXoGadgets);  
+	product.addDependencies(portal.webui.portal);
+  product.addDependencies(portal.web.eXoResources);
+	
+	product.addDependencies(dms.web.eXoDMSResources);
   product.addDependencies(dms.portlet.dms);
   product.addDependencies(dms.portlet.jcr_console);
   product.addDependencies(dms.gadgets);
+	product.addDependencies(dms.extension.webapp);
 	
 	portal.starter = new Project("org.exoplatform.portal", "exo.portal.starter.war", "war", portal.version);
   portal.starter.deployName = "starter";

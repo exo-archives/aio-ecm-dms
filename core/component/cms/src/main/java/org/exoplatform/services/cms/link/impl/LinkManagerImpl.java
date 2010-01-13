@@ -270,7 +270,7 @@ public class LinkManagerImpl implements LinkManager {
     if(node.hasProperty("exo:owner")) {
       return node.getProperty("exo:owner").getString();
     }
-    return null;
+    return SystemIdentity.SYSTEM;
   }
   
   /**
