@@ -105,7 +105,7 @@ public final class LinkUtils {
     if (path.equals("/")) {
       return 0;
     }
-    return path.substring(0).split("/").length;
+    return path.substring(1).split("/").length;
   }
 
   /**

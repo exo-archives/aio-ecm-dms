@@ -15,8 +15,8 @@
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
-	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
-	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('$size')");
+	 rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
+	 rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('clip_button','1','$size')");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId">
@@ -133,7 +133,7 @@
 		            }            
 		          }
 		          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
-		          strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
+		          strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
 							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
 							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
 							strActs +=  "	</div>" ;

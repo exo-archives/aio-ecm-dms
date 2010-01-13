@@ -8,6 +8,7 @@
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
   import java.util.List;
+	import java.util.ArrayList;
   import org.exoplatform.ecm.utils.text.Text;  
   
   def rcontext = _ctx.getRequestContext();
@@ -21,23 +22,30 @@
     String serverPath = uicomponent.getServerPath();
     String portalName = uicomponent.getPortalName();
     String repository = uicomponent.getRepository() ;   
+    String drive = uicomponent.getDriveName();
     int counter = 1 ;     
     List childrenNodes=uicomponent.getRenderedChildren(rootTree);
     boolean isPaginated=uicomponent.isPaginated(rootTree);
     
     def realChildrenTrees = new ArrayList<TreeNode>();
-		for(tempNode in childrenNodes) {
-			try {
-				rootTree.getNode().getSession().getItem(tempNode.getNodePath());
-				realChildrenTrees.add(tempNode);
-			} catch(PathNotFoundException pne) {
-				continue;
-			}			
-		}
-		int childrenSize = realChildrenTrees.size();        
-    
+				for(tempNode in childrenNodes) {
+					try {
+						rootTree.getNode().getSession().getItem(tempNode.getNodePath());
+						realChildrenTrees.add(tempNode);
+					} catch(PathNotFoundException pne) {
+						continue;
+					}			
+				}
+				int childrenSize = realChildrenTrees.size();        
+    if(!uicomponent.isSystemWorkspace()) {
+      def rcontext = _ctx.getRequestContext();
+      int depth = rootTree.getNode().getDepth() + 1;
+  		  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('${drive}_treeclip_button','$depth','$childrenSize')");
+    }
+
     for(treeNode in realChildrenTrees) {	    
     	Node node = treeNode.getNode() ;
+    	node.refresh(true);
     	try {
     	  def primaryName = node.getPrimaryNodeType().getName();
     	} catch(Exception e) {
@@ -63,38 +71,49 @@
 	      actionLink = uicomponent.event(mode, treeNode.getPath()) ;
 	      expandLink = uicomponent.event("Expand", Utils.formatNodeName(treeNode.getPath())) ;
 	    }
-	    //Begin for WebDav action
-	    String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
-	    if (node.getPrimaryNodeType().getName().equals("nt:file")) {
-	      String mimeType = "";
-	      if (node.hasNode("jcr:content")) {
-	        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-	      }
-		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
-	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
-		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
-			  strActs += "</a>" ;				  	
-		  } else {
-		  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
-	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
-		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
-			  strActs += "</a>" ;				  	
-		  }
-		  //End WebDAV Action					        
-		  List customActs = uicomponent.getCustomActions(node) ;				  
-	    Parameter[] params ;
-	    if(customActs.size() > 0) {				    
-			  for(act in customActs) {
-			    String actName = act.getProperty("exo:name").getValue().getString() ;
-			    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
-			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
-		      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">";
-		      if (actName.length() > 10) strActs += actName.substring(0, 10) + "...";
-		      else strActs += actName;
-			    strActs += "</div></a>" ;
-			  }				    
+	    String strActs = "";
+	    if(!uicomponent.isSystemWorkspace()) {
+		    //Begin for WebDav action
+		    strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+		    if (node.getPrimaryNodeType().getName().equals("nt:file")) {
+		      String mimeType = "";
+		      if (node.hasNode("jcr:content")) {
+		        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+		      }
+					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
+				    strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+					  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+						  strActs += "</a>" ;				  	
+				  } else {
+				  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+			    strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
+				  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+					  strActs += "</a>" ;				  	
+				  }
+			   //End WebDAV Action					        
+			   List customActs = uicomponent.getCustomActions(node) ;				  
+		    Parameter[] params ;
+		    if(customActs.size() > 0) {				    
+					  for(act in customActs) {
+					    String actName = act.getProperty("exo:name").getValue().getString() ;
+					    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
+					    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
+				      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">";
+				      if (actName.length() > 10) strActs += actName.substring(0, 10) + "...";
+				      else strActs += actName;
+					    strActs += "</div></a>" ;
+					  }				    
+	  	  }
+	  		
+	  			String clipboardLink = serverPath + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + node.getPath();
+	  			int depthChild = node.getDepth();
+	  			strActs +=	"<a class='MenuItem' style='display: block;' id='${drive}_treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
+	  			strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+	  			strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+	  			strActs +=  "	</div>" ;
+	  			strActs += "</a>" ;
+	  			strActs += "</div>" ;	    
 	    }
-	    strActs += "</div>" ;	    
 	    String lastNodeClass = "" ;
 	    if (counter >= childrenSize && !isPaginated) {
 	    	lastNodeClass = "LastNode " ;
@@ -130,6 +149,7 @@
 		}			
   }  
   TreeNode treeNodeRoot = uicomponent.getRootTreeNode() ;
+  treeNodeRoot.getNode().refresh(true);
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
 <div class="UITreeExplorer" id="UITreeExplorer">
