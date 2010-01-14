@@ -155,7 +155,7 @@ var SimpleView = function() {
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
-			var actionArea = document.getElementById(Self.actionAreaId);
+			var actionArea = document.getElementById("UIWorkingArea");
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var idTarget = element.getAttribute('objectId');
 			var wsTarget = element.getAttribute('workspacename');
