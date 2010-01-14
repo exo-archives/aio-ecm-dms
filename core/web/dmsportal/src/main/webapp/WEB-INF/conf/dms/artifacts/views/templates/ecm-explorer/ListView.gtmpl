@@ -106,7 +106,7 @@
 			    <div style="clear: both"><span></span></div>
 			    <div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 						<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
-						<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>" symlink="<%=contextMenu.event('CreateLink', 'MultiSelection')%>"></div>
+
 						<div class="ItemContextMenu" style="position: absolute;
 											 top: 0px; left: 0px; display: none;">
 							<div class="UIRightClickPopupMenu" style="display: block;">

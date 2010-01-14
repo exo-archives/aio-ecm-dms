@@ -13,6 +13,7 @@
   
   def rcontext = _ctx.getRequestContext();
   def focusNode = uicomponent.getEncodeCurrentPath();
+  UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.focusCurrentNodeInTree('$focusNode');");
 %>
@@ -153,6 +154,7 @@
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
 <div class="UITreeExplorer" id="UITreeExplorer">
+<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>" symlink="<%=contextMenu.event('CreateLink', 'MultiSelection')%>"></div>
   <div style="white-space: nowrap; -moz-user-select: none;">
     <div class="HomeNode">
       <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>

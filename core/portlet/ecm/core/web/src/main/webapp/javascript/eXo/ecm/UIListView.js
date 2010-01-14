@@ -44,7 +44,13 @@ var ListView = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 		//registry action drag drop in tree list
-		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+	};
+	
+	
+	ListView.prototype.initDragDropForTreeEvent = function(actionAreaId, enableDragAndDrop) {
+		//registry action drag drop in tree list
+			
+		var UIWorkingArea =	document.getElementById(actionAreaId);
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		if (UITreeExplorer) {
 			DOM.getElementsBy(
@@ -63,7 +69,7 @@ var ListView = function() {
 					}
 			);
 		}
-	};
+	}
 	
 	//event in tree list
 	ListView.prototype.mouseOverTree = function(event) {
@@ -150,7 +156,7 @@ var ListView = function() {
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
-			var actionArea = document.getElementById(Self.actionAreaId);
+			var actionArea = document.getElementById("UIWorkingArea");
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
@@ -306,7 +312,7 @@ var ListView = function() {
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement && mobileElement.move && element.temporary) {
 				//post action
-				var actionArea = document.getElementById(Self.actionAreaId);
+				var actionArea = document.getElementById("UIWorkingArea");
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
