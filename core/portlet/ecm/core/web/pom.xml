@@ -17,11 +17,13 @@
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.core.main</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
     </dependency>  	
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.ext.main</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
     </dependency>  	
   </dependencies>
 
