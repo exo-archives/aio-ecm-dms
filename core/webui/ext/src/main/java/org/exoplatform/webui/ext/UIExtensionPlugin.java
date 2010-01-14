@@ -38,7 +38,7 @@ public class UIExtensionPlugin extends BaseComponentPlugin {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger(UIExtensionPlugin.class);
+  private static final Log LOG  = ExoLogger.getLogger(UIExtensionPlugin.class);
 
   /**
    * The initial parameter of this plugin

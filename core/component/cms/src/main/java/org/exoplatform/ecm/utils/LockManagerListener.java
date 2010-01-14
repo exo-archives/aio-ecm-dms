@@ -45,7 +45,7 @@ import org.exoplatform.services.security.ConversationState;
  */
 public class LockManagerListener extends Listener<ConversationRegistry, ConversationState > {
   
-  protected static Log log  = ExoLogger.getExoLogger(LockManagerListener.class);
+  protected static Log log  = ExoLogger.getLogger(LockManagerListener.class);
   
   @Override
   @SuppressWarnings("unchecked")

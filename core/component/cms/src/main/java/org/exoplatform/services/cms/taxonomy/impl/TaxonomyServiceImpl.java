@@ -70,7 +70,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getExoLogger(TaxonomyServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(TaxonomyServiceImpl.class);
 
   /**
    * Constructor method

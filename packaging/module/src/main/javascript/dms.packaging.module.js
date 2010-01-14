@@ -33,8 +33,8 @@ function getModule(params) {
     addDependency(new Project("org.apache.ws.commons", "ws-commons-util", "jar", "1.0.1")).
     addDependency(new Project("com.sun.xml.stream", "sjsxp", "jar", "1.0")).
     addDependency(new Project("org.icepdf", "icepdf-core", "jar", "3.0")).
-    addDependency(new Project("org.icepdf", "icepdf-viewer", "jar", "3.0")).
-    addDependency(new Project("pdfbox", "pdfbox", "jar", "0.7.2"));
+    addDependency(new Project("org.icepdf", "icepdf-viewer", "jar", "3.0"));
+    
     module.portlet.dms.deployName = "ecm";
   
   module.portlet.jcr_console = 

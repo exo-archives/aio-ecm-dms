@@ -51,7 +51,7 @@ public class CompressData {
   protected static final int EOF    = -1;
 
   protected static final int BUFFER = 2048;
-  private static final Log LOG  = ExoLogger.getExoLogger(CompressData.class);
+  private static final Log LOG  = ExoLogger.getLogger(CompressData.class);
 
   public CompressData() {
 

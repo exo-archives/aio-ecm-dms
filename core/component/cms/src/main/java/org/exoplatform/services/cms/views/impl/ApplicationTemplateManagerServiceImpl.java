@@ -51,7 +51,7 @@ import org.picocontainer.Startable;
  */
 public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplateManagerService, Startable {
   
-  private static Log log = ExoLogger.getExoLogger(ApplicationTemplateManagerService.class);
+  private static Log log = ExoLogger.getLogger(ApplicationTemplateManagerService.class);
   private RepositoryService repositoryService;    
   
   private List<PortletTemplatePlugin> portletTemplatePlugins = new ArrayList<PortletTemplatePlugin>(); 

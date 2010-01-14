@@ -68,7 +68,7 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
   private static final String EXO_TRASH_FOLDER = "exo:trashFolder";
   private static final String EXO_HIDDENABLE = "exo:hiddenable";  
 	
-  private static final Log LOG = ExoLogger.getExoLogger(NewFolksonomyService.class);
+  private static final Log LOG = ExoLogger.getLogger(NewFolksonomyService.class);
 	
   private NodeHierarchyCreator nodeHierarchyCreator;
   private LinkManager linkManager;

@@ -67,7 +67,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
   private ManageDriveService manageDriveService_;
   
   final static public String DEFAULT_ITEM = "5";
-  private static final Log LOG  = ExoLogger.getExoLogger(PublicationGetDocumentRESTService.class);
+  private static final Log LOG  = ExoLogger.getLogger(PublicationGetDocumentRESTService.class);
   
   public PublicationGetDocumentRESTService(RepositoryService repositoryService,
       PublicationService publicationService, ManageDriveService manageDriveService) {

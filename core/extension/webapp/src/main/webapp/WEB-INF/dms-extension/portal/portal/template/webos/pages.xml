@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page-set>
+  <page>
+    <name>content</name>		
+    <factory-id>Desktop</factory-id>
+	  <access-permissions>*:/platform/guests</access-permissions>
+	  <edit-permission>*:/portal/administrators</edit-permission>
+    <show-max-window>true</show-max-window>
+    
+    <portlet-application>
+    	<portlet>
+    		<application-ref>web</application-ref>
+				<portlet-ref>SiteMapPortlet</portlet-ref>
+    	</portlet>
+      <title>Site Map Portlet</title>
+    </portlet-application>
+  </page>
+
+  <page>
+    <name>desktop</name>		
+    <factory-id>Desktop</factory-id>
+	  <access-permissions>*:/guest</access-permissions>
+	  <edit-permission>owner:/portal/admin</edit-permission>
+    <show-max-window>true</show-max-window>
+
+    <portlet-application>
+    	<portlet>
+    		<application-ref>web</application-ref>
+				<portlet-ref>SiteMapPortlet</portlet-ref>
+    	</portlet>
+      <title>Site Map Portlet</title>
+    </portlet-application>
+
+    <portlet-application>
+    	<portlet>
+    		<application-ref>exoadmin</application-ref>
+				<portlet-ref>AccountPortlet</portlet-ref>
+    	</portlet>
+      <title>Account Portlet</title>
+    </portlet-application>
+  </page>
+</page-set>

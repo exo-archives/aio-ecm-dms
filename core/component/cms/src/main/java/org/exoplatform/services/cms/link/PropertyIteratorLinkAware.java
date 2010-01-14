@@ -35,7 +35,7 @@ public class PropertyIteratorLinkAware extends RangeIteratorLinkAware implements
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger("cms.PropertyIteratorLinkAware");
+  private static final Log LOG  = ExoLogger.getLogger("cms.PropertyIteratorLinkAware");
   
   public PropertyIteratorLinkAware(Session originalSession,
                                    String virtualPath,

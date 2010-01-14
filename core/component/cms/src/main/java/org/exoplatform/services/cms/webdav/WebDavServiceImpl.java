@@ -73,7 +73,7 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
   /**
    * Logger.
    */
-  private static Log log = ExoLogger.getExoLogger("cms.webdav.WebDavServiceImpl");
+  private static Log log = ExoLogger.getLogger("cms.webdav.WebDavServiceImpl");
   
   private final NodeFinder nodeFinder;
   

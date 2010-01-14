@@ -31,7 +31,6 @@
 				    index.jsp,WEB-INF/web.xml,WEB-INF/conf/*.xml,
 				    WEB-INF/conf/common/*.xml,
 				    WEB-INF/conf/database/*.xml,
-				    WEB-INF/conf/database/*.xml,
 				    WEB-INF/conf/jcr/*.xml,
 				    WEB-INF/conf/organization/*.xml,
 				    WEB-INF/conf/portal/*.xml,

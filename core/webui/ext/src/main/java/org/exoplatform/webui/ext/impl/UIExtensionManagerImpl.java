@@ -46,7 +46,7 @@ public class UIExtensionManagerImpl implements UIExtensionManager {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger(UIExtensionManagerImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(UIExtensionManagerImpl.class);
   
   /**
    * All the registered extensions

@@ -35,7 +35,7 @@ public class NodeIteratorLinkAware extends RangeIteratorLinkAware implements Nod
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger("cms.NodeIteratorLinkAware");
+  private static final Log LOG  = ExoLogger.getLogger("cms.NodeIteratorLinkAware");
   
   public NodeIteratorLinkAware(Session originalSession, String virtualPath, NodeIterator nodeIterator) {
     super(originalSession, virtualPath, nodeIterator);

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<portal-config>
+  <portal-name>@owner@</portal-name>
+  <locale>en</locale>
+  <access-permissions>Everyone</access-permissions>
+  <edit-permission>*:/platform/administrators</edit-permission>
+  <creator>root</creator>
+  
+ 	<portal-layout> 		
+		<portlet-application>
+			<portlet>
+				<application-ref>web</application-ref>
+				<portlet-ref>BannerPortlet</portlet-ref>
+				<preferences>
+					<preference>
+			      <name>template</name>
+			      <value>par:/groovy/groovy/webui/component/UIBannerPortlet.gtmpl</value>
+			      <read-only>false</read-only>
+			    </preference>
+				</preferences>
+			</portlet>
+	    <instance-id>portal#@owner@:/web/BannerPortlet/banner</instance-id>
+	    <show-info-bar>false</show-info-bar>
+	  </portlet-application>
+
+	  <portlet-application>
+	  	<portlet>
+	  		<application-ref>web</application-ref>
+				<portlet-ref>NavigationPortlet</portlet-ref>
+	  	</portlet>
+	    <show-info-bar>false</show-info-bar>
+	  </portlet-application>
+		
+	  <portlet-application>
+	  	<portlet>
+	  		<application-ref>web</application-ref>
+				<portlet-ref>BreadcumbsPortlet</portlet-ref>
+	  	</portlet>
+	    <show-info-bar>false</show-info-bar>
+	  </portlet-application>
+	  
+	
+	  <page-body> </page-body>
+	  
+	  <portlet-application>
+	  	<portlet>
+	  		<application-ref>web</application-ref>
+				<portlet-ref>FooterPortlet</portlet-ref>
+	  	</portlet>
+	  </portlet-application>
+  </portal-layout>
+  
+</portal-config>

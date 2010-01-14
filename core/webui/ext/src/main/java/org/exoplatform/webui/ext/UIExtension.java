@@ -41,7 +41,7 @@ public class UIExtension implements Comparable<UIExtension> {
   /**
    * Logger.
    */
-  private static final Log LOG = ExoLogger.getExoLogger(UIExtension.class);
+  private static final Log LOG = ExoLogger.getLogger(UIExtension.class);
 
   /**
    * Indicates whether the extension is enabled

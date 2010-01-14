@@ -51,7 +51,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger(ManageViewServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(ManageViewServiceImpl.class);
   
   protected final static String EXO_TEMPLATE = "exo:template".intern() ;
   protected final static String TEMPLATE_PROP = "exo:templateFile".intern() ;

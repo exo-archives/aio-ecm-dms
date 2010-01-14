@@ -87,7 +87,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   private final String localeFile = "locale.portlet.publication.PublicationService";
 
   public StaticAndDirectPublicationPlugin() {
-    log = ExoLogger.getExoLogger("portal:StaticAndDirectPublicationPlugin");
+    log = ExoLogger.getLogger("portal:StaticAndDirectPublicationPlugin");
   }
 
   //@Override

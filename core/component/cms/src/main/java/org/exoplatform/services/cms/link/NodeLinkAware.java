@@ -66,7 +66,7 @@ public class NodeLinkAware extends ItemLinkAware implements ExtendedNode {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getExoLogger("services.cms.link.NodeLinkAware");
+  private static final Log LOG  = ExoLogger.getLogger("services.cms.link.NodeLinkAware");
 
   private final Node node;
 

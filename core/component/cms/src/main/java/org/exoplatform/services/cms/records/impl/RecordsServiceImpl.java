@@ -54,7 +54,7 @@ public class RecordsServiceImpl implements RecordsService {
   /**
    * Construct log object
    */
-  private static Log log_ = ExoLogger.getExoLogger("services.cms.records");
+  private static Log log_ = ExoLogger.getLogger("services.cms.records");
   
   /**
    * ActionServiceContainer object: process for action with node
@@ -71,7 +71,7 @@ public class RecordsServiceImpl implements RecordsService {
    */
   private RepositoryService repositoryService_ ;
 
-  private static final Log LOG  = ExoLogger.getExoLogger(RecordsServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(RecordsServiceImpl.class);
   
   /**
    * Constructor method

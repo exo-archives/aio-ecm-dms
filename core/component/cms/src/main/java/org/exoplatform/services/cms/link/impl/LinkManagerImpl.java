@@ -57,7 +57,7 @@ public class LinkManagerImpl implements LinkManager {
 
   private final static String    PRIMARY_TYPE = "exo:primaryType";
 
-  private final static Log       LOG  = ExoLogger.getExoLogger(LinkManagerImpl.class);
+  private final static Log       LOG  = ExoLogger.getLogger(LinkManagerImpl.class);
 
   private final SessionProviderService providerService_;
   

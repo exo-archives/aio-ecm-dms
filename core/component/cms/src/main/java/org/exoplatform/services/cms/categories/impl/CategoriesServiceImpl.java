@@ -59,7 +59,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
    * DMS configuration which used to store informations
    */   
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getExoLogger(CategoriesServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(CategoriesServiceImpl.class);
   
   public CategoriesServiceImpl(RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, 

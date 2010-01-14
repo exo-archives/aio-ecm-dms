@@ -71,7 +71,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private org.exoplatform.groovyscript.text.TemplateService templateService;
   private LocaleConfigService localeConfigService_;
   
-  private static final Log LOG  = ExoLogger.getExoLogger(TemplateService.class.getName());
+  private static final Log LOG  = ExoLogger.getLogger(TemplateService.class.getName());
   /**
    * DMS configuration which used to store informations
    */   

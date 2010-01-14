@@ -39,7 +39,7 @@ import org.exoplatform.test.BasicTestCase;
  */
 public abstract class BaseDMSTestCase extends BasicTestCase {
 
-  protected static Log          log = ExoLogger.getExoLogger("dms.services.test");  
+  protected static Log          log = ExoLogger.getLogger("dms.services.test");  
 
   protected CredentialsImpl     credentials;  
 

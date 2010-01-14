@@ -50,7 +50,7 @@ import org.exoplatform.services.log.Log;
  */
 public class TimelineServiceImpl implements TimelineService {
 
-  private static final Log LOG = ExoLogger.getExoLogger("cms.timeline.TimelineServiceImpl");
+  private static final Log LOG = ExoLogger.getLogger("cms.timeline.TimelineServiceImpl");
   private static final String EXO_DATETIME = "exo:datetime";
   private static final String EXO_MODIFIED_DATE = "exo:dateModified";
   private static final String EXO_OWNER = "exo:owner";

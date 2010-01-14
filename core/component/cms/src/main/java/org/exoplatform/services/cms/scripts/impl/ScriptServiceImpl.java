@@ -62,7 +62,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private NodeHierarchyCreator nodeHierarchyCreator_ ;   
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
   private DMSConfiguration dmsConfiguration_;
-  private static final Log LOG  = ExoLogger.getExoLogger(ScriptServiceImpl.class);
+  private static final Log LOG  = ExoLogger.getLogger(ScriptServiceImpl.class);
   
   /**
    * Constructor method

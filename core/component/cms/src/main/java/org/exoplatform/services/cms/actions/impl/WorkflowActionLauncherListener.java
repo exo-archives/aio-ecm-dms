@@ -53,7 +53,7 @@ public abstract class WorkflowActionLauncherListener implements ECMEventListener
   private static final String DESTPATH = "exo:destPath".intern();
   private static final String BACUP_PATH = "publication:backupPath".intern();
   private static final String DOCUMENT_BACUPUP = "documentsBackupPath";
-  private static final Log LOG  = ExoLogger.getExoLogger(WorkflowActionLauncherListener.class);
+  private static final Log LOG  = ExoLogger.getLogger(WorkflowActionLauncherListener.class);
   
   public WorkflowActionLauncherListener(String actionName, String executable,
       String repository, String srcWorkspace, String srcPath, Map actionVariables)

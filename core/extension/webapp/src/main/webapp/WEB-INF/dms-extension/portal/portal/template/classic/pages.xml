@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page-set>  
+
+  <page>
+    <name>sitemap</name>
+    <title>Site Map</title>
+	  <access-permissions>*:/platform/guests</access-permissions>
+	  <edit-permission>*:/platform/administrators</edit-permission>
+    <portlet-application>
+      <portlet>
+      	<application-ref>web</application-ref>
+				<portlet-ref>SiteMapPortlet</portlet-ref>
+      </portlet>
+      <title>Site Map portlet</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-state>true</show-application-state>
+      <show-application-mode>true</show-application-mode>
+    </portlet-application>
+  </page>
+  
+</page-set>

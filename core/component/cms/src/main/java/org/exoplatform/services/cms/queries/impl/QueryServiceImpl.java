@@ -68,7 +68,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   private String group_;
   private DMSConfiguration dmsConfiguration_;
   
-  private static final Log LOG = ExoLogger.getExoLogger(QueryServiceImpl.class);
+  private static final Log LOG = ExoLogger.getLogger(QueryServiceImpl.class);
 
   /**
    * Constructor method

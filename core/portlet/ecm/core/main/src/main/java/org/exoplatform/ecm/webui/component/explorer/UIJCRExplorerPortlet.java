@@ -70,7 +70,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorerPortlet");
+  private static final Log LOG  = ExoLogger.getLogger(UIJCRExplorerPortlet.class);
 
   final static public String REPOSITORY         = "repository";
 

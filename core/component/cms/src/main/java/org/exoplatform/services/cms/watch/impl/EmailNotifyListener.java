@@ -45,7 +45,7 @@ public class EmailNotifyListener implements EventListener {
   
   private Node observedNode_ ;
   final public static String EMAIL_WATCHERS_PROP = "exo:emailWatcher".intern() ;
-  private static final Log LOG  = ExoLogger.getExoLogger(EmailNotifyListener.class);
+  private static final Log LOG  = ExoLogger.getLogger(EmailNotifyListener.class);
   
   public EmailNotifyListener(Node oNode) {
     observedNode_ = oNode ;

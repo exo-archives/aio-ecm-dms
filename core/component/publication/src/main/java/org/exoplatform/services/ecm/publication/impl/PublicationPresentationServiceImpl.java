@@ -44,7 +44,7 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
   private Map<String, PublicationPlugin> publicationPlugins_ = new HashMap<String,PublicationPlugin>();
 
   public PublicationPresentationServiceImpl () {
-    log = ExoLogger.getExoLogger("portal:PublicationPresentationServiceImpl");
+    log = ExoLogger.getLogger("portal:PublicationPresentationServiceImpl");
     log.info("# PublicationPresentationService initialization #");
     this.publicationPlugins_ = new HashMap<String, PublicationPlugin>();
   }

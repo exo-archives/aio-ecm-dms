@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page-set>  
+  <page>
+    <name>homepage</name>
+    <title>Home Page</title>
+	  <access-permissions>Everyone</access-permissions>
+	  <edit-permission>*:/platform/administrators</edit-permission>
+    <container id="DMS" template="system:/templates/groovy/webui/component/UITableColumnContainer.gtmpl">
+      <container id="pagebody" template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
+		    <portlet-application>
+		      <portlet>
+		      	<application-ref>web</application-ref>
+        		<portlet-ref>HomePagePortlet</portlet-ref>
+						<preferences>
+		      		<preference>
+					      <name>template</name>
+					      <value>system:/templates/groovy/webui/component/UIHomePagePortlet.gtmpl</value>
+					      <read-only>false</read-only>
+					    </preference>
+						</preferences>
+		      </portlet>
+		      <title>Home Page</title>
+		      <show-info-bar>false</show-info-bar>      
+		      <show-application-state>false</show-application-state>
+		      <show-application-mode>false</show-application-mode>
+		    </portlet-application>	
+      </container>
+      <container id="sidebar" template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
+        <portlet-application>
+          <portlet>
+          	<application-ref>web</application-ref>
+        		<portlet-ref>HomePagePortlet</portlet-ref>
+						<preferences>
+          		<preference>
+					      <name>template</name>
+					      <value>system:/templates/sidebar.gtmpl</value>
+					      <read-only>false</read-only>
+					    </preference>
+          	</preferences>
+          </portlet>
+          <title>Sidebar</title>
+          <show-info-bar>false</show-info-bar>
+          <show-application-state>false</show-application-state>
+          <show-application-mode>false</show-application-mode>          
+        </portlet-application>
+      </container>
+    </container>   
+  </page>                       
+  <page>
+    <name>tour</name>
+    <title>DMS Tour</title>
+    <access-permissions>Everyone</access-permissions>
+    <edit-permission>*:/platform/administrators</edit-permission>
+    <portlet-application>
+      <portlet>
+      	<application-ref>web</application-ref>
+        <portlet-ref>HomePagePortlet</portlet-ref>
+				<preferences>
+      		<preference>
+			      <name>template</name>
+			      <value>system:/templates/tour.gtmpl</value>
+			      <read-only>false</read-only>
+			    </preference>
+      	</preferences>
+      </portlet>
+      <title>Tour</title>
+      <show-info-bar>false</show-info-bar>
+      <show-application-state>false</show-application-state>
+      <show-application-mode>false</show-application-mode>
+    </portlet-application>
+  </page>  
+</page-set>

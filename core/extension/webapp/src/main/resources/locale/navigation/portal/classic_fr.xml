@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <portal>
+    <classic>
+      <home>Accueil</home>
+	   <tour>Tour Rapide</tour>
+    </classic>
+  </portal>
+  <register>S'enregistrer</register>
+  <content-management>
+    <file-explorer>Explorateur de Fichiers</file-explorer>
+    <content-creator>Création Rapide de Contenu</content-creator>
+    <content-browser>Explorateur de Contenu</content-browser>
+  </content-management>
+</bundle>

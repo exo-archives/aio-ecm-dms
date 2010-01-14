@@ -41,7 +41,7 @@ import org.exoplatform.services.log.Log;
  * minh.dang@exoplatform.com Oct 6, 2009 3:39:28 AM
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
-  private static final Log LOG  = ExoLogger.getExoLogger("cms.documents.DocumentTypeServiceImpl");
+  private static final Log LOG  = ExoLogger.getLogger("cms.documents.DocumentTypeServiceImpl");
 
   private final static String         OWNER         = "exo:owner".intern();
 

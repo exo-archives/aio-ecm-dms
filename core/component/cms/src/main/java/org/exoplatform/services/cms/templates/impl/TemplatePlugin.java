@@ -116,7 +116,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
   private InitParams params_ ;
   private String storedLocation_ ;
   private boolean autoCreateInNewRepository_=false;
-  private Log log = ExoLogger.getExoLogger("Templateplugin") ;
+  private Log log = ExoLogger.getLogger("Templateplugin") ;
   
   static {
 

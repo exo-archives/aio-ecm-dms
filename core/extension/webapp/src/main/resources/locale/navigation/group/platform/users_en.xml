@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <platform>
+    <users>
+      <iframe>IFrame</iframe>
+      <file-explorer>File Explorer</file-explorer>
+      <content-browser>Content Browser</content-browser>
+      <content-creator>Fast Content Creator</content-creator>
+      <workflow-controller>Business Process Controller</workflow-controller>
+    </users>
+  </platform>
+</bundle>
