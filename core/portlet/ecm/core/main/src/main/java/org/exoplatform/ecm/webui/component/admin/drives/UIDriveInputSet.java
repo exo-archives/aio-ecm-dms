@@ -19,11 +19,13 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -107,9 +109,33 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
       workspace.add(new SelectItemOption<String>(wsName,  wsName));
     }
     getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();    
+    
     if(drive != null) {
       invokeGetBindingField(drive);
       getUIStringInput(FIELD_NAME).setEditable(false);
+      
+      // Begin of update
+      UIDriveForm uiDriveForm =  getAncestorOfType(UIDriveForm.class);
+      String selectedWorkspace = drive.getWorkspace();
+      String wsInitRootNodeType = uiDriveForm.getWorkspaceEntries(selectedWorkspace, repository);   
+      List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>();  
+      if(wsInitRootNodeType != null && wsInitRootNodeType.equals(Utils.NT_FOLDER)) {
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER));
+      } else {
+        
+        bothLabel_ = res.getString(getId() + ".label.both");        
+        unstructuredFolderLabel_ = res.getString(getId() + ".label.unstructuredFolder");        
+        folderOptions.add(new SelectItemOption<String>(unstructuredFolderLabel_, Utils.NT_UNSTRUCTURED));
+        folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH));
+        
+      }
+      UIFormRadioBoxInput uiRadioBox = findComponentById(ALLOW_CREATE_FOLDER);
+      uiRadioBox.setOptions(folderOptions).setDefaultValue(FIELD_BOTH);
+      uiRadioBox.setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN);
+      // End of update
+      
       return;
     }
     getUIStringInput(FIELD_NAME).setEditable(true);

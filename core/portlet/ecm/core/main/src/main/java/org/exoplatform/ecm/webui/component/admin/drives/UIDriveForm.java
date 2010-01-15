@@ -385,4 +385,19 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
       }
     }
   }
+  
+  public String getWorkspaceEntries(String selectedWorkspace, String repository) throws Exception {
+    RepositoryService repositoryService = 
+      getApplicationComponent(RepositoryService.class);
+    List<WorkspaceEntry> wsEntries = 
+      repositoryService.getRepository(repository).getConfiguration().getWorkspaceEntries();
+    String wsInitRootNodeType = null;
+    for(WorkspaceEntry wsEntry : wsEntries) {
+      if(wsEntry.getName().equals(selectedWorkspace)) {
+        wsInitRootNodeType = wsEntry.getAutoInitializedRootNt();
+        break;
+      }
+    }
+    return wsInitRootNodeType;
+  }
 }
