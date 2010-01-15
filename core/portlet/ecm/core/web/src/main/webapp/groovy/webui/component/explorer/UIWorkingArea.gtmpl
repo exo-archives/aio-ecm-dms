@@ -14,7 +14,7 @@
   
   def rcontext = _ctx.getRequestContext() ;
   String componentId = uicomponent.getId();  
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initDragDropForTreeEvent('$componentId')");    
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initDragDropForTreeEvent('$componentId');");    
 %>
 
 <div class="UIWorkingArea" id="UIWorkingArea">
