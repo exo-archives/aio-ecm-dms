@@ -27,6 +27,7 @@
 
   <!-- DMSSkin -->
   <portal-skin>
+    <skin-module>DMSSkin</skin-module>
     <skin-name>Default</skin-name>
     <css-path>/skin/DefaultSkin/Stylesheet.css</css-path>
   </portal-skin>
