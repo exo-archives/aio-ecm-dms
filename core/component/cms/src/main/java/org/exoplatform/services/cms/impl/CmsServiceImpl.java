@@ -50,7 +50,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedItemDefinition;
+import org.exoplatform.services.jcr.impl.core.nodetype.ItemDefinitionImpl;
 import org.exoplatform.services.listener.ListenerService;
 
 
@@ -405,7 +405,7 @@ public class CmsServiceImpl implements CmsService {
       if(nodeDef.isAutoCreated() || nodeDef.isProtected()) {
         continue ;
       }            
-      if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
+      if(((ItemDefinitionImpl)nodeDef).isResidualSet()) {
         for(JcrInputProperty input:childNodeInputs) {
           String childItemPath = itemPath + "/"+ input.getValue();
           //Only child node input has dependent path of current node is added as child node
