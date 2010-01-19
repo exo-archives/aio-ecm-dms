@@ -428,6 +428,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           }
         }
       }
+      String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
       UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       if(uiComp instanceof UIOneNodePathSelector) {
         String repositoryName = explorer.getRepositoryName();
@@ -438,7 +439,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue();
           ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);      
         }
-        String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",");
           if(arrParams.length == 4) {
@@ -477,7 +477,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       }
       uiContainer.initPopup(uiComp);
       String param = "returnField=" + fieldName;
-      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param});
+      String[] params = selectorParams == null ? new String[]{param} : new String[]{param, "selectorParams=" + selectorParams};
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, params);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
     }
   }  
