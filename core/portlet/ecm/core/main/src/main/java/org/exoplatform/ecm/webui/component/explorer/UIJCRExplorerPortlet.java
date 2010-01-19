@@ -33,7 +33,6 @@ import javax.jcr.Session;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.services.log.Log;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -51,6 +50,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -115,8 +115,6 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     UIJcrExplorerContainer explorerContainer = getChild(UIJcrExplorerContainer.class);
     UIJcrExplorerEditContainer editContainer = getChild(UIJcrExplorerEditContainer.class);
-    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
-    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext) context ;
     HashMap<String, String> map = getElementByContext(context);
     if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {

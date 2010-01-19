@@ -45,21 +45,13 @@ public class FavoriteServiceImpl implements FavoriteService {
 
   private NodeHierarchyCreator nodeHierarchyCreator;
   private LinkManager linkManager;
-  private NodeFinder nodeFinder;
-  private SessionProvider sessionProvider;
-  private RepositoryService repositoryService;
+  private SessionProviderService sessionProviderService;
   
-  public FavoriteServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, LinkManager linkManager, 
-      NodeFinder nodeFinder) {
+  public FavoriteServiceImpl(NodeHierarchyCreator nodeHierarchyCreator, LinkManager linkManager, 
+      SessionProviderService sessionProviderService) {
     this.nodeHierarchyCreator = nodeHierarchyCreator;
     this.linkManager = linkManager;
-    this.nodeFinder = nodeFinder;
-    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-    SessionProviderService sessionProviderService
-    		=	(SessionProviderService) myContainer.getComponentInstanceOfType(SessionProviderService.class);
-    //this.sessionProvider = sessionProviderService.getSessionProvider(null);
-    this.sessionProvider = sessionProviderService.getSystemSessionProvider(null);
-    this.repositoryService = repositoryService;
+    this.sessionProviderService = sessionProviderService;
   }
 
   /**
@@ -150,22 +142,10 @@ public class FavoriteServiceImpl implements FavoriteService {
   }
   
   private Node getUserFavoriteFolder(String userName) throws Exception {
-  	
-  	// code for running
-    Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);
+    Node userNode = 
+      nodeHierarchyCreator.getUserNode(sessionProviderService.getSystemSessionProvider(null), userName);
     String favoritePath = nodeHierarchyCreator.getJcrPath(FAVORITE_ALIAS);
     return userNode.getNode(favoritePath);
-
-  	// code for test
-		  	
-/*		ManageableRepository manageableRepository = repositoryService.getRepository("repository");
-  	Session session = sessionProvider.getSession("collaboration", manageableRepository);
-  	Node rootNode = session.getRootNode();
-  	if (rootNode.hasNode(userName))
-  		return rootNode.getNode(userName);
-  	
-  	return rootNode.addNode(userName);*/
-  	
   }
   
 }
