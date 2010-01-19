@@ -48,6 +48,7 @@ var ListView = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 		//registry action drag drop in tree list
+		eXo.ecm.UIListView.initDragDropForTreeEvent("UIWorkingArea", eXo.ecm.UIListView.enableDragAndDrop);		
 //		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 //		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 //		if (UITreeExplorer) {
@@ -73,7 +74,7 @@ var ListView = function() {
 	
 	ListView.prototype.initDragDropForTreeEvent = function(actionAreaId, enableDragAndDrop) {
 		//registry action drag drop in tree list
-		
+		eXo.ecm.UIListView.enableDragAndDrop = enableDragAndDrop;
 		var UIWorkingArea =	document.getElementById(actionAreaId);
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		if (UITreeExplorer) {
