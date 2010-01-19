@@ -469,6 +469,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Class clazz = Class.forName(classPath, true, cl);
       UIComponent uiComp = uiManager.createUIComponent(clazz, null, null);
+      String selectorParams = (String) fieldPropertiesMap.get("selectorParams");
       if (uiComp instanceof UIOneNodePathSelector) {
         String repositoryName = uiForm.getTaxoTreeData().getRepository();
         SessionProvider provider = SessionProviderFactory.createSessionProvider();
@@ -478,7 +479,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           wsName = (String) uiForm.<UIFormInputBase> getUIInput(wsFieldName).getValue();
           ((UIOneNodePathSelector) uiComp).setIsDisable(wsName, true);
         }
-        String selectorParams = (String) fieldPropertiesMap.get("selectorParams");
         String[] filterType = new String[] {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED};
         ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInPathPanel(filterType);
         ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInTree(filterType);
@@ -503,7 +503,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       }
       uiManager.initPopupComponent(uiComp, UIActionForm.POPUP_COMPONENT);
       String param = "returnField=" + fieldName;
-      ((ComponentSelector) uiComp).setSourceComponent(uiForm, new String[] { param });
+      String[] params = selectorParams == null ? new String[]{param} : new String[]{param, "selectorParams=" + selectorParams};
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, params);
       if (uiForm.isAddNew_) {
         UIContainer uiParent = uiManager.getParent();
         uiParent.setRenderedChild(uiManager.getId());

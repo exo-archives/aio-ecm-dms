@@ -293,6 +293,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Class clazz = Class.forName(classPath, true, cl);
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
       if(uiComp instanceof UIOneNodePathSelector) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
         String repositoryName = explorer.getRepositoryName();
@@ -303,7 +304,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue();          
           ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);           
         }
-        String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",");
           if(arrParams.length == 4) {
@@ -326,7 +326,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp);
       else ((UIActionContainer)uiContainer).initPopup(uiComp);
       String param = "returnField=" + fieldName;
-      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param});
+      String[] params = selectorParams == null ? new String[]{param} : new String[]{param, "selectorParams=" + selectorParams};
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, params);
       if(uiForm.isAddNew_) {
         UIContainer uiParent = uiContainer.getParent();
         uiParent.setRenderedChild(uiContainer.getId());

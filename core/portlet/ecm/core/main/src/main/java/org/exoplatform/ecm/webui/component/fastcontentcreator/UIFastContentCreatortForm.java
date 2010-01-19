@@ -368,6 +368,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           }
         }
       }
+      String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
       if(uiComp instanceof UIOneNodePathSelector) {
         PortletPreferences preferences = uiForm.getPortletPreferences() ;
         String repositoryName = preferences.getValue("repository", "") ;
@@ -378,7 +379,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
           ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;      
         }
-        String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
@@ -415,9 +415,10 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         ((UIOneTaxonomySelector)uiComp).init(SessionProviderFactory.createSystemProvider());
         
       }
-      uiContainer.initPopup(uiComp) ;
-      String param = "returnField=" + fieldName ;
-      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param}) ;
+      uiContainer.initPopup(uiComp);
+      String param = "returnField=" + fieldName;
+      String[] params = selectorParams == null ? new String[]{param} : new String[]{param, "selectorParams=" + selectorParams};
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, params);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }      
