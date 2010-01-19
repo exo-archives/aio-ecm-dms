@@ -121,7 +121,7 @@
 								              <div class="Links">
 																<%
 												          for(rel in relations) {
-													          if(rel != null) {
+													          if(rel != null && !rel.isNodeType("exo:restoreLocation")) {
 																	    String wsName = rel.getSession().getWorkspace().getName() ;
 																      String actionLink ;
 																	    String relPath = rel.getPath() ;

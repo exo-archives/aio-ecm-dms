@@ -13,10 +13,19 @@
   import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace ;
   import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+  import org.exoplatform.ecm.jcr.model.Preference;
+  import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
   
   def rcontext = _ctx.getRequestContext() ;
   UITreeExplorer uiTreeExplorer = uicomponent.findFirstComponentOfType(UITreeExplorer.class);
   def focusNode = uiTreeExplorer.getEncodeCurrentPath();
+  def uiExplorer = uicomponent.getAncestorOfType(UIJCRExplorer.class);
+  def pref = uiExplorer.getPreference();
+  def enableDragAndDrop = pref.isEnableDragAndDrop();
+  
+  String componentId = uicomponent.getId();
+  
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initDragDropForTreeEvent('$componentId', '$enableDragAndDrop');");
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.loadEffectedSideBar('$focusNode');") ;
   rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar');
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");

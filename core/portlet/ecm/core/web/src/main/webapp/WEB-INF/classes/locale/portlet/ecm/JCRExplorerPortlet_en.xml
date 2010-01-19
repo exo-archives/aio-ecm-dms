@@ -174,6 +174,7 @@
       <showNonDocument>Show "non document" nodes</showNonDocument>
       <showRefDocuments>Show referenced documents</showRefDocuments>
       <showItemsByUserInTimeline>Show items by user in Timeline View</showItemsByUserInTimeline>
+      <enableDragAndDrop>Enable drag &amp; drop</enableDragAndDrop>
       <sortBy>Sort by</sortBy>
       <order>Order</order>
       <nodesPerPage>Nodes Per Page</nodesPerPage>

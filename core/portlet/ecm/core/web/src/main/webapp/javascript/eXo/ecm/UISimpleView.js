@@ -16,7 +16,7 @@ var SimpleView = function() {
 	SimpleView.prototype.colorHover = "#f2f8ff";
 	
 	//init event
-	SimpleView.prototype.initAllEvent = function(actionAreaId) {
+	SimpleView.prototype.initAllEvent = function(actionAreaId, enableDragAndDrop) {
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
 
@@ -33,10 +33,12 @@ var SimpleView = function() {
 				item.onmousedown = null;
 				item.removeAttribute("onmousedown");
 			}
-			item.onmouseover = Self.mouseOverItem;
-			item.onmousedown = Self.mouseDownItem;
-			item.onmouseup = Self.mouseUpItem;
-			item.onmouseout = Self.mouseOutItem;
+			if (enableDragAndDrop == "true") {			
+				item.onmouseover = Self.mouseOverItem;
+				item.onmousedown = Self.mouseDownItem;
+				item.onmouseup = Self.mouseUpItem;
+				item.onmouseout = Self.mouseOutItem;
+			}
 			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
@@ -44,6 +46,7 @@ var SimpleView = function() {
 		actionArea.onmouseover = Self.mouseOverGround;
 		actionArea.onmouseout = Self.mouseOutGround;
 		
+
 		//remove context menu
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
@@ -147,18 +150,18 @@ var SimpleView = function() {
 	
 	SimpleView.prototype.mouseUpTree = function(event) {
 		var event = event || window.event;
-		
+				
 		var element = this;
 		revertResizableBlock();
 		Self.enableDragDrop = null;
-		
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
-			var actionArea = document.getElementById(Self.actionAreaId);
+			var actionArea = document.getElementById("UIWorkingArea");
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
+
 			var targetPath = decodeURIComponent(idTarget);
 			var srcPath = decodeURIComponent(Self.srcPath);
 			if (targetPath.indexOf(srcPath) == 0) {
@@ -300,14 +303,14 @@ var SimpleView = function() {
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
 		revertResizableBlock();
-		
+
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		if (leftClick) {
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement && mobileElement.move && element.temporary) {
 				//post action
-				var actionArea = document.getElementById(Self.actionAreaId);
+				var actionArea = document.getElementById("UIWorkingArea");
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
@@ -777,7 +780,9 @@ var SimpleView = function() {
 				if (oid) objectId.push(wsname + ":" + oid);
 				else objectId.push("");
 			}
+
 			//Dunghm: Check Shift key
+			
 			var url = (typeof(moveActionNode) == "string")?moveActionNode:moveActionNode.getAttribute("request");
 			if(islink && islink != "") {
 				url = moveActionNode.getAttribute("symlink");

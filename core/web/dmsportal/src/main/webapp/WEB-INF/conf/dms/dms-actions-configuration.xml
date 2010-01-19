@@ -57,7 +57,7 @@
                     </object>  
                   </value>
                   
-                  <value>
+<!--                    <value>
                     <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
                       <field  name="type"><string>exo:trashFolderAction</string></field>
                       <field  name="name"><string>trashFolder</string></field>                  
@@ -73,7 +73,7 @@
                       </field>
                     </object>  
                   </value>                                  
-                                                    
+-->
                 </collection>   
               </field>  
             </object>

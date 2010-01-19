@@ -2915,6 +2915,7 @@
   <UIPreferencesForm>
     <label>
       <showItemsByUserInTimeline>Show items by user in Timeline View</showItemsByUserInTimeline>
+      <enableDragAndDrop>Enable drag &amp; drop</enableDragAndDrop>      
     </label>
   </UIPreferencesForm>
   

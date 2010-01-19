@@ -21,6 +21,9 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.observation.Event;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -28,60 +31,74 @@ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.log.ExoLogger;
 
+
 /*
 * 
 */
 public class TrashFolderScript implements CmsScript {
   
   private static final Log LOG  = ExoLogger.getLogger("TrashFolderScript");
+  private RepositoryService repositoryService_;
+  private SessionProviderService seProviderService_;
+  
   
   final static public String EXO_RESTOREPATH = "exo:restorePath";
   final static public String EXO_RESTORELOCATION = "exo:restoreLocation";
   final static public String EXO_RESTORE_WORKSPACE = "exo:restoreWorkspace";  
   
-  public TrashFolderScript() {
-  }
+  public TrashFolderScript(RepositoryService repositoryService,
+        									 SessionProviderService sessionProviderService) {
+      repositoryService_ = repositoryService;
+      seProviderService_ = sessionProviderService;
+    }
   
   public void execute(Object context) {
   	System.out.println("TrashFolderScript");
     Map variables = (Map) context;       
     String nodePath = (String)variables.get("nodePath");
+    System.out.println("Node Path: " + nodePath);
 		String workspace = (String)variables.get("srcWorkspace");
+		System.out.println("SrcWorkspace: " + workspace);
     String repository = (String)variables.get("repository");
     String srcPath = (String)variables.get("srcPath");
+    System.out.println("srcPath: " + srcPath);
     int eventType = ((Integer)variables.get("eventType")).intValue();
     int index = nodePath.indexOf(':');
     if (index > -1)
     	nodePath = nodePath.substring(index + 1);
 
+//    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
+//    RepositoryService repositoryService_ = 
+//      (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
+    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     Session session = null;
     Node node = null;
-    try{
-      session = seProviderService_.getSystemSessionProvider(null).getSession(workspace, manageableRepository);
-      node = (Node)session.getItem(nodePath);
-    } catch(Exception e) {
-      LOG.error("Exception when try to get node", e);
-      throw e;
-    }
-    System.out.println("type: " + evenType);
-    if ((eventType & Event.NODE_ADDED) > 0) {
-    	if (!node.isNodeType(EXO_RESTORELOCATION)) {
-    		System.out.println("srcPath: " + srcPath);
-    		node.addMixin(EXO_RESTORELOCATION);    		
-  			node.setProperty(EXO_RESTOREPATH, fixRestorePath(srcPath));
-  			node.setProperty(EXO_RESTORE_WORKSPACE, workspace);
-    		session.save();
-    	}
-    } else if ((eventType & Event.NODE_REMOVED) > 0) {
-    	if (node.isNodeType(EXO_RESTORELOCATION)) {
-    		node.removeMixin(EXO_RESTORELOCATION);
-    		session.save();
-    	}
-    }
+//    try{
+//      session = seProviderService_.getSystemSessionProvider(null).getSession(workspace, manageableRepository);
+//      node = (Node)session.getItem(nodePath);
+//    } catch(Exception e) {
+//      LOG.error("Exception when try to get node", e);
+//      throw e;
+//    }
+//    System.out.println("type: " + eventType);
+//    if ((eventType & Event.NODE_ADDED) > 0) {
+//    	if (!node.isNodeType(EXO_RESTORELOCATION)) {
+//    		System.out.println("srcPath: " + srcPath);
+//    		node.addMixin(EXO_RESTORELOCATION);    		
+//  			node.setProperty(EXO_RESTOREPATH, fixRestorePath(srcPath));
+//  			node.setProperty(EXO_RESTORE_WORKSPACE, workspace);
+//    		session.save();
+//    	}
+//    } else if ((eventType & Event.NODE_REMOVED) > 0) {
+//    	if (node.isNodeType(EXO_RESTORELOCATION)) {
+//    		node.removeMixin(EXO_RESTORELOCATION);
+//    		session.save();
+//    	}
+//    }
     
   	String nodeName = nodePath.substring(nodePath.lastIndexOf("/") + 1);
-    session.save();
+//    session.save();
   }
   
 	private String fixRestorePath(String path) {

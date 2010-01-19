@@ -793,8 +793,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         // Just in order to check if the node exists
         Item item = nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
         if ((item instanceof Node) &&
-        		((Node)item).isNodeType(Utils.EXO_RESTORELOCATION) &&
-        		!templateService.isManagedNodeType(((Node)item).getPrimaryNodeType().getName(), uiExplorer.getRepositoryName()))
+        		((Node)item).isNodeType(Utils.EXO_RESTORELOCATION))
+        		//&&	!templateService.isManagedNodeType(((Node)item).getPrimaryNodeType().getName(), uiExplorer.getRepositoryName()))
         	return;
         uiExplorer.setSelectNode(workspaceName, uri);
         uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);

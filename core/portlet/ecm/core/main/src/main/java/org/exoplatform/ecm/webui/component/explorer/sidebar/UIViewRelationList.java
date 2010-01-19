@@ -27,6 +27,7 @@ import javax.jcr.Value;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -69,7 +70,8 @@ public class UIViewRelationList extends UIContainer{
         String uuid = val.getString();
         try {
           Node node = session.getNodeByUUID(uuid) ;
-          relations.add(node) ;
+          if (!node.isNodeType(Utils.EXO_RESTORELOCATION))
+          	relations.add(node) ;
         } catch(Exception e) {
           continue ;
         }

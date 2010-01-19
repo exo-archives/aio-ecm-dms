@@ -61,6 +61,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_SHOW_HIDDEN_NODE = "showHiddenNode".intern();
   
   final static public String FIELD_SHOW_ITEMS_BY_USER = "showItemsByUserInTimeline".intern();
+  
+  final static public String FIELD_ENABLE_DRAG_AND_DROP = "enableDragAndDrop".intern();
 
   final static public String FIELD_SHORTBY          = "sortBy".intern();
 
@@ -136,6 +138,9 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
         null));
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_ITEMS_BY_USER, 
     																							  FIELD_SHOW_ITEMS_BY_USER, null));
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ENABLE_DRAG_AND_DROP,
+    																								FIELD_ENABLE_DRAG_AND_DROP, null));
+    		
     addUIFormInput(new UIFormSelectBox(FIELD_QUERY_TYPE, FIELD_QUERY_TYPE, queryOption));
     addUIFormInput(new UIFormSelectBox(FIELD_SHORTBY, FIELD_SHORTBY, sortOptions));
     addUIFormInput(new UIFormSelectBox(FIELD_ORDERBY, FIELD_ORDERBY, orderOption));
@@ -155,6 +160,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).setChecked(pref.isShowPreferenceDocuments());
     getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).setChecked(pref.isShowHiddenNode());
     getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER).setChecked(pref.isShowItemsByUser());
+    getUIFormCheckBoxInput(FIELD_ENABLE_DRAG_AND_DROP).setChecked(pref.isEnableDragAndDrop());
     getUIFormSelectBox(FIELD_SHORTBY).setValue(pref.getSortType());
     getUIFormSelectBox(FIELD_ORDERBY).setValue(pref.getOrder());
     getUIFormSelectBox(NODES_PER_PAGE).setValue(Integer.toString(pref.getNodesPerPage()));
@@ -174,6 +180,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       pref.setShowPreferenceDocuments(uiForm.getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).isChecked());
       pref.setShowHiddenNode(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).isChecked());
       pref.setShowItemsByUser(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER).isChecked());
+      pref.setEnableDragAndDrop(uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_DRAG_AND_DROP).isChecked());
       pref.setSortType(uiForm.getUIFormSelectBox(FIELD_SHORTBY).getValue());
       pref.setQueryType(uiForm.getUIFormSelectBox(FIELD_QUERY_TYPE).getValue());
       pref.setOrder(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue());

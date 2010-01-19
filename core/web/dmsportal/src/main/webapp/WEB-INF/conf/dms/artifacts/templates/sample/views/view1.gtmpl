@@ -111,7 +111,7 @@
 					<div style="width: 100%;" >
 						<%
 						  for(rel in relations) {
-							  if (rel != null) {
+							  if (rel != null && !rel.isNodeType("exo:restoreLocation")) {
 							  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
 							%>
 								<div style="font-size: 12px; padding: 10px;">

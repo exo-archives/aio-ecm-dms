@@ -16,7 +16,9 @@ var ListView = function() {
 	ListView.prototype.colorHover = "#f2f8ff";
 	
 	//init event
-	ListView.prototype.initAllEvent = function(actionAreaId) {
+	ListView.prototype.initAllEvent = function(actionAreaId, enableDragAndDrop) {
+//		var enableDragAndDrop = new Boolean(enableDragAndDropStr);
+//		alert("Init all events, enableDragAndDrop: " + enableDragAndDrop);
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
 		var actionArea = document.getElementById(actionAreaId);
@@ -32,10 +34,12 @@ var ListView = function() {
 				item.onmousedown = null;
 				item.removeAttribute("onmousedown");
 			}
-			item.onmouseover = Self.mouseOverItem;
-			item.onmousedown = Self.mouseDownItem;
-			item.onmouseup = Self.mouseUpItem;
-			item.onmouseout = Self.mouseOutItem;
+			if (enableDragAndDrop == "true") {
+				item.onmouseover = Self.mouseOverItem;
+				item.onmousedown = Self.mouseDownItem;
+				item.onmouseup = Self.mouseUpItem;
+				item.onmouseout = Self.mouseOutItem;
+			}
 			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
@@ -44,7 +48,33 @@ var ListView = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 		//registry action drag drop in tree list
-		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+//		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+//		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
+//		if (UITreeExplorer) {
+//			DOM.getElementsBy(
+//					function(element) {return element.getAttribute("objectId");},
+//					"div",
+//					UITreeExplorer,
+//					function(element) {
+//						if (element.getAttribute("onmousedown")) {
+//							mousedown = element.getAttributeNode("onmousedown").value;
+//							element.setAttribute("mousedown", mousedown);
+//						}
+//						if (enableDragAndDrop == "true") {
+//							element.onmousedown = Self.mouseDownTree;
+//							element.onmouseup = Self.mouseUpTree;
+//							element.onmouseover = Self.mouseOverTree;
+//							element.onmouseout = Self.mouseOutTree;
+//						}
+//					}
+//			);
+//		}
+	};
+	
+	ListView.prototype.initDragDropForTreeEvent = function(actionAreaId, enableDragAndDrop) {
+		//registry action drag drop in tree list
+		
+		var UIWorkingArea =	document.getElementById(actionAreaId);
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		if (UITreeExplorer) {
 			DOM.getElementsBy(
@@ -56,10 +86,12 @@ var ListView = function() {
 							mousedown = element.getAttributeNode("onmousedown").value;
 							element.setAttribute("mousedown", mousedown);
 						}
-						element.onmousedown = Self.mouseDownTree;
-						element.onmouseup = Self.mouseUpTree;
-						element.onmouseover = Self.mouseOverTree;
-						element.onmouseout = Self.mouseOutTree;
+						if (enableDragAndDrop == "true") {
+							element.onmousedown = Self.mouseDownTree;
+							element.onmouseup = Self.mouseUpTree;
+							element.onmouseover = Self.mouseOverTree;
+							element.onmouseout = Self.mouseOutTree;
+						}
 					}
 			);
 		}
@@ -150,7 +182,7 @@ var ListView = function() {
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
-			var actionArea = document.getElementById(Self.actionAreaId);
+			var actionArea = document.getElementById("UIWorkingArea");
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
@@ -175,8 +207,9 @@ var ListView = function() {
 			//Dunghm : check symlink
 			if(event.ctrlKey && event.shiftKey)
 			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
-			else
+			else {
 			  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+			}
 			
 		}
 	};
@@ -307,7 +340,7 @@ var ListView = function() {
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement && mobileElement.move && element.temporary) {
 				//post action
-				var actionArea = document.getElementById(Self.actionAreaId);
+				var actionArea = document.getElementById("UIWorkingArea");
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
@@ -694,6 +727,7 @@ var ListView = function() {
 		var workspaceName = [];
 		var islink = "";
 		var ext = ext? ext : "";
+		
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
@@ -838,7 +872,7 @@ var ListView = function() {
 		}
 		var rightContainer = DOM.findAncestorByClass(objResize, "RightContainer");
 		var listGrid = DOM.findAncestorByClass(objResize, "UIListGrid");
-		eXo.ecm.UIListView.widthListView = eXo.ecm.UIListView.widthRightContainer + resizeValue + 50;
+		eXo.ecm.UIListView.widthListView = eXo.ecm.UIListView.widthRightContainer + resizeValue + 0;
 		rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
 		listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
 	}
@@ -861,8 +895,8 @@ var ListView = function() {
 			rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
 			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
 		} else {
-			rightContainer.style.width = rightContainer.offsetWidth + 50 + "px";
-			listGrid.style.width = listGrid.offsetWidth + 50 + "px";
+			rightContainer.style.width = rightContainer.offsetWidth + 0 + "px";
+			listGrid.style.width = listGrid.offsetWidth + 0 + "px";
 		}
 		if(!eXo.ecm.UIListView.mapColumn) return;
 		for(var name in eXo.ecm.UIListView.mapColumn.properties) {

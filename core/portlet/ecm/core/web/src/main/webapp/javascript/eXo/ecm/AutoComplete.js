@@ -40,7 +40,7 @@ function AutoComplete() {
 		eXo.ecm.AutoComplete.Tags['element'].onkeyup    = function(e) {return AutoComplete.prototype.keyUp(e);}
 		eXo.ecm.AutoComplete.Tags['element'].onkeypress = function(e) {
 			if (!e) e = window.event;
-			if (e.keyCode || e.which || isOpera) return false;
+			if (e.keyCode ==13 || isOpera) return false;
 		}
 		eXo.ecm.AutoComplete.Tags['element'].ondblclick = function()  {AutoComplete.prototype.showDropdown();}
 		eXo.ecm.AutoComplete.Tags['element'].onclick    = function(e) {if (!e) e = window.event; e.cancelBubble = true; e.returnValue = false;}
@@ -71,8 +71,8 @@ function AutoComplete() {
 			eXo.ecm.AutoComplete.Tags['iframe'] = document.createElement('iframe');
 			eXo.ecm.AutoComplete.Tags['iframe'].id = 'names' +'_iframe';
 			eXo.ecm.AutoComplete.Tags['iframe'].style.position = 'absolute';
-			eXo.ecm.AutoComplete.Tags['iframe'].style.top = '0';
-			eXo.ecm.AutoComplete.Tags['iframe'].style.left = '0';
+			eXo.ecm.AutoComplete.Tags['iframe'].style.top = '75';
+			eXo.ecm.AutoComplete.Tags['iframe'].style.left = '148';
 			eXo.ecm.AutoComplete.Tags['iframe'].style.width = '0px';
 			eXo.ecm.AutoComplete.Tags['iframe'].style.height = '0px';
 			eXo.ecm.AutoComplete.Tags['iframe'].style.zIndex = '98';
@@ -87,8 +87,17 @@ function AutoComplete() {
 	 */
 	AutoComplete.prototype.createDropdown = function()
 	{
-		var left  = AutoComplete.prototype.getLeft(eXo.ecm.AutoComplete.Tags['element']);
-		var top   = AutoComplete.prototype.getTop(eXo.ecm.AutoComplete.Tags['element']) + eXo.ecm.AutoComplete.Tags['element'].offsetHeight;
+		isIE = document.all ? true : false;
+		var left = 0;
+		var top = 0;
+		if (isIE) {
+				left = 148;
+				top = 75;
+		}
+		else {
+				left  = AutoComplete.prototype.getLeft(eXo.ecm.AutoComplete.Tags['element']);
+				top   = AutoComplete.prototype.getTop(eXo.ecm.AutoComplete.Tags['element']) + eXo.ecm.AutoComplete.Tags['element'].offsetHeight;
+		}
 		var width = eXo.ecm.AutoComplete.Tags['element'].offsetWidth;
 
 		eXo.ecm.AutoComplete.Tags['dropdown'] = document.createElement('div');
@@ -204,9 +213,11 @@ function AutoComplete() {
 		/**
 		 * Set left/top in case of document movement/scroll/window resize etc
 		 */
-		eXo.ecm.AutoComplete.Tags['dropdown'].style.left = AutoComplete.prototype.getLeft(eXo.ecm.AutoComplete.Tags['element']);
-		eXo.ecm.AutoComplete.Tags['dropdown'].style.top  = AutoComplete.prototype.getTop(eXo.ecm.AutoComplete.Tags['element']) + eXo.ecm.AutoComplete.Tags['element'].offsetHeight;
-
+		var left = (isIE ? 30 : 0) + AutoComplete.prototype.getLeft(eXo.ecm.AutoComplete.Tags['element']); 
+		var top = (isIE ? 50 : 0) + AutoComplete.prototype.getTop(eXo.ecm.AutoComplete.Tags['element']) + eXo.ecm.AutoComplete.Tags['element'].offsetHeight;
+		
+		eXo.ecm.AutoComplete.Tags['dropdown'].style.left = left;
+		eXo.ecm.AutoComplete.Tags['dropdown'].style.top  = top;
 
 		// Show the iframe for IE
 		if (isIE) {
@@ -293,9 +304,10 @@ function AutoComplete() {
 
 		// Nothing highlighted at the moment
 		if (eXo.ecm.AutoComplete.Tags['highlighted'] == null) {
-			eXo.ecm.AutoComplete.Tags['dropdown'].childNodes[0].className = 'autocomplete_item_highlighted';
-			eXo.ecm.AutoComplete.Tags['highlighted'] = 0;
-
+			if (eXo.ecm.AutoComplete.Tags['dropdown'].childNodes.length > 0) {
+				eXo.ecm.AutoComplete.Tags['dropdown'].childNodes[0].className = 'autocomplete_item_highlighted';
+				eXo.ecm.AutoComplete.Tags['highlighted'] = 0;
+			}
 		} else {
 			if (eXo.ecm.AutoComplete.Tags['dropdown'].childNodes[eXo.ecm.AutoComplete.Tags['highlighted']]) {
 				eXo.ecm.AutoComplete.Tags['dropdown'].childNodes[eXo.ecm.AutoComplete.Tags['highlighted']].className = 'autocomplete_item';
@@ -353,7 +365,7 @@ function AutoComplete() {
 			event = arguments[1];
 		}
 		if (!event) event = window.event;
-		var keyCode = event.which || event.keyCode;
+		var keyCode = event.keyCode || event.which;
 		switch (keyCode) {
 
 		// Return/Enter
@@ -416,7 +428,7 @@ function AutoComplete() {
 			event = arguments[1];
 		}
 		if (!event) event = window.event;
-		var keyCode = event.which || event.keyCode;
+		var keyCode = event.keyCode || event.which;
 		switch (keyCode) {
 		case 13:
 			event.returnValue = false;

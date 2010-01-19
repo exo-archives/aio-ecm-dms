@@ -5,6 +5,7 @@
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu;
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
 	import javax.jcr.PathNotFoundException;
   import java.util.List;
@@ -166,7 +167,13 @@
   TreeNode treeNodeRoot = uicomponent.getRootTreeNode();
   treeNodeRoot.getNode().refresh(true);
   String contextMenuEvent = uicomponent.getRootActionList() ;
+  def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);  
 %>
+
+<div class="JCRMoveAction" style="display: none;" 
+		 request="<%=uiWorkingArea.getJCRMoveAction().event(UIWorkingArea.MOVE_NODE, 'MultiSelection')%>" 
+		 symlink="<%=uiWorkingArea.getCreateLinkAction().event(UIWorkingArea.CREATE_LINK, 'MultiSelection')%>">
+</div>
 <div class="SideBarContent">
   <div class="BarContent">
   	<div class="BarContentL">

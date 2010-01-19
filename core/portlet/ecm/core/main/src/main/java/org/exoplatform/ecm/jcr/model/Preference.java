@@ -28,6 +28,7 @@ public class Preference {
   public static final String SORT_BY_VERSIONABLE = "Versionable";
   public static final String SORT_BY_AUDITING = "Auditing";
   public static final String SHOW_OWNED_BY_USER_DOC = "OwnedByMe";
+  public static final String ENABLE_DRAG_AND_DROP = "EnableDragAndDrop";
   public static final String SHOW_FAVOURITE_DOC = "Favourites";
   public static final String SHOW_HIDDEN_DOC = "Hidden";
   public static final String SHOW_TRASH_DOC = "Trash";
@@ -53,6 +54,7 @@ public class Preference {
   private boolean isShowPreferenceDocuments = false ;
   private boolean isShowHiddenNode = false ;
   private boolean isShowOwnedByUserDoc = true;
+  private boolean isEnableDragAndDrop = true;
   private boolean isShowFavouriteDoc = true;
   private boolean isShowHiddenDoc = true;
   private boolean isShowTrashDoc = true;
@@ -83,6 +85,9 @@ public class Preference {
   
   public boolean isShowOwnedByUserDoc() { return isShowOwnedByUserDoc; }
   public void setShowOwnedByUserDoc(boolean b) { isShowOwnedByUserDoc = b; }
+  
+  public boolean isEnableDragAndDrop() { return isEnableDragAndDrop; }
+  public void setEnableDragAndDrop(boolean b) { isEnableDragAndDrop = b; }
   
   public boolean isShowFavouriteDoc() {	return isShowFavouriteDoc; }
   public void setShowFavouriteDoc(boolean b) { isShowFavouriteDoc = b; }

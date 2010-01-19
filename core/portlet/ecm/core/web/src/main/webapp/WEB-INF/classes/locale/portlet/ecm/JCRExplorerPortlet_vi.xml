@@ -2935,6 +2935,7 @@
   <UIPreferencesForm>
     <label>
       <showItemsByUserInTimeline>Chỉ hiển thị các tài liệu của user trong Timline view</showItemsByUserInTimeline>
+      <enableDragAndDrop>Cho phép thao tác Kéo-Thả</enableDragAndDrop>      
     </label>
   </UIPreferencesForm>
   
