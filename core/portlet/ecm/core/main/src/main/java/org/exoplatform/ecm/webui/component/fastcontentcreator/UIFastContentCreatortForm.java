@@ -357,17 +357,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
       NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);  
-      String value = uiForm.getUIStringInput(fieldName).getValue();
-      String[] arrayTaxonomy = new String[1];
-      if (value != null && !value.equals("")) {
-        arrayTaxonomy = value.split(",");
-        if (arrayTaxonomy.length > 0) {
-          if (arrayTaxonomy[0].startsWith("[")) arrayTaxonomy[0] = arrayTaxonomy[0].substring(1, arrayTaxonomy[0].length());
-          if (arrayTaxonomy[arrayTaxonomy.length - 1].endsWith("]")) {
-            arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
-          }
-        }
-      }
       String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
       if(uiComp instanceof UIOneNodePathSelector) {
         PortletPreferences preferences = uiForm.getPortletPreferences() ;
