@@ -44,12 +44,12 @@ var ListView = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 		//registry action drag drop in tree list
+	  eXo.ecm.UIListView.initDragDropForTreeEvent("UIWorkingArea");
 	};
 	
 	
 	ListView.prototype.initDragDropForTreeEvent = function(actionAreaId, enableDragAndDrop) {
 		//registry action drag drop in tree list
-			
 		var UIWorkingArea =	document.getElementById(actionAreaId);
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		if (UITreeExplorer) {
@@ -162,6 +162,7 @@ var ListView = function() {
 			var idTarget = element.getAttribute('objectId');
 			var targetPath = decodeURIComponent(idTarget);
 			var srcPath = decodeURIComponent(Self.srcPath);
+//			alert(srcPath + ": -> " + targetPath);
 //			var regex = new RegExp("^"+decodeURIComponent(idTarget) + "/");
 //			var regex1 = new RegExp("^"+decodeURIComponent(Self.srcPath) + "/");
 //			if(regex.test(decodeURIComponent(Self.srcPath) + "/")){
