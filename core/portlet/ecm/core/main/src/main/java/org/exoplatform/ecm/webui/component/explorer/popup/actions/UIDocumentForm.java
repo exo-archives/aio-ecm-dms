@@ -416,18 +416,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Class clazz = Class.forName(classPath, true, cl);
       String rootPath = (String)fieldPropertiesMap.get("rootPath");
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      
-      String value = uiForm.getUIStringInput(fieldName).getValue();
-      String[] arrayTaxonomy = new String[1];
-      if (value != null && !value.equals("")) {
-        arrayTaxonomy = value.split(",");
-        if (arrayTaxonomy.length > 0) {
-          if (arrayTaxonomy[0].startsWith("[")) arrayTaxonomy[0] = arrayTaxonomy[0].substring(1, arrayTaxonomy[0].length());
-          if (arrayTaxonomy[arrayTaxonomy.length - 1].endsWith("]")) {
-            arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
-          }
-        }
-      }
       String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
       UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       if(uiComp instanceof UIOneNodePathSelector) {
