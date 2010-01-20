@@ -1,6 +1,27 @@
 <%
+
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+
 	def totalPage = uicomponent.getAvailablePage();
 	def currentPage = uicomponent.getCurrentPage();
+
+  def rcontext = _ctx.getRequestContext() ;	
+  UITreeExplorer uiTreeExplorer = uicomponent.getAncestorOfType(UITreeExplorer.class);
+  def focusNode = uiTreeExplorer.getEncodeCurrentPath();
+  def uiExplorer = uicomponent.getAncestorOfType(UIJCRExplorer.class);
+  def pref = uiExplorer.getPreference();
+  def enableDragAndDrop = pref.isEnableDragAndDrop();
+
+  String uiWorkingAreaId = uicomponent.getAncestorOfType(UIWorkingArea.class).getId(); 
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initDragDropForTreeEvent('$uiWorkingAreaId', '$enableDragAndDrop');");  
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.loadEffectedSideBar('$focusNode');") ;
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar');
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
+  
 %>
 
 <div class="UITreeNodePageIterator">

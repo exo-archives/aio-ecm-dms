@@ -181,6 +181,9 @@ var ListView = function() {
 		revertResizableBlock();
 		Self.enableDragDrop = null;
 		var mobileElement = document.getElementById(Self.mobileId);
+		if (!mobileElement)
+			mobileElement = document.getElementById(eXo.ecm.UISimpleView.mobileId);
+		
 		if (mobileElement && mobileElement.move) {
 			//post action
 			var actionArea = document.getElementById("UIWorkingArea");
@@ -188,7 +191,8 @@ var ListView = function() {
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
 			var targetPath = decodeURIComponent(idTarget);
-			var srcPath = decodeURIComponent(Self.srcPath);
+			var srcPath = Self.srcPath ?  decodeURIComponent(Self.srcPath) :
+				decodeURIComponent(eXo.ecm.UISimpleView.srcPath);
 //			var regex = new RegExp("^"+decodeURIComponent(idTarget) + "/");
 //			alert("^"+decodeURIComponent(idTarget) + "/" + "\n" + "^"+decodeURIComponent(Self.srcPath) + "/");
 //			var regex1 = new RegExp("^"+decodeURIComponent(Self.srcPath) + "/");
@@ -728,11 +732,14 @@ var ListView = function() {
 		var workspaceName = [];
 		var islink = "";
 		var ext = ext? ext : "";
+		var itemsSelected = Self.itemsSelected;		
+		if (!itemsSelected || itemsSelected.length == 0)
+		itemsSelected = eXo.ecm.UISimpleView.itemsSelected;
 		
-		if(Self.itemsSelected.length) {
-			for(var i in Self.itemsSelected) {
+		if(itemsSelected.length) {
+			for(var i in itemsSelected) {
 				if (Array.prototype[i]) continue;
-				var currentNode = Self.itemsSelected[i];
+				var currentNode = itemsSelected[i];
 				currentNode.isSelect = false;
 				//Dunghm: Check Shift key
 				var islinkValue = currentNode.getAttribute("isLink");
