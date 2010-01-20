@@ -2187,12 +2187,7 @@
   		<UIPermissionSelector>Permission Selector</UIPermissionSelector>
   	</title>
   </SkinFormTemplatePermission>
-	<UIAnyPermission>
-		<label>
-			<any>Any</any>
-		</label>
-	</UIAnyPermission>  
-	
+	 
 	<UITaxonomyTreeMainForm>			
 		<msg>	  		
 		<targetPath-emty>The target path is empty</targetPath-emty>	  		

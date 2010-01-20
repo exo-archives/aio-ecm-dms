@@ -2186,12 +2186,7 @@
   	<title>
   		<UIPermissionSelector>Permission Selector</UIPermissionSelector>
   	</title>
-  </SkinFormTemplatePermission>
-	<UIAnyPermission>
-		<label>
-			<any>Any</any>
-		</label>
-	</UIAnyPermission>  
+  </SkinFormTemplatePermission>	  
   <UITaxonomyTreeContainer>
 		<action>
 			<Cancel>Cancel</Cancel>

@@ -2188,13 +2188,8 @@
   		<UIPermissionSelector>Chọn Quyền</UIPermissionSelector>
   	</title>
   </SkinFormTemplatePermission>
-	<UIAnyPermission>
-		<label>
-			<any>Tất cả</any>
-		</label>
-	</UIAnyPermission>
- 
-    <UITaxonomyTreeMainForm>			
+	
+		<UITaxonomyTreeMainForm>			
 		<msg>	  		
 	    	<targetPath-emty>Đường dẫn đích trống</targetPath-emty>	  		
 		</msg>

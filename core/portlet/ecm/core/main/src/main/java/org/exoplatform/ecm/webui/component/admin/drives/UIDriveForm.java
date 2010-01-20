@@ -109,7 +109,12 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
           valuePermissions += "," + membership;
         else
           valuePermissions += membership;
-      }        
+      } else {
+        if ((membership != null) && membership.equals("*")) {
+          if ((valuePermissions.indexOf(membership + ",") < 0) && (valuePermissions.indexOf("," + membership) < 0)) 
+            valuePermissions += "," + membership;
+        }
+      }
       uiStringInput.setValue(valuePermissions);
     } else {
       uiStringInput.setValue(value.toString());
