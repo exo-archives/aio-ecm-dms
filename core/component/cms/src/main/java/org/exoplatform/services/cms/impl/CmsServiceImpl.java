@@ -292,7 +292,7 @@ public class CmsServiceImpl implements CmsService {
           if(inputVariable != null) {
             value = inputVariable.getValue();
           }
-          if(value != null || propertyDef.isMandatory()) {
+          if(value != null) {
             processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
           }
         }
@@ -375,7 +375,7 @@ public class CmsServiceImpl implements CmsService {
         } else {                                                                        
           if (!propertyDef.isProtected()) {
             int requiredtype = propertyDef.getRequiredType();
-            if(value != null || propertyDef.isMandatory()) {
+            if(value != null) {
               processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
             }
           }

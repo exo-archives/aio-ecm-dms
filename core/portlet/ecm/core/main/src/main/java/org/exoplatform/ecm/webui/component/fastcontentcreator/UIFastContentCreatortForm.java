@@ -30,6 +30,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
@@ -330,6 +331,10 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
+      } catch(ConstraintViolationException cex) {
+          uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.constraintviolation-exception", null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
       } catch(ItemExistsException item) {
         Object[] args = { prefLocate } ;
         String key = "UIFastContentCreatortForm.msg.node-isExist" ;

@@ -3068,4 +3068,14 @@
 						<XPATH>XPATH</XPATH>  			
   		</label>
   </UIPreferencesForm>
+  <UIDocumentForm>
+  	<msg>
+  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+  	</msg>
+  </UIDocumentForm>
+  <UIActionForm>
+  	<msg>
+  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+  	</msg>
+  </UIActionForm> 
 </bundle>

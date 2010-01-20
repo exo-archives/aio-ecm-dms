@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.services.log.Log;
@@ -126,20 +127,25 @@ public class UIDocumentForm extends UIDialogForm {
         homeNode.save() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
       } catch (AccessControlException ace) {
-        LOG.error("Unexpected error", ace);
-        throw new AccessDeniedException(ace.getMessage());
+    	  LOG.error("Unexpected error", ace);
+    	  throw new AccessDeniedException(ace.getMessage());
       } catch(VersionException ve) {
-        LOG.error("Unexpected error", ve);
-        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
+    	  LOG.error("Unexpected error", ve);
+    	  uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
                                                 ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;
+    	  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+    	  return;
+      } catch(ConstraintViolationException constraintViolationException) {
+    	  LOG.error("Unexpected error occurrs", constraintViolationException);
+          uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.constraintviolation-exception", null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
       } catch(Exception e) {
-        LOG.error("Unexpected error", e);
-        String key = "UIDocumentForm.msg.cannot-save" ;
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;
+    	  LOG.error("Unexpected error", e);
+    	  String key = "UIDocumentForm.msg.cannot-save" ;
+    	  uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+    	  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+    	  return;
       }
     }
   }

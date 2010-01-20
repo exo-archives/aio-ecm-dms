@@ -138,5 +138,10 @@
 			<AccessDeniedException>Bạn không có quyền truy nhập danh sách danh mục</AccessDeniedException>		 	
 		</msg>
 	</Taxonomy>
+	<UIFastContentCreatortForm>
+    <msg>
+      <constraintviolation-exception>Không thể lưu tài liệu. Dữ liệu nhập vào thiếu hoặc không phù hợp</constraintviolation-exception>
+    </msg>
+  </UIFastContentCreatortForm>
 </bundle>
 

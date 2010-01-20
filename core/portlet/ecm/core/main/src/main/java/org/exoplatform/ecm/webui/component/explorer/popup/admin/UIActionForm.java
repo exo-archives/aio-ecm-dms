@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
@@ -276,6 +277,10 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class);
         actionForm.reset();
+      } catch(ConstraintViolationException cex) {
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.constraintviolation-exception", null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
       } catch(RepositoryException repo) {      
         String key = "UIActionForm.msg.repository-exception";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));

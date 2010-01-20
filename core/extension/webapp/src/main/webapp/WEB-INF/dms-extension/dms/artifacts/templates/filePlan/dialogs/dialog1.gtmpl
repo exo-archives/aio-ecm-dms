@@ -99,7 +99,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.record-category-identifier")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier"] ;
+							        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier", "validate=empty", "validate=empty] ;
 							        uicomponent.addTextField("recordCategoryIdentifier", fieldCateIdentifier) ; 
 							      %>
 									  </td>
@@ -108,7 +108,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.disposition-author")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldDispotionAuthor = ["jcrPath=/node/rma:dispositionAuthority"] ;
+							        String[] fieldDispotionAuthor = ["jcrPath=/node/rma:dispositionAuthority", "validate=empty"] ;
 							        uicomponent.addTextField("dispositionAuthority", fieldDispotionAuthor) ; 
 							      %>
 									  </td>
@@ -117,7 +117,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.permanent-record-indicator")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldPermanentRecord = ["jcrPath=/node/rma:permanentRecordIndicator", "options=true,false"] ;
+							        String[] fieldPermanentRecord = ["jcrPath=/node/rma:permanentRecordIndicator", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("permanentRecordIndicator", fieldPermanentRecord) ; 
 							      %>
 									  </td>
@@ -135,7 +135,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.contain-record-folder")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldContainsRecord = ["jcrPath=/node/rma:containsRecordFolders", "options=true,false"] ;
+							        String[] fieldContainsRecord = ["jcrPath=/node/rma:containsRecordFolders", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("containsRecordFolders", fieldContainsRecord) ; 
 							      %>
 									  </td>
@@ -144,7 +144,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-media-type")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldDefaultMedia = ["jcrPath=/node/rma:defaultMediaType", "options=Electronic,Paper"] ;
+							        String[] fieldDefaultMedia = ["jcrPath=/node/rma:defaultMediaType", "options=Electronic,Paper", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("defaultMediaType", fieldDefaultMedia) ; 
 							      %>
 									  </td>
@@ -153,7 +153,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-marking-list")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldDefaultMarking = ["jcrPath=/node/rma:defaultMarkingList", "options=NONE,CLASSIFIED,UNCLASSIFIED,NOCONTRACT"] ;
+							        String[] fieldDefaultMarking = ["jcrPath=/node/rma:defaultMarkingList", "options=NONE,CLASSIFIED,UNCLASSIFIED,NOCONTRACT", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("defaultMarkingList", fieldDefaultMarking) ; 
 							      %>										
 									  </td>
@@ -162,7 +162,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-originating-organization")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldDefaultOriginating = ["jcrPath=/node/rma:defaultOriginatingOrganization"] ;
+							        String[] fieldDefaultOriginating = ["jcrPath=/node/rma:defaultOriginatingOrganization", "validate=empty"] ;
 							        uicomponent.addTextField("defaultOriginatingOrganization", fieldDefaultOriginating) ; 
 							      %>										
 									  </td>
@@ -171,7 +171,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.vital-record-indicator")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldVitalRecord = ["jcrPath=/node/rma:vitalRecordIndicator", "options=true,false"] ;
+							        String[] fieldVitalRecord = ["jcrPath=/node/rma:vitalRecordIndicator", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("vitalRecordIndicator", fieldVitalRecord) ; 
 							      %>										
 									  </td>
@@ -194,7 +194,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-cutoff")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
-							        String[] fieldProcessCutoff = ["jcrPath=/node/rma:processCutoff", "options=true,false"] ;
+							        String[] fieldProcessCutoff = ["jcrPath=/node/rma:processCutoff", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("processCutoff", fieldProcessCutoff) ; 
 							      %>
 									  </td>
@@ -203,7 +203,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.event-trigger")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
-							        String[] fieldEventTrigger = ["jcrPath=/node/rma:eventTrigger"] ;
+							        String[] fieldEventTrigger = ["jcrPath=/node/rma:eventTrigger", "validate=empty"] ;
 							        uicomponent.addTextField("eventTrigger", fieldEventTrigger) ; 
 							      %>
 									  </td>
@@ -239,7 +239,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-hold")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
-							        String[] fieldProcessHold = ["jcrPath=/node/rma:processHold", "options=true,false"] ;
+							        String[] fieldProcessHold = ["jcrPath=/node/rma:processHold", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("processHold", fieldProcessHold) ; 
 							      %>
 									  </td>
@@ -266,7 +266,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-transfer")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
-							        String[] fieldProcessTransfer = ["jcrPath=/node/rma:processTransfer", "options=true,false"] ;
+							        String[] fieldProcessTransfer = ["jcrPath=/node/rma:processTransfer", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("processTransfer", fieldProcessTransfer) ; 
 							      %>
 									  </td>
@@ -293,7 +293,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-accession")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
-							        String[] fieldProcessAccession = ["jcrPath=/node/rma:processAccession", "options=true,false"] ;
+							        String[] fieldProcessAccession = ["jcrPath=/node/rma:processAccession", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("processAccession", fieldProcessAccession) ; 
 							      %>
 									  </td>
@@ -320,7 +320,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-destruction")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
-							        String[] fieldProcessDestruction = ["jcrPath=/node/rma:processDestruction", "options=true,false"] ;
+							        String[] fieldProcessDestruction = ["jcrPath=/node/rma:processDestruction", "options=true,false", "validate=empty"] ;
 							        uicomponent.addSelectBoxField("processDestruction", fieldProcessDestruction) ; 
 							      %>
 									  </td>

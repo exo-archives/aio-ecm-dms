@@ -138,5 +138,10 @@
 			<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
 		</msg>
   </Taxonomy>
+  <UIFastContentCreatortForm>
+    <msg>
+      <constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+    </msg>
+  </UIFastContentCreatortForm>
 </bundle>
 

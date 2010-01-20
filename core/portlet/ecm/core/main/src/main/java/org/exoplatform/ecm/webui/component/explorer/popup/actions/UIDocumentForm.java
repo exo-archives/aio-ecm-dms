@@ -376,10 +376,12 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(ConstraintViolationException constraintViolationException) {
-        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception", null, ApplicationMessage.WARNING));
+    	LOG.error("Unexpected error occurrs", constraintViolationException);
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.constraintviolation-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(RepositoryException repo) {
+    	LOG.error("Unexpected error occurrs", repo);
         uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;

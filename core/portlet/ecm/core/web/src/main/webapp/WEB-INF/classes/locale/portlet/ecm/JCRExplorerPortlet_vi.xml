@@ -3128,5 +3128,14 @@
       <repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
     </msg>
   </UITreeExplorer>  
-  	
+  <UIDocumentForm>
+  	<msg>
+  		<constraintviolation-exception>Không thể lưu tài liệu. Dữ liệu nhập vào thiếu hoặc không phù hợp</constraintviolation-exception>
+  	</msg>
+  </UIDocumentForm>
+  <UIActionForm>
+  	<msg>
+  		<constraintviolation-exception>Không thể lưu tài liệu. Dữ liệu nhập vào thiếu hoặc không phù hợp</constraintviolation-exception>
+  	</msg>
+  </UIActionForm>   	
 </bundle>

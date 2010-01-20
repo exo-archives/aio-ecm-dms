@@ -420,6 +420,10 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           uiActionForm.setNodePath(actionNode.getPath());
           uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false);
           uiActionForm.reset();
+        } catch(ConstraintViolationException cex) {
+            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.constraint-violation-exception", null, ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
         } catch (RepositoryException repo) {
           String key = "UIActionForm.msg.repository-exception";
           uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));

@@ -3115,5 +3115,15 @@
     <msg>
       <repository-error>Error, information about repository lost!</repository-error>
     </msg>
-  </UITreeExplorer>  
+  </UITreeExplorer>
+  <UIDocumentForm>
+  	<msg>
+  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+  	</msg>
+  </UIDocumentForm>
+  <UIActionForm>
+  	<msg>
+  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+  	</msg>
+  </UIActionForm>   
 </bundle>
