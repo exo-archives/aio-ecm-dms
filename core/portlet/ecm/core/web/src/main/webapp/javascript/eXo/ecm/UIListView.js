@@ -664,7 +664,7 @@ var ListView = function() {
 		var islink = "";
 		var ext = ext? ext : "";
 		var itemsSelected = Self.itemsSelected;
-		if (!itemsSelected || itemsSelected.length == 0))
+		if (!itemsSelected || itemsSelected.length == 0)
 			itemsSelected = eXo.ecm.UISimpleView.itemsSelected;
 		if(itemsSelected.length) {
 			for(var i in itemsSelected) {
