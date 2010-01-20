@@ -252,6 +252,21 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     Node parentNode = node.getParent();
     uiExplorer.addLockToken(parentNode);
     try {
+      
+      // If node has taxonomy
+      TaxonomyService taxonomyService = uiExplorer.getApplicationComponent(TaxonomyService.class);
+      List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
+      List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(node);
+      for (Node existedTaxonomy : listExistedTaxonomy) {
+        for (Node taxonomyTrees : listTaxonomyTrees) {
+          if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
+            taxonomyService.removeCategory(node, taxonomyTrees.getName(), 
+                existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
+            break;
+          }
+        }
+      }
+      
       if (node.isNodeType(Utils.RMA_RECORD))
         removeMixins(node);
       ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
@@ -259,12 +274,13 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
       thumbnailService.processRemoveThumbnail(node);
       NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class);
+           
       newFolksonomyService.removeTagsOfNodeRecursively(node,uiExplorer.getRepositoryName(),
       																								 uiExplorer.getRepository().getConfiguration().
       																								 getDefaultWorkspaceName(),
       																								 node.getSession().getUserID(),
 																											 getGroups());
-      trashService.removeRelations(node, uiExplorer.getSystemProvider(), uiExplorer.getRepositoryName());
+      //trashService.removeRelations(node, uiExplorer.getSystemProvider(), uiExplorer.getRepositoryName());
       node.remove();
       parentNode.save();
     } catch (VersionException ve) {
@@ -377,19 +393,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
           wsName = session.getWorkspace().getName();
           // Use the method getNodeByPath because it is link aware
           node = uiExplorer.getNodeByPath(nodePath, session, false);
-          // If node has taxonomy
-          TaxonomyService taxonomyService = uiExplorer.getApplicationComponent(TaxonomyService.class);
-          List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
-          List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(node);
-          for (Node existedTaxonomy : listExistedTaxonomy) {
-            for (Node taxonomyTrees : listTaxonomyTrees) {
-              if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
-                taxonomyService.removeCategory(node, taxonomyTrees.getName(), 
-                    existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
-                break;
-              }
-            }
-          }
+          
           processRemoveOrMoveToTrash(nodePath, node, event, false, checkToMoveToTrash);
         } catch (PathNotFoundException path) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
