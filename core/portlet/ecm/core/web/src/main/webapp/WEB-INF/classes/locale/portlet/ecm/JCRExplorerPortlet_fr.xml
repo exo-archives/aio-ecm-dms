@@ -2158,6 +2158,8 @@
     <msg>
       <not-have-social>Le type Social n'est pas disponible, le type Sélection sera utilisé.</not-have-social>
       <personal-usecase>Le lecteur privé de l'utilisateur courant sera utilisé quand vous choisissez le cas d'utilisation Personnel.</personal-usecase>
+						<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
     </msg>
   </UIJcrExplorerEditForm>
   

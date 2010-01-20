@@ -336,7 +336,7 @@
       <not-relationable>This node hasn't been relationable yet</not-relationable>
       <node-pasted>The node '{0}' has been pasted at the location '{1}'. This operation has already been save and you do not need to press the floppy icon.</node-pasted>
       <no-node-selected>No node copied</no-node-selected>
-      <unable-edit>This node: '{0}' with nodetype '{1}' unsupport edit action</unable-edit>
+      <unable-edit>This node: '{0}' with nodetype '{1}' unsupport edit actions</unable-edit>
       <not-support>The selected node can not be edited</not-support>
       <template-null>This node has no dialog available</template-null>
       <keyword-null>There is no keywords to search.</keyword-null>
@@ -2311,6 +2311,8 @@
     <msg>
       <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
       <personal-usecase>The private drive of current user will be used when you choose Personal usecase.</personal-usecase>
+						<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
     </msg>
   </UIJcrExplorerEditForm>
   

@@ -2398,6 +2398,8 @@
 				one will be used instead.</not-have-social>
 			<personal-usecase>The private drive of current user will be used when
 				you choose Personal usecase.</personal-usecase>
+				<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
 		</msg>
 	</UIJcrExplorerEditForm>
 

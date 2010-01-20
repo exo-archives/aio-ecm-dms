@@ -2155,6 +2155,8 @@
     <msg>
       <not-have-social>Die soziale usecase nicht verfügbar ist, die Auswahl wird man verwendet.</not-have-social>
       <personal-usecase>Die Private-Laufwerk des aktuellen Benutzers wird verwendet, wenn Sie Personal usecase.</personal-usecase>
+						<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
     </msg>
   </UIJcrExplorerEditForm>
   
