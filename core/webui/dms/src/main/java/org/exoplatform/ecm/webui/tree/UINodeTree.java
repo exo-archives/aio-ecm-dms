@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.webui.tree;
 
+import java.net.URLEncoder;
+
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -62,8 +64,8 @@ public class UINodeTree extends UITree {
     if(beanIconField != null && beanIconField.length() > 0) {
       if(getFieldValue(obj, beanIconField) != null)
         iconGroup = (String)getFieldValue(obj, beanIconField);
-    }
-    String objId = String.valueOf(getId(obj)) ;
+    }    
+    String objId = URLEncoder.encode(Utils.formatNodeName(String.valueOf(getId(obj))), "utf-8");
     String actionLink = event("ChangeNode", objId);
     StringBuilder builder = new StringBuilder();
     if(nodeIcon.equals(getExpandIcon())) {
@@ -73,6 +75,7 @@ public class UINodeTree extends UITree {
     }
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
     String beanLabelField = getBeanLabelField();
+    String nodeName = getFieldValue(obj, beanLabelField).toString();
     String className="NodeIcon";
     boolean flgSymlink = false;
     if (Utils.isSymLink(node)) {
@@ -81,26 +84,26 @@ public class UINodeTree extends UITree {
     }
     if(popupMenu == null) {
       builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
-          .append(note).append("\"").append(" title=\"").append(getFieldValue(obj, beanLabelField))
+          .append(note).append("\"").append(" title=\"").append(nodeName)
           .append("\"").append(">");
       if (flgSymlink) {
         builder.append("  <div class=\"LinkSmall\">")
-          .append(getFieldValue(obj, beanLabelField))
+          .append(nodeName)
           .append("</div>");
       } else {
-        builder.append(getFieldValue(obj, beanLabelField));
+        builder.append(nodeName);
       }
       builder.append("</div>");
     } else {
       builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
           .append(note).append("\" ").append(popupMenu.getJSOnclickShowPopup(objId, null)).append(
-              " title=\"").append(getFieldValue(obj, beanLabelField)).append("\"").append(">");
+              " title=\"").append(nodeName).append("\"").append(">");
       if (flgSymlink) {
         builder.append("  <div class=\"LinkSmall\">")
-          .append(getFieldValue(obj, beanLabelField))
+          .append(nodeName)
           .append("</div>");
       } else {
-        builder.append(getFieldValue(obj, beanLabelField));
+        builder.append(nodeName);
       }
       builder.append("</div>");
     }
