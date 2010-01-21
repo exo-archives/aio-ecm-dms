@@ -341,6 +341,17 @@ public class UIDialogForm extends UIForm {
     propertiesName.put(name, propertyName);
     fieldNames.put(propertyName, name);
     UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
+    
+    if (formCheckBoxField.validateType != null) {
+      String validateType = formCheckBoxField.validateType;
+      String[] validatorList = null;
+      if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+      else validatorList = new String[] {validateType};
+      for (String validator : validatorList) {
+        uiCheckBoxInput.addValidator(DialogFormUtil.getValidator(validator.trim()));
+      }            
+    }
+    
     if(uiCheckBoxInput == null){
       uiCheckBoxInput = new UIFormCheckBoxInput(name, name, null);
       if(defaultValue != null) {
@@ -348,6 +359,9 @@ public class UIDialogForm extends UIForm {
         uiCheckBoxInput.setValue(defaultValue);
       }
     }
+    
+    
+    
     if(formCheckBoxField.isOnchange()){
       uiCheckBoxInput.setOnChange("Onchange");
       uiCheckBoxInput.setValue(uiCheckBoxInput.getValue());
@@ -450,6 +464,16 @@ public class UIDialogForm extends UIForm {
     }
     propertiesName.put(name, getPropertyName(jcrPath));
     fieldNames.put(getPropertyName(jcrPath), name);
+    if (formSelectBoxField.validateType != null) {
+      String validateType = formSelectBoxField.validateType;
+      String[] validatorList = null;
+      if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+      else validatorList = new String[] {validateType};
+      for (String validator : validatorList) {
+        uiSelectBox.addValidator(DialogFormUtil.getValidator(validator.trim()));
+      }                  
+    }
+          
     String[] arrNodes = jcrPath.split("/");
     Node childNode = null;
     Node node = getNode();
