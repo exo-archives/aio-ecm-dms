@@ -2162,6 +2162,9 @@
     <msg>
       <not-have-social>النموذج التطبيقي الاجتماعي غير متوفّر، سيتمّ استعمال النموذج المُختار عوضاً عن ذلك</not-have-social>
       <personal-usecase>سيتمّ استعمال القرص الشخصي الخاص بالمستخدم الحالي عند اختيارك للنموذج التطبيقي الشخصي</personal-usecase>
+						<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>						
+						
     </msg>
   </UIJcrExplorerEditForm>
   

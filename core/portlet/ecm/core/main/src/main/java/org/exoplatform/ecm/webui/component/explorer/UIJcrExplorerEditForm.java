@@ -374,11 +374,20 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
       UIJcrExplorerEditContainer editContainer = uiForm.getParent();
-      UIPopupWindow popupWindow = editContainer.initPopup("PopUpSelectDrive");
-      UIDriveSelector driveSelector = editContainer.createUIComponent(UIDriveSelector.class, null, null);
-      driveSelector.updateGrid();
-      popupWindow.setUIComponent(driveSelector);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+      
+      UIFormSelectBox repository = uiForm.getChild(UIFormSelectBox.class);
+      if (repository.isEnable()) {
+        UIPopupWindow popupWindow = editContainer.initPopup("PopUpSelectDrive");
+        UIDriveSelector driveSelector = editContainer.createUIComponent(UIDriveSelector.class, null, null);
+        driveSelector.updateGrid();
+        popupWindow.setUIComponent(driveSelector);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+      } else {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.drive-edit-permission", null, 
+            ApplicationMessage.WARNING));
+        return;
+      }
     }
   }
 
@@ -387,14 +396,22 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
       UIJcrExplorerEditForm uiForm = event.getSource();
       UIJcrExplorerEditContainer editContainer = uiForm.getParent();
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
-      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);      
       String driveName = stringInputDrive.getValue();
-      if (driveName == null || driveName.length() == 0) {
+      UIFormSelectBox repository = uiForm.getChild(UIFormSelectBox.class);
+      if (repository.isEnable()) {
+        if (driveName == null || driveName.length() == 0) {
+          UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+          uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.notNullDriveName", null, 
+              ApplicationMessage.WARNING));
+          return;
+        }
+      } else {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.notNullDriveName", null, 
+        uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.path-edit-permission", null, 
             ApplicationMessage.WARNING));
         return;
-      }
+      }     
       editContainer.initPopupDriveBrowser(POPUP_SELECT_PATH_INPUT, driveName);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }

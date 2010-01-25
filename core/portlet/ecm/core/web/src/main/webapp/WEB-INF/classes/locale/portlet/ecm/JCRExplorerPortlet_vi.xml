@@ -2169,6 +2169,8 @@
     <msg>
       <not-have-social>Kiểu lựa chọn Social không có hiệu lực, kiểu Selection sẽ được dùng để thay thế.</not-have-social>
       <personal-usecase>Ổ đĩa công khai của người dùng hiện tại sẽ được sử dụng khi bạn chọn kiểu truy xuất là Personal.</personal-usecase>
+						<drive-edit-permission>Không thể chọn ổ đĩa. Hãy bấm vào nút edit để chọn ổ đĩa</drive-edit-permission>
+						<path-edit-permission>Không thể chọn đường dẫn. Hãy bấm vào nút edit để chọn đường dẫn</path-edit-permission>
     </msg>
   </UIJcrExplorerEditForm>
   
