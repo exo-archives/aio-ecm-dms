@@ -376,7 +376,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       context.addUIComponentToUpdateByAjax(popupAction);
     }
     uiExplorer.refreshExplorer();
-    uiExplorer.setRenderSibbling(UIJCRExplorer.class);
+    uiExplorer.setRenderSibling(UIJCRExplorer.class);
   }
 
 }

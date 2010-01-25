@@ -322,12 +322,12 @@ public class UITemplateForm extends UIForm {
       if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
         uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
-        uiECMTempList.setRenderSibbling(UIECMTemplateList.class);
+        uiECMTempList.setRenderSibling(UIECMTemplateList.class);
       }
       if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
         uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
-        uiCBTempList.setRenderSibbling(UICBTemplateList.class);
+        uiCBTempList.setRenderSibling(UICBTemplateList.class);
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer);
     }

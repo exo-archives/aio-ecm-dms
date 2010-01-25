@@ -737,17 +737,19 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public String getPropertyValue(Node node, String propertyName) throws Exception {
-    Property property = node.getProperty(propertyName);
-    if(property != null) {
-      int requiredType = property.getDefinition().getRequiredType();
-      switch (requiredType) {
-      case PropertyType.STRING:
-        return property.getString();
-      case PropertyType.DATE:
-        return getSimpleDateFormat().format(property.getDate().getTime());
+    if(node.hasProperty(Utils.EXO_OWNER)) {
+      Property property = node.getProperty(propertyName);
+      if(property != null) {
+        int requiredType = property.getDefinition().getRequiredType();
+        switch (requiredType) {
+        case PropertyType.STRING:
+          return property.getString();
+        case PropertyType.DATE:
+          return getSimpleDateFormat().format(property.getDate().getTime());
+        }
+      } else {
+        if(propertyName.equals(Utils.EXO_OWNER)) return SystemIdentity.ANONIM;
       }
-    } else {
-      if(propertyName.equals(Utils.EXO_OWNER)) return SystemIdentity.ANONIM;
     }
     return "";
   }

@@ -9,7 +9,7 @@
 	  <component-plugin>
 	    <name>dms.new.group.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
-	    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NewGroupListener</type>
+	    <type>org.exoplatform.services.cms.listeners.NewGroupListener</type>
 	    <description>description</description>
 	    <init-params>
 	      <object-param>

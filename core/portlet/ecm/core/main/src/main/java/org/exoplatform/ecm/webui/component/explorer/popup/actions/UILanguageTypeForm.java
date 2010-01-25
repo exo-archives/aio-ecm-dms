@@ -162,7 +162,7 @@ public class UILanguageTypeForm extends UIForm {
         UISingleUploadForm uiUploadForm =  uiContainer.findFirstComponentOfType(UISingleUploadForm.class) ;
         uiUploadForm.setIsMultiLanguage(true, selectedLang) ;
       }
-      uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;
+      uiContainer.setRenderSibling(UIAddLanguageContainer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }

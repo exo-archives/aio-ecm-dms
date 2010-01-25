@@ -155,7 +155,7 @@ public class UIViewList extends UIGrid {
       UIViewList viewList = event.getSource() ;
       String repository = viewList.getAncestorOfType(UIECMAdminPortlet.class)
                                            .getPreferenceRepository() ;
-      viewList.setRenderSibbling(UIViewList.class) ;
+      viewList.setRenderSibling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID)  ;
       ManageDriveService manageDrive = viewList.getApplicationComponent(ManageDriveService.class) ;
       if(!viewList.canDelete(manageDrive.getAllDrives(repository), viewName)) {
@@ -174,7 +174,7 @@ public class UIViewList extends UIGrid {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
       String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-      uiViewList.setRenderSibbling(UIViewList.class) ;
+      uiViewList.setRenderSibling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;      
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class).
         getViewByName(viewName, repository, SessionProviderFactory.createSystemProvider()) ;
@@ -204,7 +204,7 @@ public class UIViewList extends UIGrid {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
       String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-      uiViewList.setRenderSibbling(UIViewList.class) ;
+      uiViewList.setRenderSibling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class).getViewByName(
           viewName, repository, SessionProviderFactory.createSystemProvider()) ;

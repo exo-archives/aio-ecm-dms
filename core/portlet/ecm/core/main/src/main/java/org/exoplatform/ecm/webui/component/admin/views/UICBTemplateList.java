@@ -137,7 +137,7 @@ public class UICBTemplateList extends UIGrid {
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiCBTemp.getApplicationComponent(ManageViewService.class).removeTemplate(templatePath, repository) ;
       uiCBTemp.updateCBTempListGrid(uiCBTemp.getUIPageIterator().getCurrentPage());
-      uiCBTemp.setRenderSibbling(UICBTemplateList.class);
+      uiCBTemp.setRenderSibling(UICBTemplateList.class);
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;
       uiViewManager.setRenderedChild(UICBTemplateList.ST_CBTemp) ;
       UITemplateContainer uiTempContainer = uiViewManager.getChildById(UICBTemplateList.ST_CBTemp) ;

@@ -40,7 +40,7 @@ public class ImageThumbnailPlugin implements ComponentPlugin, ThumbnailPlugin{
   private String name;
 
   public ImageThumbnailPlugin(InitParams initParams) throws Exception {
-    config = (ThumbnailType)initParams.getObjectParamValues(ThumbnailType.class).get(0);
+    config = initParams.getObjectParamValues(ThumbnailType.class).get(0);
   }
 
   public String getDescription() {

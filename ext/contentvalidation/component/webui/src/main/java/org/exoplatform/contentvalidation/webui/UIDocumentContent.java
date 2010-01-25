@@ -397,7 +397,7 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
       UIDocumentContent uiDocContent = event.getSource() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocContent.getAncestorOfType(UITaskManager.class)) ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiDocContent.setRenderSibbling(UIDocumentContent.class) ;
+      uiDocContent.setRenderSibling(UIDocumentContent.class) ;
       uiDocContent.setLanguage(selectedLanguage) ;
     }   
   }

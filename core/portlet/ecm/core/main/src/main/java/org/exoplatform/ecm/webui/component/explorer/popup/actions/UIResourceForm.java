@@ -103,14 +103,14 @@ public class UIResourceForm extends UIForm {
       }
       if(uiResourceForm.session_ != null) uiResourceForm.session_.save() ;
       else uiJCRExplorer.getSession().save() ;
-      uiResourceForm.setRenderSibbling(UIDocumentInfo.class);      
+      uiResourceForm.setRenderSibling(UIDocumentInfo.class);      
     }
   }
   
   static  public class BackActionListener extends EventListener<UIResourceForm> {
     public void execute(Event<UIResourceForm> event) throws Exception {
       UIResourceForm uiResourceForm = event.getSource() ;
-      uiResourceForm.setRenderSibbling(UIDocumentInfo.class) ;
+      uiResourceForm.setRenderSibling(UIDocumentInfo.class) ;
     }
   }
 }

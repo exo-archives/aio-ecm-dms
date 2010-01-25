@@ -35,27 +35,29 @@
 			<type>org.exoplatform.portal.config.NewPortalConfigListener</type>
 			<description>this listener init the portal configuration</description>
 			<init-params>
+				<!--Uncomment this block configuration if you want to override navigation for classic portal
+					<object-param>
+						<name>portal.configuration</name>
+						<description>description</description>
+						<object type="org.exoplatform.portal.config.NewPortalConfig">
+							<field name="predefinedOwner">
+								<collection type="java.util.HashSet">
+									<value>
+										<string>classic</string>
+									</value>
+								</collection>
+							</field>
+							<field name="ownerType">
+								<string>portal</string>
+							</field>
+							<field name="templateLocation">
+								<string>war:/dms-extension/portal</string>
+							</field>
+						</object>
+					</object-param>
+				-->
 				<object-param>
-					<name>portal.configuration</name>
-					<description>description</description>
-					<object type="org.exoplatform.portal.config.NewPortalConfig">
-						<field name="predefinedOwner">
-							<collection type="java.util.HashSet">
-								<value>
-									<string>classic</string>
-								</value>
-							</collection>
-						</field>
-						<field name="ownerType">
-							<string>portal</string>
-						</field>
-						<field name="templateLocation">
-							<string>war:/dms-extension/portal</string>
-						</field>
-					</object>
-				</object-param>
-				<object-param>
-					<name>group.configuration</name>
+					<name>group.users.configuration</name>
 					<description>description</description>
 					<object type="org.exoplatform.portal.config.NewPortalConfig">
 						<field name="predefinedOwner">
@@ -74,24 +76,45 @@
 					</object>
 				</object-param>
 				<object-param>
-					<name>user.configuration</name>
+					<name>group.administrators.configuration</name>
 					<description>description</description>
 					<object type="org.exoplatform.portal.config.NewPortalConfig">
 						<field name="predefinedOwner">
 							<collection type="java.util.HashSet">
 								<value>
-									<string>root</string>
+									<string>platform/administrators</string>
 								</value>
 							</collection>
 						</field>
 						<field name="ownerType">
-							<string>user</string>
+							<string>group</string>
 						</field>
 						<field name="templateLocation">
 							<string>war:/dms-extension/portal</string>
 						</field>
 					</object>
 				</object-param>
+				<!--Uncomment this block configuration if you want to override navigation for user
+					<object-param>
+						<name>user.configuration</name>
+						<description>description</description>
+						<object type="org.exoplatform.portal.config.NewPortalConfig">
+							<field name="predefinedOwner">
+								<collection type="java.util.HashSet">
+									<value>
+										<string>root</string>
+									</value>
+								</collection>
+							</field>
+							<field name="ownerType">
+								<string>user</string>
+							</field>
+							<field name="templateLocation">
+								<string>war:/dms-extension/portal</string>
+							</field>
+						</object>
+					</object-param>
+				-->
 			</init-params>
 		</component-plugin>
 	</external-component-plugins>

@@ -14,6 +14,7 @@
     <key>org.exoplatform.services.cms.CmsService</key>
     <type>org.exoplatform.services.cms.impl.CmsServiceImpl</type>
   </component>
+	
   <component>
 	  <key>org.exoplatform.services.cms.actions.ActionServiceContainer</key>  
 	  <type>org.exoplatform.services.cms.actions.impl.ActionServiceContainerImpl</type>
@@ -291,103 +292,6 @@
 	    </init-params>
 	  </component-plugin>
 	</external-component-plugins>
-	
-	<external-component-plugins>
-    <target-component>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</target-component>    
-    <component-plugin>
-	    <name>addActions</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
-	    <description>add exo:ownable mixin for node</description>
-	    <init-params>
-	      <object-param>
-	        <name>actions</name>
-	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">	              
-	              <value>
-	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>addNode</string></field>	                  
-	                  <field  name="actionClassName"><string>org.exoplatform.services.jcr.ext.owner.AddOwneableAction</string></field>
-	                </object>
-	              </value>
-	            </collection>
-	          </field>
-	        </object>
-	      </object-param>
-	    </init-params>
-	  </component-plugin>
-	  <component-plugin>
-	    <name>addActions</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
-	    <description>add actions plugin</description>
-	    <init-params>
-	      <object-param>
-	        <name>actions</name>
-	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">	              
-	              <value>
-	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>addNode</string></field>	                  
-	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.AddDateTimeAction</string></field>
-	                </object>
-	              </value>
-	            </collection>
-	          </field>
-	        </object>
-	      </object-param>
-	    </init-params>
-	  </component-plugin>
-	  <component-plugin>
-	    <name>addActions</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
-	    <description>add actions plugin</description>
-	    <init-params>
-	      <object-param>
-	        <name>actions</name>
-	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">	              
-	              <value>
-	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>removeNode</string></field>	                  
-	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.RemoveNodeAction</string></field>
-	                </object>
-	              </value>
-	            </collection>
-	          </field>
-	        </object>
-	      </object-param>
-	    </init-params>
-	  </component-plugin>
-    <component-plugin>
-	    <name>addActions</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
-	    <description>add exo:modify mixin for node</description>
-	    <init-params>
-	      <object-param>
-	        <name>actions</name>
-	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">	              
-	              <value>
-	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>addProperty,changeProperty,removeProperty</string></field>	                  
-	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.ModifyNodeAction</string></field>
-	                </object>
-	              </value>
-	            </collection>
-	          </field>
-	        </object>
-	      </object-param>
-	    </init-params>
-	  </component-plugin>	  
-	  
-	</external-component-plugins> 
 	
   <!-- Configures live time for query service cache -->
   <external-component-plugins>

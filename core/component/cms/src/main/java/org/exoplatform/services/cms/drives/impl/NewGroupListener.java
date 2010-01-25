@@ -57,13 +57,10 @@ public class NewGroupListener extends GroupEventListener {
     groupsPath_ = nodeHierarchyCreatorService.getJcrPath(GROUPS_PATH) ; 
   }
 
-  @SuppressWarnings({"unused", "hiding"})
+  @SuppressWarnings({"unused", "hiding", "null"})
   public void preSave(Group group, boolean isNew) throws Exception { 
-    String  groupId = null ;
-    String parentId = group.getParentId() ;
-    if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
-    else groupId = parentId + "/" + group.getGroupName() ;    
-    String name = groupId.replace("/", ".");
+    String  groupId = group.getId() ;
+    String name = group.getId().replace("/", ".");
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = "*:".concat(groupId);
@@ -84,11 +81,7 @@ public class NewGroupListener extends GroupEventListener {
   }
   
   public void preDelete(Group group) throws Exception {
-    String  groupId = null ;
-    String parentId = group.getParentId() ;
-    if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
-    else groupId = parentId + "/" + group.getGroupName() ;
     ManageableRepository repository = jcrService_.getCurrentRepository() ;
-    driveService_.removeDrive(groupId.replace("/", "."), repository.getConfiguration().getName()) ;
+    driveService_.removeDrive(group.getId().replace("/", "."), repository.getConfiguration().getName()) ;
   }
 }

@@ -132,7 +132,7 @@ public class UIActionTypeForm extends UIForm {
           UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
           UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
           uiActionForm.createNewAction(currentNode, uiActionType.defaultActionType_, true) ;
-          uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+          uiActionContainer.setRenderSibling(UIActionContainer.class) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
           return ;
         }
@@ -146,13 +146,13 @@ public class UIActionTypeForm extends UIForm {
         UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
         UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
         uiActionForm.createNewAction(currentNode, uiActionType.defaultActionType_, true) ;
-        uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+        uiActionContainer.setRenderSibling(UIActionContainer.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
       } 
       UIActionContainer uiActionContainer = uiActionType.getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
       uiActionForm.createNewAction(currentNode, actionType, true) ;
-      uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+      uiActionContainer.setRenderSibling(UIActionContainer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
     }
   }

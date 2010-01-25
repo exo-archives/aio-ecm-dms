@@ -88,7 +88,7 @@ public class UISimpleCategoriesAddedList extends UIContainer implements UISelect
       uiJCRExplorer.getCurrentNode().save();
       uiJCRExplorer.getSession().save();
       updateGrid(1);
-      setRenderSibbling(UISimpleCategoriesAddedList.class);
+      setRenderSibling(UISimpleCategoriesAddedList.class);
     } catch(Exception e) {
       LOG.error("Unexpected error", e);
     }

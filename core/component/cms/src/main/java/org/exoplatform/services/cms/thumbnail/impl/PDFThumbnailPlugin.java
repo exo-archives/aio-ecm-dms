@@ -47,7 +47,7 @@ public class PDFThumbnailPlugin implements ComponentPlugin, ThumbnailPlugin {
   private String name;
 
   public PDFThumbnailPlugin(InitParams initParams) throws Exception {
-    config = (ThumbnailType) initParams.getObjectParamValues(ThumbnailType.class).get(0);
+    config = initParams.getObjectParamValues(ThumbnailType.class).get(0);
   }
 
   public String getDescription() {

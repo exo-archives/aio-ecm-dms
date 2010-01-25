@@ -101,7 +101,7 @@ public class UIViewBar extends UIForm {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
       if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
-      uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
+      uiJCRExplorer.setRenderSibling(UIDrivesBrowserContainer.class);
     }
   }
   

@@ -94,7 +94,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
       relateService.addRelation(currentNode, path, wsName,repository) ;
       updateGrid(relateService.getRelations(currentNode, 
           uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()), 1);      
-      setRenderSibbling(UIRelationsAddedList.class) ;
+      setRenderSibling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       LOG.error("Unexpected error", e);
     }
