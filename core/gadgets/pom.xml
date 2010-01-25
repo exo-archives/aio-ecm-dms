@@ -1,19 +1,32 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2010 eXo Platform SAS.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Affero General Public License
+    as published by the Free Software Foundation; either version 3
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>2.5.4-SNAPSHOT</version>
-  </parent> 
-
-  <modelVersion>4.0.0</modelVersion>
+  </parent>
   <artifactId>exo.ecm.dms.core.gadgets</artifactId>
-  <packaging>war</packaging> 
+  <packaging>war</packaging>
   <name>eXo DMS Gadgets</name>
-
-  <build>
-    <finalName>eXoDMSGadgets</finalName>
-  </build>
-  
   <dependencies>
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
@@ -21,7 +34,6 @@
       <version>${org.exoplatform.portal.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
       <artifactId>exo.portal.webui.portal</artifactId>
@@ -30,9 +42,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.shindig</groupId>
-      <version>${org.shindig.version}</version>
       <artifactId>shindig-common</artifactId>
-	    <scope>provided</scope>
+      <version>${org.shindig.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
+  <build>
+    <finalName>eXoDMSGadgets</finalName>
+  </build>
 </project>

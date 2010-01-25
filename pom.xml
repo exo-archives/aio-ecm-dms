@@ -1,24 +1,43 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 
+    Copyright (C) 2003-2010 eXo Platform SAS.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Affero General Public License
+    as published by the Free Software Foundation; either version 3
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exoplatform</groupId>
     <artifactId>exo.parent</artifactId>
     <version>8-SNAPSHOT</version>
   </parent>
-
-  <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm</groupId>
   <artifactId>dms</artifactId>
   <version>2.5.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>eXo ECM - DMS</name>
-
   <scm>
     <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.x</connection>
     <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.x</developerConnection>
     <url>http://fisheye.exoplatform.org/browse/projects/ecm/dms/branches/2.5.x</url>
   </scm>
-
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://builder.exoplatform.org/hudson/job/ecm-dms-2.5.x-ci/</url>
+  </ciManagement>
   <properties>
     <org.exoplatform.kernel.version>2.0.10-SNAPSHOT</org.exoplatform.kernel.version>
     <org.exoplatform.core.version>2.1.8-SNAPSHOT</org.exoplatform.core.version>
@@ -30,19 +49,10 @@
     <org.exoplatform.ecm.workflow.version>1.0.6-SNAPSHOT</org.exoplatform.ecm.workflow.version>
     <org.exoplatform.exopackage.version>1.2.0</org.exoplatform.exopackage.version>
     <org.exoplatform.mvnexobuild.version>1.2.0</org.exoplatform.mvnexobuild.version>
-    <org.shindig.version>0.8.1-1-r719456</org.shindig.version>    
-
+    <org.shindig.version>0.8.1-1-r719456</org.shindig.version>
     <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
-    <bonita.version>4.0</bonita.version>        
-
+    <bonita.version>4.0</bonita.version>
   </properties>
- 
-  <modules>
-    <module>core</module>
-		<module>ext</module>
-		<module>packaging</module>
-  </modules>
-
   <build>
     <resources>
       <resource>
@@ -50,8 +60,8 @@
         <includes>
           <include>**/*.properties</include>
           <include>**/*.xml</include>
-		  <include>**/*.gtmpl</include>
-		  <include>**/*.gif</include>
+          <include>**/*.gtmpl</include>
+          <include>**/*.gif</include>
         </includes>
       </resource>
     </resources>
@@ -69,7 +79,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.0.2</version>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -79,12 +89,12 @@
             <phase>compile</phase>
             <configuration>
               <tasks>
-		      	<copy failonerror="false" todir="${basedir}/target/${project.build.finalName}/WEB-INF/classes">
-		       	  <fileset dir="${basedir}/src/main/webapp/WEB-INF/classes">
-		           <include name="**/*_en.properties" />
-		          </fileset>
-		          <globmapper from="*_en.properties" to="*.properties" />
-		       </copy>
+                <copy failonerror="false" todir="${basedir}/target/${project.build.finalName}/WEB-INF/classes">
+                  <fileset dir="${basedir}/src/main/webapp/WEB-INF/classes">
+                    <include name="**/*_en.properties"/>
+                  </fileset>
+                  <globmapper from="*_en.properties" to="*.properties"/>
+                </copy>
               </tasks>
             </configuration>
             <goals>
@@ -95,4 +105,9 @@
       </plugin>
     </plugins>
   </build>
+  <modules>
+    <module>core</module>
+    <module>ext</module>
+    <module>packaging</module>
+  </modules>
 </project>

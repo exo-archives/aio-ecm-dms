@@ -1,77 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2010 eXo Platform SAS.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Affero General Public License
+    as published by the Free Software Foundation; either version 3
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+-->
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>2.5.3-SNAPSHOT</version>
-  </parent> 
-
-  <modelVersion>4.0.0</modelVersion>
+  </parent>
   <artifactId>exo.ecm.dms.core.component.ecm</artifactId>
   <name>eXo DMS Federation Service</name>
-
   <dependencies>
     <dependency>
       <groupId>org.exoplatform.kernel</groupId>
       <artifactId>exo.kernel.container</artifactId>
       <version>${org.exoplatform.kernel.version}</version>
       <scope>provided</scope>
-    </dependency>                      
-
+    </dependency>
     <dependency>
       <groupId>org.exoplatform.core</groupId>
       <artifactId>exo.core.component.security.core</artifactId>
       <version>${org.exoplatform.core.version}</version>
       <scope>compile</scope>
-    </dependency>    
-    
+    </dependency>
     <dependency>
       <groupId>org.exoplatform.core</groupId>
       <artifactId>exo.core.component.resources.api</artifactId>
       <version>${org.exoplatform.core.version}</version>
       <scope>compile</scope>
-    </dependency>    
-
+    </dependency>
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.ext</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
     </dependency>
-                        
     <dependency>
       <groupId>rome</groupId>
       <artifactId>rome</artifactId>
       <version>0.8</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>com.totsp.feedpod</groupId>
       <artifactId>itunes-com-podcast</artifactId>
       <version>0.2</version>
       <scope>provided</scope>
     </dependency>
-    
   </dependencies>
-  
   <build>
-
     <resources>
       <resource>
         <directory>src/main/java</directory>
         <includes>
-          <include>**/*.xml</include>          
+          <include>**/*.xml</include>
         </includes>
       </resource>
     </resources>
-
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>
@@ -98,20 +105,19 @@
         </includes>
       </testResource>
     </testResources>
-
-    <plugins>      
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
           <forkMode>${exo.test.forkmode}</forkMode>
-          <includes>
-            <!--include>org/exoplatform/services/ecm/core/TestNodeService.java</include-->    						
-          </includes>
+          <includes/>
+          <!--include>org/exoplatform/services/ecm/core/TestNodeService.java</include-->
           <excludes>
-            <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
-            <exclude>**/BaseECMTestCase.java</exclude>            
+            <exclude>**/*$*</exclude>
+            <!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
+            <exclude>**/BaseECMTestCase.java</exclude>
           </excludes>
         </configuration>
       </plugin>
