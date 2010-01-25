@@ -127,7 +127,7 @@ public class UIDrivesArea extends UIContainer {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
     List<String> userRoles = Utils.getMemberships();    
     String userId = Util.getPortalRequestContext().getRemoteUser();
-    return driveService.getMainDrives(repoName_, userId, userRoles);
+    return driveService.getMainDrives(getRepository(), userId, userRoles);
   }
   
   public List<DriveData> groupDrives() throws Exception {
@@ -135,14 +135,14 @@ public class UIDrivesArea extends UIContainer {
     List<String> groups = Utils.getGroups();
     List<String> userRoles = Utils.getMemberships();    
     String userId = Util.getPortalRequestContext().getRemoteUser();
-    return driveService.getGroupDrives(repoName_, userId, userRoles, groups);
+    return driveService.getGroupDrives(getRepository(), userId, userRoles, groups);
   }
   
   public List<DriveData> personalDrives() throws Exception {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
     List<String> userRoles = Utils.getMemberships();    
     String userId = Util.getPortalRequestContext().getRemoteUser();
-    return driveService.getPersonalDrives(repoName_, userId, userRoles);
+    return driveService.getPersonalDrives(getRepository(), userId, userRoles);
   }
   
   static  public class SelectRepoActionListener extends EventListener<UIDrivesArea> {
@@ -209,7 +209,7 @@ public class UIDrivesArea extends UIContainer {
       uiJCRExplorer.setIsReferenceNode(false);
       
       SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
-      ManageableRepository repository = rservice.getRepository(uiDrivesArea.repoName_);
+      ManageableRepository repository = rservice.getRepository(uiDrivesArea.getRepository());
       try {
         Session session = provider.getSession(drive.getWorkspace(),repository);
         // check if it exists

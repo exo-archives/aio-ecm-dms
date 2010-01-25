@@ -179,8 +179,8 @@
   	<div class="BarContentL">
   		<div class="BarContentR">
   			<div class="BarContentM">
-			    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
-			      
+			    <div class="Title" style="cursor: pointer;" title="<%=uicomponent.getDriveName()%>" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
+			      <%=uicomponent.getDriveName()%>
 			    </div>
 			  	<%if (!uicomponent.isDirectlyDrive()) {%>
 			  		<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
