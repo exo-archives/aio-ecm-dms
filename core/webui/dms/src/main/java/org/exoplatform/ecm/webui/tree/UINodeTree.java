@@ -21,6 +21,7 @@ import java.net.URLEncoder;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
@@ -76,6 +77,7 @@ public class UINodeTree extends UITree {
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
     String beanLabelField = getBeanLabelField();
     String nodeName = getFieldValue(obj, beanLabelField).toString();
+    nodeName = Text.unescapeIllegalJcrChars(node.getName());
     String className="NodeIcon";
     boolean flgSymlink = false;
     if (Utils.isSymLink(node)) {

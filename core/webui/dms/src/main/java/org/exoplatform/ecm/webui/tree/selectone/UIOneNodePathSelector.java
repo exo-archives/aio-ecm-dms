@@ -31,6 +31,7 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -222,7 +223,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     if (currentNode.equals(rootNode)) {
       pathName = "";
     }
-    UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, pathName);
+    UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, Text.unescapeIllegalJcrChars(pathName));
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
     StringBuilder buffer = new StringBuilder(1024);
     for(LocalPath iterLocalPath: listLocalPath) {

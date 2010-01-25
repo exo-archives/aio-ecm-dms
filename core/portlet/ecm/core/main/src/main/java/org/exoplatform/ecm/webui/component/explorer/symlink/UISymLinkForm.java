@@ -160,7 +160,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       }
       String workspaceName = pathNode.substring(0, pathNode.lastIndexOf(":/"));
       pathNode = pathNode.substring(pathNode.lastIndexOf(":/") + 1);
-      
+      /*
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
           "'", "#", ";", "}", "{", "/", "|", "\""};
       for(String filterChar : arrFilterChar) {
@@ -171,7 +171,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
           return;
         }
       }
-      
+      */
       RepositoryService repositoryService = uiSymLinkForm.getApplicationComponent(RepositoryService.class) ;
       ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName());
       Session userSession = 
