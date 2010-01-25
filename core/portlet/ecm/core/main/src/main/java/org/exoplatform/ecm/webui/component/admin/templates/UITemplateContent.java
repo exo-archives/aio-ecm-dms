@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.component.admin.templates;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -29,7 +28,6 @@ import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -139,7 +137,7 @@ public class UITemplateContent extends UIForm implements UISelectable {
         setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
       }
       String content = Utils.encodeHTML(templateContent)  ;
-      getUIStringInput(FIELD_CONTENT).setValue(content) ;
+      getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
       getUIStringInput(FIELD_NAME).setValue(template.getName()) ;
       getUIStringInput(FIELD_NAME).setEditable(false) ;
       getUIStringInput(FIELD_VIEWPERMISSION).setValue(templateRole) ;
@@ -256,7 +254,7 @@ public class UITemplateContent extends UIForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String content = uiForm.getUIStringInput(FIELD_CONTENT).getValue() ;      
+      String content = uiForm.getUIFormTextAreaInput(FIELD_CONTENT).getValue() ;      
       if(content == null) content = "" ;
       UIFormInputSetWithAction permField = uiForm.getChildById("UITemplateContent") ;
       String role = permField.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
