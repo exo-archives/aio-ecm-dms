@@ -119,7 +119,7 @@
 	              </value>
 								<value>
 	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>addProperty,changeProperty,removeProperty</string></field>	                  
+	                  <field  name="eventTypes"><string>addProperty,changeProperty,removeProperty,addNode</string></field>	                  
 	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.ModifyNodeAction</string></field>
 	                </object>
 	              </value>								

@@ -12,6 +12,14 @@
   import org.exoplatform.web.application.Parameter;
   import org.exoplatform.webui.core.UIRightClickPopupMenu;
   import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+  import org.exoplatform.ecm.jcr.model.Preference;
+  import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+  
+  def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
+  def uiExplorer = uicomponent.getAncestorOfType(UIJCRExplorer.class);
+  def pref = uiExplorer.getPreference();
+  def enableDragAndDrop = pref.isEnableDragAndDrop();
   
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
   String componentId = uicomponent.getId();
@@ -20,7 +28,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');");
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId', '$enableDragAndDrop');");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId" class="UIListView" style="">	

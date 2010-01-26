@@ -17,7 +17,7 @@ var ListView = function() {
 	
 	//init event
 	ListView.prototype.initAllEvent = function(actionAreaId, enableDragAndDrop) {
-//		var enableDragAndDrop = new Boolean(enableDragAndDropStr);
+		eXo.ecm.UIListView.enableDragAndDrop = enableDragAndDrop;
 //		alert("Init all events, enableDragAndDrop: " + enableDragAndDrop);
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
@@ -34,12 +34,12 @@ var ListView = function() {
 				item.onmousedown = null;
 				item.removeAttribute("onmousedown");
 			}
-			if (enableDragAndDrop == "true") {
+//			if (enableDragAndDrop == "true") {
 				item.onmouseover = Self.mouseOverItem;
 				item.onmousedown = Self.mouseDownItem;
 				item.onmouseup = Self.mouseUpItem;
 				item.onmouseout = Self.mouseOutItem;
-			}
+//			}
 			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
@@ -48,7 +48,7 @@ var ListView = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 		//registry action drag drop in tree list
-		eXo.ecm.UIListView.initDragDropForTreeEvent("UIWorkingArea", eXo.ecm.UIListView.enableDragAndDrop);		
+		eXo.ecm.UIListView.initDragDropForTreeEvent("UIWorkingArea", enableDragAndDrop);		
 //		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 //		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 //		if (UITreeExplorer) {
@@ -87,12 +87,12 @@ var ListView = function() {
 							mousedown = element.getAttributeNode("onmousedown").value;
 							element.setAttribute("mousedown", mousedown);
 						}
-						if (enableDragAndDrop == "true") {
+	//					if (enableDragAndDrop == "true") {
 							element.onmousedown = Self.mouseDownTree;
 							element.onmouseup = Self.mouseUpTree;
 							element.onmouseover = Self.mouseOverTree;
 							element.onmouseout = Self.mouseOutTree;
-						}
+//						}
 					}
 			);
 		}
@@ -210,12 +210,13 @@ var ListView = function() {
 				return;
 			}
 			//Dunghm : check symlink
-			if(event.ctrlKey && event.shiftKey)
-			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
-			else {
-			  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
-			}
-			
+			if (eXo.ecm.UIListView.enableDragAndDrop == "true") {
+				if(event.ctrlKey && event.shiftKey)
+				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+				else {
+				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+				}
+			}			
 		}
 	};
 	
@@ -355,10 +356,12 @@ var ListView = function() {
 				  delete Self.srcPath;
 				  return ;
 				}
-				if(event.ctrlKey && event.shiftKey)
-				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
-				else
-				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+				if (eXo.ecm.UIListView.enableDragAndDrop == "true") {
+					if(event.ctrlKey && event.shiftKey)
+					  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+					else
+					  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+				}
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;

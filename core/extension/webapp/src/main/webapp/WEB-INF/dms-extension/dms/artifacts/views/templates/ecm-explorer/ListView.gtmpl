@@ -16,11 +16,16 @@
   import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
   import org.exoplatform.services.jcr.util.Text;
   import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+  import org.exoplatform.ecm.jcr.model.Preference;
+  import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
   
   import javax.jcr.Value;
   import javax.jcr.PathNotFoundException;
   
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
+  def uiExplorer = uicomponent.getAncestorOfType(UIJCRExplorer.class);
+  def pref = uiExplorer.getPreference();
+  def enableDragAndDrop = pref.isEnableDragAndDrop();
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
   def managersMultiItemContext =  uiWorkingArea.getMultiActionsExtensionList();
   def managersGroundContext = uiWorkingArea.getGroundActionsExtensionList();
@@ -34,7 +39,7 @@
   def rcontext = _ctx.getRequestContext() ;
   def size = uicomponent.getChildrenList().size();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');");
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId', '$enableDragAndDrop');");
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('clip_button','1','$size')");
 	rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIListView.loadEffectedWidthColumn');

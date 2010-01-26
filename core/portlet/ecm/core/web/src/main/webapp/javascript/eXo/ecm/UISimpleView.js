@@ -17,6 +17,7 @@ var SimpleView = function() {
 	
 	//init event
 	SimpleView.prototype.initAllEvent = function(actionAreaId, enableDragAndDrop) {
+		eXo.ecm.UISimpleView.enableDragAndDrop = enableDragAndDrop;		
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
 
@@ -33,12 +34,12 @@ var SimpleView = function() {
 				item.onmousedown = null;
 				item.removeAttribute("onmousedown");
 			}
-			if (enableDragAndDrop == "true") {			
+//			if (enableDragAndDrop == "true") {			
 				item.onmouseover = Self.mouseOverItem;
 				item.onmousedown = Self.mouseDownItem;
 				item.onmouseup = Self.mouseUpItem;
 				item.onmouseout = Self.mouseOutItem;
-			}
+//			}
 			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
@@ -180,10 +181,12 @@ var SimpleView = function() {
 //			}
 			
 			//Dunghm : check symlink
-			if(event.ctrlKey && event.shiftKey)
-			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
-			else
-			  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+			if (eXo.ecm.UISimpleView.enableDragAndDrop == "true") {
+				if(event.ctrlKey && event.shiftKey)
+				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+				else
+				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+			}
 		}
 	};
 	
@@ -320,10 +323,12 @@ var SimpleView = function() {
 				  delete Self.srcPath;
 				  return ;
 				}
-				if(event.ctrlKey && event.shiftKey)
-				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
-				else
-				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+				if (eXo.ecm.UISimpleView.enableDragAndDrop == "true") {
+					if(event.ctrlKey && event.shiftKey)
+					  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+					else
+					  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
+				}
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;

@@ -38,8 +38,10 @@ import org.exoplatform.services.command.action.Action;
 public class ModifyNodeAction implements Action {
 
   public boolean execute(Context context) throws Exception {
-    Property property = (Property)context.get("currentItem");
-    Node node = property.getParent();
+  	Object item = context.get("currentItem");
+  	Node node = (item instanceof Property) ?
+  							((Property)item).getParent() :
+  							(Node)item;	
     if(node.isNodeType("nt:resource")) node = node.getParent();
     String userName = node.getSession().getUserID();
     if(node.canAddMixin("exo:modify")) {

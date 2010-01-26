@@ -6,8 +6,14 @@
   import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
   import org.exoplatform.services.jcr.util.Text;
   import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+  import org.exoplatform.ecm.jcr.model.Preference;
+  import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
      
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
+  def uiExplorer = uicomponent.getAncestorOfType(UIJCRExplorer.class);
+  def pref = uiExplorer.getPreference();
+  def enableDragAndDrop = pref.isEnableDragAndDrop();
+  
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
   def managersMultiItemContext =  uiWorkingArea.getMultiActionsExtensionList();
   def managersGroundContext = uiWorkingArea.getGroundActionsExtensionList();
@@ -22,7 +28,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId')");
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId', '$enableDragAndDrop');}");
  	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
  	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('clip_button','1','$size')");
 %>
