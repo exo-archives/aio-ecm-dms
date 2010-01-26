@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.taxonomy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -128,9 +129,11 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       while (nodeIter.hasNext()) {
         Node node = (Node) nodeIter.next();
         if (node.isNodeType(EXOSYMLINK_LINK)) {
-          Node target = linkManager_.getTarget(node, system);
-          if (target != null)
-            listNode.add(target);
+        	try {
+	          Node target = linkManager_.getTarget(node, system);
+	          if (target != null)
+	            listNode.add(target);
+        	} catch (ItemNotFoundException ex) {}
         }
       }
     } catch (RepositoryConfigurationException e) {
