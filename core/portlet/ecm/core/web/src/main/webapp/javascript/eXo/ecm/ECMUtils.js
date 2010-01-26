@@ -548,6 +548,9 @@
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
 		eXo.ecm.ECMUtils.resizableBlockWidth = resizableBlock.offsetWidth;
 		eXo.ecm.ECMUtils.currentWidth = container.offsetWidth;
+		var sideBarContent = DOM.findFirstDescendantByClass(container, "div", "SideBarContent");
+		var title = DOM.findFirstDescendantByClass(sideBarContent, "div", "Title");
+		eXo.ecm.ECMUtils.currentTitleWidth = title.offsetWidth;
 		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
 		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;
 	}				
@@ -557,6 +560,9 @@
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
 		var deltaX = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
+		var sideBarContent = DOM.findFirstDescendantByClass(container, "div", "SideBarContent");
+		var title = DOM.findFirstDescendantByClass(sideBarContent, "div", "Title");
+		title.style.width = eXo.ecm.ECMUtils.currentTitleWidth + deltaX + "px";
 		container.style.width = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
 		resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
 		eXo.ecm.ECMUtils.savedResizableMouseX = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
@@ -593,7 +599,6 @@
     var event = event || window.event;
 		eXo.ecm.ECMUtils.currentMouseY = event.clientY;
 		var container = document.getElementById("UITreeExplorer");
-		document.title = container.offsetHeight;
 		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;		
 						
 		// The block are updated by lampt	
