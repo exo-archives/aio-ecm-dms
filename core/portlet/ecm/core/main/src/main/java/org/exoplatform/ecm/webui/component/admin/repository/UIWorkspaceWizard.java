@@ -169,7 +169,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     UIRepositoryForm uiRepoForm = getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIRepositoryForm.class) ;
     String repoName = uiRepoForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
     String name = "" ;
-    boolean isDefaultWS  = false ;
+    boolean isDefaultWS  = false;
+    boolean isDMSSystem  = false;
     String  lockTime = "0";
     String dbType = null ;
     String selectedNodeType = null ;
@@ -204,6 +205,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if (!isNewWizard_) {
         name = workSpace.getName();
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name);
+        isDMSSystem = uiRepoForm.isDmsSystemWorkspace(name);
         try {
           Session workspaceSession = manageRepository.getSystemSession(workSpace.getName());
           selectedNodeType = workspaceSession.getRootNode().getPrimaryNodeType().getName();
@@ -255,7 +257,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         maxCache =  cache.getParameterValue(KEY_MAXSIZE)  ;
         liveTime = cache.getParameterValue(KEY_LIVETIME) ;
       }
-      uiWSFormStep1.fillFields(name, selectedNodeType, isDefaultWS, permission, lockTime) ;
+      uiWSFormStep1.fillFields(name, selectedNodeType, isDefaultWS, isDMSSystem, permission, lockTime);
       uiWSFormStep2.fillFields(containerType, sourceName, dbType, isMutil, storeType, storePath, 
           filterType, maxBuffer, swapPath) ;
       uiWSFormStep3.fillFields(queryHandlerType, indexDir, isEnableCache, maxCache, liveTime) ;
@@ -278,7 +280,17 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       } 
     }
     if(isNewRepo_) {
-      lockForm(false) ;
+      lockForm(false);
+      if (isAddNewWs) {
+        if (uiRepoForm.defaulWorkspace_ == null) 
+          uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).setEnable(true);
+        else
+          uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).setEnable(false);
+        if (uiRepoForm.dmsSystemWorkspace_ == null)
+          uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).setEnable(true);
+        else 
+          uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).setEnable(false);
+      }
     } else {
       if(isNewWizard_) {
         lockForm(false) ;
@@ -435,6 +447,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
+          String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+              "'", "#", ";", "}", "{", "/", "|", "\"", " "};
+          if (!Utils.isNameValid(wsName, arrFilterChar)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-not-allowed", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
           if(uiFormWizard.isNewWizard_) {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
@@ -529,6 +549,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
+          }
+          String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+              "'", "#", ";", "}", "{", "/", "|", "\"", " "};
+          if (!Utils.isNameValid(wsName, arrFilterChar)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-not-allowed", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
           }
           if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
@@ -634,7 +662,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       long lockTimeOutValue = 0 ;
 
       UIWizardStep1 uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
-      String name = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
+      String name = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue().trim();
       String initNodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isChecked() ;
       boolean isDMSSystemWs = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isChecked() ;
@@ -660,6 +688,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
       UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+          "'", "#", ";", "}", "{", "/", "|", "\"", " "};
+      if (!Utils.isNameValid(name, arrFilterChar)) {
+        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-not-allowed", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(uiFormWizard.isCheckValid_){
         if(uiFormWizard.isEmpty(queryHandlerType)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.queryHandlerType-invalid", null)) ;
@@ -863,6 +899,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
+          String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+              "'", "#", ";", "}", "{", "/", "|", "\"", " "};
+          if (!Utils.isNameValid(wsName, arrFilterChar)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-not-allowed", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
           if(uiFormWizard.isNewWizard_) {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
@@ -871,16 +915,36 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
               return ;
-            }  
-          } else if(uiFormWizard.isNewRepo_ ) {
-            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
-            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            }
             if(uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
               Object[] args = new Object[]{wsName}  ;        
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
               return ;
-            }  
+            }
+            if (!isDefault && (uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isEnable())) 
+              uiRepoForm.defaulWorkspace_ = null;
+            if (!isDMSSytemWs && (uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isEnable())) 
+              uiRepoForm.dmsSystemWorkspace_ = null;
+          } else if(uiFormWizard.isNewRepo_ ) {
+            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
+            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            if(uiRepoForm.isExistWorkspace(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }
+            if(uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }
+            if (!isDefault && (uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isEnable())) 
+              uiRepoForm.defaulWorkspace_ = null;
+            if (!isDMSSytemWs && (uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isEnable())) 
+              uiRepoForm.dmsSystemWorkspace_ = null;
           }
           if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;

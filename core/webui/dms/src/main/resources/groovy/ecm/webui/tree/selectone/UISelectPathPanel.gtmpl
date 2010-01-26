@@ -9,6 +9,8 @@
 %>
 <% 
 	import org.exoplatform.ecm.webui.utils.Utils;
+	import java.net.URLEncoder;
+	import org.exoplatform.services.jcr.util.Text;
 %>
 <div id="$uicomponent.id" class="UITreeList">
   <table class="UIGrid">
@@ -39,7 +41,8 @@
 				        <td>
 				        <%
 				          String nodeName = uicomponent.getDisplayName(node);
-								  String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
+				          nodeName = Text.unescapeIllegalJcrChars(nodeName);
+								  				String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
 				          def clazz = "Text"
 						  						
 				          if(Utils.isSymLink(node)) clazz = "TextSymLink";
@@ -52,7 +55,7 @@
 				          $nodeName</div>
 				        </td>
 				        <td>
-		              <a href="<%=uicomponent.event("Select", node.getPath())%>">
+		              <a href="<%=uicomponent.event("Select", URLEncoder.encode(Utils.formatNodeName(node.getPath()), "utf-8"))%>">
 		                <div class="Select16x16Icon" style="margin-left:15px;"></div>
 		              </a>
 				        </td>

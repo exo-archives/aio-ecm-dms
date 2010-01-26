@@ -2370,6 +2370,17 @@
   		<msg>
   				<constraint-violation-exception>Can not add node '{0}' to '{1}' in workspace '{2}' because you have problem with permission or contraints condition</constraint-violation-exception>
   		</msg>	
-  </UIActionForm>	
+  </UIActionForm>
+  
+  <UIWorkspaceWizard>
+  		<msg>
+  				<name-not-allowed>Name forbidden</name-not-allowed>
+  		</msg>
+  </UIWorkspaceWizard>
+  <UIRepositoryForm>
+    <msg>
+    		<not-complete-repository>The repository is creating. You need wait some minutes to create another new repository</not-complete-repository>
+    </msg>
+  </UIRepositoryForm>	
 </bundle>
 

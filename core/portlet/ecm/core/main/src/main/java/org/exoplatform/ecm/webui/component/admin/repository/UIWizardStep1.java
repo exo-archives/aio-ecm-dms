@@ -71,9 +71,11 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
   }
 
   protected void setFieldName(String name) {
-    getUIStringInput(FIELD_NAME).setValue(name);
+    getUIStringInput(FIELD_NAME).setValue(name.trim());
   }
-  protected String getFieldName() {return getUIStringInput(FIELD_NAME).getValue();}
+  protected String getFieldName() {
+    return getUIStringInput(FIELD_NAME).getValue().trim();
+  }
 
   protected String getFieldNodeType() {return getUIFormSelectBox(FIELD_NODETYPE).getValue();}
   protected void setFieldNodeTypeSelected(String selectedValue) {
@@ -85,6 +87,10 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
   protected boolean getFieldDefault(){ return getUIFormCheckBoxInput(FIELD_ISDEFAULT).isChecked();}
   protected void setFieldDefault(boolean isDefault) {
     getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefault);
+  }
+  
+  protected void setFieldDMSSystem(boolean isDMSSystem) {
+    getUIFormCheckBoxInput(FIELD_ISDMS_SYSTEM_WS).setChecked(isDMSSystem);
   }
 
   protected void setFieldLockTime(String lockTime) {
@@ -98,11 +104,13 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
     setFieldNodeType(getNodeType());
   }
   
-  protected void fillFields(String name, String selectedNodeType, boolean isDefaultWS, String permission, String lockTime) {
+  protected void fillFields(String name, String selectedNodeType, boolean isDefaultWS, boolean isDMSSystem,
+      String permission, String lockTime) {
     setFieldName(name);
     setPermissionMap(permission);
     refreshPermissionList();
     setFieldDefault(isDefaultWS);
+    setFieldDMSSystem(isDMSSystem);
     setFieldNodeTypeSelected(selectedNodeType);
     setFieldLockTime(lockTime);
   }

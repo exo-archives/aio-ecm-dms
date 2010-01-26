@@ -16,11 +16,13 @@
  */
 package org.exoplatform.ecm.webui.tree;
 
+import java.net.URLEncoder;
 import java.util.MissingResourceException;
 
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
@@ -85,7 +87,7 @@ public class UINodeTree extends UITree {
       if(getFieldValue(obj, beanIconField) != null)
         iconGroup = (String)getFieldValue(obj, beanIconField);
     }
-    String objId = String.valueOf(getId(obj)) ;
+    String objId = URLEncoder.encode(Utils.formatNodeName(String.valueOf(getId(obj))), "utf-8");
     String actionLink = event("ChangeNode", objId);
     StringBuilder builder = new StringBuilder();
     if(nodeIcon.equals(getExpandIcon())) {
@@ -95,6 +97,7 @@ public class UINodeTree extends UITree {
     }
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
     String beanFieldValue = getDisplayFieldValue(obj);
+    beanFieldValue = Text.unescapeIllegalJcrChars(beanFieldValue);
     String className="NodeIcon";
     boolean flgSymlink = false;
     if (Utils.isSymLink(node)) {

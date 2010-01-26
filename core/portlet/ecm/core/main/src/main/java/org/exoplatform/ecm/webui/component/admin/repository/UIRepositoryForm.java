@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.ItemExistsException;
 import javax.jcr.Session;
 
 import org.exoplatform.services.log.Log;
@@ -51,6 +52,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -79,6 +81,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * Created by The eXo Platform SARL
@@ -133,6 +136,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>(); 
   protected Map<String, String> workspaceMapNodeType_ = new HashMap<String, String>();
   protected Map<String, String> workspaceMapPermission_ = new HashMap<String, String>();
+  
+  protected Map<String, String> defaulWorkspaceMap = new HashMap<String, String>();
   
   public UIRepositoryForm() throws Exception { 
     configurationManager = getApplicationComponent(ConfigurationManager.class);
@@ -279,6 +284,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
             rService.getRepository(repositoryEntry.getName()).createWorkspace(ws.getName());
           }
         }
+      } catch (RepositoryConfigurationException repositoryConfigurationException) {
+        return;
+      } catch (PicoIntrospectionException picoIntrospectionException) {
+        return;
       } catch (Exception e) {
         LOG.error("Unexpected error", e);
         return;
@@ -308,8 +317,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(TemplateService.class).init(repository);
       getApplicationComponent(ManageViewService.class).init(repository);
       getApplicationComponent(ActionServiceContainer.class).init(repository);
+    } catch(NullPointerException nullPointerException) {
+      return;
+    } catch(ItemExistsException itemExistsException) {
+      return;
+    } catch(IllegalArgumentException illegalArgumentException) {
+      return;
     } catch(Exception e) {
       LOG.error("Unexpected error", e);
+      return;
     }
   }
   
@@ -597,7 +613,18 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           if (!listType.contains(PermissionType.SET_PROPERTY)) rootNode.removePermission("any", PermissionType.SET_PROPERTY);
           if (!listType.contains(PermissionType.REMOVE)) rootNode.removePermission("any", PermissionType.REMOVE);
         }
-        rootNode.save();
+        try {
+          rootNode.save();
+        } catch (NullPointerException nullPointerException) {
+          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.not-complete-repository", null, ApplicationMessage.WARNING));
+          uiWizardPopup.deActivate();
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup);
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
+          return;
+        } catch (Exception e) {
+          LOG.error("Unexpected error", e);
+          return;
+        }
         systemSession.save();        
         systemSession.logout();
       }      

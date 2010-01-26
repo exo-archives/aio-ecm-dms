@@ -413,6 +413,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       uiForm.isShowingComponent = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
       Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName);
+      
+      // get Param = fieldPropertiesMap.get("selectorParams");
+      // Param = Param.split("'");
       String classPath = (String)fieldPropertiesMap.get("selectorClass");
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Class clazz = Class.forName(classPath, true, cl);
