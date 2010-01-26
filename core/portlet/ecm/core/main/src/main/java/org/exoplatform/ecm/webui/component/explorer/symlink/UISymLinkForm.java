@@ -39,6 +39,7 @@ import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -120,6 +121,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
     uiFormMultiValueInputSet.setValue(listNodeName);
     String symLinkName = valueNodeName.substring(valueNodeName.lastIndexOf("/") + 1);
     if (!(symLinkName.indexOf(".lnk") > -1)) symLinkName += ".lnk";
+    symLinkName = Text.unescapeIllegalJcrChars(symLinkName);
     getUIStringInput(FIELD_NAME).setValue(symLinkName);
     UISymLinkManager uiSymLinkManager = getParent();
     uiSymLinkManager.removeChildById(POPUP_SYMLINK);
