@@ -47,7 +47,7 @@ function getProduct(version) {
   product.addDependencies(dms.gadgets);
 	product.addDependencies(dms.extension.webapp);
     
-  product.addServerPatch("tomcat", portal.server.tomcat.patch) ;
+  product.addServerPatch("tomcat", dms.server.tomcat.patch) ;
   product.addServerPatch("jboss",  portal.server.jboss.patch) ;
   product.addServerPatch("jbossear",  portal.server.jbossear.patch) ;  
 	
