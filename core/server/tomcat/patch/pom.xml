@@ -1,0 +1,51 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
+    <artifactId>config</artifactId>
+    <version>2.6-SNAPSHOT</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.dms.core.server.tomcat.patch</artifactId>
+  <packaging>jar</packaging>
+  <name>eXo Tomcat Server</name>
+  <url>http://www.exoplatform.org</url>
+  <description>eXo Tomcat server patch</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.server.tomcat.patch</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+	 </configuration>
+         <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase><!-- append to the packaging phase. -->
+            <goals>
+              <goal>single</goal> <!-- goals == mojos -->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/tomcat</directory>
+        <includes><include>**/*</include></includes>
+      </resource>
+    </resources>
+  </build>
+</project>
