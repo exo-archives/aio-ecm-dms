@@ -36,6 +36,7 @@ import org.exoplatform.services.cms.views.PortletTemplatePlugin;
 import org.exoplatform.services.cms.views.PortletTemplatePlugin.PortletTemplateConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.config.RepositoryServiceConfiguration;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -61,6 +62,10 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
   private String basedApplicationTemplatesPath;
   
   private DMSConfiguration dmsConfiguration_;
+  
+  private NodeHierarchyCreator hierarchyCreator;
+  
+  private InitParams params;
 
   /**
    * Instantiates a new application template manager service impl.
@@ -75,23 +80,13 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
    * 
    * @throws Exception the exception
    */
-  public ApplicationTemplateManagerServiceImpl(RepositoryService repositoryService, 
+  public ApplicationTemplateManagerServiceImpl(RepositoryService repositoryService,
       NodeHierarchyCreator hierarchyCreator, InitParams params, 
       DMSConfiguration dmsConfiguration) throws Exception{
     this.repositoryService = repositoryService;
-    PropertiesParam propertiesParam = params.getPropertiesParam("storedLocations");
-    if(propertiesParam == null)
-      throw new Exception("storedLocations paramameter is expected");
-    for(RepositoryEntry repositoryEntry: repositoryService.getConfig().getRepositoryConfigurations()) {
-      String repoName = repositoryEntry.getName();
-      String workspaceName = propertiesParam.getProperty(repoName);
-      if(workspaceName != null) {
-        workspaceName = repositoryEntry.getSystemWorkspaceName();        
-      }
-      storedWorkspaces.put(repoName,workspaceName);
-      basedApplicationTemplatesPath = hierarchyCreator.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
-    }
     dmsConfiguration_ = dmsConfiguration;
+    this.params = params;
+    this.hierarchyCreator = hierarchyCreator;
   }
 
   /**
@@ -262,7 +257,18 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
   /**
    * {@inheritDoc}
    */
-  public void start() {               
+  public void start() {
+    PropertiesParam propertiesParam = params.getPropertiesParam("storedLocations");
+    for(RepositoryEntry repositoryEntry: repositoryService.getConfig().getRepositoryConfigurations()) {
+      String repoName = repositoryEntry.getName();
+      String workspaceName = propertiesParam.getProperty(repoName);
+      if(workspaceName != null) {
+        workspaceName = repositoryEntry.getSystemWorkspaceName();        
+      }
+      storedWorkspaces.put(repoName,workspaceName);
+      basedApplicationTemplatesPath = hierarchyCreator.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
+    }
+    
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
     for(Iterator<String> repositories = storedWorkspaces.keySet().iterator(); repositories.hasNext();) {
       String repository = repositories.next();         
