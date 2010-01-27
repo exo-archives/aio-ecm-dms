@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
+    <artifactId>config</artifactId>
+    <version>2.6-SNAPSHOT</version>
+  </parent>
+    
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.dms.core.demo.config</artifactId>
+  <name>eXo DMS Demo configuration jar</name>
+  <packaging>jar</packaging>
+	
+	<build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include> 
+          <include>**/*.properties</include>         
+        </includes>
+      </resource>
+			<resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.xml</include> 
+          <include>**/*.properties</include>         
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+</project>
