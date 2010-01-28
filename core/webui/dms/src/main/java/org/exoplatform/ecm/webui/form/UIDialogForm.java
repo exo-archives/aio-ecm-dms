@@ -238,6 +238,17 @@ public class UIDialogForm extends UIForm {
       if (uiInput == null) uiInput = addMultiValuesInput(UIFormStringInput.class,name,label);
       ((UIFormMultiValueInputSet)uiInput).setEditable(formActionField.isEditable());
       if (node == null) {
+        String defaultValue = formActionField.getDefaultValue();
+        if (defaultValue != null) {
+          if (UIFormMultiValueInputSet.class.isInstance(uiInput)) {
+            String[] arrDefaultValues = defaultValue.split(",");
+            List<String> lstValues = new ArrayList<String>();
+            for (String itemDefaultValues : arrDefaultValues) {
+              if (!lstValues.contains(itemDefaultValues.trim())) lstValues.add(itemDefaultValues.trim());
+            }
+            ((UIFormMultiValueInputSet) uiInput).setValue(lstValues);
+          }
+        }
         renderField(name);
         return;
       }
