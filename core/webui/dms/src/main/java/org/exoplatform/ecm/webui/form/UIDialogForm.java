@@ -21,7 +21,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -341,26 +340,24 @@ public class UIDialogForm extends UIForm {
     propertiesName.put(name, propertyName);
     fieldNames.put(propertyName, name);
     UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
-    
-    if (formCheckBoxField.validateType != null) {
-      String validateType = formCheckBoxField.validateType;
-      String[] validatorList = null;
-      if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
-      else validatorList = new String[] {validateType};
-      for (String validator : validatorList) {
-        uiCheckBoxInput.addValidator(DialogFormUtil.getValidator(validator.trim()));
-      }            
-    }
-    
-    if(uiCheckBoxInput == null){
-      uiCheckBoxInput = new UIFormCheckBoxInput(name, name, null);
+
+    if(uiCheckBoxInput == null) {
+      uiCheckBoxInput = new UIFormCheckBoxInput(name, name, Boolean.class);
       if(defaultValue != null) {
         uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
         uiCheckBoxInput.setValue(defaultValue);
       }
     }
     
-    
+    if (formCheckBoxField.validateType != null) {
+      String validateType = formCheckBoxField.validateType;
+      String[] validatorList = null;
+      if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+      else validatorList = new String[] {validateType};
+      for (String validator : validatorList) {         
+        uiCheckBoxInput.addValidator(DialogFormUtil.getValidator(validator.trim()));
+      }            
+    }            
     
     if(formCheckBoxField.isOnchange()){
       uiCheckBoxInput.setOnChange("Onchange");
@@ -438,10 +435,10 @@ public class UIDialogForm extends UIForm {
         String optionLabel;
         for(int i = 0; i < array.length; i++) {
           List<String> listValue = new ArrayList<String>();
-          String[] arrayChild = array[i].trim().split(SEPARATOR_VALUE);
+          String[] arrayChild = array[i].trim().split(SEPARATOR_VALUE);          
           for (int j = 0; j < arrayChild.length; j++) {
             if (!arrayChild[j].trim().equals("")) {
-              listValue.add(arrayChild[j].trim());
+              listValue.add(arrayChild[j].trim());              
             }
           }
           try {
