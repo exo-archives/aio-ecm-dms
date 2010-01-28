@@ -342,8 +342,8 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
       }
       
       if (useCase.equals(UIJCRExplorerPortlet.SELECTION)) {
-        driveName = "";
-        nodePath = "";
+        driveName = pref.getValue("driveName", "");
+        nodePath = "/";
       } else {
         uiForm.setFlagSelectRender(true);
       }
