@@ -129,7 +129,7 @@
 
 .UIArticle .AttachmentsContainer .RemoveAttachments {
 	background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;
-	margin: 0px 5px 0px 3px;
+	margin: 0px 5px 0px 130px;
 	padding-left: 18px;
 	height: 16px;
 	cursor: pointer;
