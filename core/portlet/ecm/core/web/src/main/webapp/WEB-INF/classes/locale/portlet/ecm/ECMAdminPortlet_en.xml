@@ -2381,6 +2381,12 @@
     <msg>
     		<not-complete-repository>The repository is creating. You need wait some minutes to create another new repository</not-complete-repository>
     </msg>
-  </UIRepositoryForm>	
+  </UIRepositoryForm>
+  
+  <UIViewFormTabPane>
+  		<label>
+  				<addCategory>Add Category</addCategory>
+  		</label>
+  </UIViewFormTabPane>	
 </bundle>
 
