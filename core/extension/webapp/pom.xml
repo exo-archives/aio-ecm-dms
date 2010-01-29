@@ -12,16 +12,4 @@
   <packaging>war</packaging>
   <name>eXo DMS Extension configuration war</name>
   
-  <build>
-    <finalName>gatein-exo-dms-${project.version}</finalName>
-		<resources>
-			<resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.xml</include> 
-          <include>**/*.properties</include>         
-        </includes>
-      </resource>
-    </resources>
-  </build>
 </project>
