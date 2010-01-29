@@ -229,27 +229,22 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     HashMap<String, String> mapParam = new HashMap<String, String>();
     //In case access by ajax request
     if (context.useAjax()) return mapParam;
-    Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
+    Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/([^/]+)/(.*)");
     PortalRequestContext pcontext = Util.getPortalRequestContext();
-    PortletRequestContext portletReqContext = (PortletRequestContext) context;
-    String requestUrl = pcontext.getRequestURI();
-    String portalUrl = pcontext.getPortalURI();
-    String portletId = portletReqContext.getWindowId();
-    String accessViewUrl = requestUrl.replace(portalUrl,"");
-    if (!accessViewUrl.contains(portletId)) return mapParam;
-    String[] uri = accessViewUrl.split(portletId + "/");
-    if (uri == null || uri.length < 2) return mapParam;
-    Matcher matcher = patternUrl.matcher(uri[1]);
+    String nodePathUrl = pcontext.getNodePath().substring(1);
+    String[] uri = nodePathUrl.split("/");
+    if (uri == null || uri.length < 3) return mapParam;
+    Matcher matcher = patternUrl.matcher(nodePathUrl);
     if (matcher.find()) {
-      mapParam.put("repository", matcher.group(1));
-      mapParam.put("drive", matcher.group(2));
-      mapParam.put("path", "/" + matcher.group(3));
+      mapParam.put("repository", matcher.group(2));
+      mapParam.put("drive", matcher.group(3));
+      mapParam.put("path", "/" + matcher.group(4));
     } else {
-      patternUrl = Pattern.compile("([^/]+)/(.*)");
-      matcher = patternUrl.matcher(uri[1]);
+      patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
+      matcher = patternUrl.matcher(nodePathUrl);
       if (matcher.find()) {
-        mapParam.put("repository", matcher.group(1));
-        mapParam.put("drive", matcher.group(2));
+        mapParam.put("repository", matcher.group(2));
+        mapParam.put("drive", matcher.group(3));
         mapParam.put("path", "/");
       }  
     }
@@ -260,18 +255,19 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     String repositoryName = String.valueOf(map.get("repository"));
     String driveName = String.valueOf(map.get("drive"));
     String path = String.valueOf(map.get("path"));
-    if(path.equals("/")) return;
-    ArrayList<String> encodeNameArr = new ArrayList<String>();
-    for(String name : path.split("/")) {
-      if(name.length() > 0) {
-        encodeNameArr.add(Text.escapeIllegalJcrChars(name));
-      }
+    if(!path.equals("/")) {
+	    ArrayList<String> encodeNameArr = new ArrayList<String>();
+	    for(String name : path.split("/")) {
+	      if(name.length() > 0) {
+	        encodeNameArr.add(Text.escapeIllegalJcrChars(name));
+	      }
+	    }
+	    StringBuilder encodedPath = new StringBuilder();
+	    for(String encodedName : encodeNameArr) {
+	      encodedPath.append("/").append(encodedName);
+	    }
+	    path = encodedPath.toString();
     }
-    StringBuilder encodedPath = new StringBuilder();
-    for(String encodedName : encodeNameArr) {
-      encodedPath.append("/").append(encodedName);
-    }
-    path = encodedPath.toString();
     UIApplication uiApp = findFirstComponentOfType(UIApplication.class);
     ManageDriveService manageDrive = getApplicationComponent(ManageDriveService.class);
     DriveData driveData = null;

@@ -59,8 +59,8 @@ public class PermlinkActionComponent extends UIAbstractManagerComponent {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     PortalRequestContext pcontext = Util.getPortalRequestContext();
     String portalUrl = pcontext.getPortalURI();
-    PortletRequestContext portletReqContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-    String portletId = portletReqContext.getWindowId();
+    String nodePathUrl = pcontext.getNodePath();
+    String portletId = nodePathUrl.split("/")[1];
     String drivename = uiExplorer.getDriveData().getName();
     String drivePath = uiExplorer.getDriveData().getHomePath();
     String userId = Util.getPortalRequestContext().getRemoteUser();
