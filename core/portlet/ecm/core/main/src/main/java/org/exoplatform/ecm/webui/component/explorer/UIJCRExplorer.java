@@ -791,6 +791,11 @@ public class UIJCRExplorer extends UIContainer {
         setCurrentPath(LinkUtils.getParentPath(currentPath_));
         return getNodeByPath(currentPath_, session, giveTarget, false);
       }
+      try {
+        node = (Node) nodeFinder.getItem(session, nodePath, !giveTarget);
+        return node;
+      } catch (Exception e3) {        
+      }
       if (firstTime) {
         UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
         JCRExceptionManager.process(uiApp, e);
