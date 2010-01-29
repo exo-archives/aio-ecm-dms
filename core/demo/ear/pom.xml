@@ -25,12 +25,6 @@
       <version>${project.version}</version>
 			<type>war</type>
     </dependency>
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.demo.rest-war</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>		
   </dependencies>  
   <build>
     <plugins>
@@ -51,11 +45,6 @@
                <groupId>org.exoplatform.ecm.dms.core</groupId>
                <artifactId>exo.ecm.dms.core.demo.webapp</artifactId>
                <contextRoot>dmsdemo</contextRoot>
-             </webModule>
-						 <webModule>
-               <groupId>org.exoplatform.ecm.dms.core</groupId>
-               <artifactId>exo.ecm.dms.core.demo.rest-war</artifactId>
-               <contextRoot>rest-dmsdemo</contextRoot>
              </webModule>
              
           </modules>
