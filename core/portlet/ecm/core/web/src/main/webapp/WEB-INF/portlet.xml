@@ -224,13 +224,13 @@
 			<!-- Specify the workspace name will be use in repository	-->      
       <preference>
         <name>workspace</name>
-        <value>system</value>
+        <value>collaboration</value>
         <read-only>false</read-only>
       </preference>            
       <!-- Specify the root path and you will see all child nodes when browse the portlet	-->  
       <preference>
         <name>path</name>     
-        <value>/exo:ecm/exo:taxonomies</value>
+        <value>/Groups/platform/users/Documents</value>
         <read-only>false</read-only>
       </preference>            
       <!-- Specify the name of document in category when you choose the usecase is detail-document	-->
@@ -271,7 +271,7 @@
       -->
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root/cms/publications//element(*, exo:article)</value>
+        <value>/jcr:root/Documents/Live//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <!-- 
