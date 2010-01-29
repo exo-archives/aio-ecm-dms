@@ -64,6 +64,19 @@ function getModule(params) {
 		addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.extension.config", "jar", module.version));
   module.extension.webapp.deployName = "dms-extension";	
 
+	module.demo = {};
+   // demo portal
+   module.demo.portal = 
+	   new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.demo.webapp", "war", module.version).
+	   addDependency(new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.demo.config", "jar", module.version));
+	   module.demo.portal.deployName = "dmsdemo";  
+	   
+   // demo rest endpoint	   
+   module.demo.rest = 
+       new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.demo.rest-war", "war", module.version);
+       module.demo.rest.deployName = "rest-dmsdemo"; 
+       
+	
   module.server = {}
 
    module.server.tomcat = {}
