@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
 import java.util.List;
+import java.util.Set;
 
 import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
@@ -63,20 +64,26 @@ public class UIAllItemsByType extends UIComponent {
   static public class ShowDocumentTypeActionListener extends EventListener<UIAllItemsByType> {
     public void execute(Event<UIAllItemsByType> event) throws Exception {
       UIAllItemsByType uiViewDocumentTypes = event.getSource();
-      String supportType = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIJCRExplorer uiExplorer = uiViewDocumentTypes.getAncestorOfType(UIJCRExplorer.class);            
-      uiExplorer.setSupportedType(supportType);
-      uiExplorer.setViewDocument(true);      
-      uiExplorer.setIsViewTag(false);
-      uiExplorer.setSelectRootNode();
-      
-      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
-      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
-      if(uiDocumentWorkspace.isRendered()) {
-        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
-        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+      String supportedType = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiViewDocumentTypes.getAncestorOfType(UIJCRExplorer.class);
+      Set<String> allItemByTypeFilterMap = uiExplorer.getAllItemByTypeFilterMap();
+      if (allItemByTypeFilterMap.contains(supportedType)) {
+      	allItemByTypeFilterMap.remove(supportedType);
+      } else {
+      	allItemByTypeFilterMap.add(supportedType);
       }
+//      uiExplorer.setSupportedType(supportType);
+//      uiExplorer.setViewDocument(true);      
+      uiExplorer.setIsViewTag(false);
+//      uiExplorer.setSelectRootNode();
+      
+//      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+//      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+//      if(uiDocumentWorkspace.isRendered()) {
+//        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+//        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+//        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+//      }
       uiExplorer.updateAjax(event);
     }
   }
@@ -89,13 +96,13 @@ public class UIAllItemsByType extends UIComponent {
       UIDocumentFilterForm uiDocumentFilter = popupAction.activate(UIDocumentFilterForm.class,300);      
       uiDocumentFilter.invoke(uiSideBar.getAllSupportedType());
       
-      UIWorkingArea uiWorkingArea = uiJCRExplorer.getChild(UIWorkingArea.class);
-      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
-      if(uiDocumentWorkspace.isRendered()) {
-        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
-        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
-      }
+//      UIWorkingArea uiWorkingArea = uiJCRExplorer.getChild(UIWorkingArea.class);
+//      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+//      if(uiDocumentWorkspace.isRendered()) {
+//        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+//        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+//        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+//      }
       event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
     }
   }

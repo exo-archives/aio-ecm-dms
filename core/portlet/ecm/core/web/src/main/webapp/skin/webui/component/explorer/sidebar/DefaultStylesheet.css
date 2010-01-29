@@ -51,6 +51,17 @@
 	margin-right:20px; /* orientation=rt */
 }
 
+.UIJCRExplorerPortlet .UISideBar .SideContent .TrueSelectIcon {
+  background: url('DefaultSkin/background/SelectCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/background/SelectCheck-rt.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UISideBar .SideContent .TrueSelectIcon {
+  background: url('DefaultSkin/background/SelectCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/background/SelectCheck-rt.gif') no-repeat right center; /* orientation=rt */
+}
+
+
 .UIJCRExplorerPortlet .UISideBar .SideContent{
 	 padding: 0px 4px;
 	 background: #f5f5f5;

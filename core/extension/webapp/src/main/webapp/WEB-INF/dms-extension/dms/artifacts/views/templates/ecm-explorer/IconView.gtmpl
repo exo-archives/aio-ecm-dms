@@ -27,7 +27,8 @@
   def size = uicomponent.getChildrenList().size();
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/');
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.DMSBrowser','/ecm/javascript/') ;  
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId', '$enableDragAndDrop');}");
  	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
  	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('clip_button','1','$size')");
@@ -59,7 +60,6 @@
 					 </div>
 				</div>
 				<div class="GroundContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
-					<% if (uicomponent.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {%>				
 						<div class="UIRightClickPopupMenu" style="display: block;">
 							<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">
 									<%
@@ -75,7 +75,6 @@
 							  
 							 </div>	
 						 </div>
-					 <%}%>
 				</div>
 			</div>
 		<%}%>	

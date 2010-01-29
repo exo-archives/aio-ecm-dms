@@ -1,3 +1,11 @@
+<%
+
+	import java.util.Set;
+	import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+
+	def allItemByTypeFilterMap = uicomponent.getAncestorOfType(UIJCRExplorer.class).getAllItemByTypeFilterMap(); 
+%>
+
 <div id="$uicomponent.id">
 	<div class="SideBarContent">
 		<div class="BarContent">
@@ -17,9 +25,11 @@
   		<% 
   	    def supportedTypes = uicomponent.getAllSupportedType();  
   	    for (type in supportedTypes) {                                  
-        	String supportedLink = uicomponent.event("ShowDocumentType", type) ;                 
+        	String supportedLink = uicomponent.event("ShowDocumentType", type) ;
+					String classValue = (allItemByTypeFilterMap.contains(type) ?
+							"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
       %>
-  			<div class="ArrowSidContent TextSiderContent">
+  			<div class="$classValue">
   				<a href="$supportedLink" title="<%=_ctx.appRes("UIAllItemsByType.title.Show"+type)%>">
   	        <%=_ctx.appRes("DocumentType.label." + type)%>
   	      </a>

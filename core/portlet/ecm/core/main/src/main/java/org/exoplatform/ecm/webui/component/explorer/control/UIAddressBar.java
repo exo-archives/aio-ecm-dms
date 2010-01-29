@@ -140,15 +140,9 @@ public class UIAddressBar extends UIForm {
           uiExplorer.setIsViewTag(false) ;
           uiExplorer.setSelectNode(uiExplorer.getCurrentStatePath()) ;
         } else {
-        	int currentDocumentSourceType = uiExplorer.getDocumentSourceTypeHistory().removeLast();
-          UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
-          UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-					uiDocumentInfo.setDocumentSourceType(currentDocumentSourceType);
-					if (currentDocumentSourceType == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
-	          String previousNodePath = uiExplorer.rewind() ;
-	          String previousWs = uiExplorer.previousWsName();
-	          uiExplorer.setBackNodePath(previousWs, previousNodePath);
-					}
+          String previousNodePath = uiExplorer.rewind() ;
+          String previousWs = uiExplorer.previousWsName();
+          uiExplorer.setBackNodePath(previousWs, previousNodePath);
         }
         uiExplorer.updateAjax(event) ;
       } catch (AccessDeniedException ade) {

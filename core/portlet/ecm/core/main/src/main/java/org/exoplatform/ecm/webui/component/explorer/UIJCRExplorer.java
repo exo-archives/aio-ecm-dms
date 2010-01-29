@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,6 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
-import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -101,7 +101,6 @@ public class UIJCRExplorer extends UIContainer {
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
   private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
   private LinkedList<String> wsHistory_ = new LinkedList<String>();
-  private LinkedList<Integer> documentSourceTypeHistory_ = new LinkedList<Integer>();
   private PortletPreferences pref_ ;
   private Preference preferences_;
   private Map<String, HistoryEntry> addressPath_ = new HashMap<String, HistoryEntry>() ;
@@ -110,7 +109,8 @@ public class UIJCRExplorer extends UIContainer {
   private String currentRootPath_ ;
   private String currentPath_ ;
   private String currentStatePath_ ;
-  private String currentStateWorkspaceName_ ;  private String lastWorkspaceName_ ;
+  private String currentStateWorkspaceName_ ;  
+  private String lastWorkspaceName_ ;
   private String currentDriveRootPath_ ;
   private String currentDriveWorkspaceName_ ;
   private String currentDriveRepositoryName_ ;
@@ -124,33 +124,20 @@ public class UIJCRExplorer extends UIContainer {
   private boolean isReferenceNode_;
   private DriveData driveData_ ;
     
-  private boolean isViewDocument_ ;
-  private String supportedType;
   private boolean isFilterSave_ ;
   
   private int tagScope;
 
   private List<String> checkedSupportType = new ArrayList<String>();
+  private Set<String> allItemFilterMap = new HashSet<String>();
+  private Set<String> allItemByTypeFilterMap = new HashSet<String>();
+  
+  public Set<String> getAllItemFilterMap() { return allItemFilterMap; }
+  public Set<String> getAllItemByTypeFilterMap() { return allItemByTypeFilterMap; }
   
   public int getTagScope() { return tagScope; }
   public void setTagScope(int scope) { tagScope = scope; }
       
-  public void setSupportedType(String supportedType) {
-    this.supportedType = supportedType;
-  }
-  
-  public String getSupportedType() {
-    return supportedType;
-  }
-  
-  public boolean isViewDocument() {
-    return isViewDocument_;
-  }
-
-  public void setViewDocument(boolean isViewDocument) {
-    this.isViewDocument_ = isViewDocument;
-  } 
-  
   public boolean isFilterSave() {
     return isFilterSave_;
   }
@@ -285,10 +272,6 @@ public class UIJCRExplorer extends UIContainer {
   @Deprecated
   public void setNodesHistory(LinkedList<String> h) {nodesHistory_ = h;}
   
-  public LinkedList<Integer> getDocumentSourceTypeHistory() { return documentSourceTypeHistory_ ; }
-  @Deprecated
-  public void setDocumentSourceTypeHistory(LinkedList<Integer> h) {documentSourceTypeHistory_ = h;}
-
   public LinkedList<String> getWorkspacesHistory() { return wsHistory_; }
   @Deprecated
   public void setWorkspaceHistory(LinkedList<String> wsHistory) { wsHistory_ =  wsHistory; }
@@ -627,14 +610,11 @@ public class UIJCRExplorer extends UIContainer {
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class);
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
     UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
-    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo");
-    documentSourceTypeHistory_.add(uiDocumentInfo.getDocumentSourceType());
   }
 
   public void clearNodeHistory(String currentPath) {
     nodesHistory_.clear();
     wsHistory_.clear();
-    documentSourceTypeHistory_.clear();
     addressPath_.clear();
     currentPath_ = currentPath;
   }
@@ -642,10 +622,6 @@ public class UIJCRExplorer extends UIContainer {
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public String previousWsName() { return wsHistory_.removeLast(); }
-  
-  public int previousDocumentSourceType() {
-  	return documentSourceTypeHistory_.removeLast();
-  }
   
   @Deprecated
   public void setSelectNode(String uri, Session session) throws Exception {
@@ -912,20 +888,4 @@ public class UIJCRExplorer extends UIContainer {
     }    
   }
 
-  public List<Node> getDocumentBySupportedType() throws Exception {
-    DocumentTypeService documentService = getApplicationComponent(DocumentTypeService.class);
-    List<Node> result = new ArrayList<Node>();
-    String userName = null;
-    if(getPreference().isShowItemsByUser()) userName = getSession().getUserID();
-    if(documentService.isContentsType(supportedType)) {
-      result = 
-        documentService.getAllDocumentByContentsType(supportedType, getCurrentWorkspace(), 
-            getRepositoryName(), getSessionProvider(), userName);
-    } else {
-      result = documentService.getAllDocumentsByUser(getCurrentWorkspace(), getRepositoryName(), 
-          getSessionProvider(), documentService.getMimeTypes(supportedType), userName);
-    }
-    return result;
-  }
-  
 }

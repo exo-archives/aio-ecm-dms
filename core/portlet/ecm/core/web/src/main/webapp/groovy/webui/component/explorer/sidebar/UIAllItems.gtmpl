@@ -1,5 +1,16 @@
 <%
+
+	import java.util.Set;
+	import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+	import org.exoplatform.ecm.webui.component.explorer.sidebar.UIAllItems;
+
   def pref = uicomponent.getPreference();
+	def allItemFilterMap = uicomponent.getAncestorOfType(UIJCRExplorer.class).getAllItemFilterMap();
+	String ownedByMe = uicomponent.getOWNED_BY_ME();
+	String favorite = uicomponent.getFAVORITE();
+	String hidden = uicomponent.getHIDDEN();
+	String trash = uicomponent.getTRASH();
+	
 %>
 <div id="$uicomponent.id">
 	<div class="SideBarContent">
@@ -18,33 +29,45 @@
 		</div>
 		<div class="SideContent">
 			<div class="ItemContent">
-				<% if (pref.isShowOwnedByUserDoc()) { %>
-						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllOwnedByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllOwnedByUser")%>" class="ShowAllOwnedByUserBtn">
+				<% if (pref.isShowOwnedByUserDoc()) { 
+						String classValue = (allItemFilterMap.contains(ownedByMe) ?
+								"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
+					%>
+						<div class="$classValue">
+							<a href="<%=uicomponent.event("ClickFilter", ownedByMe)%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllOwnedByUser")%>" class="ShowAllOwnedByUserBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.OwnedByMe")%></span>
 							</a>
 						</div>
 				<% } %>
 				
-			  <% if (pref.isShowFavouriteDoc()) { %>
-						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllFavourite")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavourite")%>" class="ShowAllFavouriteBtn">
+			  <% if (pref.isShowFavouriteDoc()) { 
+						String classValue = (allItemFilterMap.contains(favorite) ?
+								"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
+			  	%>
+						<div class="$classValue">
+							<a href="<%=uicomponent.event("ClickFilter", favorite)%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavourite")%>" class="ShowAllFavouriteBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.Favourites")%></span>
 							</a>
 						</div>
 						<% } %>
 						
-				<% if (pref.isShowHiddenDoc()) { %>
-						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllHidden")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllHidden")%>" class="ShowAllHiddenBtn">
+				<% if (pref.isShowHiddenDoc()) {
+					String classValue = (allItemFilterMap.contains(hidden) ?
+							"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
+					%>
+						<div class="$classValue">
+							<a href="<%=uicomponent.event("ClickFilter", hidden)%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllHidden")%>" class="ShowAllHiddenBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.Hidden")%></span>
 							</a>
 						</div>
 				<% } %>
 						
-				<% if (pref.isShowTrashDoc()) { %>
-						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllFromTrash")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrash")%>" class="ShowAllFromTrashBtn">
+				<% if (pref.isShowTrashDoc()) { 
+					String classValue = (allItemFilterMap.contains(trash) ?
+							"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
+					%>
+						<div class="$classValue">
+							<a href="<%=uicomponent.event("ClickFilter", trash)%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrash")%>" class="ShowAllFromTrashBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.Trash")%> </span>
 							</a>
 						</div>

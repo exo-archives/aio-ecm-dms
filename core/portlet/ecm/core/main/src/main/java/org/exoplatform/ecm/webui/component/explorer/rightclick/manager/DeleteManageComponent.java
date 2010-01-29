@@ -419,18 +419,11 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     UIConfirmMessage uiConfirmMessage = 
       uiWorkingArea.createUIComponent(UIConfirmMessage.class, null, null);
     
-    UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
-    UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;    
-    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo");
-    int documentSourceType = uiDocumentInfo.getDocumentSourceType();
-    
     if(nodePath.indexOf(";") > -1) {
-      uiConfirmMessage.setMessageKey((documentSourceType == DocumentProviderUtils.TRASH_ITEMS)?
-      		"UIWorkingArea.msg.confirm-delete-permanently-multi" : "UIWorkingArea.msg.confirm-delete-multi");
+      uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-delete-multi");
       uiConfirmMessage.setArguments(new String[] {Integer.toString(nodePath.split(";").length)});
     } else {
-      uiConfirmMessage.setMessageKey((documentSourceType == DocumentProviderUtils.TRASH_ITEMS)?
-      		"UIWorkingArea.msg.confirm-delete-permanently" : "UIWorkingArea.msg.confirm-delete");
+      uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-delete");
       uiConfirmMessage.setArguments(new String[] {nodePath});
     }
     uiConfirmMessage.setNodePath(nodePath);

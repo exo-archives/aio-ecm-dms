@@ -291,6 +291,8 @@ var ListView = function() {
 	ListView.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
 			document.onselectstart = function(){return false;}
+			if (eXo.ecm.UIListView.enableDragAndDrop != "true")
+				return;
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (Self.enableDragDrop && mobileElement && (!event.ctrlKey || (event.shiftKey && event.ctrlKey))) {
 				mobileElement.style.display = "block";

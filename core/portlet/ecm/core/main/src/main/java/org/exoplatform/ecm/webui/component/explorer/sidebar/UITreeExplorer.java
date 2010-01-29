@@ -358,7 +358,6 @@ public class UITreeExplorer extends UIContainer {
       if (isInTrash(item)) 
       	return;
       
-      uiExplorer.setViewDocument(false);      
       UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
       UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
       if(!uiDocumentWorkspace.isRendered()) {
@@ -367,9 +366,8 @@ public class UITreeExplorer extends UIContainer {
       }
       uiExplorer.setSelectNode(workspaceName, path) ;
       
-      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
-      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+//      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
+//      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
       
       uiExplorer.updateAjax(event) ;      
     }
@@ -424,7 +422,6 @@ public class UITreeExplorer extends UIContainer {
       if (isInTrash(item))
       	return;
       
-      uiExplorer.setViewDocument(false);
       if (uiExplorer.getPreference().isShowSideBar()) {
         uiTreeExplorer.buildTree(path);
       }

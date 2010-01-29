@@ -237,7 +237,7 @@ public class UIDrivesArea extends UIContainer {
       uiJCRExplorer.setRootPath(homePath);
       uiJCRExplorer.setSelectNode(drive.getWorkspace(), homePath);
       uiJCRExplorer.refreshExplorer();
-      uiJCRExplorer.setViewDocument(false);
+//      uiJCRExplorer.setViewDocument(false);
       String selectedView = viewList.get(0);
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class).setRendered(true);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);

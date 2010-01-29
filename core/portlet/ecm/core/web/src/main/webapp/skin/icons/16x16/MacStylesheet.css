@@ -856,6 +856,16 @@
   background: url('DefaultSkin/SelectCheck.gif') no-repeat right center; /* orientation=rt */
 }
 
+.UIAllItems .TrueSelectIcon {
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIAllItemsByType .TrueSelectIcon {
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat right center; /* orientation=rt */
+}
+
 .UIVersionTreeList .Publishedicon {
   background: url('DefaultSkin/PublishedIcon.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/PublishedIcon.gif') no-repeat right center; /* orientation=rt */

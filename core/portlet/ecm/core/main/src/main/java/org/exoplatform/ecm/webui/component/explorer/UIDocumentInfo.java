@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import javax.imageio.ImageIO;
@@ -60,6 +61,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UIAllItems;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
@@ -74,6 +76,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -160,14 +163,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private String timeLineSortByName = "";
   private String timeLineSortByDate = "";
   
-  private int documentSourceType_; 
-  
   public UIDocumentInfo() throws Exception {
     pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID);    
   }
-
-  public int getDocumentSourceType() { return documentSourceType_; }
-  public void setDocumentSourceType(int value) { documentSourceType_ = value; }
 
   public String getTimeLineSortByFavourite() { return timeLineSortByFavourite; }
   public void setTimeLineSortByFavourite(String timeLineSortByFavourite) {
@@ -616,11 +614,20 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public void updatePageListData() throws Exception {    
-    DocumentProviderUtils documentUtils = new DocumentProviderUtils();
+    UIJCRExplorer uiExplorer = this.getAncestorOfType(UIJCRExplorer.class);
     
-    int nodesPerPage = getAncestorOfType(UIJCRExplorer.class).getPreference().getNodesPerPage();    
-    pageIterator_.setPageList(new ObjectPageList(documentUtils.getItemsBySourceType(
-        documentSourceType_, getAncestorOfType(UIJCRExplorer.class)),nodesPerPage));        
+    int nodesPerPage = uiExplorer.getPreference().getNodesPerPage();
+		List<Node> nodeList = new ArrayList<Node>();
+		
+		Preference pref = uiExplorer.getPreference();
+		String currentPath = uiExplorer.getCurrentPath();
+    if(!uiExplorer.isViewTag()) {      
+      nodeList = filterNodeList(uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments()));
+    } else { // if (uiExplorer.isViewTag())               
+      nodeList = uiExplorer.getDocumentByTag();       
+    } 
+    
+    pageIterator_.setPageList(new ObjectPageList(nodeList,nodesPerPage));        
   }
   
   @SuppressWarnings("unchecked")
@@ -768,6 +775,63 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return driveData;
   }
   
+  private List<Node> filterNodeList(List<Node> sourceNodeList) throws Exception {
+  	List<Node> ret = new ArrayList<Node>();
+  	
+  	for (Node node : sourceNodeList) 
+  		try {
+	  		if (filterOk(node))
+	  			ret.add(node);
+  		} catch (Exception ex) {}
+  	
+  	return ret;
+  }
+  
+  private boolean filterOk(Node node) throws Exception {
+  	UIJCRExplorer uiExplorer = this.getAncestorOfType(UIJCRExplorer.class);
+  	FavoriteService favoriteService = this.getApplicationComponent(FavoriteService.class);
+  	DocumentTypeService documentTypeService = this.getApplicationComponent(DocumentTypeService.class);
+  	
+  	Set<String> allItemsFilterSet = uiExplorer.getAllItemFilterMap();
+  	Set<String> allItemsByTypeFilterSet = uiExplorer.getAllItemByTypeFilterMap();
+  	
+  	String userId = uiExplorer.getSession().getUserID();
+  	
+  	//Owned by me
+  	if (allItemsFilterSet.contains(UIAllItems.OWNED_BY_ME) && 
+  			!userId.equals(node.getProperty(Utils.EXO_OWNER).getString()))
+  				return false;
+  	//Favorite
+  	if (allItemsFilterSet.contains(UIAllItems.FAVORITE) &&
+  			!favoriteService.isFavoriter(userId, node))
+  				return false;
+  	//Hidden
+  	if (allItemsFilterSet.contains(UIAllItems.HIDDEN)) {
+  		if (!node.isNodeType(Utils.EXO_HIDDENABLE))
+  			return false;
+  		else {
+  			uiExplorer.getPreference().setShowHiddenNode(true);
+  		}
+  	}
+  	
+  	//By types
+  	for (String documentType : allItemsByTypeFilterSet) { 
+  		if (allItemsByTypeFilterSet.contains(documentType)) {
+  			boolean found = false;
+  			for (String mimeType : documentTypeService.getMimeTypes(documentType)) {
+  				if (node.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString().indexOf(mimeType) >= 0) {
+  					found = true;
+  					break;
+  				}
+  			}
+  			if (!found)
+  				return false;
+  		}
+  	}
+  	
+  	return true;
+  }
+  
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
@@ -777,7 +841,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
 	      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
 	      uiExplorer.setSelectNode(workspaceName, uri) ;
-	      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
 	      uiExplorer.updateAjax(event) ;           
 	      event.broadcast();
       } catch(RepositoryException e) {
@@ -813,7 +876,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         		//&&	!templateService.isManagedNodeType(((Node)item).getPrimaryNodeType().getName(), uiExplorer.getRepositoryName()))
         	return;
         uiExplorer.setSelectNode(workspaceName, uri);
-        uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
         ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
         List<DriveData> lstDrive = manageDriveService.getAllDrives(uiExplorer.getRepositoryName());
         uiExplorer.setDriveData(uicomp.getDrive(lstDrive, uiExplorer.getCurrentNode()));                

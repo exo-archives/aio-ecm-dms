@@ -86,13 +86,11 @@ public class DocumentProviderUtils {
 		
 		Preference pref = uiExplorer.getPreference();
 		String currentPath = uiExplorer.getCurrentPath();
-    if(!uiExplorer.isViewTag() && !uiExplorer.isViewDocument()) {      
+    if(!uiExplorer.isViewTag()) {      
       childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());
-    } else if (uiExplorer.isViewTag()) {               
+    } else  {               
       childrenList = uiExplorer.getDocumentByTag();       
-    } else if (uiExplorer.isViewDocument()) {              
-      childrenList = uiExplorer.getDocumentBySupportedType();
-    }
+    } 
     
     return childrenList;		
 	}
