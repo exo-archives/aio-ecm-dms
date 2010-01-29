@@ -22,21 +22,21 @@
 
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <appendAssemblyId>false</appendAssemblyId>
-	 </configuration>
-         <executions>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
           <execution>
-            <id>make-assembly</id> <!-- this is used for inheritance merges -->
-            <phase>package</phase><!-- append to the packaging phase. -->
+            <id>unpack-dependencies</id>
+            <phase>compile</phase>
             <goals>
-              <goal>single</goal> <!-- goals == mojos -->
+              <goal>unpack-dependencies</goal>
             </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <excludes>**/conf/jaas.conf</excludes>
+              <includes>**</includes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
