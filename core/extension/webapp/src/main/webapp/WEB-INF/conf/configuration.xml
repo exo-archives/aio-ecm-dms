@@ -26,8 +26,6 @@
   
 	<import>war:/dms-extension/jcr/jcr-configuration.xml</import>
 	<import>war:/dms-extension/common/resource-bundle-configuration.xml</import>
-	<import>war:/dms-extension/portal/application-registry-configuration.xml</import>
-	<import>war:/dms-extension/portal/portal-configuration.xml</import>
 	
   <import>war:/dms-extension/dms/jcr-component-plugins-configuration.xml</import>
   <import>war:/dms-extension/dms/dms-system-configuration.xml</import>  

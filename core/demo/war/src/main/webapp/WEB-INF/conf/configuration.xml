@@ -27,29 +27,7 @@
 	<import>war:/conf/dmsdemo/organization/idm-configuration.xml</import>
   <import>war:/conf/dmsdemo/organization/organization-configuration.xml</import>
 	<import>war:/conf/dmsdemo/jcr/jcr-configuration.xml</import>
-	<import>war:/conf/dmsdemo/common/resource-bundle-configuration.xml</import>
 	<import>war:/conf/dmsdemo/portal/application-registry-configuration.xml</import>
 	<import>war:/conf/dmsdemo/portal/portal-configuration.xml</import>
-	
-  <import>war:/conf/dmsdemo/dms/jcr-component-plugins-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-system-configuration.xml</import>  
-  <import>war:/conf/dmsdemo/dms/cms-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-templates-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-scripts-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-actions-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-categories-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-taxonomies-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-ext-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-views-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-drives-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-metadata-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-folksonomy-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-records-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-queries-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/organization-component-plugins-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/publication-configuration.xml</import>  
-  <import>war:/conf/dmsdemo/dms/dms-thumbnail-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-common-configuration.xml</import>
-  <import>war:/conf/dmsdemo/dms/dms-document-type-configuration.xml</import>  
   
 </configuration>

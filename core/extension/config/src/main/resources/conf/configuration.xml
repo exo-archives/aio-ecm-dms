@@ -54,6 +54,9 @@
 								<value>
 								  <string>dms-extension</string>
 								</value>
+								<value>
+								  <string>ecm</string>
+								</value>
 							</collection>
 						</field>
 					</object>

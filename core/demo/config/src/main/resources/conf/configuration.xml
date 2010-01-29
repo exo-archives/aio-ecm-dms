@@ -49,9 +49,12 @@
                 <value>
                   <string>eXoDMSResources</string>
                 </value>
-                <value>
+								<value>
+                  <string>dms-extension</string>
+                </value>
+								<value>
                   <string>ecm</string>
-                </value>   
+                </value>
 								<value>
 									<string>dmsdemo</string>
 								</value>
