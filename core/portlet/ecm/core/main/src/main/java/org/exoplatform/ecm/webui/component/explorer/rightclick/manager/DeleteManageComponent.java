@@ -196,9 +196,11 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     	String trashRepository = portletPref.getValue(Utils.TRASH_REPOSITORY, "");
     	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
     	Node currentNode = uiExplorer.getCurrentNode();
-    	trashService.moveToTrash(node, 
-    							 trashHomeNodePath, trashWorkspace, 
-    							 trashRepository, sessionProvider);    	    	
+    	try {
+	    	trashService.moveToTrash(node, 
+	    							 trashHomeNodePath, trashWorkspace, 
+	    							 trashRepository, sessionProvider);
+    	} catch (PathNotFoundException ex) {}
     	String currentPath = LinkUtils.getExistPath(currentNode, uiExplorer.getCurrentPath());    	
     	uiExplorer.setCurrentPath(currentPath);    	
     	uiExplorer.updateAjax(event);

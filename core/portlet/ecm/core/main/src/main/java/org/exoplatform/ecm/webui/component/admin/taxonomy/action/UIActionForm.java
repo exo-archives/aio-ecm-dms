@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.services.log.Log;
@@ -33,6 +34,7 @@ import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.nodetype.selector.UINodeTypeSelector;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
@@ -61,6 +63,7 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -409,9 +412,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
-          
+          boolean alreadyExistEXO_ACTION = currentNode.hasNode(Utils.EXO_ACTIONS);
           actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_, sortedInputs);
-          session.save();
+          session.save();          
           // Set permission for action node
           uiActionForm.setPermissionAction(currentNode);
           Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
@@ -420,6 +423,15 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           uiActionForm.setNodePath(actionNode.getPath());
           uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false);
           uiActionForm.reset();
+          if (!alreadyExistEXO_ACTION)
+          	addPermission(currentNode.getNode(Utils.EXO_ACTIONS), Utils.EXO_PERMISSIONS, 
+          								Util.getPortalRequestContext().getRemoteUser(), uiActionForm);
+          session.save();
+//          addPermission(currentNode.getNode(Utils.EXO_ACTIONS).getNode(actionName),
+//          							Utils.EXO_PERMISSIONS,
+//          							Util.getPortalRequestContext().getRemoteUser(), uiActionForm);
+//          session.save();
+          
         } catch(ConstraintViolationException cex) {
             uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.constraint-violation-exception", null, ApplicationMessage.WARNING));
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -445,6 +457,24 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       uiTaxonomyTreeContainer.viewStep(4);
       uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
+    }
+    
+    private void addPermission(Node node, String propertyName, String userId, UIActionForm uiForm) throws Exception {
+      if (PermissionUtil.canChangePermission(node)) {
+        if (node.canAddMixin("exo:privilegeable")) {
+          node.addMixin("exo:privilegeable");
+        }    	
+	    	String removePermission = PermissionType.REMOVE;
+	    	List<String> permissionList = ((ExtendedNode)node).getACL().getPermissions(userId);
+	    	
+	    	if (permissionList == null)
+	    		permissionList = new ArrayList<String>();
+	    	
+	    	permissionList.add(removePermission);
+	    	
+	      ((ExtendedNode)node).setPermission(userId, permissionList.toArray(new String[]{}));
+	    	node.getSession().save();
+      }
     }
   }
   
