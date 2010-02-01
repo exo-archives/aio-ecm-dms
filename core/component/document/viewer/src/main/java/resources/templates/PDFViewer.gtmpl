@@ -4,7 +4,8 @@
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIComponent;
-  import org.exoplatform.services.jcr.util.Text;	
+    import org.exoplatform.services.jcr.util.Text;
+    import org.exoplatform.ecm.webui.utils.Utils;
 	
 	UIComponent uiParent = uicomponent.getParent();
 	
@@ -234,7 +235,8 @@
   	<div class="ImageView">
 		<%
 			try {
-			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + currentNode.getUUID() + "/";
+			  String pdfPageImage = "/" + uiParent.getPortalName() + "/" + Utils.getRestContextName(uiParent.getPortalName()) + "/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + currentNode.getUUID() + "/";
+			  System.out.println(pdfPageImage);
 		%>
 			  <a href="$pdfPageImage" rel="lightbox" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
 		<%}catch(Exception e) {%>	

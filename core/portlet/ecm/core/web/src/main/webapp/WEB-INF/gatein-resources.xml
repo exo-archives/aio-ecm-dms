@@ -124,11 +124,7 @@
   </portlet-skin>
   -->
   <javascript>
-		<param>
-      <js-module>eXo.ecm.ZeroClipboard</js-module>
-      <js-path>/javascript/eXo/ecm/ZeroClipboard.js</js-path>
-    </param>
-		<param>
+	<param>
       <js-module>eXo.ecm.Jquery</js-module>
       <js-path>/javascript/eXo/ecm/jquery-1.3.2.js</js-path>
     </param>
@@ -140,10 +136,6 @@
       <js-module>eXo.ecm.flowplayerPlaylist</js-module>
       <js-path>/javascript/eXo/ecm/flowplayer.playlist-3.0.7.js</js-path>
     </param>
-    <param>
-      <js-module>eXo.ecm.Slideshow</js-module>
-      <js-path>/javascript/eXo/ecm/Slideshow.js</js-path>
-    </param>    
 	</javascript>
   <!-- ECM javascrips -->
   <!--javascript>

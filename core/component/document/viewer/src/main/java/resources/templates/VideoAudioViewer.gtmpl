@@ -5,6 +5,7 @@
   import javax.jcr.NodeIterator;
   import org.exoplatform.webui.core.UIComponent;
   import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.utils.Utils;
 
   public Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.isNodeType("nt:unstructured")) {
@@ -38,7 +39,7 @@
   def link = "";
   def url = "";
   for(nodedata in presentNodes) {
-    link = "/".concat(uicomponent.getPortalName()).concat("/rest/jcr/").concat(repository).concat("/").concat(nodedata.getSession().getWorkspace().getName()).concat(nodedata.getPath());
+    link = "/".concat(uicomponent.getPortalName()).concat("/").concat(Utils.getRestContextName(uicomponent.getPortalName())).concat("/jcr/").concat(repository).concat("/").concat(nodedata.getSession().getWorkspace().getName()).concat(nodedata.getPath());
     url = url.concat("\n {url: '").concat(link).concat("', autoPlay: true},");
     links.add(link);
   }
