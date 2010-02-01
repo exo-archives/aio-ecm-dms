@@ -290,13 +290,20 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * {@inheritDoc}
    */
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException {
+    return getCategories(node, taxonomyName, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public List<Node> getCategories(Node node, String taxonomyName, boolean system) throws RepositoryException {
     List<Node> listCate = new ArrayList<Node>();
     Session session = null;
     try {
       if (node.isNodeType("mix:referenceable")) {
         String repository = ((ManageableRepository) node.getSession().getRepository())
             .getConfiguration().getName();
-        Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
+        Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName, system);
         if (rootNodeTaxonomy != null) {
           String sql = null;
           sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
@@ -325,12 +332,18 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * {@inheritDoc}
    */
   public List<Node> getAllCategories(Node node) throws RepositoryException {
+    return getAllCategories(node, false);
+  }
+  /**
+   * {@inheritDoc}
+   */
+  public List<Node> getAllCategories(Node node, boolean system) throws RepositoryException {
     List<Node> listCategories = new ArrayList<Node>();
     String repository = ((ManageableRepository) node.getSession().getRepository())
     .getConfiguration().getName();
-    List<Node> allTrees = getAllTaxonomyTrees(repository);
+    List<Node> allTrees = getAllTaxonomyTrees(repository, system);
     for (Node tree : allTrees) {
-      List<Node> categories = getCategories(node, tree.getName());
+      List<Node> categories = getCategories(node, tree.getName(), system);
       for (Node category : categories) listCategories.add(category);
     }
     return listCategories;

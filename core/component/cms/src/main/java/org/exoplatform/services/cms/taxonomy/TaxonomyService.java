@@ -171,11 +171,31 @@ public interface TaxonomyService {
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException;
 
   /**
+   * Returns all the paths of the categories (relative to the root node of the
+   * given taxonomy) which have been associated to the given node for the given
+   * taxonomy
+   * 
+   * @param node The node for which we seek the categories
+   * @param taxonomyName The name of the taxonomy
+   * @param system 
+   * @throws RepositoryException if the categories cannot be retrieved
+   */
+  public List<Node> getCategories(Node node, String taxonomyName, boolean system) throws RepositoryException;
+
+  /**
    * Returns all the paths of the categories which have been associated to the given node
    * @param node  The node for which we seek the categories
    * @throws RepositoryException
    */
   public List<Node> getAllCategories(Node node) throws RepositoryException;
+  
+  /**
+   * Returns all the paths of the categories which have been associated to the given node
+   * @param node  The node for which we seek the categories
+   * @param system check system provider or not
+   * @throws RepositoryException
+   */
+  public List<Node> getAllCategories(Node node, boolean system) throws RepositoryException;
   
   /**
    * Removes a category to the given node
