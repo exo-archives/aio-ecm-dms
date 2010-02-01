@@ -183,7 +183,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     StringBuilder tags = null;
     
     Collections.sort(lstNode, new PropertyValueComparator(DATE_MODIFIED, PropertyValueComparator.DESCENDING_ORDER));
-    
+    ManageableRepository manageableRepository = repositoryService.getRepository(repository);
     List<DriveData> lstDrive = manageDriveService.getAllDrives(repository);
     for (Node node : lstNode) {
       docNode = new DocumentNode();
@@ -196,7 +196,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
 
       List<Node> tagList = newFolksonomyService.
       		getLinkedTagsOfDocumentByScope(NewFolksonomyService.PUBLIC, "", node, 
-      											repository, node.getSession().getWorkspace().getName());
+      											repository, manageableRepository.getConfiguration().getDefaultWorkspaceName());
       for(Node tag : tagList) {
 				tags.append(tag.getName()).append(", ");
       }

@@ -8,21 +8,23 @@
    */
 %>
 <%   
-  import org.exoplatform.web.application.Parameter ;
-  import org.exoplatform.services.jcr.util.Text;  
+  import org.exoplatform.web.application.Parameter;
+  import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.utils.Utils;
 %>
 <%
   def childList = uicomponent.getChildrenList();
   if(childList.size() > 0) {
-    def viewComponentId  = new Date().getTime();
-    def rcontext = _ctx.getRequestContext() ;
-    def data = "";
-    String imgSrc = "";
-    rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
-    rcontext.getJavascriptManager().importJavascript('eXo.ecm.DMSBrowser','/ecm/javascript/');    
-    rcontext.getJavascriptManager().importJavascript('eXo.ecm.UICoverFlow','/ecm/javascript/');
-    rcontext.getJavascriptManager().importJavascript('eXo.ecm.Slideshow','/ecm/javascript/');
-    rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.initEvent('$viewComponentId')");
+    String portalName = uicomponent.getPortalName();
+	String restContextName = Utils.getRestContextName(portalName);
+	def viewComponentId  = new Date().getTime();
+	def rcontext = _ctx.getRequestContext() ;
+	def data = "";
+	String imgSrc = "";
+	rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
+	rcontext.getJavascriptManager().importJavascript('eXo.ecm.DMSBrowser','/ecm/javascript/');    
+	rcontext.getJavascriptManager().importJavascript('eXo.ecm.UICoverFlow','/ecm/javascript/');
+	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.initEvent('$viewComponentId')");
 %>
   <div id="$uicomponent.id" class="UISlideShowView UICoverFlowView">
     <div class="TLBox">
@@ -265,11 +267,11 @@
                   } else {
                     isShowSlideShow = false;
                   }
-                  imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/thumbnailImage/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath());
+                  imgSrc = "/".concat(portalName).concat("/").concat(restContextName).concat("/thumbnailImage/{size}/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath());
                   if(uicomponent.isSupportedThumbnailImage(image)) {
-                    imgSrc = imgSrc.concat("/?size=origin&reloadnum=").concat(String.valueOf(Math.random())); 
+                    imgSrc = imgSrc.replace("{size}","origin").concat("/?reloadnum=").concat(String.valueOf(Math.random())); 
                   } else if (isShowSlideShow) {
-                    imgSrc = imgSrc.concat("/?size=big&reloadnum=").concat(String.valueOf(Math.random()));
+                    imgSrc = imgSrc.replace("{size}","big").concat("/?reloadnum=").concat(String.valueOf(Math.random()));
                   } else {
                     continue;
                   }

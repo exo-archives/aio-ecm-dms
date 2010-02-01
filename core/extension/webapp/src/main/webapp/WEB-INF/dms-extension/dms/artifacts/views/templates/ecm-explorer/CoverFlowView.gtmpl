@@ -8,12 +8,15 @@
    */
 %>
 <%   
-  import org.exoplatform.web.application.Parameter ;
-  import org.exoplatform.services.jcr.util.Text;  
+  import org.exoplatform.web.application.Parameter;
+  import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.utils.Utils;
 %>
 <%
   if(uicomponent.getChildrenList().size() > 0) {
-    def viewComponentId  = new Date().getTime();
+	  String portalName = uicomponent.getPortalName();
+	  String restContextName = Utils.getRestContextName(portalName);
+      def viewComponentId  = new Date().getTime();
 	  def rcontext = _ctx.getRequestContext() ;
 	  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UICoverFlow','/ecm/javascript/');
 	  rcontext.getJavascriptManager().importJavascript('eXo.ecm.DMSBrowser','/ecm/javascript/') ;	  
@@ -124,7 +127,7 @@
 	  					    } else {
 	  					      isShowCoverFlow = false;
 	  					    }
-	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?size=big";
+	                imgSrc = "/" + portalName + "/" + restContextName + "/thumbnailImage/big/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?";
 	  					    if(uicomponent.isSupportedThumbnailImage(image)) {
 								    if(isShowCoverFlow) {
 	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";

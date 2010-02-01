@@ -75,15 +75,15 @@ public class ThumbnailRESTService implements ResourceContainer {
   }
 /**
  * Get the image with medium size
- * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=medium
+ * ex: /portal/rest/thumbnailImage/medium/repository/collaboration/test.gif/
  * @param repoName Repository name
  * @param wsName Workspace name
  * @param nodePath Node path
  * @return Response inputstream
  * @throws Exception
  */  
-  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=medium")
-  //@QueryParam("size=medium")
+  
+  @Path("/medium/{repoName}/{workspaceName}/{nodePath}/")
   @GET
   public Response getThumbnailImage(@PathParam("repoName") String repoName, 
                                     @PathParam("workspaceName") String wsName,
@@ -93,15 +93,14 @@ public class ThumbnailRESTService implements ResourceContainer {
   
 /**
  * Get the image with big size
- * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=big
+ * ex: /portal/rest/thumbnailImage/big/repository/collaboration/test.gif/
  * @param repoName Repository name
  * @param wsName Workspace name
  * @param nodePath Node path
  * @return Response inputstream
  * @throws Exception
  */   
-  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=big")
-  //@QueryParam("size=big")
+  @Path("/big/{repoName}/{workspaceName}/{nodePath}/")
   @GET
   public Response getCoverImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -111,15 +110,14 @@ public class ThumbnailRESTService implements ResourceContainer {
   
 /**
  * Get the image with small size
- * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=small
+ * ex: /portal/rest/thumbnailImage/small/repository/collaboration/test.gif/
  * @param repoName Repository name
  * @param wsName Workspace name
  * @param nodePath Node path
  * @return Response inputstream
  * @throws Exception
  */   
-  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=small")
-  //@QueryParam("size=small")
+  @Path("/small/{repoName}/{workspaceName}/{nodePath}/")
   @GET
   public Response getSmallImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -129,15 +127,14 @@ public class ThumbnailRESTService implements ResourceContainer {
   
   /**
    * Get the image with origin data
-   * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=origin
+   * ex: /portal/rest/thumbnailImage/origin/repository/collaboration/test.gif/
    * @param repoName Repository name
    * @param wsName Workspace name
    * @param nodePath Node path
    * @return Response data stream
    * @throws Exception
    */   
-  @Path("/{repoName}/{workspaceName}/{nodePath}/?size=origin")
-  //@QueryParam("size=origin")
+  @Path("/origin/{repoName}/{workspaceName}/{nodePath}/")
   @GET
   public Response getOriginImage(@PathParam("repoName") String repoName,
                                  @PathParam("workspaceName") String wsName, 
@@ -251,6 +248,8 @@ public class ThumbnailRESTService implements ResourceContainer {
     ManageableRepository repository = repositoryService_.getRepository(repoName);
     Session session = getSystemProvider().getSession(wsName, repository);
     Node showingNode = null;
+    Node root = session.getRootNode();
+    root.getNodes();
     if(nodePath.equals("/")) showingNode = session.getRootNode();
     else {
       showingNode = (Node) nodeFinder_.getItem(session, nodePath);

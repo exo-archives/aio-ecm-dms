@@ -41,6 +41,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.definition.PortalContainerConfig;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
@@ -599,4 +600,10 @@ public class Utils {
 		return resourceBundle.getString(key);
 	}
 
+  public static String getRestContextName(String portalContainerName) {
+	  ExoContainer container = ExoContainerContext.getCurrentContainer();
+	  PortalContainerConfig portalContainerConfig = (PortalContainerConfig)container.getComponentInstance(PortalContainerConfig.class);
+	  return portalContainerConfig.getRestContextName(portalContainerName);
+  }
+  
 }
