@@ -3,7 +3,7 @@
   
   <page>
     <name>contentAdministration</name>
-    <access-permissions>manager:/platform/administrators</access-permissions>
+    <access-permissions>*:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>    
     <show-max-window>true</show-max-window>
     
@@ -13,7 +13,8 @@
 				<portlet-ref>ECMAdminPortlet</portlet-ref>
     	</portlet>
       <title>ECM Administration</title>
-      <show-info-bar>true</show-info-bar>      
+			<access-permissions>*:/platform/administrators</access-permissions>    
+      <show-info-bar>true</show-info-bar>
     </portlet-application>
     
     <portlet-application>
@@ -22,14 +23,15 @@
 				<portlet-ref>WorkflowAdministrationPortlet</portlet-ref>
     	</portlet>
       <title>Workflow Administration</title>
-      <show-info-bar>true</show-info-bar>      
+			<access-permissions>*:/platform/administrators</access-permissions>
+      <show-info-bar>true</show-info-bar>
     </portlet-application>
             
   </page>
     
   <page>
     <name>ECMAdmin</name>
-    <access-permissions>manager:/platform/administrators</access-permissions>
+    <access-permissions>*:/platform/administrators</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
     <portlet-application>
     	<portlet>
@@ -37,7 +39,8 @@
 				<portlet-ref>ECMAdminPortlet</portlet-ref>
     	</portlet>
       <title>ECMAdmin</title>
-      <show-info-bar>false</show-info-bar>      
+			<access-permissions>*:/platform/administrators</access-permissions>
+      <show-info-bar>false</show-info-bar>
     </portlet-application>
   </page>
     
@@ -52,7 +55,8 @@
 				<portlet-ref>WorkflowAdministrationPortlet</portlet-ref>
     	</portlet>
       <title>Workflow Administration</title>
-      <show-info-bar>false</show-info-bar>      
+			<access-permissions>*:/platform/administrators</access-permissions>
+      <show-info-bar>false</show-info-bar>
     </portlet-application>  
   </page>
 </page-set>

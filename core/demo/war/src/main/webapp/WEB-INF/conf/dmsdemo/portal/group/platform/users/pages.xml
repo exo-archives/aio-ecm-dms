@@ -4,7 +4,7 @@
   <page>
     <name>FileExplorer</name>
     <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>
+    <edit-permission>*:/platform/administrators</edit-permission>
     
     <portlet-application>
     	<portlet>
@@ -83,15 +83,16 @@
 				</preferences>
     	</portlet>
       <title>File Explorer</title>
+			<access-permissions>*:/platform/users</access-permissions>     
       <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
+      <show-application-mode>true</show-application-mode> 
     </portlet-application> 
   </page>
   
   <page>
     <name>FastContentCreator</name>
     <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>
+    <edit-permission>*:/platform/administrators</edit-permission>
     
     <portlet-application>
     	<portlet>
@@ -121,15 +122,16 @@
 				</preferences>				
     	</portlet>
       <title>Fast Content Creator</title>
+			<access-permissions>*:/platform/users</access-permissions> 
       <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
+      <show-application-mode>true</show-application-mode>
 		</portlet-application>      
   </page>
   
   <page>
     <name>ContentBrowser</name>
     <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>
+    <edit-permission>*:/platform/administrators</edit-permission>
     
     <portlet-application>
     	<portlet>
@@ -267,15 +269,16 @@
 				</preferences>				
     	</portlet>
       <title>Content Browser</title>
+			<access-permissions>*:/platform/users</access-permissions>   
       <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
+      <show-application-mode>true</show-application-mode>
     </portlet-application>  
   </page>
   
   <page>
     <name>WorkflowController</name>
     <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>   
+    <edit-permission>*:/platform/administrators</edit-permission>   
            
     <portlet-application>
     	<portlet>
@@ -283,7 +286,8 @@
 				<portlet-ref>WorkflowControllerPortlet</portlet-ref>
     	</portlet>
       <title>Business Process</title>
-      <show-info-bar>false</show-info-bar>      
+			<access-permissions>*:/platform/users</access-permissions>    
+      <show-info-bar>false</show-info-bar>
     </portlet-application>  
   </page>
   
