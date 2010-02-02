@@ -103,7 +103,7 @@
 	      <%        
 	        if(!unsupportMimeTypeText.contains(mimeType)&& mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
 	          if(getFileSize(contentNode) < 1024) {
-	            println uiParent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
+	            println "<pre>" + uiParent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 	          } else {
 	       %>
 	            <div style="text-align:center; font-style:italic">
