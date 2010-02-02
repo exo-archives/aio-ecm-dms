@@ -236,7 +236,6 @@
 		<%
 			try {
 			  String pdfPageImage = "/" + uiParent.getPortalName() + "/" + Utils.getRestContextName(uiParent.getPortalName()) + "/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + currentNode.getUUID() + "/";
-			  System.out.println(pdfPageImage);
 		%>
 			  <a href="$pdfPageImage" rel="lightbox" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
 		<%}catch(Exception e) {%>	
