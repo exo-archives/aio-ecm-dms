@@ -15,7 +15,9 @@
 %>
 <div class="UIECMAdminPortlet" id="UIECMAdminPortlet">
   <%uicomponent.renderChild(UIPopupContainer.class);%>
-	<%uicomponent.renderChild(UIRepositoryControl.class);%>
+	<%
+	/* uicomponent.renderChild(UIRepositoryControl.class); */
+	%>
 	<div class="UIResizableBlock" style="height: 400px">
 	  <%
 	    int style = 6;
