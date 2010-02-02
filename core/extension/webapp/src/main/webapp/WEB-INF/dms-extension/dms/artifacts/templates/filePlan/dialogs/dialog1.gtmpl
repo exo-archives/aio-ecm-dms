@@ -99,7 +99,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.record-category-identifier")%></td>
 									  <td class="FieldComponent">
 										<%
-							        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier", "validate=empty", "validate=empty] ;
+							        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier", "validate=empty"] ;
 							        uicomponent.addTextField("recordCategoryIdentifier", fieldCateIdentifier) ; 
 							      %>
 									  </td>

@@ -150,6 +150,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    //add lastModified property to jcr:content
     session.save();
     session.logout();
     return currentNode.getPath();
@@ -292,7 +293,7 @@ public class CmsServiceImpl implements CmsService {
           if(inputVariable != null) {
             value = inputVariable.getValue();
           }
-          if(value != null) {
+          if(value != null || (propertyDef.getRequiredType() == PropertyType.DATE && propertyDef.isMandatory())) {
             processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
           }
         }
