@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class is used to store data about some default user permissions in 
+ * configure file dms-taxonomies-configuration.xml
+ * 
  * Created by The eXo Platform SARL
  * Author : Nguyen Anh Vu
  *          anhvurz90@gmail.com

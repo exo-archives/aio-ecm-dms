@@ -117,12 +117,13 @@ public interface TaxonomyService {
    * @param workspace The name of the workspace
    * @param parentPath The place where the taxonomy node will be added
    * @param taxoNodeName The name of taxonomy node
+   * @param creator The name of the user creating this node 
    * @throws TaxonomyNodeAlreadyExistsException if a taxonomy node with the same
    *           name has already been added
    * @throws RepositoryException if the taxonomy node could not be added
    */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
-      String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException;
+      String taxoNodeName, String creator) throws RepositoryException, TaxonomyNodeAlreadyExistsException;
 
   /**
    * Removes the taxonomy node located at the given absolute path

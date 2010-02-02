@@ -24,11 +24,11 @@
 	              </value>
                 <value>                            
                   <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyTreeDefaultUserPermission$Permission">             
-                    <field name="identity"><string>root</string></field>
+                    <field name="identity"><string>*:/platform/users</string></field>
                     <field name="read"><string>true</string></field>                
                     <field name="addNode"><string>true</string></field>                
                     <field name="setProperty"><string>true</string></field>                
-                    <field name="remove"><string>true</string></field>                  
+                    <field name="remove"><string>false</string></field>                  
                   </object>  
                 </value>                        
 	            </collection>

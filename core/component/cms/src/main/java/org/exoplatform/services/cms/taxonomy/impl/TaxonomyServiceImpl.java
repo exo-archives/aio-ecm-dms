@@ -253,7 +253,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * {@inheritDoc}
    */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
-      String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException {
+      String taxoNodeName, String creatorUser) throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     Session systemSession = null;
     try {
       ManageableRepository manaRepo = repositoryService_.getRepository(repository);
@@ -267,8 +267,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           String owner = node.getProperty("exo:owner").getString();
           node.addMixin("exo:privilegeable");
           node.setPermission(owner, PermissionType.ALL);
-//          node.setPermission("*:/platform/administrators", PermissionType.ALL);
-//          node.setPermission("*:/platform/users", PermissionType.ALL);
+          if (creatorUser != null)
+          	node.setPermission(creatorUser, PermissionType.ALL);
           for(Map.Entry<String, String[]> entry : taxonomyTreeDefaultUserPermissions_.entrySet()) {
             node.setPermission(entry.getKey(), entry.getValue());          	
           }
@@ -282,7 +282,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     } finally {
       if(systemSession != null) systemSession.logout();
     }
-  }
+  }  
 
   /**
    * {@inheritDoc}
