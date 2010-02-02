@@ -62,16 +62,7 @@
 						</div>
 				<% } %>
 						
-				<% if (pref.isShowTrashDoc()) { 
-					String classValue = (allItemFilterMap.contains(trash) ?
-							"TrueSelectIcon" : "ArrowSidContent") + " TextSiderContent";
-					%>
-						<div class="$classValue">
-							<a href="<%=uicomponent.event("ClickFilter", trash)%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrash")%>" class="ShowAllFromTrashBtn">
-								<span><%=_ctx.appRes("UIAllItems.label.Trash")%> </span>
-							</a>
-						</div>
-				<% } %>
+
 			</div>
 		</div>
 	</div>

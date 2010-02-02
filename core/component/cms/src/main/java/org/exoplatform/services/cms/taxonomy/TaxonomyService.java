@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.taxonomy;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -211,6 +212,8 @@ public interface TaxonomyService {
    */
   public void addCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException;
+  
+  public Map<String, String[]> getTaxonomyTreeDefaultUserPermission();
 
   /**
    * Add a new taxonomy plugin to the service
