@@ -134,6 +134,7 @@
 	padding-right: 18px;
 	height: 16px;
 	cursor: pointer;
+	float: right;
 }
 
 .UIArticle .ContentIcon {
