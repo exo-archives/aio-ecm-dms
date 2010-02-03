@@ -901,6 +901,9 @@ var ListView = function() {
 	ListView.prototype.loadEffectedWidthColumn = function() {
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
 		var root = document.getElementById("UIDocumentWorkspace");
+		var workingArea = document.getElementById("UIWorkingArea");
+		var leftContainer = document.getElementById("LeftContainer");
+		var dynamicWidth = workingArea.offsetWidth - leftContainer.offsetWidth;
 		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		root.style.overflow = "hidden";
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
@@ -908,7 +911,7 @@ var ListView = function() {
 			rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
 			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
 		} else {
-			rightContainer.style.width = rightContainer.offsetWidth + 0 + "px";
+			rightContainer.style.width = dynamicWidth + "px";			
 			listGrid.style.width = listGrid.offsetWidth + 0 + "px";
 		}
 		if(!eXo.ecm.UIListView.mapColumn) return;
