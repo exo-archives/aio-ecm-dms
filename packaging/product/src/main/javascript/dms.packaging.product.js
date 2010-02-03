@@ -25,11 +25,6 @@ function getProduct(version) {
 	portal.starter = new Project("org.exoplatform.portal", "exo.portal.starter.war", "war", portal.version);
   portal.starter.deployName = "starter";
   product.addDependencies(portal.starter);  
-  //product.addDependencies(dms.web.dmsportal);
-  
-	portal.fck = new Project("org.exoplatform.platform", "exo.platform.web.fck", "war", "3.0.0-Beta04-SNAPSHOT");
-  portal.fck.deployName = "fck";
-  product.addDependencies(portal.fck);
 	
   product.addDependencies(portal.web.rest);
 	product.addDependencies(portal.portlet.exoadmin);
@@ -42,6 +37,7 @@ function getProduct(version) {
   product.addDependencies(portal.web.eXoResources);
 	
 	product.addDependencies(dms.web.eXoDMSResources);
+	product.addDependencies(dms.web.fck);
   product.addDependencies(dms.portlet.dms);
   product.addDependencies(dms.portlet.jcr_console);
   product.addDependencies(dms.gadgets);

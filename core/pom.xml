@@ -26,7 +26,7 @@
     <module>portlet/ecm/core/web</module>
     <module>portlet/jcr-console</module>
     <module>web/eXoDMSResources</module>	
-    <module>web/dmsportal</module>
+    <module>web/fck</module>
   <module>gadgets</module>
   <module>extension</module>
   <module>server/tomcat/patch</module>

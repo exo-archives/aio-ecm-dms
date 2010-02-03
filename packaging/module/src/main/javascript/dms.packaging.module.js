@@ -59,6 +59,10 @@ function getModule(params) {
   module.web.eXoDMSResources = 
     new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.web.eXoDMSResources", "war", module.version) ;  
   module.web.eXoDMSResources.deployName = "eXoDMSResources" ;
+	
+	module.web.fck = 
+    new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.web.fck", "war", module.version) ;  
+  module.web.fck.deployName = "fck" ;
       
 	module.extension = {};
   module.extension.webapp = new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.extension.webapp", "war", module.version).
@@ -82,14 +86,6 @@ function getModule(params) {
 
    module.server.tomcat = {}
    module.server.tomcat.patch = new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.server.tomcat.patch", "jar", module.version);
-	
-	/*
-  module.web.dmsportal = 
-    new Project("org.exoplatform.ecm.dms.core", "exo.ecm.dms.core.web.portal", "exo-portal", module.version).
-    addDependency(portal.web.eXoResources) .
-    addDependency(portal.webui.portal) .
-    addDependency(jcr.frameworks.command) .
-    addDependency(jcr.frameworks.web) ;   
-  */
+
   return module;
 }

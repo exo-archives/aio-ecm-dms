@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bundle>
-  <portal>
-    <webos>
-      <home>Accueil</home>
-      <livedesktop>Ordinateur Virtuel</livedesktop>
-    </webos>
-  </portal>
-</bundle>
