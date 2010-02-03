@@ -103,38 +103,35 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
   public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
   
   public void init(SessionProvider sessionProvider) throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-    ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
-    PublicationService publicationService = getApplicationComponent(PublicationService.class);
-    TemplateService templateService  = getApplicationComponent(TemplateService.class);
-    List<String> templates = templateService.getDocumentTemplates(repositoryName);
-    try {
-      //TODO: Should review this method to make sure we have no problem with permission when use system session      
-      Node rootNode;
-      if (rootTreePath.trim().equals("/")) {
-        rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
-      } else {
-        NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
-        rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
-      }
-      
-      UITreeTaxonomyList uiTreeTaxonomyList = getChild(UITreeTaxonomyList.class);
-      uiTreeTaxonomyList.setTaxonomyTreeList(repositoryName);
-      UITreeTaxonomyBuilder builder = getChild(UITreeTaxonomyBuilder.class);
-      builder.setAllowPublish(allowPublish, publicationService, templates);
-      builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);
-      builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
-      builder.setRootTreeNode(rootNode);
-      UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
-      selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
-      selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
-      selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
-      selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
-      selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
-      selectPathPanel.updateGrid();
-    } finally {
-      sessionProvider.close();
-    }        
+		RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+		ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
+		PublicationService publicationService = getApplicationComponent(PublicationService.class);
+		TemplateService templateService = getApplicationComponent(TemplateService.class);
+		List<String> templates = templateService.getDocumentTemplates(repositoryName);
+		Node rootNode;
+		if (rootTreePath.trim().equals("/")) {
+			rootNode = sessionProvider.getSession(workspaceName, manageableRepository)
+					.getRootNode();
+		} else {
+			NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+			rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName,
+					rootTreePath);
+		}
+	
+		UITreeTaxonomyList uiTreeTaxonomyList = getChild(UITreeTaxonomyList.class);
+		uiTreeTaxonomyList.setTaxonomyTreeList(repositoryName);
+		UITreeTaxonomyBuilder builder = getChild(UITreeTaxonomyBuilder.class);
+		builder.setAllowPublish(allowPublish, publicationService, templates);
+		builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);
+		builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
+		builder.setRootTreeNode(rootNode);
+		UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
+		selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
+		selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
+		selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+		selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
+		selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
+		selectPathPanel.updateGrid();
   }
   
   public boolean isAllowPublish() {

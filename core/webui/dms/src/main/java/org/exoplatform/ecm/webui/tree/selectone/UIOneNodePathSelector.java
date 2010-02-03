@@ -98,40 +98,35 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
     TemplateService templateService  = getApplicationComponent(TemplateService.class);
     List<String> templates = templateService.getDocumentTemplates(repositoryName);
-    try {
-      //TODO: Should review this method to make sure we have no problem with permission when use system session      
-      Node rootNode;
-      if (rootTreePath.trim().equals("/")) {
-        rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
-      } else {        
-        NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
-        if (rootTreePath.indexOf("${userId}") > -1) {
-          String userId = Util.getPortalRequestContext().getRemoteUser();
-          String rootTreeOfSpecialDriver = rootTreePath.replace("${userId}", userId);
-          rootTreePath = rootTreeOfSpecialDriver; 
-        }
-        rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
+    Node rootNode;
+    if (rootTreePath.trim().equals("/")) {
+      rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
+    } else {        
+      NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+      if (rootTreePath.indexOf("${userId}") > -1) {
+        String userId = Util.getPortalRequestContext().getRemoteUser();
+        String rootTreeOfSpecialDriver = rootTreePath.replace("${userId}", userId);
+        rootTreePath = rootTreeOfSpecialDriver; 
       }
-      
-      UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
-      uiWorkspaceList.setWorkspaceList(repositoryName);
-      uiWorkspaceList.setIsDisable(workspaceName, isDisable);
-      UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
-      builder.setAllowPublish(allowPublish, publicationService, templates);
-      builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);   
-      builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
-      builder.setRootTreeNode(rootNode);
-      
-      UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
-      selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
-      selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
-      selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
-      selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
-      selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
-      selectPathPanel.updateGrid();
-    } finally {
-      sessionProvider.close();
-    }        
+      rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
+    }
+    
+    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
+    uiWorkspaceList.setWorkspaceList(repositoryName);
+    uiWorkspaceList.setIsDisable(workspaceName, isDisable);
+    UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
+    builder.setAllowPublish(allowPublish, publicationService, templates);
+    builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);   
+    builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
+    builder.setRootTreeNode(rootNode);
+    
+    UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+    selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
+    selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
+    selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+    selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
+    selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
+    selectPathPanel.updateGrid();
   }
   
   public boolean isAllowPublish() {
