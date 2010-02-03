@@ -2387,6 +2387,20 @@
   		<label>
   				<addCategory>Add Category</addCategory>
   		</label>
-  </UIViewFormTabPane>	
+  </UIViewFormTabPane>
+  <UIDriveForm>
+			<label>
+  		<taxonomy-list>Taxonomy List</taxonomy-list>
+  		<admin-view>Admin View</admin-view>
+  		<taxonomy-icons>Taxonomy Icons</taxonomy-icons>
+  		<anonymous-view>Anonymous View</anonymous-view>
+  		<icon-view>Icon View</icon-view>
+  		<slide-show>Slide Show</slide-show>
+  		<simple-view>Simple View</simple-view>
+  		<system-view>System View</system-view>
+  		<timeline-view>Timeline View</timeline-view>
+  		<cover-flow>Cover Flow</cover-flow>	
+  	</label>
+  </UIDriveForm>	
 </bundle>
 
