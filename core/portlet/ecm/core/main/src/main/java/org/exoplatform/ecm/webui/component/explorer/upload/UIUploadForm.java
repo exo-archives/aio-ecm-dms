@@ -690,7 +690,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           }
           buildPathlabel.append(Utils.getResourceBundle(buildlabel.append(".label").toString())).append("/");
         } catch (MissingResourceException me) {
-          buildPathlabel = new StringBuilder();
           buildPathlabel.append(taxonomyPathSplit[i]).append("/");
         }
        
