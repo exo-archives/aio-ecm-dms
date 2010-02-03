@@ -3134,5 +3134,10 @@
   	<msg>
   		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
   	</msg>
-  </UIActionForm> 	
+  </UIActionForm>
+  <UIJcrExplorerEditForm>
+    <label>
+	  <nodePath>Select path</nodePath>
+    </label>
+  </UIJcrExplorerEditForm> 	
 </bundle>

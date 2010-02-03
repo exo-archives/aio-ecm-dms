@@ -3137,5 +3137,10 @@
   	<msg>
   		<constraintviolation-exception>Không thể lưu tài liệu. Dữ liệu nhập vào thiếu hoặc không phù hợp</constraintviolation-exception>
   	</msg>
-  </UIActionForm>   	
+  </UIActionForm>
+  <UIJcrExplorerEditForm>
+    <label>
+	  <nodePath>Lựa chọn đường dẫn</nodePath>
+    </label>
+  </UIJcrExplorerEditForm>   	
 </bundle>

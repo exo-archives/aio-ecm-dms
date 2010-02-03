@@ -2293,6 +2293,7 @@
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>
       <SelectNodePath>Select path</SelectNodePath>
+	  <nodePath>Select path</nodePath>
     </label>
   </UIJcrExplorerEditForm>
   
