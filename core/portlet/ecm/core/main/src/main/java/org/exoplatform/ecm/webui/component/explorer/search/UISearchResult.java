@@ -27,7 +27,11 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.Item;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
@@ -35,13 +39,18 @@ import javax.jcr.query.RowIterator;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.services.log.Log;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.link.LinkUtils;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -97,6 +106,7 @@ public class UISearchResult extends UIContainer {
   static private int PAGE_SIZE = 10;
   private List<String> categoryPathList = new ArrayList<String>();
   private String constraintsCondition;
+  private static final String EXO_RESTORE_LOCATION = "exo:restoreLocation";  
   
   public List<String> getCategoryPathList() { return categoryPathList; }
   public void setCategoryPathList(List<String> categoryPathListItem) {
@@ -299,41 +309,61 @@ public class UISearchResult extends UIContainer {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();            
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
-      String repository = uiExplorer.getRepositoryName();
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
-      Node node;
-      try {
-        node = uiExplorer.getNodeByPath(path, uiExplorer.getTargetSession());
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      Item item = null;      
+      try {      
+	      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+    		// Check if the path exists
+        NodeFinder nodeFinder = uiSearchResult.getApplicationComponent(NodeFinder.class);
+        item = nodeFinder.getItem(session, path);
+      } catch(PathNotFoundException pa) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(ItemNotFoundException inf) {
+          uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
       } catch(AccessDeniedException ace) {
-        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.access-denied", null, 
+                  ApplicationMessage.WARNING)) ;
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	      return ;    	  
+      } catch(RepositoryException e) {
+    		LOG.error("Repository cannot be found");      	
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.repository-error", null, 
+            ApplicationMessage.WARNING)) ;
+			  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+			  return ;    	  
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
         return;
       }
-      TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class);
-      if (!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
-        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null, 
-                                                ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
+      if (isInTrash(item)) 
+      	return;
+      
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
       }
-      UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
-      if (uiPopup == null) {
-        uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
-      }
-      uiPopup.setResizable(true);
-      UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null);
-      uiViewSearch.setNode(node);
-
-      uiPopup.setWindowSize(600,750);
-      uiPopup.setUIComponent(uiViewSearch);
-      uiPopup.setRendered(true);
-      uiPopup.setShow(true);
-      return;
+      uiExplorer.setSelectNode(workspaceName, path) ;
+      
+      uiExplorer.updateAjax(event) ;      
+    }
+    
+    private boolean isInTrash(Item item) throws RepositoryException {
+    	return (item instanceof Node) &&
+      			 ((Node) item).isNodeType(EXO_RESTORE_LOCATION);
     }
   }
 
+  
   static public class OpenFolderActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();

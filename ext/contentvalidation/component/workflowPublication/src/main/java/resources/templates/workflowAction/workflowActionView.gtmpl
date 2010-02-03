@@ -36,7 +36,7 @@
       for(value in values) {
         sB.append(value.getString()).append(",");
       } 
-      if (sB.length > 0) {
+      if (sB.length() > 0) {
      %>
         <%= sB.deleteCharAt(sB.length()-1)%>        
       <%
@@ -53,7 +53,7 @@
         for(value in values) {
           sB.append(value.getString()).append(",");
         } 
-        if (sB.length > 0) {
+        if (sB.length() > 0) {
         %>
           <%= sB.deleteCharAt(sB.length()-1)%>        
         <%
@@ -70,7 +70,7 @@
       for(value in values) {
         sB.append(value.getString()).append(",");
       } 
-      if (sB.length > 0) {
+      if (sB.length() > 0) {
       %>
         <%= sB.deleteCharAt(sB.length()-1)%>        
       <%
