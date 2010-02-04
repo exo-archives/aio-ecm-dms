@@ -867,27 +867,42 @@ var ListView = function() {
 	ListView.prototype.resizeMouseMoveListView = function(event) {
 		var event = event || window.event;
 		var objResize = eXo.ecm.UIListView.objResize;
-		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
-		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;
-		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
+		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;		
+		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;			
+				
+		if (eXo.ecm.UIListView.objResizeValue + resizeValue < 8 ) return;				
+		if (resizeValue > 0) 
+		{						
+			 
+				// Set given portletId 
+				var portletId  = "UIJCRExplorerPortlet";
+				var portlet = document.getElementById(portletId);
+				var uiApplication = DOM.findAncestorByClass(portlet, "UIApplication");												
+				var rightContainer = DOM.findAncestorByClass(objResize, "RightContainer");
+				var listGrid = DOM.findAncestorByClass(objResize, "UIListGrid");				
+				eXo.ecm.UIListView.widthListView = eXo.ecm.UIListView.listGrid.offsetWidth + resizeValue - 4;				
+				rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
+				listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";			
+				
+				// Override style of UIWindow UIAppication of css file  			
+				uiApplication.style.overflow = "hidden";			
+		}
+		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";	 
+
 		if(eXo.ecm.UIListView.mapColumn.get(objResize.className)) {
 			eXo.ecm.UIListView.mapColumn.remove(objResize.className);
 			eXo.ecm.UIListView.mapColumn.put(objResize.className, eXo.ecm.UIListView.objResizeValue + resizeValue + "px");
 		} else {
 			eXo.ecm.UIListView.mapColumn.put(objResize.className, eXo.ecm.UIListView.objResizeValue + resizeValue + "px");
 		}
+		
 		for (var i in objResizeClazz) {
 			try {
 				var objColumn = DOM.findFirstDescendantByClass(objResizeClazz[i], "div", objResize.className);
 				objColumn.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";
 			} catch(err) {
 			}
-		}
-		var rightContainer = DOM.findAncestorByClass(objResize, "RightContainer");
-		var listGrid = DOM.findAncestorByClass(objResize, "UIListGrid");
-		eXo.ecm.UIListView.widthListView = eXo.ecm.UIListView.widthRightContainer + resizeValue + 0;
-		rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
-		listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
+		}						
 	}
 		
 	ListView.prototype.resizeMouseUpListView = function(event) {
