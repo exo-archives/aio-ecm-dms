@@ -850,16 +850,19 @@ var ListView = function() {
 		event.cancelBubble = true;
 		var previousClass = DOM.findPreviousElementByTagName(obj, "div");
 		var listGrid = DOM.findAncestorByClass(previousClass, "UIListGrid");
-		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");
+		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");		
+		
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
 		eXo.ecm.UIListView.widthRightContainer = rightContainer.offsetWidth;
 		if(!eXo.ecm.UIListView.mapColumn) {
 			eXo.ecm.UIListView.mapColumn = new eXo.core.HashMap();
 		}  
 		eXo.ecm.UIListView.currentMouseX = event.clientX;
+		eXo.ecm.UIListView.listGrid = listGrid;
 		eXo.ecm.UIListView.objResize = previousClass;
 		eXo.ecm.UIListView.objRowClazz = rowClazz;
 		eXo.ecm.UIListView.objResizeValue = previousClass.offsetWidth;
+		
 		document.onmousemove = eXo.ecm.UIListView.resizeMouseMoveListView;
 		document.onmouseup = eXo.ecm.UIListView.resizeMouseUpListView;
 	}
@@ -868,25 +871,23 @@ var ListView = function() {
 		var event = event || window.event;
 		var objResize = eXo.ecm.UIListView.objResize;
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;		
-		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;			
-				
-		if (eXo.ecm.UIListView.objResizeValue + resizeValue < 8 ) return;				
-		if (resizeValue > 0) 
-		{						
-			 
-				// Set given portletId 
+		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;		
+		
+		if (eXo.ecm.UIListView.objResizeValue + resizeValue < 8 ) return;		
+		
+			if (resizeValue > 0) 
+			{											
 				var portletId  = "UIJCRExplorerPortlet";
 				var portlet = document.getElementById(portletId);
 				var uiApplication = DOM.findAncestorByClass(portlet, "UIApplication");												
+				uiApplication.style.overflow = "hidden";
 				var rightContainer = DOM.findAncestorByClass(objResize, "RightContainer");
 				var listGrid = DOM.findAncestorByClass(objResize, "UIListGrid");				
 				eXo.ecm.UIListView.widthListView = eXo.ecm.UIListView.listGrid.offsetWidth + resizeValue - 4;				
 				rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
-				listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";			
-				
-				// Override style of UIWindow UIAppication of css file  			
-				uiApplication.style.overflow = "hidden";			
-		}
+				listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";										
+			}
+		
 		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";	 
 
 		if(eXo.ecm.UIListView.mapColumn.get(objResize.className)) {
@@ -904,13 +905,13 @@ var ListView = function() {
 			}
 		}						
 	}
-		
+			
 	ListView.prototype.resizeMouseUpListView = function(event) {
 		document.onmousemove = null;
 		delete eXo.ecm.UIListView.currentMouseX;
 		delete eXo.ecm.UIListView.objResize;
 		delete eXo.ecm.UIListView.objClumnResize;
-		delete eXo.ecm.UIListView.widthRightContainer;
+		delete eXo.ecm.UIListView.widthRightContainer;		
 	}	
 	
 	ListView.prototype.loadEffectedWidthColumn = function() {
@@ -918,15 +919,16 @@ var ListView = function() {
 		var root = document.getElementById("UIDocumentWorkspace");
 		var workingArea = document.getElementById("UIWorkingArea");
 		var leftContainer = document.getElementById("LeftContainer");
-		var dynamicWidth = workingArea.offsetWidth - leftContainer.offsetWidth;
+		var dynamicWidth = workingArea.offsetWidth - leftContainer.offsetWidth - 6 ;
+		
 		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		root.style.overflow = "hidden";
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
 		if(eXo.ecm.UIListView.widthListView) {
 			rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
 			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
-		} else {
-			rightContainer.style.width = dynamicWidth + "px";			
+		} else {			
+			rightContainer.style.width = dynamicWidth + "px";
 			listGrid.style.width = listGrid.offsetWidth + 0 + "px";
 		}
 		if(!eXo.ecm.UIListView.mapColumn) return;
