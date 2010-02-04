@@ -64,8 +64,10 @@ public class ViewRelationsActionComponent extends UIComponent {
           UITreeExplorer treeExplorer = uiSideBar.getChild(UITreeExplorer.class);
           treeExplorer.buildTree();
           uiSideBar.setRenderedChild(UITreeExplorer.class);
+        } else {
+          uiSideBar.setCurrentComp(uiSideBar.getChild(UIViewRelationList.class).getId());
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent());
         }
-        else uiSideBar.setRenderedChild(UIViewRelationList.class);
       } else {
         uiJCRExplorer.getPreference().setShowSideBar(true);
         uiSideBar.setRenderedChild(UIViewRelationList.class);
