@@ -109,5 +109,23 @@
       <version>${org.exoplatform.ws.version}</version>
     </dependency>
   </dependencies>
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include>
+		  <include>**/*.gtmpl</include>
+		  <include>**/*.gif</include>
+          <include>**/*.properties</include>         
+        </includes>
+      </resource>
+    </resources>
+  </build>
   
 </project>
