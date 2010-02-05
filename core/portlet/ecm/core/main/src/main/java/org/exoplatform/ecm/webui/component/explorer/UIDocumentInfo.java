@@ -746,7 +746,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public String getPropertyValue(Node node, String propertyName) throws Exception {
-    if(node.hasProperty(Utils.EXO_OWNER)) {
+    try {
       Property property = node.getProperty(propertyName);
       if(property != null) {
         int requiredType = property.getDefinition().getRequiredType();
@@ -756,9 +756,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         case PropertyType.DATE:
           return getSimpleDateFormat().format(property.getDate().getTime());
         }
-      } else {
-        if(propertyName.equals(Utils.EXO_OWNER)) return SystemIdentity.ANONIM;
       }
+    } catch(PathNotFoundException PNE) {
+      return "";
     }
     return "";
   }
