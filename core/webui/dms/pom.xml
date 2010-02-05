@@ -40,13 +40,13 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>${project.version}</version>
     </dependency>
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.connector.fckeditor</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>${project.version}</version>
     </dependency>
     
     <dependency>

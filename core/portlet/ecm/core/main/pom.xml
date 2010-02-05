@@ -37,21 +37,21 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>    
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.document.viewer</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
+      <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
 
