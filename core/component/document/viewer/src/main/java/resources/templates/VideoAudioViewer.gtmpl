@@ -53,7 +53,7 @@
     <div class="TextContent">
       <div class="ContentDetail">
         <script>
-        \$(function() { 
+        <% print "\$" %> (function() { 
           // install flowplayer into container 
         flowplayer("player", {wmode: 'transparent', src: "/ecm/javascript/eXo/ecm/flowplayer-3.1.5.swf"}, { 
           // fullscreen button not needed here 
