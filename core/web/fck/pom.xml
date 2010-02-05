@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
-    <version>3.0.0-Alpha01</version>
+    <version>3.0.0-Alpha02-SNAPSHOT</version>
   </parent>
 
 	<modelVersion>4.0.0</modelVersion>
