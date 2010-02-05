@@ -65,9 +65,9 @@
     <url>http://builder.exoplatform.org/hudson/job/ecm-dms-trunk-sonar/</url>
   </ciManagement>
   <scm>
-    <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/tags/3.0.0-Alpha01</connection>
-    <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/tags/3.0.0-Alpha01</developerConnection>
-    <url>http://fisheye.exoplatform.org/browse/3Modules/ecm/dms/tags/3.0.0-Alpha01</url>
+    <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/trunk</connection>
+    <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/trunk</developerConnection>
+    <url>http://fisheye.exoplatform.org/browse/3Modules/ecm/dms/trunk</url>
   </scm>
 
   <modules>
