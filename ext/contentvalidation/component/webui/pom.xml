@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.exoplatform.ecm.dms.ext</groupId>
     <artifactId>contentvalidation</artifactId>
-    <version>3.0.0-Alpha01-SNAPSHOT</version>
+    <version>3.0.0-Alpha01</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

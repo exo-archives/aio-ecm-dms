@@ -5,7 +5,7 @@
 	<parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
-    <version>3.0.0-Alpha01-SNAPSHOT</version>
+    <version>3.0.0-Alpha01</version>
   </parent>
 
   <artifactId>exo.ecm.dms.core.extension.webapp</artifactId>
