@@ -51,7 +51,6 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.services.log.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -99,6 +98,7 @@ import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -864,8 +864,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class); 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      boolean findDrive = Boolean.getBoolean(event.getRequestContext().getRequestParameter("findDrive"));
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
-      TemplateService templateService = uiExplorer.getApplicationComponent(TemplateService.class);
       try {
         // Manage ../ and ./
         uri = LinkUtils.evaluatePath(uri);
@@ -873,12 +873,26 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         Item item = nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
         if ((item instanceof Node) &&
         		((Node)item).isNodeType(Utils.EXO_RESTORELOCATION))
-        		//&&	!templateService.isManagedNodeType(((Node)item).getPrimaryNodeType().getName(), uiExplorer.getRepositoryName()))
         	return;
         uiExplorer.setSelectNode(workspaceName, uri);
-        ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
-        List<DriveData> lstDrive = manageDriveService.getAllDrives(uiExplorer.getRepositoryName());
-        uiExplorer.setDriveData(uicomp.getDrive(lstDrive, uiExplorer.getCurrentNode()));                
+        if (findDrive) {
+	        ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
+	        List<DriveData> driveList = 
+	        	manageDriveService.getDriveByUserRoles(uiExplorer.getRepositoryName(), Util.getPortalRequestContext().getRemoteUser(), Utils.getMemberships());
+	        DriveData drive = uicomp.getDrive(driveList, uiExplorer.getCurrentNode());
+	        String warningMSG = null;
+	        if (driveList.size() == 0) {
+	        	warningMSG = "UIDocumentInfo.msg.access-denied";
+	        } else if (drive == null) {
+	        	warningMSG = "UIPopupMenu.msg.path-not-found-exception";
+	        }
+	        if (warningMSG != null) {
+	        	uiApp.addMessage(new ApplicationMessage(warningMSG, null, ApplicationMessage.WARNING)) ;
+	          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	          return ;
+	        }
+	        uiExplorer.setDriveData(uicomp.getDrive(driveList, uiExplorer.getCurrentNode()));
+        }
         uiExplorer.updateAjax(event);
       } catch(ItemNotFoundException nu) {
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
