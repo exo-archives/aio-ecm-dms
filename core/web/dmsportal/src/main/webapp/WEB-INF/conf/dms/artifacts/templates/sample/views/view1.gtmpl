@@ -4,7 +4,8 @@
   import org.exoplatform.ecm.webui.utils.PermissionUtil;
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.webui.core.UIPopupWindow;
-	
+  import org.exoplatform.ecm.webui.utils.Utils;
+  
 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
   def resizeBlock = "class=\"UIResizableBlock\"";
   if(uiPopupWindow != null) resizeBlock = ""; 
@@ -12,6 +13,7 @@
 	def node = uicomponent.getNode() ;
 	def originalNode = uicomponent.getOriginalNode()
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
+	Parameter[] params;
 %>
 <style>
   <% _ctx.include(uicomponent.getTemplateSkin("exo:sample", "Stylesheet")); %>
@@ -112,7 +114,8 @@
 						<%
 						  for(rel in relations) {
 							  if (rel != null) {
-							  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
+							  	params  = [new Parameter("workspaceName", rel.getSession().getWorkspace().getName()), new Parameter("findDrive","true")];
+							  	String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), params);
 							%>
 								<div style="font-size: 12px; padding: 10px;">
 									-	<a href="$actionLink2">
@@ -141,7 +144,8 @@
 						<%
 						  for(att in attachments) {
 						  wsName = att.getSession().getWorkspace().getName();
-						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
+						  params  = [new Parameter("workspaceName", wsName), new Parameter("findDrive","true")];
+						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), params);
 						%>
 							<div style="font-size: 12px; padding: 10px;">
 								<div class="RemoveNodeFloat">
@@ -151,7 +155,7 @@
 								</div>
 								<div class="RemoveNodeFloat"> 	
 							 	 <% if (PermissionUtil.canRemoveNode(att)) {
-							 	 			Parameter[] params = [new Parameter("workspaceName", wsName), new Parameter("repository", uicomponent.getRepository())];
+							 	 			params = [new Parameter("workspaceName", wsName), new Parameter("repository", uicomponent.getRepository())];
 							 	 %>
 																		 	 <a onclick="<%=removeattachcomponent.event("RemoveAttach", Utils.formatNodeName(att.getPath()), params)%>" style="cursor: pointer;" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 	                      <div class="RemoveAttachments"><span></span></div>

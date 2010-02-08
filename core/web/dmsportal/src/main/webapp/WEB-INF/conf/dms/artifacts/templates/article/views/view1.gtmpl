@@ -7,6 +7,7 @@
 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
   def resizeBlock = "class=\"UIResizableBlock\"";
   if(uiPopupWindow != null) resizeBlock = ""; 
+  Parameter[] params;
 %>
 <style>
   <% _ctx.include(uicomponent.getTemplateSkin("exo:article", "Stylesheet")); %>
@@ -128,7 +129,8 @@
 																	    String relPath = rel.getPath() ;
 																	    String relName = relPath.substring(relPath.lastIndexOf("/") + 1, relPath.length()) ; 
 																	    if(!uicomponent.isRssLink()) { 
-																	      actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(relPath), new Parameter("workspaceName", wsName)) ;
+																	    	params  = [new Parameter("workspaceName", wsName), new Parameter("findDrive","true")];
+																	      actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(relPath), params);
 																      } else { 
 																	 	    actionLink = uicomponent.getRssLink() + wsName + relPath ;
 																      }
@@ -167,19 +169,21 @@
 			              	<div class="FieldContainerContent">
 						        <%
 						        if(attachments.size() > 0) {
-							        def uiremoveattach = uicomponent.getRemoveAttach();
+							        def removeattachcomponent = uicomponent.getRemoveAttach();
+							        String wsName = "";
 															for (att in attachments) {
 																if(att != null) {
-			  													String wsName = att.getSession().getWorkspace().getName() ;
+			  													wsName = att.getSession().getWorkspace().getName();
+			  													params  = [new Parameter("workspaceName", wsName), new Parameter("findDrive","true")];
 														%>
 														  <div class="AttachmentsContainer">	
 							                  <div class="AttachmentsContentIcon">
-							                  	<a onclick="<%=uicomponent.event("ChangeNode", Utils.formatNodeName(att.getPath()), new Parameter("workspaceName", wsName))%>" style="cursor: pointer;"><%=att.getName()%></a>
+							                  	<a onclick="<%=uicomponent.event("ChangeNode", Utils.formatNodeName(att.getPath()), params)%>" style="cursor: pointer;"><%=att.getName()%></a>
 							                  </div>
 							                  <% if (PermissionUtil.canRemoveNode(att)) {
-							                  				Parameter[] params = [new Parameter("workspaceName", wsName), new Parameter("repository", uicomponent.getRepository())];
-							                  %>
-							                    <a onclick="<%= uiremoveattach.event("RemoveAttach", Utils.formatNodeName(att.getPath()), params)%>" style="cursor: pointer;" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
+							                       params = [new Parameter("workspaceName", wsName), new Parameter("repository", uicomponent.getRepository())];
+							                    %>
+							                    <a onclick="<%=removeattachcomponent.event("RemoveAttach", Utils.formatNodeName(att.getPath()), params)%>" style="cursor: pointer;" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 							                      <div class="RemoveAttachments"><span></span></div>
 							                    </a>
                                 <% } %>

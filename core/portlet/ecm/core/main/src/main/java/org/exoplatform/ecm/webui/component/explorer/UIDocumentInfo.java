@@ -671,6 +671,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      boolean findDrive = Boolean.getBoolean(event.getRequestContext().getRequestParameter("findDrive"));
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       try {
         // Manage ../ and ./
@@ -678,9 +679,24 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         // Just in order to check if the node exists
         nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
         uiExplorer.setSelectNode(workspaceName, uri);
-        ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
-        List<DriveData> lstDrive = manageDriveService.getAllDrives(uiExplorer.getRepositoryName());
-        uiExplorer.setDriveData(uicomp.getDrive(lstDrive, uiExplorer.getCurrentNode()));
+        if (findDrive) {
+	        ManageDriveService manageDriveService = uicomp.getApplicationComponent(ManageDriveService.class);
+	        List<DriveData> driveList = 
+	        	manageDriveService.getAllDrives(uiExplorer.getRepositoryName());
+	        DriveData drive = uicomp.getDrive(driveList, uiExplorer.getCurrentNode());
+	        String warningMSG = null;
+	        if (driveList.size() == 0) {
+	        	warningMSG = "UIDocumentInfo.msg.access-denied";
+	        } else if (drive == null) {
+	        	warningMSG = "UIPopupMenu.msg.path-not-found-exception";
+	        }
+	        if (warningMSG != null) {
+	        	uiApp.addMessage(new ApplicationMessage(warningMSG, null, ApplicationMessage.WARNING)) ;
+	          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	          return ;
+	        }
+	        uiExplorer.setDriveData(uicomp.getDrive(driveList, uiExplorer.getCurrentNode()));
+        }
         uiExplorer.updateAjax(event);
       } catch (ItemNotFoundException nu) {
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null,
