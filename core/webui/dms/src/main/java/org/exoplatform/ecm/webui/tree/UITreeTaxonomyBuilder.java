@@ -171,7 +171,8 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     if ((tree != null) && (selectedNode != null)) {
       tree.setSelected(selectedNode);
       if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
-        tree.setParentSelected(selectedNode.getParent()) ;
+				if (!selectedNode.getPath().equals(rootTreeNode.getPath()))
+					tree.setParentSelected(selectedNode.getParent()) ;
         sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
         children = Utils.getNodeSymLink(selectedNode).getNodes() ;
       } else {
@@ -278,6 +279,7 @@ public class UITreeTaxonomyBuilder extends UIContainer {
    * @throws Exception the exception
    */
   public void changeNode(String path, Object context) throws Exception {
+  	if (path == null) return;
     NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
     String rootPath = rootTreeNode.getPath();
     if(rootPath.equals(path) || !path.startsWith(rootPath)) {

@@ -41,6 +41,7 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -437,22 +438,15 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           UIFormMultiValueInputSet uiSet = uiCreatorForm.getChildById(FIELD_TAXONOMY);
           if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
             if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
-              NodeHierarchyCreator nodeHierarchyCreator = uiCreatorForm.getApplicationComponent(NodeHierarchyCreator.class);        
               if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
               String workspaceName = uiCreatorForm.getDMSWorkspace();
               UIOneTaxonomySelector uiOneTaxonomySelector = 
                 uiCreatorForm.createUIComponent(UIOneTaxonomySelector.class, null, null);
               uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-              String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-              Session session = uiCreatorForm.getSession(uiCreatorForm.repositoryName, workspaceName);
-              Node rootTree = (Node) session.getItem(rootTreePath);      
-              NodeIterator childrenIterator = rootTree.getNodes();
-              while (childrenIterator.hasNext()) {
-                Node childNode = childrenIterator.nextNode();
-                rootTreePath = childNode.getPath();
-                break;
-              }
-              uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, rootTreePath);
+              TaxonomyService taxonomyService = uiCreatorForm.getApplicationComponent(TaxonomyService.class);
+              List<Node> lstTaxonomyTree = taxonomyService.getAllTaxonomyTrees(uiCreatorForm.repositoryName);
+              if (lstTaxonomyTree.size() == 0) throw new AccessDeniedException();
+              uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, lstTaxonomyTree.get(0).getPath());
               uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
               uiOneTaxonomySelector.init(SessionProviderFactory.createSystemProvider());
               String param = "returnField=" + FIELD_TAXONOMY;        
@@ -467,8 +461,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         } catch (Exception e) {
-          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
-              ApplicationMessage.WARNING));
+        	JCRExceptionManager.process(uiApp, e);
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
