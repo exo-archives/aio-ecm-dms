@@ -452,10 +452,10 @@
       <Icon>Icon</Icon>
     </title>
     <msg>
-      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents to Recycle Bin?</confirm-delete>
+      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents?</confirm-delete>
       <confirm-delete-permanently>Are you sure want to delete the node '{0}' and all its contents permanently?</confirm-delete-permanently>      
       <confirm-restore>A node with the same name also exists in node '{0}' 's old location. Are you sure want to restore this node?</confirm-restore>
-      <confirm-delete-multi>Are you sure want to move these {0} items to the Recycle Bin?</confirm-delete-multi>
+      <confirm-delete-multi>Are you sure want to move these {0} items?</confirm-delete-multi>
       <confirm-delete-permanently-multi>Are you sure want to move these {0} items permanently?</confirm-delete-permanently-multi>      
       <confirm-move>Are you sure want to move?</confirm-move>
       <node-cut>The node '{0}' has been cut.</node-cut>
