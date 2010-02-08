@@ -622,7 +622,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 		Preference pref = uiExplorer.getPreference();
 		String currentPath = uiExplorer.getCurrentPath();
     if(!uiExplorer.isViewTag()) {      
-      nodeList = filterNodeList(uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments()));
+      Set<String> allItemByTypeFilterMap = uiExplorer.getAllItemByTypeFilterMap();
+      if (allItemByTypeFilterMap.size() > 0)
+        nodeList = filterNodeList(uiExplorer.getChildrenList(currentPath, !pref.isShowPreferenceDocuments()));
+      else
+        nodeList = filterNodeList(uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments()));
     } else { // if (uiExplorer.isViewTag())               
       nodeList = uiExplorer.getDocumentByTag();       
     } 

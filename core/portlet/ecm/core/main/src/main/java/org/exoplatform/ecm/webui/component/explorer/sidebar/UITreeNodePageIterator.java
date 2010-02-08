@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
+import java.util.Set;
+
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -63,7 +65,11 @@ public class UITreeNodePageIterator extends UIPageIterator {
       if(uiExplorer.isShowViewFile()) {
         uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentWithTree") ;
       } else {
-        uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        Set<String> allItemByTypeFilterMap = uiExplorer.getAllItemByTypeFilterMap();
+        if (allItemByTypeFilterMap.size() > 0)
+          uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentWithTree");
+        else  
+          uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo");
       }
       if(uiDocumentInfo == null || !uiDocumentInfo.isRendered()) return ;
       String currentPath = uiExplorer.getCurrentNode().getPath();
