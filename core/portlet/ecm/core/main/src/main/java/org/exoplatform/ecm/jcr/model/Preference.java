@@ -31,7 +31,6 @@ public class Preference {
   public static final String ENABLE_DRAG_AND_DROP = "EnableDragAndDrop";
   public static final String SHOW_FAVOURITE_DOC = "Favourites";
   public static final String SHOW_HIDDEN_DOC = "Hidden";
-  public static final String SHOW_TRASH_DOC = "Trash";
 
   public static final String[] SORT_BY_SINGLEVALUE_PROPERTY = {"SingleValueProperty"};
   
@@ -95,9 +94,6 @@ public class Preference {
   public boolean isShowHiddenDoc() { return isShowHiddenDoc; }
   public void setShowHiddenDoc(boolean b) {	isShowHiddenDoc = b; }
   
-  public boolean isShowTrashDoc() {	return isShowTrashDoc; }
-  public void setShowTrashDoc(boolean b) { isShowTrashDoc = b; }
-
   public boolean isShowItemsByUser() { 
   	return isShowItemsByUser; 
   }

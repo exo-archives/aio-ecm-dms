@@ -50,7 +50,6 @@ public class UIAllItemsPreferenceForm extends UIForm implements UIPopupComponent
 	final static public String FIELD_SHOW_OWNED_BY_USER_DOC = "showOwnedByUser".intern();
 	final static public String FIELD_SHOW_FAVOURITES = "showFavourites".intern();
 	final static public String FIELD_SHOW_HIDDENS = "showHiddens".intern();
-	final static public String FIELD_SHOW_TRASH = "showTrash".intern();
 	
 	public UIAllItemsPreferenceForm() throws Exception {
 		addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_OWNED_BY_USER_DOC,
@@ -61,9 +60,6 @@ public class UIAllItemsPreferenceForm extends UIForm implements UIPopupComponent
 														null));
 		addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_HIDDENS,
 														FIELD_SHOW_HIDDENS,
-														null));
-		addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_TRASH,
-														FIELD_SHOW_TRASH,
 														null));
 	}
 
@@ -77,7 +73,6 @@ public class UIAllItemsPreferenceForm extends UIForm implements UIPopupComponent
 		getUIFormCheckBoxInput(FIELD_SHOW_OWNED_BY_USER_DOC).setChecked(pref.isShowOwnedByUserDoc());
 		getUIFormCheckBoxInput(FIELD_SHOW_FAVOURITES).setChecked(pref.isShowFavouriteDoc());
 		getUIFormCheckBoxInput(FIELD_SHOW_HIDDENS).setChecked(pref.isShowHiddenDoc());
-		getUIFormCheckBoxInput(FIELD_SHOW_TRASH).setChecked(pref.isShowTrashDoc());
 	}
 	
 	static public class SaveActionListener extends EventListener<UIAllItemsPreferenceForm> {
@@ -92,8 +87,6 @@ public class UIAllItemsPreferenceForm extends UIForm implements UIPopupComponent
 					uiForm.getUIFormCheckBoxInput(FIELD_SHOW_FAVOURITES).isChecked());
 			pref.setShowHiddenDoc(
 					uiForm.getUIFormCheckBoxInput(FIELD_SHOW_HIDDENS).isChecked());
-			pref.setShowTrashDoc(
-					uiForm.getUIFormCheckBoxInput(FIELD_SHOW_TRASH).isChecked());
 			uiExplorer.refreshExplorer();
 			uiExplorerPortlet.setRenderedChild(UIJCRExplorer.class);
 		}
