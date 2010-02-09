@@ -148,7 +148,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setChecked(false) ;
         setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
       }
-      getUIStringInput(FIELD_SCRIPT_CONTENT).setValue(scriptContent) ;
+      getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(scriptContent) ;
       getUIStringInput(FIELD_SCRIPT_NAME).setValue(script.getName()) ;
       getUIStringInput(FIELD_SCRIPT_NAME).setEditable(false) ;
       return ;
