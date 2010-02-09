@@ -24,7 +24,7 @@
 						defaultView = "DefaultViewSelected";
 					}
 					viewCount++;
-					if(viewCount < 5) {
+					if(viewCount < 8) {
 			%>
 				<td class="IconFileExplorer">
 						<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
