@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -83,16 +84,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null));
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null));
     addUIFormInput(new UIFormCheckBoxInput<String>(SHOW_HIDDEN_NODE, SHOW_HIDDEN_NODE, null));
-    List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>();
     
-    RequestContext context = RequestContext.getCurrentInstance();
-    ResourceBundle res = context.getApplicationResourceBundle();
-    bothLabel_ = res.getString(getId() + ".label.both");
-    folderOnlyLabel_ = res.getString(getId() + ".label.folderOnly");
-    unstructuredFolderLabel_ = res.getString(getId() + ".label.unstructuredFolder");
-    folderOptions.add(new SelectItemOption<String>(folderOnlyLabel_, Utils.NT_FOLDER));
-    folderOptions.add(new SelectItemOption<String>(unstructuredFolderLabel_, Utils.NT_UNSTRUCTURED));
-    folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH));
     addUIFormInput(new UIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS, FIELD_ALLOW_CREATE_FOLDERS, null));
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"});
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"});
@@ -116,7 +108,11 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     ResourceBundle res = context.getApplicationResourceBundle();
     
     for(String foldertype : setFoldertypes) {
-      foldertypeOptions.add(new SelectItemOption<String>(res.getString(getId() + ".label." + foldertype.replace(":", "_")),  foldertype));
+      try {
+        foldertypeOptions.add(new SelectItemOption<String>(res.getString(getId() + ".label." + foldertype.replace(":", "_")),  foldertype));
+      } catch(MissingResourceException mre) {
+        foldertypeOptions.add(new SelectItemOption<String>(foldertype,  foldertype));
+      }
     }
     getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
     getUIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS).setOptions(foldertypeOptions);
