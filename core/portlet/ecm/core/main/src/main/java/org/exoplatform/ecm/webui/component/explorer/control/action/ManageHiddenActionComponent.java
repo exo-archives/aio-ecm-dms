@@ -25,7 +25,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
-import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotHoldsLockFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotRootNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionRealNodeListener;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -51,8 +51,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
  )
 public class ManageHiddenActionComponent extends UIComponent {
 
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), 
-      new IsNotRootNodeFilter(), new IsCheckedOutFilter(), new IsNotHoldsLockFilter()});
+  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new IsNotRootNodeFilter(), 
+      new CanSetPropertyFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
@@ -77,7 +77,7 @@ public class ManageHiddenActionComponent extends UIComponent {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.added-hidden-mixin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         uiExplorer.updateAjax(event);
-      }
-   }
+      } 
+    }
   }
 }
