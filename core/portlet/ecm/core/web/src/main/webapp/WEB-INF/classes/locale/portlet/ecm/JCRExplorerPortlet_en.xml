@@ -431,8 +431,8 @@
       <Icon>Icon</Icon>
     </title>
     <msg>
-      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents to Recycle Bin?</confirm-delete>
-      <confirm-delete-multi>Are you sure want to move these {0} items to the Recycle Bin?</confirm-delete-multi>
+      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents</confirm-delete>
+      <confirm-delete-multi>Are you sure want to move these {0} items</confirm-delete-multi>
       <confirm-move>Are you sure want to move?</confirm-move>
       <node-cut>The node '{0}' has been cut.</node-cut>
       <execute-successfully>The custom action '{0}' has been executed.</execute-successfully>
