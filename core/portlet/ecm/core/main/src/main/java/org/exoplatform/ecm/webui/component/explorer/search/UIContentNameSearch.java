@@ -67,45 +67,49 @@ public class UIContentNameSearch extends UIForm {
   static public class SearchActionListener extends EventListener<UIContentNameSearch> {
     public void execute(Event<UIContentNameSearch> event) throws Exception {
       UIContentNameSearch contentNameSearch = event.getSource();
-      String keyword = contentNameSearch.getUIStringInput(KEYWORD).getValue();
-      
-//      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
-//      UIApplication application = contentNameSearch.getAncestorOfType(UIApplication.class);
-//      if (keyword == null || keyword.length() ==0) {
-//        application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
-//        event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
-//        return;
-//      }
-//      for(String filterChar : arrFilterChar) {
-//        if(keyword.indexOf(filterChar) > -1) {
-//          application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
-//          event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
-//          return;
-//        }
-//      }
-      keyword = keyword.trim();
-      UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
-      String currentNodePath = explorer.getCurrentNode().getPath();
-      String statement = null;
-      if("/".equalsIgnoreCase(currentNodePath)) {
-        statement = StringUtils.replace(ROOT_PATH_SQL_QUERY,"$1",keyword);
-      }else {
-        statement = StringUtils.replace(PATH_SQL_QUERY,"$0",currentNodePath);
-        statement = StringUtils.replace(statement,"$1",keyword);
+      UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class);
+      try {      
+        String keyword = contentNameSearch.getUIStringInput(KEYWORD).getValue();
+        
+  //      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
+  //      UIApplication application = contentNameSearch.getAncestorOfType(UIApplication.class);
+  //      if (keyword == null || keyword.length() ==0) {
+  //        application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
+  //        event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
+  //        return;
+  //      }
+  //      for(String filterChar : arrFilterChar) {
+  //        if(keyword.indexOf(filterChar) > -1) {
+  //          application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
+  //          event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
+  //          return;
+  //        }
+  //      }
+        keyword = keyword.trim();
+        UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
+        String currentNodePath = explorer.getCurrentNode().getPath();
+        String statement = null;
+        if("/".equalsIgnoreCase(currentNodePath)) {
+          statement = StringUtils.replace(ROOT_PATH_SQL_QUERY,"$1",keyword);
+        }else {
+          statement = StringUtils.replace(PATH_SQL_QUERY,"$0",currentNodePath);
+          statement = StringUtils.replace(statement,"$1",keyword);
+        }
+        QueryManager queryManager = explorer.getTargetSession().getWorkspace().getQueryManager();         
+        UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);      
+        Query query = queryManager.createQuery(statement,Query.SQL);
+        long startTime = System.currentTimeMillis();
+        QueryResult queryResult = query.execute();
+        uiSearchResult.clearAll();
+        uiSearchResult.setQueryResults(queryResult);
+        uiSearchResult.updateGrid(true);
+        long time = System.currentTimeMillis() - startTime;
+        uiSearchResult.setSearchTime(time);
+        uiECMSearch.setRenderedChild(UISearchResult.class);
+        contentNameSearch.getUIFormInputInfo(SEARCH_LOCATION).setValue(currentNodePath);
+      } catch (Exception e) {
+        uiECMSearch.setRenderedChild(UISearchResult.class);
       }
-      QueryManager queryManager = explorer.getTargetSession().getWorkspace().getQueryManager();
-      UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class); 
-      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);      
-      Query query = queryManager.createQuery(statement,Query.SQL);
-      long startTime = System.currentTimeMillis();
-      QueryResult queryResult = query.execute();
-      uiSearchResult.clearAll();
-      uiSearchResult.setQueryResults(queryResult);
-      uiSearchResult.updateGrid(true);
-      long time = System.currentTimeMillis() - startTime;
-      uiSearchResult.setSearchTime(time);
-      uiECMSearch.setRenderedChild(UISearchResult.class);
-      contentNameSearch.getUIFormInputInfo(SEARCH_LOCATION).setValue(currentNodePath);
     }  
   }
 
