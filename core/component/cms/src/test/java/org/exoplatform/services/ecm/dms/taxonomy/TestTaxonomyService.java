@@ -103,7 +103,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testAddTaxonomyTree1() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Doc");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Doc", "root");
     Node docTree = (Node)session.getItem("/MyDocuments/Doc");
     taxonomyService.addTaxonomyTree(docTree);
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Doc"));
@@ -121,7 +121,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testAddTaxonomyTree2() throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Doc");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Doc", "root");
     Node docTree = (Node)session.getItem("/MyDocuments/Doc");
     try {
       taxonomyService.addTaxonomyTree(docTree);
@@ -141,7 +141,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testGetTaxonomyTree2() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Music");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Music", "root");
     Node musicTree = (Node)session.getItem("/MyDocuments/Music");
     taxonomyService.addTaxonomyTree(musicTree);
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Music"));
@@ -169,8 +169,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testRemoveTaxonomyTree() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Miscellaneous");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Miscellaneous", "Shoes");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Miscellaneous", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Miscellaneous", "Shoes", "root");
     Node miscellaneous = (Node)session.getItem("/MyDocuments/Miscellaneous");
     taxonomyService.addTaxonomyTree(miscellaneous);
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Miscellaneous"));
@@ -190,8 +190,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testGetAllTaxonomyTrees1() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Champion Leage");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Europa");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Champion Leage", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Europa", "root");
     Node championLeague = (Node)session.getItem("/MyDocuments/Europa");
     Node europa = (Node)session.getItem("/MyDocuments/Champion Leage");
     int totalTree1 = taxonomyService.getAllTaxonomyTrees(REPO_NAME).size();
@@ -212,7 +212,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testHasTaxonomyTree() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Primera Liga");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Primera Liga", "root");
     taxonomyService.addTaxonomyTree((Node)session.getItem("/MyDocuments/Primera Liga"));
     assertTrue(taxonomyService.hasTaxonomyTree(REPO_NAME, "System"));
     assertTrue(taxonomyService.hasTaxonomyTree(REPO_NAME, "Primera Liga"));
@@ -228,7 +228,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testAddTaxonomyNode1() throws TaxonomyNodeAlreadyExistsException, RepositoryException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport", "root");
     Node taxonomyNode = (Node)session.getItem("/MyDocuments/Sport");
     assertTrue(taxonomyNode.isNodeType("exo:taxonomy"));
   }
@@ -243,8 +243,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     try {
       session.getRootNode().addNode("MyDocuments");
       session.save();
-      taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport");
-      taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport");
+      taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport", "root");
+      taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Sport", "root");
     } catch (TaxonomyNodeAlreadyExistsException e) {
     }
   }
@@ -259,7 +259,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testRemoveTaxonomyNode() throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Tennis");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Tennis", "root");
     taxonomyService.removeTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Tennis");
     assertFalse(session.itemExists("/MyDocuments/Tennis"));
   }
@@ -274,8 +274,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void testMoveTaxonomyNode() throws RepositoryException, TaxonomyNodeAlreadyExistsException  {
     session.getRootNode().addNode("MyDocuments");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Budesliga");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Budesliga", "root");
     taxonomyService.moveTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "/Serie", "cut");
     taxonomyService.moveTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Budesliga", "/Budesliga", "copy");
     assertFalse(session.itemExists("/MyDocuments/Serie"));
@@ -297,8 +297,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A", "root");
     Node rootTree = (Node)session.getItem("/MyDocuments/Serie");
     session.save();
     taxonomyService.addTaxonomyTree(rootTree);
@@ -320,9 +320,9 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "B");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "B", "root");
     Node rootTree = (Node)session.getItem("/MyDocuments/Serie");
     taxonomyService.addTaxonomyTree(rootTree);
     taxonomyService.addCategories(article, "Serie", new String[] {"A", "B"});
@@ -347,10 +347,10 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Budesliga");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "B");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Budesliga", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Serie", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "A", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "B", "root");
     Node rootTree1 = (Node)session.getItem("/MyDocuments/Serie");
     Node rootTree2 = (Node)session.getItem("/MyDocuments/Budesliga");
     taxonomyService.addTaxonomyTree(rootTree1);
@@ -372,9 +372,9 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Stories");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Stories", "Homorous");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Stories", "Fairy");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Stories", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Stories", "Homorous", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Stories", "Fairy", "root");
     Node rootTree = (Node)session.getItem("/MyDocuments/Stories");
     taxonomyService.addTaxonomyTree(rootTree);
     taxonomyService.addCategories(article, "Stories", new String[] {"Homorous", "Fairy"});
@@ -398,11 +398,11 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Culture");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "News");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/News", "Politics");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Culture", "Foods");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Culture", "Art");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Culture", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "News", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/News", "Politics", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Culture", "Foods", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Culture", "Art", "root");
     Node rootTree1 = (Node)session.getItem("/MyDocuments/Culture");
     Node rootTree2 = (Node)session.getItem("/MyDocuments/News");
     taxonomyService.addTaxonomyTree(rootTree1);
@@ -431,10 +431,10 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
     session.save();
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Education");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "News");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Education", "Language");
-    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/News", "Weather");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "Education","root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments", "News", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Education", "Language", "root");
+    taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/News", "Weather", "root");
     Node rootTree1 = (Node)session.getItem("/MyDocuments/Education");
     taxonomyService.addTaxonomyTree(rootTree1);
     Node rootTree2 = (Node)session.getItem("/MyDocuments/News");
