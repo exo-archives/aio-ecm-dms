@@ -37,6 +37,7 @@ import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermission
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
@@ -230,7 +231,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   public void addTaxonomyTree(String name, String workspace, String homePath, List<PermissionBean> permBeans)
       throws TaxonomyAlreadyExistsException, TaxonomyNodeAlreadyExistsException, AccessControlException, Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    taxonomyService.addTaxonomyNode(getRepository(), workspace, homePath, name);
+    taxonomyService.addTaxonomyNode(getRepository(), workspace, homePath, name, Util.getPortalRequestContext().getRemoteUser());
     Session session = getSession(workspace);
     Node homeNode = (Node)session.getItem(homePath);
     Node taxonomyTreeNode = homeNode.getNode(name);

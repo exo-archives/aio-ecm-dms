@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.taxonomy;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -121,7 +122,7 @@ public interface TaxonomyService {
    * @throws RepositoryException if the taxonomy node could not be added
    */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
-      String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException;
+      String taxoNodeName, String creator) throws RepositoryException, TaxonomyNodeAlreadyExistsException;
 
   /**
    * Removes the taxonomy node located at the given absolute path
@@ -231,6 +232,8 @@ public interface TaxonomyService {
    */
   public void addCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException;
+  
+  public Map<String, String[]> getTaxonomyTreeDefaultUserPermission();
 
   /**
    * Add a new taxonomy plugin to the service

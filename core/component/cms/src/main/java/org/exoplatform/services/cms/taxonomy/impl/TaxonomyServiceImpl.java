@@ -17,7 +17,9 @@
 package org.exoplatform.services.cms.taxonomy.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -32,6 +34,8 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.container.xml.ObjectParameter;
+import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
@@ -68,6 +72,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
   
   private DMSConfiguration dmsConfiguration_;
+  
+  private Map<String, String[]> taxonomyTreeDefaultUserPermissions_;  
 
   /**
    * Constructor method
@@ -78,7 +84,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * @param dmsConfiguration        get dms-system workspace
    * @throws Exception
    */
-  public TaxonomyServiceImpl(SessionProviderService providerService,
+  public TaxonomyServiceImpl(InitParams initParams, SessionProviderService providerService,
       NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repoService,
       LinkManager linkManager, DMSConfiguration dmsConfiguration) throws Exception {
     providerService_ = providerService;
@@ -86,6 +92,10 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     repositoryService_ = repoService;
     linkManager_ = linkManager;
     dmsConfiguration_ = dmsConfiguration;
+    ObjectParameter objectParam = initParams.getObjectParam("defaultPermission.configuration");
+    if (objectParam != null)
+    	taxonomyTreeDefaultUserPermissions_ 
+    		= getPermissions(((TaxonomyTreeDefaultUserPermission)objectParam.getObject()).getPermissions()); 
   }
 
   /**
@@ -237,7 +247,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * {@inheritDoc}
    */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
-      String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException {
+      String taxoNodeName, String creatorUser) throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     Session systemSession = null;
     try {
       ManageableRepository manaRepo = repositoryService_.getRepository(repository);
@@ -251,8 +261,11 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           String owner = node.getProperty("exo:owner").getString();
           node.addMixin("exo:privilegeable");
           node.setPermission(owner, PermissionType.ALL);
-          node.setPermission("*:/platform/administrators", PermissionType.ALL);
-          node.setPermission("*:/platform/users", PermissionType.ALL);
+          if (creatorUser != null)
+          	node.setPermission(creatorUser, PermissionType.ALL);
+          for(Map.Entry<String, String[]> entry : taxonomyTreeDefaultUserPermissions_.entrySet()) {
+            node.setPermission(entry.getKey(), entry.getValue());          	
+          }
         }
       }
       systemSession.save();
@@ -449,6 +462,31 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       throw new RepositoryException(e);
     }
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Map<String, String[]> getTaxonomyTreeDefaultUserPermission() {
+  	return taxonomyTreeDefaultUserPermissions_;
+  }
+  
+  public Map<String, String[]> getPermissions(List<TaxonomyTreeDefaultUserPermission.Permission> permissions) {
+    Map<String, String[]> permissionsMap = new HashMap<String, String[]>();
+    for (TaxonomyTreeDefaultUserPermission.Permission permission : permissions) {
+      StringBuilder strPer = new StringBuilder();
+      if ("true".equals(permission.getRead()))
+        strPer.append(PermissionType.READ);
+      if ("true".equals(permission.getAddNode()))
+        strPer.append(",").append(PermissionType.ADD_NODE);
+      if ("true".equals(permission.getSetProperty()))
+        strPer.append(",").append(PermissionType.SET_PROPERTY);
+      if ("true".equals(permission.getRemove()))
+        strPer.append(",").append(PermissionType.REMOVE);
+      permissionsMap.put(permission.getIdentity(), strPer.toString().split(","));
+    }
+    return permissionsMap;
+  }
+  
 
   /**
    * Get node as root of all taxonomy in the repository that is in TAXONOMIES_TREE_DEFINITION_PATH

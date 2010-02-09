@@ -21,6 +21,7 @@ import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
@@ -105,7 +106,7 @@ public class UITaxonomyTreeCreateChildForm extends UIForm {
         TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
         String parentPath = uiForm.getUIFormInputInfo(FIELD_PARENT).getValue();
         taxonomyService.addTaxonomyNode(taxoTreeData.getRepository(), taxoTreeData
-            .getTaxoTreeWorkspace(), parentPath, name);
+            .getTaxoTreeWorkspace(), parentPath, name, Util.getPortalRequestContext().getRemoteUser());
         uiCreateChild.update();
       } catch (TaxonomyNodeAlreadyExistsException e) {
         Object[] arg = { name };
