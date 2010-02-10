@@ -180,6 +180,7 @@ public class UISearchResult extends UIContainer {
     List<Node> listNodes = new ArrayList<Node>();
     List<Row> listRows = new ArrayList<Row>();
     Node resultNode = null;
+    if (queryResult_ == null) return new ArrayList<Row>();
     long resultListSize = queryResult_.getNodes().getSize();
     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
     if (resultListSize > 100) {

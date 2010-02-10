@@ -68,6 +68,7 @@ public class UIContentNameSearch extends UIForm {
     public void execute(Event<UIContentNameSearch> event) throws Exception {
       UIContentNameSearch contentNameSearch = event.getSource();
       UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class);
+      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);
       try {      
         String keyword = contentNameSearch.getUIStringInput(KEYWORD).getValue();
         
@@ -96,7 +97,6 @@ public class UIContentNameSearch extends UIForm {
           statement = StringUtils.replace(statement,"$1",keyword);
         }
         QueryManager queryManager = explorer.getTargetSession().getWorkspace().getQueryManager();         
-        UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);      
         Query query = queryManager.createQuery(statement,Query.SQL);
         long startTime = System.currentTimeMillis();
         QueryResult queryResult = query.execute();
@@ -108,6 +108,9 @@ public class UIContentNameSearch extends UIForm {
         uiECMSearch.setRenderedChild(UISearchResult.class);
         contentNameSearch.getUIFormInputInfo(SEARCH_LOCATION).setValue(currentNodePath);
       } catch (Exception e) {
+        uiSearchResult.clearAll();
+        uiSearchResult.setQueryResults(null);
+        uiSearchResult.updateGrid(true);
         uiECMSearch.setRenderedChild(UISearchResult.class);
       }
     }  
