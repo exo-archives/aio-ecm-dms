@@ -296,9 +296,11 @@
 						<%
 							for(column in arrColumns) {
 								def arrColumn = column.split(";");
+								def arrColumnValue = uicomponent.getPropertyValue(data, arrColumn[0]);
+								if ("exo:owner".equals(arrColumn[0]) && "__system".equals(arrColumnValue) ) arrColumnValue = ""; 
 						%>
 			        <div class="Column<%=uicomponent.getPropertyNameWithoutNamespace(arrColumn[0])%>" style="width: ${arrColumn[1]}">
-				        <%=uicomponent.getPropertyValue(data, arrColumn[0])%>
+				        <%=arrColumnValue%>
 			        </div>
 		        <%}%>
 		        
