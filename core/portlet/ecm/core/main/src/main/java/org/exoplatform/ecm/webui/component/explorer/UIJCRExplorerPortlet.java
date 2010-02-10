@@ -231,10 +231,25 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     if (context.useAjax()) return mapParam;
     Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/([^/]+)/(.*)");
     PortalRequestContext pcontext = Util.getPortalRequestContext();
+    Matcher matcher;
+    
+    String nodePathParam = pcontext.getRequestParameter("path");
+    if (nodePathParam!=null) {
+	    patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
+	    matcher = patternUrl.matcher(nodePathParam);
+	    if (matcher.find()) {
+	      mapParam.put("repository", matcher.group(1));
+	      mapParam.put("drive", matcher.group(2));
+	      mapParam.put("path", matcher.group(3));
+	      return mapParam;
+	    }
+    }
+    
     String nodePathUrl = pcontext.getNodePath().substring(1);
     String[] uri = nodePathUrl.split("/");
     if (uri == null || uri.length < 3) return mapParam;
-    Matcher matcher = patternUrl.matcher(nodePathUrl);
+    patternUrl = Pattern.compile("([^/]+)/([^/]+)/([^/]+)/(.*)");
+    matcher = patternUrl.matcher(nodePathUrl);
     if (matcher.find()) {
       mapParam.put("repository", matcher.group(2));
       mapParam.put("drive", matcher.group(3));
