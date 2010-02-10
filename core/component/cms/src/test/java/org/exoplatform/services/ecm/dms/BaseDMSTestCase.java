@@ -62,14 +62,18 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
   protected final String         COLLABORATION_WS = "collaboration".intern();
 
   public void setUp() throws Exception {
-    String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
-    String loginConf = Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
+    String containerConf = BaseDMSTestCase.class.getResource("/conf/standalone/test-configuration.xml").toString();
 
     StandaloneContainer.addConfigurationURL(containerConf);
-    container = StandaloneContainer.getInstance();
+//
+//    String loginConf = Thread.currentThread().getContextClassLoader().getResource("conf/standalone/login.conf").toString();
+//    System.setProperty("java.security.auth.login.config", loginConf);
     
+    container = StandaloneContainer.getInstance();
+
     if (System.getProperty("java.security.auth.login.config") == null)
-      System.setProperty("java.security.auth.login.config", loginConf);
+       System.setProperty("java.security.auth.login.config", Thread.currentThread().getContextClassLoader()
+          .getResource("conf/standalone/login.conf").toString());
 
     credentials = new CredentialsImpl("root", "exo".toCharArray());
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);

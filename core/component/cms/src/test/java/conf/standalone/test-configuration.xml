@@ -2,6 +2,11 @@
 <configuration>
  
  <component>
+	  <key>org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator</key>
+	  <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NodeHierarchyCreatorImpl</type>
+ </component>
+ 
+ <component>
     <key>org.exoplatform.services.log.LogConfigurationInitializer</key>
     <type>org.exoplatform.services.log.LogConfigurationInitializer</type>
     <init-params>
@@ -58,6 +63,7 @@
       </init-params>
   </component> 
   
+	<!--
   <component>
     <key>org.exoplatform.services.organization.OrganizationService</key>
     <type>org.exoplatform.services.jcr.ext.organization.JCROrganizationServiceImpl</type>
@@ -74,6 +80,7 @@
       </value-param>
     </init-params>
   </component>  
+	-->
 
   <component>
     <type>org.exoplatform.container.xml.PortalContainerInfo</type>
@@ -82,12 +89,14 @@
 		<key>org.exoplatform.webui.ext.UIExtensionManager</key>
 		<type>org.exoplatform.webui.ext.impl.UIExtensionManagerImpl</type>
 	</component>
+	<import>classpath:/conf/standalone/portal/test-portal-configuration.xml</import>
+	<import>classpath:/conf/standalone/core/test-core-configuration.xml</import>
+	<import>classpath:/conf/standalone/jcr/test-jcr-configuration.xml</import>
 	
-	<import>classpath:/conf/standalone/test-jcr-configuration.xml</import>
 	<import>classpath:/conf/standalone/system-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-organization-configuration.xml</import>
-	<import>classpath:/conf/standalone/test-taxonomies-configuration.xml</import>
-	<import>classpath:/conf/standalone/test-dms-actions-configuration.xml</import>
+	<!--import>classpath:/conf/standalone/test-taxonomies-configuration.xml</import-->
+	<!--import>classpath:/conf/standalone/test-dms-actions-configuration.xml</import-->
 	<import>classpath:/conf/standalone/test-templates-configuration.xml</import> 
 	<import>classpath:/conf/standalone/test-drives-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-metadata-configuration.xml</import>
@@ -96,6 +105,6 @@
 	<import>classpath:/conf/standalone/test-queries-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-dms-views-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-scripts-configuration.xml</import>  
-  <import>classpath:/conf/standalone/jcr-component-plugins-configuration.xml</import>
+  <!--import>classpath:/conf/standalone/jcr-component-plugins-configuration.xml</import-->
   <import>classpath:/conf/standalone/dms-document-type-configuration.xml</import>
 </configuration>

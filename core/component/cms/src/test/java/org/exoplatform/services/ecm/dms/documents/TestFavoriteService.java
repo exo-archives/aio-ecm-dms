@@ -17,22 +17,15 @@
 package org.exoplatform.services.ecm.dms.documents;
 
 import javax.jcr.Node;
-import javax.jcr.Property;
 import javax.jcr.Session;
-import javax.jcr.Value;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.documents.FavoriteService;
-import org.exoplatform.services.cms.documents.impl.FavoriteServiceImpl;
-import org.exoplatform.services.cms.link.LinkManager;
-import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL Author : Nguyen Anh Vu anhvurz90@gmail.com
@@ -48,15 +41,7 @@ public class TestFavoriteService extends BaseDMSTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-		NodeHierarchyCreator nodeHierarchyCreator 
-				= (NodeHierarchyCreator) myContainer.getComponentInstanceOfType(NodeHierarchyCreator.class);
-		LinkManager linkManager 
-				= (LinkManager) myContainer.getComponentInstanceOfType(LinkManager.class);
-		NodeFinder nodeFinder 
-				= (NodeFinder) myContainer.getComponentInstanceOfType(NodeFinder.class);
-		RepositoryService repositoryService 
-				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
-		favoriteService = new FavoriteServiceImpl(repositoryService, nodeHierarchyCreator, linkManager, nodeFinder);
+		favoriteService = (FavoriteService)myContainer.getComponentInstanceOfType(FavoriteService.class);
 		
 
     SessionProviderService sessionProviderService
@@ -66,7 +51,7 @@ public class TestFavoriteService extends BaseDMSTestCase {
 		
 		ManageableRepository manageableRepository = repositoryService.getRepository("repository");
 		
-  	Session session = sessionProvider.getSession("collaboration", manageableRepository);
+  	Session session = sessionProvider.getSession(COLLABORATION_WS, manageableRepository);
   	Node rootNode = session.getRootNode();
   	String[] names = new String[] {"root", "demo", "james", "john", "marry"};
   	for (String name : names)
