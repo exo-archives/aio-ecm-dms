@@ -77,7 +77,7 @@
       </preference>
       <preference>
         <name>driveName</name>     
-        <value>Collaboration Center</value>        
+        <value>Private</value>        
         <read-only>false</read-only>
       </preference>
 
