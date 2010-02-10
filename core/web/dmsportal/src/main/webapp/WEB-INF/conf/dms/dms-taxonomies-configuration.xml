@@ -82,7 +82,16 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
-					                </value>			                  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
+					                </value>				                  
 				                </collection>
 				              </field>
                     </object>
@@ -143,6 +152,15 @@
 			                      <field name="setProperty"><string>true</string></field>                
 			                      <field name="remove"><string>true</string></field>                  
 				                  </object>  
+				                </value>
+								<value>                            
+				                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+					               <field name="identity"><string>*:/platform/users</string></field>
+			                       <field name="read"><string>true</string></field>                
+			                       <field name="addNode"><string>true</string></field>                
+			                       <field name="setProperty"><string>true</string></field>                
+			                       <field name="remove"><string>false</string></field>                  
+				                  </object>  
 				                </value>			                  
 			                </collection>
 				              </field>
@@ -170,6 +188,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>
@@ -199,6 +226,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>		                  
 				                </collection>
 				              </field>		          				          						          				
@@ -226,6 +262,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>		                  
 				                </collection>
@@ -255,6 +300,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>		                  
 				                </collection>
 				              </field>		          				          						          				
@@ -282,6 +336,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>
@@ -311,6 +374,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>	                  
 				                </collection>
 				              </field>	          				          						          				
@@ -338,6 +410,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>
@@ -368,6 +449,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>		                  
 				                </collection>
 				              </field>		          				          						          				
@@ -395,6 +485,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>		                  
 				                </collection>
@@ -424,6 +523,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>		                  
 				                </collection>
 				              </field>		          				          						          				
@@ -452,6 +560,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>			                  
 				                </collection>
 				              </field>		          				          						          				
@@ -479,7 +596,16 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>
+									  <value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
+					                </value>  
 					                </value>			                  
 				                </collection>
 				              </field>		          				          						          				
@@ -507,6 +633,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>
@@ -536,6 +671,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>			                  
 				                </collection>
 				              </field>	          				          						          				
@@ -563,6 +707,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>
@@ -592,6 +745,15 @@
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
+					                  </object>  
 					                </value>		                  
 				                </collection>
 				              </field>		          				          						          				
@@ -619,6 +781,15 @@
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
+					                  </object>  
+					                </value>
+									<value>                            
+					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
+						               <field name="identity"><string>*:/platform/users</string></field>
+				                       <field name="read"><string>true</string></field>                
+				                       <field name="addNode"><string>true</string></field>                
+				                       <field name="setProperty"><string>true</string></field>                
+				                       <field name="remove"><string>false</string></field>                  
 					                  </object>  
 					                </value>			                  
 				                </collection>

@@ -29,6 +29,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
@@ -40,6 +41,7 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -387,6 +389,11 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-allowed-same-name-sibling", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(ConstraintViolationException cex) {
+    	  LOG.error("Unexpected error occurrs", cex);
+          uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.constraintviolation-exception", null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
       } catch(RepositoryException repo) {
         uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -506,8 +513,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
             if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
               UIJCRExplorer uiExplorer = uiDocumentForm.getAncestorOfType(UIJCRExplorer.class);
-              NodeHierarchyCreator nodeHierarchyCreator = 
-                uiDocumentForm.getApplicationComponent(NodeHierarchyCreator.class);
               String repository = uiExplorer.getRepositoryName();
               DMSConfiguration dmsConfig = uiDocumentForm.getApplicationComponent(DMSConfiguration.class);
               DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
@@ -516,17 +521,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               UIOneTaxonomySelector uiOneTaxonomySelector = 
                 uiFormController.createUIComponent(UIOneTaxonomySelector.class, null, null);
               uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-              String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-              Session session = 
-                uiDocumentForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
-              Node rootTree = (Node) session.getItem(rootTreePath);      
-              NodeIterator childrenIterator = rootTree.getNodes();
-              while (childrenIterator.hasNext()) {
-                Node childNode = childrenIterator.nextNode();
-                rootTreePath = childNode.getPath();
-                break;
-              }
-              uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+              TaxonomyService taxonomyService = uiDocumentForm.getApplicationComponent(TaxonomyService.class);
+              List<Node> lstTaxonomyTree = taxonomyService.getAllTaxonomyTrees(repository);
+              if (lstTaxonomyTree.size() == 0) throw new AccessDeniedException();
+              uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, lstTaxonomyTree.get(0).getPath());
               uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
               uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
               String param = "returnField=" + FIELD_TAXONOMY;
@@ -548,10 +546,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         } catch (Exception e) {
-          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
+      	  JCRExceptionManager.process(uiApp, e);
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
         }
       } else {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm.getParent());
