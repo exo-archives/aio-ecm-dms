@@ -23,8 +23,10 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -70,22 +72,21 @@ public class UIContentNameSearch extends UIForm {
       UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class);
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);
       try {      
-        String keyword = contentNameSearch.getUIStringInput(KEYWORD).getValue();
-        
-  //      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
-  //      UIApplication application = contentNameSearch.getAncestorOfType(UIApplication.class);
-  //      if (keyword == null || keyword.length() ==0) {
-  //        application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
-  //        event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
-  //        return;
-  //      }
-  //      for(String filterChar : arrFilterChar) {
-  //        if(keyword.indexOf(filterChar) > -1) {
-  //          application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
-  //          event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
-  //          return;
-  //        }
-  //      }
+        String keyword = contentNameSearch.getUIStringInput(KEYWORD).getValue();        
+        String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
+        UIApplication application = contentNameSearch.getAncestorOfType(UIApplication.class);
+        if (keyword == null || keyword.length() ==0) {
+          application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
+          return;
+        }
+        for(String filterChar : arrFilterChar) {
+          if(keyword.indexOf(filterChar) > -1) {
+            application.addMessage(new ApplicationMessage("UIContentNameSearch.msg.keyword-not-allowed", null));
+            event.getRequestContext().addUIComponentToUpdateByAjax(application.getUIPopupMessages());
+            return;
+          }
+        }
         keyword = keyword.trim();
         UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
         String currentNodePath = explorer.getCurrentNode().getPath();
