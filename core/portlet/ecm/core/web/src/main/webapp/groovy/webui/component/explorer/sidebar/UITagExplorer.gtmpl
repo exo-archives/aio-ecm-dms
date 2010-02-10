@@ -8,7 +8,7 @@
   		<div class="BarContentR">
   			<div class="BarContentM">
 			    <div class="Title"><%=_ctx.appRes("UITagExplorer.title.PrivateTags")%></div>
-			  	<div class="DriversButton" 
+			  	<div class="TagExplorer" 
 			  			 title="<%=_ctx.appRes("UITagExplorer.title.EditPrivateTags")%>"
 			  			 onclick="<%=uicomponent.event("EditTags", "Private")%>"><span></span></div>
 			  	<div class="ClearLeft"><span></span></div>
@@ -46,7 +46,7 @@
 		<div class="BarContentR">
 			<div class="BarContentM">
 		    <div class="Title"><%=_ctx.appRes("UITagExplorer.title.PublicTags")%></div>
-		  	<div class="DriversButton" 
+		  	<div class="TagExplorer" 
 		  			 title="<%=_ctx.appRes("UITagExplorer.title.EditPublicTags")%>"
 		  			 onclick="<%=uicomponent.event("EditTags", "Public")%>" ><span></span></div>
 		  	<div class="ClearLeft"><span></span></div>

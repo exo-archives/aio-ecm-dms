@@ -101,6 +101,15 @@
 	width:17px;
 }
 
+.UIJCRExplorerPortlet .UISideBar .BarContent .TagExplorer {
+  background: url('DefaultSkin/icons/Tags.gif') no-repeat center;
+  width: 15px; height: 15px;
+	cursor: pointer;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
+	margin-top:4px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ResizeTreeButton{
   background: url('DefaultSkin/background/ResizeTreeButton.gif') no-repeat center;
 	height: 7px;
@@ -184,6 +193,11 @@
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .TagExplorerIcon {
 	background: url('DefaultSkin/icons/Tags.gif') no-repeat center;
 	width: 15px; height: 15px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .AdvancedSearchIcon {
+  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SearchIcon.png') no-repeat center;
+  width: 17px; height: 17px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {

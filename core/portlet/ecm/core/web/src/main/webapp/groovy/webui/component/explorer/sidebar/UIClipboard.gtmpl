@@ -22,7 +22,6 @@
   		<div class="BarContentR">
   			<div class="BarContentM">
 			    <div class="Title">Clipboard</div>
-			  	<div class="DriversButton" title="Clipboard"><span></span></div>
 			  	<div class="ClearLeft"><span></span></div>
 			  </div>
 			</div>
