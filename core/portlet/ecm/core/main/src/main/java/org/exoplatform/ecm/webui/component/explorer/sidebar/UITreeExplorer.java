@@ -136,7 +136,7 @@ public class UITreeExplorer extends UIContainer {
       return id.replace(".", " / ");
     }    
   }    
-  
+    
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);

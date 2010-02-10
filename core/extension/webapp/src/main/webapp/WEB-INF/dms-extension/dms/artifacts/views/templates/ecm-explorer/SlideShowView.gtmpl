@@ -11,6 +11,7 @@
   import org.exoplatform.web.application.Parameter;
   import org.exoplatform.services.jcr.util.Text;
   import org.exoplatform.ecm.webui.utils.Utils;
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 %>
 <%
   def childList = uicomponent.getChildrenList();
@@ -257,9 +258,11 @@
                 def actionLink = "";
                 def wsName = "";
                 String primaryType = "";
+                def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
                 for(image in childList) {
                   wsName = image.getSession().getWorkspace().getName();
                   primaryType = image.getPrimaryNodeType().getName();
+                  def title = uiWorkingArea.getTitle(image);
                   def thumbnailNode = uicomponent.getThumbnailNode(image);
                   boolean isShowSlideShow = false;
                   if(thumbnailNode != null && thumbnailNode.hasProperty("exo:bigSize")) {
@@ -275,7 +278,7 @@
                   } else {
                     continue;
                   }
-                  data = data.concat("'").concat(imgSrc).concat("' : { caption: '").concat(Text.unescapeIllegalJcrChars(image.getName())).concat(".' },");
+                  data = data.concat("'").concat(imgSrc).concat("' : { caption: '").concat(Text.unescapeIllegalJcrChars(title)).concat(".' },");
                 }
                 if (data.length() > 0) {
                   data = "{".concat(data.substring(0,data.length() - 1)).concat("}");

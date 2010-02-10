@@ -152,6 +152,7 @@
 	          def preferenceWS = data.getSession().getWorkspace().getName();
 	          String nodePath = data.getPath();
 	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length());   
+            String title = uiWorkingArea.getTitle(data);
 	          String subName;
 	          //nodePath = nodePath + "&workspaceName=" + preferenceWS;
 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS));
@@ -166,8 +167,8 @@
 
 	        </div>
 	        <%
-	  	        if (name.length() < 50) subName = name;
-			        else subName = name.substring(0,50) + "...";
+	  	        if (title.length() < 50) subName = title;
+			        else subName = title.substring(0,50) + "...";
 		        %>
 	        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
 	           <%= Utils.isAuditable(data)%>
@@ -197,7 +198,7 @@
 	        </div>
 	        <div class="ResizeColumn">
 							<div class="NodeLabel">
-								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(subName)%></div>
+								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(title)%>"><%=Text.unescapeIllegalJcrChars(subName)%></div>
 		 					</div>
 	        </div>
 	        <div style="clear: both"><span></span></div>

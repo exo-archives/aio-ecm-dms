@@ -165,7 +165,7 @@ import org.exoplatform.ecm.jcr.model.Preference;
 								%>
 								<a href="$actionLink" alt="" workspaceName="$preferenceWS" 
 									title="<%=_ctx.appRes("UIDocumentInfo.tooltip.View")%>"/>
-									<%=node.getName()%>
+									<%= uiWorkingArea.getTitle(node) %>
 								</a>
 							</div>
 						</div>

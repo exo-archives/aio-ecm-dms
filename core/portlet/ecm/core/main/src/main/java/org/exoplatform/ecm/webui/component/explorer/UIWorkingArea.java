@@ -346,4 +346,33 @@ public class UIWorkingArea extends UIContainer {
     }
     return safeActions;
   }
+  
+  /**
+   * Gets the title.
+   * 
+   * @param node the node
+   * 
+   * @return the title
+   * 
+   * @throws Exception the exception
+   */
+  public String getTitle(Node node) throws Exception {
+	  String title = null;
+	  if (node.hasNode("jcr:content")) {
+		  Node content = node.getNode("jcr:content");
+		  if (content.hasProperty("dc:title")) {
+		    try {
+		      title = content.getProperty("dc:title").getValues()[0].getString();
+		    } catch(Exception ex) {}
+		  }
+	  } else if (node.hasProperty("exo:title")) {
+		  title = node.getProperty("exo:title").getValue().getString();
+	  }
+	  if (title==null) {
+  		title = node.getName();
+	  }
+	  
+	  return title;
+  }
+
 }

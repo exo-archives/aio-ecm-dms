@@ -197,6 +197,7 @@
           def preferenceWS = data.getSession().getWorkspace().getName() ;
           String nodePath = data.getPath() ;
           String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
+          String title = uiWorkingArea.getTitle(data);
           String subName ;
           String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
           //Begin permlink
@@ -263,7 +264,7 @@
 		      <div <%=rightClickMenu%> class="RowView Normal" trashHome="$isTrashHome" locked="$isLocked" mediaType="$isMediaType" removeFavourite="$isFavourite" inTrash="$isInTrash" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
 			      $strActs
 		        <div class="ColumnIcon" style="padding: 2px 0px; 	border-right: none; width: 30px;">
-						  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">
+						  <div title="$title" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">
 						    <%if(uicomponent.isSymLink(data)) {%>
 						      <div class="LinkSmall"></div>
 						    <%}%>
@@ -271,7 +272,7 @@
 		        </div>
 		        <div class="ColumnName" style="width: 150px;">
 							<div class="NodeLabel">
-								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(name)%></div>
+								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(title)%>"><%=Text.unescapeIllegalJcrChars(title)%></div>
 		 					</div>
 		        </div>
 		        <!--

@@ -52,7 +52,7 @@
     	  continue;
     	}
 	    String path = node.getPath() ;
-	    String treeNodeName = Text.unescapeIllegalJcrChars(treeNode.getName());
+	    String treeNodeName = uicomponent.getWorkingArea().getTitle(node);
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
 	    def preferenceWS = node.getSession().getWorkspace().getName() ;
 	    String mode = "ExpandTree";
