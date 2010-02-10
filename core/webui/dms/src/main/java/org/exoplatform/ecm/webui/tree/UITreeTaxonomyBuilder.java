@@ -167,7 +167,8 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     Node selectedNode = getNodeByPathBreadcumbs();
     tree.setSelected(selectedNode);
     if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
-      tree.setParentSelected(selectedNode.getParent()) ;
+    if (!selectedNode.getPath().equals(rootTreeNode.getPath()))
+        tree.setParentSelected(selectedNode.getParent()) ;
       sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
       children = Utils.getNodeSymLink(selectedNode).getNodes() ;
     } else {
@@ -188,7 +189,8 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     UIBreadcumbs uiBreadcumbs = uiOneTaxonomySelector.getChildById("BreadcumbOneTaxonomy");
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
     StringBuilder buffer = new StringBuilder(1024);
-    String rootPath = rootTreeNode.getPath();
+    String rootPath = "";
+    if (rootTreeNode != null) rootPath = rootTreeNode.getPath();
     for (LocalPath iterLocalPath : listLocalPath) {
       buffer.append("/").append(iterLocalPath.getId());
     }
@@ -272,6 +274,7 @@ public class UITreeTaxonomyBuilder extends UIContainer {
    * @throws Exception the exception
    */
   public void changeNode(String path, Object context) throws Exception {
+  	if (path == null) return;
     NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
     String rootPath = rootTreeNode.getPath();
     if(rootPath.equals(path) || !path.startsWith(rootPath)) {
