@@ -2937,7 +2937,7 @@
   <UIAllItems>
     <label>
       <OwnedByMe>Owned by me</OwnedByMe>
-      <Favourites>Favourites</Favourites>
+      <Favourites>Favorites</Favourites>
       <Hidden>Hidden</Hidden>
       <Trash>Trash</Trash>
       <Configuration>Set up preferences</Configuration>      

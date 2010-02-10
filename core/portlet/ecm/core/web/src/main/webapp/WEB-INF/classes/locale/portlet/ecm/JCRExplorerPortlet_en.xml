@@ -2806,7 +2806,7 @@
   <UIAllItems>
     <label>
       <OwnedByMe>Owned by me</OwnedByMe>
-      <Favourites>Favourites</Favourites>
+      <Favourites>Favorites</Favourites>
       <Hidden>Hidden</Hidden>
       <Trash>Trash</Trash>
       <Configuration>Set up preferences</Configuration>      
@@ -2912,7 +2912,7 @@
   <UIAllItemsPreferenceForm>
     <label>
       <showOwnedByUser>Owned by me</showOwnedByUser>
-      <showFavourites>Favourites</showFavourites>
+      <showFavourites>Favorites</showFavourites>
       <showHiddens>Hidden</showHiddens>
       <showTrash>Trash</showTrash>
     </label>
