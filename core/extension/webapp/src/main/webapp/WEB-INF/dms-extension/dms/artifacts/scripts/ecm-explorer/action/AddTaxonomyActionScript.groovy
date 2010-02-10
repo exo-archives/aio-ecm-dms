@@ -81,14 +81,14 @@ public class AddTaxonomyActionScript implements CmsScript {
     Node targetNode = null;
     Node storeNode = null;
     try{
-      sessionHomeNode = seProviderService_.getSystemSessionProvider(null).getSession(storeWorkspace, manageableRepository);
+      sessionHomeNode = seProviderService_.getSessionProvider(null).getSession(storeWorkspace, manageableRepository);
       storeNode = (Node)sessionHomeNode.getItem(storeHomePath);
     } catch(Exception e) {
       LOG.error("Exception when try to get node of root taxonomy tree", e);
       throw e;
     }
     try{
-      sessionTargetNode = seProviderService_.getSystemSessionProvider(null).getSession(targetWorkspace, manageableRepository);
+      sessionTargetNode = seProviderService_.getSessionProvider(null).getSession(targetWorkspace, manageableRepository);
       targetNode = (Node)sessionTargetNode.getItem(targetPath);
     } catch(Exception e) {
       LOG.error("Exception when try to get node of target", e);
