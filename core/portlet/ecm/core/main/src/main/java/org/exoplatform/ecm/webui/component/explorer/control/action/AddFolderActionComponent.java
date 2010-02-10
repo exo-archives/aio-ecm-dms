@@ -24,6 +24,7 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerCompon
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanAddNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotCategoryFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
@@ -52,6 +53,7 @@ public class AddFolderActionComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS = 
   		Arrays.asList(new UIExtensionFilter[]{new CanAddNodeFilter(), 
+  																					new IsNotCategoryFilter(), 
   																					new IsNotLockedFilter(), 
   																					new IsCheckedOutFilter(),
   																					new IsNotTrashHomeNodeFilter(),
