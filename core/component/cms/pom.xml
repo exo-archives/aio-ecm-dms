@@ -17,7 +17,7 @@
 		<dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.core</artifactId>
-      <version>1.0.0-beta14</version>
+      <version>${version.chromattic}</version>
       <scope>test</scope>
     </dependency>
 		

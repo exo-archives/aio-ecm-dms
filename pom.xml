@@ -29,7 +29,8 @@
 		<org.exoplatform.ecm.workflow.version>1.0.5</org.exoplatform.ecm.workflow.version>
 		<org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
 		<bonita.version>4.0</bonita.version>
-		
+		<version.chromattic>1.0.0-beta14</version.chromattic>
+
 		<!-- 3rd parties -->
 		<org.shindig.version>SNAPSHOT-r790473</org.shindig.version>
 		<commons-lang.version>2.3</commons-lang.version>
