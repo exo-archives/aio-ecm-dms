@@ -45,6 +45,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAr
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.services.cms.documents.FavoriteService;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -106,6 +107,11 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
     try {
       // Use the method getNodeByPath because it is link aware
       node = uiExplorer.getNodeByPath(srcPath, session, false);
+      //check if node is link
+      LinkManager lnkManager = uiExplorer.getApplicationComponent(LinkManager.class);
+      if (lnkManager.isLink(node) && lnkManager.isTargetReachable(node)) {
+      	node = lnkManager.getTarget(node);
+      }
       // Reset the path to manage the links that potentially create virtual path
       srcPath = node.getPath();
       // Reset the session to manage the links that potentially change of workspace
@@ -132,6 +138,7 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
     	if (!PermissionUtil.canSetProperty(node))
     		throw new AccessDeniedException("access denied, can't add favourite to node:" + node.getPath());
     	favoriteService.addFavorite(node, session.getUserID());
+      uiExplorer.updateAjax(event);    	
     } catch (LockException e) {
     	LOG.error("node is locked, can't add favourite to node:" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);

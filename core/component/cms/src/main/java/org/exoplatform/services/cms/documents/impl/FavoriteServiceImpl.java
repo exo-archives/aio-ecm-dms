@@ -26,10 +26,7 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.cms.link.LinkManager;
-import org.exoplatform.services.cms.link.NodeFinder;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
@@ -124,6 +121,12 @@ public class FavoriteServiceImpl implements FavoriteService {
   }
   
   public boolean isFavoriter(String userName, Node node) throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    LinkManager lnkManager = (LinkManager)container.getComponentInstanceOfType(LinkManager.class);
+  	
+    if (lnkManager.isLink(node) && lnkManager.isTargetReachable(node)) {
+    	node = lnkManager.getTarget(node);
+    }
     Node userFavoriteNode = getUserFavoriteFolder(userName);
     NodeIterator nodeIter = userFavoriteNode.getNodes();
     while (nodeIter.hasNext()) {
