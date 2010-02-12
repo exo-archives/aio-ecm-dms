@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.documents.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
       objectParam = (ObjectParameter)iter.next();
       supportedType.add(objectParam.getName());
     }
+    Collections.sort(supportedType);
     return supportedType;
   }
   

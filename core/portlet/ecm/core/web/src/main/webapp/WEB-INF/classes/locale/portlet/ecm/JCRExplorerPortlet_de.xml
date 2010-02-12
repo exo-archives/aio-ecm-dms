@@ -2875,8 +2875,8 @@
   
   <UIDocumentFilterForm>
   	<label>
-    	<Images>My Images</Images>
-    	<Video>My Video</Video>
+    	<Images>Images</Images>
+    	<Video>Video</Video>
     </label>
     <title>Set up filter preferences</title>
     <action>
