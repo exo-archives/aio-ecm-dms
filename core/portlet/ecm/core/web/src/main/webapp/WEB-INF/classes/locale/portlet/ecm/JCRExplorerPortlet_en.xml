@@ -2,7 +2,7 @@
 <bundle>
   <!--
   #############################################################################
-  #             org.exoplatform.ecm.webui.component.UICommentForm						  #
+  #             org.exoplatform.ecm.webui.component.UICommentForm             #
   #############################################################################
   -->
   <UICommentForm>
@@ -24,7 +24,7 @@
   </UICommentForm>
   <!--
   #############################################################
-  # org.exoplatform.ecm.webui.component.UIVoteForm.gtmpl		#
+  # org.exoplatform.ecm.webui.component.UIVoteForm.gtmpl    #
   #############################################################
   -->
   <UIVoteForm>
@@ -88,7 +88,7 @@
   </UIJCRExplorer>
   <!--
   #############################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UISideBar			  #
+  #             org.exoplatform.ecm.webui.component.explorer.UISideBar        #
   #############################################################################
   -->
   <UISideBar>
@@ -282,7 +282,7 @@
   </UIResourceForm>
   <!--
   ###################################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar			#
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar      #
   ###################################################################################
   -->
   <UIActionBar>
@@ -362,7 +362,7 @@
       <AdvanceSearch>Advance Search</AdvanceSearch>
       <SavedQueries>Saved queries</SavedQueries>
       <ShowAllOwnedByUser>Show all my items</ShowAllOwnedByUser>
-      <ShowAllFavourite>Show all favourite items</ShowAllFavourite>
+      <ShowAllFavourite>Show all favorite items</ShowAllFavourite>
       <ShowAllHidden>Show all hidden items</ShowAllHidden>
       <ShowAllFromTrash>Show all items from Trash</ShowAllFromTrash>
     </title>
@@ -444,7 +444,7 @@
   </UIFolderForm>
   <!--
   ###################################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace  	#
+  #             org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace    #
   ###################################################################################
   -->
   <UIWorkingArea>
@@ -518,7 +518,7 @@
   </ListView>
   <!--
   #############################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.ECMContextMenu  	#
+  #             org.exoplatform.ecm.webui.component.explorer.ECMContextMenu   #
   #############################################################################
   -->
   <ECMContextMenu>
@@ -552,8 +552,8 @@
       <ViewProperties>View properties</ViewProperties>
       <GetURL>Copy URL to clipboard</GetURL>
       <AddThumbnail>Add/Remove thumbnail</AddThumbnail>
-      <AddToFavourite>Add to favourite</AddToFavourite>
-      <RemoveFromFavourite>Remove from favourite</RemoveFromFavourite>
+      <AddToFavourite>Add to favorite</AddToFavourite>
+      <RemoveFromFavourite>Remove from favorite</RemoveFromFavourite>
       <MoveToTrash>Move to Trash</MoveToTrash>
       <RestoreFromTrash>Restore from Trash</RestoreFromTrash>
       <EmptyTrash>Empty trash</EmptyTrash>
@@ -825,7 +825,7 @@
   -->
   <!--
   ################################################################################
-  #          org.exoplatform.ecm.webui.component.explorer.actions.UIUploadForm	 #
+  #          org.exoplatform.ecm.webui.component.explorer.actions.UIUploadForm   #
   ################################################################################
   -->
   <UIUploadForm>
@@ -901,7 +901,7 @@
   </UIAddMetadataForm>
   <!--
   ###############################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UINodeTypeInfo		  #
+  #             org.exoplatform.ecm.webui.component.explorer.UINodeTypeInfo     #
   ###############################################################################
   -->
   <UINodeTypeInfo>
@@ -935,7 +935,7 @@
   </UINodeTypeInfo>
   <!--
   ###############################################################################
-  #                    org.exoplatform.ecm.webui.component.explorer.search		  #
+  #                    org.exoplatform.ecm.webui.component.explorer.search      #
   ###############################################################################
   -->
   <UICategoryManagerSearch>
@@ -1095,7 +1095,7 @@
       <type>Type</type>
       <dateCreated>Date created</dateCreated>
       <score>Score</score>
-      <AddRemoveFavourite>Add/remove to favourite</AddRemoveFavourite>
+      <AddRemoveFavourite>Add/remove to favorite</AddRemoveFavourite>
     </header>
     <title>
       <typeASC>Sort by document type in ascending</typeASC>
@@ -1366,7 +1366,7 @@
   </UIQueryResultPageIterator>
   <!--
   ###############################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.admin.UIExportNode	#
+  #             org.exoplatform.ecm.webui.component.explorer.admin.UIExportNode #
   ###############################################################################
   -->
   <UIExportNode>
@@ -1385,7 +1385,7 @@
   </UIExportNode>
   <!--
   ###############################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIPopupAction	   #
+  #             org.exoplatform.ecm.webui.component.explorer.UIPopupAction     #
   ###############################################################################
   -->
   <PopupUserSelector>
@@ -1537,7 +1537,7 @@
   </UIDiff>
   <!--
   ###############################################################################
-  #       org.exoplatform.ecm.webui.component.explorer.admin.UIImportNode		   #
+  #       org.exoplatform.ecm.webui.component.explorer.admin.UIImportNode      #
   ###############################################################################
   -->
   <UIImportNode>
@@ -1558,12 +1558,12 @@
       <filetype-error>Can not import node from uploaded file. Maybe it is a invalid xml file.</filetype-error>
       <mimetype-invalid>Only xml file or zip file are supported to import.</mimetype-invalid>
       <access-denied>Access denied! You are not allowed to import there.</access-denied>
-			<constraint-violation-exception>Can not import because some constraints are violated: Data import is incorrect Or Node type '{0}' is not allowed child's node type is '{0}'</constraint-violation-exception>
+      <constraint-violation-exception>Can not import because some constraints are violated: Data import is incorrect Or Node type '{0}' is not allowed child's node type is '{0}'</constraint-violation-exception>
     </msg>
   </UIImportNode>
   <!--
   ###############################################################################
-  #         org.exoplatform.ecm.webui.component.explorer.versions.UILabelForm		#
+  #         org.exoplatform.ecm.webui.component.explorer.versions.UILabelForm   #
   ###############################################################################
   -->
   <UILabelForm>
@@ -1582,7 +1582,7 @@
   </UILabelForm>
   <!--
   ###############################################################################
-  #   org.exoplatform.ecm.webui.component.explorer.versions.UIRemoveLabelForm		#
+  #   org.exoplatform.ecm.webui.component.explorer.versions.UIRemoveLabelForm   #
   ###############################################################################
   -->
   <UIRemoveLabelForm>
@@ -1783,7 +1783,7 @@
   -->
   <!--
   #############################################################################
-  #    org.exoplatform.ecm.webui.component.explorer.search.UIQuerySaveForm 		#
+  #    org.exoplatform.ecm.webui.component.explorer.search.UIQuerySaveForm    #
   #############################################################################
   -->
   <UIQuerySaveForm>
@@ -1918,7 +1918,7 @@
   </UIWatchDocumentForm>
   <!--
   ###################################################################################
-  # 	org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm			#
+  #   org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm      #
   ###################################################################################
   -->
   <UITaggingForm>
@@ -1979,7 +1979,7 @@
   </UILanguageDialogForm>
   <!--
   ###################################################################################
-  # org.exoplatform.ecm.webui.component.explorer.popup.info.UIMetadataContainer		  #
+  # org.exoplatform.ecm.webui.component.explorer.popup.info.UIMetadataContainer     #
   ###################################################################################
   -->
   <UIViewMetadataContainer>
@@ -1989,7 +1989,7 @@
   </UIViewMetadataContainer>
   <!--
   ###################################################################################
-  # org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataForm		  #
+  # org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataForm      #
   ###################################################################################
   -->
   <UIViewMetadataForm>
@@ -2010,7 +2010,7 @@
   </UIViewMetadataTemplate>
   <!--
   ###################################################################################
-  # Validator messages																														  #
+  # Validator messages                                                              #
   ###################################################################################
   -->
   <ECMNameValidator>
@@ -2034,7 +2034,7 @@
   </EmptyFieldValidator>
   <!--
   ###################################################################################
-  # JCR Exceptions manager																														  #
+  # JCR Exceptions manager                                                              #
   ###################################################################################
   -->
   <ReferentialIntegrityException>
@@ -2060,7 +2060,7 @@
   </ConstraintViolationException>
   <!--
   ###################################################################################
-  # Publication Manage																														  #
+  # Publication Manage                                                              #
   ###################################################################################
   -->
   <UIPublicationForm>
@@ -2083,7 +2083,7 @@
   </UIPublicationForm>
   <!--
   ###################################################################################
-  # JCR Browser																														  #
+  # JCR Browser                                                             #
   ###################################################################################
   -->
   <UIWorkspaceList>
@@ -2100,7 +2100,7 @@
   </pathSelector>
   <!--
   ###################################################################################
-  # Others																																				  #
+  # Others                                                                          #
   ###################################################################################
   -->
   <EmailAddressValidator>
@@ -2132,7 +2132,7 @@
   </UIPermissionSelector>
   <!--
   ###################################################################################
-  # org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator												#
+  # org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator                        #
   ###################################################################################
   -->
   <ECMStandardPropertyNameValidator>
@@ -2143,7 +2143,7 @@
   </ECMStandardPropertyNameValidator>
   <!--
   ###################################################################################
-  # org.exoplatform.ecm.jcr.SearchValidator																			#
+  # org.exoplatform.ecm.jcr.SearchValidator                                     #
   ###################################################################################
   -->
   <SearchValidator>
@@ -2159,7 +2159,7 @@
   </SearchValidator>
   <!--
   ###################################################################################
-  # PublicationService						                                        					#
+  # PublicationService                                                              #
   ###################################################################################
   -->
   <UIPublicationLogList>
@@ -2177,7 +2177,7 @@
   </UIPublicationLogList>
   <!--
   ###################################################################################
-  # UIVersionTreeList						                                        					#
+  # UIVersionTreeList                                                             #
   ###################################################################################
   -->
   <UIVersionTreeList>
@@ -2188,7 +2188,7 @@
   </UIVersionTreeList>
   <!--
   ###################################################################################
-  # UIThumbnailForm						                                        					#
+  # UIThumbnailForm                                                             #
   ###################################################################################
   -->
   <UIThumbnailForm>
@@ -2211,7 +2211,7 @@
   </UIThumbnailForm>
   <!--
   ###################################################################################
-  # UIAnyPermission						                                        							#
+  # UIAnyPermission                                                                 #
   ###################################################################################
   -->
   <UIAnyPermission>
@@ -2221,7 +2221,7 @@
   </UIAnyPermission>
   <!--
   ###################################################################################
-  # UICategoriesAddedList						                                       					#
+  # UICategoriesAddedList                                                           #
   ###################################################################################
   -->
   <UICategoriesSelector>
@@ -2231,7 +2231,7 @@
   </UICategoriesSelector>
   <!--
   ###################################################################################
-  # Since ECM version 2.2				                                        							#
+  # Since ECM version 2.2                                                             #
   ###################################################################################
   -->
   <UIGroupMemberSelector>
@@ -2293,7 +2293,7 @@
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>
       <SelectNodePath>Select path</SelectNodePath>
-	  <nodePath>Select path</nodePath>
+    <nodePath>Select path</nodePath>
     </label>
   </UIJcrExplorerEditForm>
   
@@ -2312,8 +2312,8 @@
     <msg>
       <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
       <personal-usecase>The private drive of current user will be used when you choose Personal usecase.</personal-usecase>
-						<drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
-						<path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
+            <drive-edit-permission>Can not edit drive name. Please, click on Edit button</drive-edit-permission>
+            <path-edit-permission>Can not edit path. Please, click on Edit button</path-edit-permission>
     </msg>
   </UIJcrExplorerEditForm>
   
@@ -2336,55 +2336,55 @@
   </DriveNameInput>
   
   <!--
-	### Since ECM version 2.4.x ##############
+  ### Since ECM version 2.4.x ##############
   -->
   <UIActionBar>
     <tooltip>
       <AddSymLink>Add Sym Link</AddSymLink>
-		</tooltip>
-	</UIActionBar>
-	
-	<UIPopupWindow>
-		<title>
-			<UISymLinkManager>Sym Link Manager</UISymLinkManager>
-		</title>
-	</UIPopupWindow>
-	
-	<UISymLinkForm>
-		<label>
+    </tooltip>
+  </UIActionBar>
+  
+  <UIPopupWindow>
+    <title>
+      <UISymLinkManager>Sym Link Manager</UISymLinkManager>
+    </title>
+  </UIPopupWindow>
+  
+  <UISymLinkForm>
+    <label>
       <symLinkName>Sym Link Name</symLinkName>
-			<pathNode>Path Node</pathNode>
-		</label>
-		<action>
-			<Save>#{word.save}</Save>
+      <pathNode>Path Node</pathNode>
+    </label>
+    <action>
+      <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>
-		</action>
-		<msg>
+    </action>
+    <msg>
       <addFolder-successful>Add Symbolic Link '{0}' Successful</addFolder-successful>
-			<name-invalid>Please enter Symbolic Link Name!</name-invalid>
+      <name-invalid>Please enter Symbolic Link Name!</name-invalid>
       <name-not-allowed>This name is not allowed.</name-not-allowed>
       <fileName-error>Invalid file name</fileName-error>
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
       <repository-exception>Access deny! You don't have add permission in this node</repository-exception>
       <numberformat-exception>Can not save this folder. The name provided must be a number format</numberformat-exception>      
-			<path-node-invalid>Please enter Path Node!</path-node-invalid>
-			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
-			<non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
-			<cannot-save>Some constraints were violated during that action.</cannot-save>
-			<item-exists-exception>The node with the same name already exists</item-exists-exception>
-			<UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
+      <path-node-invalid>Please enter Path Node!</path-node-invalid>
+      <path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
+      <non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
+      <cannot-save>Some constraints were violated during that action.</cannot-save>
+      <item-exists-exception>The node with the same name already exists</item-exists-exception>
+      <UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
     </msg>
-	</UISymLinkForm>
-	
-	<UIPopupSymLink>
-		<title>
-			<UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
-		</title>
-	</UIPopupSymLink>
-	
-	<ECMContextMenu>
-		<event>
-			<AddSymLink>Add Sym Link</AddSymLink>
+  </UISymLinkForm>
+  
+  <UIPopupSymLink>
+    <title>
+      <UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
+    </title>
+  </UIPopupSymLink>
+  
+  <ECMContextMenu>
+    <event>
+      <AddSymLink>Add Sym Link</AddSymLink>
     </event>
   </ECMContextMenu>
   
@@ -2404,22 +2404,22 @@
   </ECMContextMenu>
   
   <UIWorkspaceList>
-  	<msg>
-  		<AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
-  	</msg>
-  	<label>
+    <msg>
+      <AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
+    </msg>
+    <label>
       <taxonomyTree>Taxonomy Tree</taxonomyTree>
     </label>
   </UIWorkspaceList>
   
   <UIPopupTaxonomy>
     <title>
-			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+      <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
     </title>
   </UIPopupTaxonomy>
   
   <UITreeTaxonomyList>
-  	<label>
+    <label>
       <taxonomyTree>Taxonomy Tree</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
@@ -2428,9 +2428,9 @@
     <tooltip>
       <ManageSimpleCategories>Manage Simple Categories</ManageSimpleCategories>
     </tooltip>
-	</UIActionBar>
-	
-	<UISimpleCategoryManager>
+  </UIActionBar>
+  
+  <UISimpleCategoryManager>
     <tab>
       <label>
         <UICategoriesAddedList>Referenced categories</UICategoriesAddedList>
@@ -2442,37 +2442,37 @@
   <UICategoryManager>
     <tab>
       <label>
-				<UIOneTaxonomySelector>Select category</UIOneTaxonomySelector>
+        <UIOneTaxonomySelector>Select category</UIOneTaxonomySelector>
       </label>
     </tab>
   </UICategoryManager>
   
   <UISimpleCategoryManager>
-  	<action>
-  		<Close>Close</Close>	
-  	</action>
+    <action>
+      <Close>Close</Close>  
+    </action>
   </UISimpleCategoryManager>  
   <UIPopupWindow>
-  	<title>
-  		<UISimpleCategoryManager>Add Category</UISimpleCategoryManager>	
-  	</title>
+    <title>
+      <UISimpleCategoryManager>Add Category</UISimpleCategoryManager> 
+    </title>
   </UIPopupWindow>
   <UICategoriesAddedList>
-  	<msg>
-  		<ItemExistsException>A category with the same name already exists</ItemExistsException>
-  	</msg>
-	</UICategoriesAddedList>
-	
-	<UIConfirmMessage>
-	  <label>
-	    <Close>#{word.close}</Close>
-	    <OK>OK</OK>
-	    <ReplaceData>Replace data</ReplaceData>
-	    <Back>Back to rename</Back>
-	    <Keepfile>Keep both files</Keepfile>
-	  </label>
-	</UIConfirmMessage>
-	
+    <msg>
+      <ItemExistsException>A category with the same name already exists</ItemExistsException>
+    </msg>
+  </UICategoriesAddedList>
+  
+  <UIConfirmMessage>
+    <label>
+      <Close>#{word.close}</Close>
+      <OK>OK</OK>
+      <ReplaceData>Replace data</ReplaceData>
+      <Back>Back to rename</Back>
+      <Keepfile>Keep both files</Keepfile>
+    </label>
+  </UIConfirmMessage>
+  
   <UIRestoreConfirmMessage>
     <label>
       <Close>#{word.close}</Close>
@@ -2482,11 +2482,11 @@
       <Keepfile>Keep both files</Keepfile>
     </label>
   </UIRestoreConfirmMessage>
-	
-	
-	<PopupComponent>
+  
+  
+  <PopupComponent>
     <title>
-			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+      <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
     </title>
   </PopupComponent>
   
@@ -2523,8 +2523,8 @@
   </UIExportNode>
   
   <UIPopupMenu>
-  	<msg>
-  		<node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
+    <msg>
+      <node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   
@@ -2536,16 +2536,16 @@
   </Import>
   
   <UIDocumentForm>
-  	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
-  	</msg>
+    <msg>
+      <not-support>Cannot load template of '{0}'.</not-support>
+      <do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+    </msg>
   </UIDocumentForm>
   
   <!--
   ###################################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar   			   			#
-  #                           Localize tab																																										#
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar                #
+  #                           Localize tab                                                                                    #
   ###################################################################################
   -->
   <UIActionBar>
@@ -2559,23 +2559,23 @@
   </UIActionBar>
   
   <UIPopupMenu>
-  	<msg>
-			<can-not-unlock-node-is-checked-in>Can not unlock because node '{0}' or ancestor of '{0}' is checked-in</can-not-unlock-node-is-checked-in>
-		</msg>
+    <msg>
+      <can-not-unlock-node-is-checked-in>Can not unlock because node '{0}' or ancestor of '{0}' is checked-in</can-not-unlock-node-is-checked-in>
+    </msg>
   </UIPopupMenu>
   
   <!-- 
- 	 #############	From DMS 2.5 #############
+   #############  From DMS 2.5 #############
   -->
   <UIActionBar>
-  	<msg>
-				<cannot-enable-version>Can not enable version node</cannot-enable-version>
-			</msg>
+    <msg>
+        <cannot-enable-version>Can not enable version node</cannot-enable-version>
+      </msg>
   </UIActionBar>
   <UIPopupMenu>
-  	<msg>
-				<cannot-readsource>Can not read data from source node</cannot-readsource>
-	 	</msg>
+    <msg>
+        <cannot-readsource>Can not read data from source node</cannot-readsource>
+    </msg>
   </UIPopupMenu>
   <UIUploadForm>
     <msg>
@@ -2589,82 +2589,82 @@
   </UIActionBar>
   
   <UIActionForm>
-  	<msg>
-  		<name-not-allowed>This action name is not allowed.</name-not-allowed>
-  	</msg>
+    <msg>
+      <name-not-allowed>This action name is not allowed.</name-not-allowed>
+    </msg>
   </UIActionForm>
   
   <UISaveQueryForm>
-		<msg>
-			<name-not-allowed>This query name is not allowed.</name-not-allowed>
-		</msg>
-	</UISaveQueryForm>
-	<UISimpleSearch>
-		<msg>
-			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
-		</msg>
-	</UISimpleSearch>	
-	<Drives>
-		<label>
-			<Private>Private</Private>
-			<Public>Public</Public>
-			<BackupCenter>Backup Center</BackupCenter>
-			<CategorizedDocumentsCenter>Categorized Documents Center</CategorizedDocumentsCenter>
-			<CollaborationCenter>Collaboration Center</CollaborationCenter>
-			<DigitalAssetsManagementCenter>Digital Assets Management Center</DigitalAssetsManagementCenter>
-			<DMSAdministration>DMS Administration</DMSAdministration>
-			<DocumentsManagementCenter>Documents Management Center</DocumentsManagementCenter>
-			<LiveDocumentsCenter>Live Documents Center</LiveDocumentsCenter>
-			<PendingDocumentsCenter>Pending Documents Center</PendingDocumentsCenter>
-			<RecordsManagementCenter>Records Management Center</RecordsManagementCenter>
-			<SharedUsersSpace>Shared Users Space</SharedUsersSpace>
-			<Systemfiles>System files</Systemfiles>
-			<ValidationRequestsDocumentsCenter>Validation Requests Documents Center</ValidationRequestsDocumentsCenter>
-		</label>  
-	</Drives>	
+    <msg>
+      <name-not-allowed>This query name is not allowed.</name-not-allowed>
+    </msg>
+  </UISaveQueryForm>
+  <UISimpleSearch>
+    <msg>
+      <name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
+    </msg>
+  </UISimpleSearch> 
+  <Drives>
+    <label>
+      <Private>Private</Private>
+      <Public>Public</Public>
+      <BackupCenter>Backup Center</BackupCenter>
+      <CategorizedDocumentsCenter>Categorized Documents Center</CategorizedDocumentsCenter>
+      <CollaborationCenter>Collaboration Center</CollaborationCenter>
+      <DigitalAssetsManagementCenter>Digital Assets Management Center</DigitalAssetsManagementCenter>
+      <DMSAdministration>DMS Administration</DMSAdministration>
+      <DocumentsManagementCenter>Documents Management Center</DocumentsManagementCenter>
+      <LiveDocumentsCenter>Live Documents Center</LiveDocumentsCenter>
+      <PendingDocumentsCenter>Pending Documents Center</PendingDocumentsCenter>
+      <RecordsManagementCenter>Records Management Center</RecordsManagementCenter>
+      <SharedUsersSpace>Shared Users Space</SharedUsersSpace>
+      <Systemfiles>System files</Systemfiles>
+      <ValidationRequestsDocumentsCenter>Validation Requests Documents Center</ValidationRequestsDocumentsCenter>
+    </label>  
+  </Drives> 
 
-	
-	<!-- 
- 	 #############	From DMS 2.6 #############
+  
+  <!-- 
+   #############  From DMS 2.6 #############
   -->
-	<UIUploadContent>
-		<tooltip>
-			<ManageMetadata>Manage Metadata</ManageMetadata>
-		</tooltip>
-		<label>
-			<manageMetadata>Manage Metadata</manageMetadata>
-		</label>		
-	</UIUploadContent>
-	<UIUploadForm>
-		<action>
-			<AddUpload>Add Upload</AddUpload>
-			<RemoveUpload>Remove Upload</RemoveUpload>
-		</action>
-	</UIUploadForm>
-	<UIExternalMetadataForm>
-		<action>
-			<Add>Add</Add>
-			<Cancel>Cancel</Cancel>
-		</action>
-	</UIExternalMetadataForm>
-		<!-- 
-	 #############	From DMS 2.6 #############
-	 -->
+  <UIUploadContent>
+    <tooltip>
+      <ManageMetadata>Manage Metadata</ManageMetadata>
+    </tooltip>
+    <label>
+      <manageMetadata>Manage Metadata</manageMetadata>
+    </label>    
+  </UIUploadContent>
+  <UIUploadForm>
+    <action>
+      <AddUpload>Add Upload</AddUpload>
+      <RemoveUpload>Remove Upload</RemoveUpload>
+    </action>
+  </UIUploadForm>
+  <UIExternalMetadataForm>
+    <action>
+      <Add>Add</Add>
+      <Cancel>Cancel</Cancel>
+    </action>
+  </UIExternalMetadataForm>
+    <!-- 
+   #############  From DMS 2.6 #############
+   -->
   <ECMContextMenu>
-	    <event>
-	    	<Permlink>View Document</Permlink>
-	    </event>
+      <event>
+        <Permlink>View Document</Permlink>
+      </event>
   </ECMContextMenu>  
   <UIUploadContainer>
-  	<tab>
-  		<label>
-  			<UIListMetadata>List external metadatas</UIListMetadata>
-  		</label>
-  	</tab>
+    <tab>
+      <label>
+        <UIListMetadata>List external metadatas</UIListMetadata>
+      </label>
+    </tab>
   </UIUploadContainer>
   
   <!-- 
-  	############  From DMS 2.6 ##############
+    ############  From DMS 2.6 ##############
    -->  
   <UIFolderForm>
     <label>
@@ -2673,17 +2673,17 @@
     </label>
   </UIFolderForm>
 
-	<Comments>
-	  <tooltip>
-	    <remove-comment>Remove this comment</remove-comment>
-	    <edit-comment>Edit this comment</edit-comment>
-	  </tooltip>
-	</Comments>
-	<UIDocumentInfo>
-	  <msg>
-	    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
-	  </msg>
-	</UIDocumentInfo>
+  <Comments>
+    <tooltip>
+      <remove-comment>Remove this comment</remove-comment>
+      <edit-comment>Edit this comment</edit-comment>
+    </tooltip>
+  </Comments>
+  <UIDocumentInfo>
+    <msg>
+      <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
+    </msg>
+  </UIDocumentInfo>
  <UIDrivesBrowser>
   <msg>
     <drive-not-exist>The drive '{0}' was not found or you don't have permission to access in this repository</drive-not-exist>
@@ -2696,31 +2696,31 @@
   </msg>
  </UIExportNode>
  <Taxonomy>
-		<msg>
-			<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
-		</msg>
-	</Taxonomy>
-	
-	<UIJcrExplorerEditForm>    
-		<msg>
-			<notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
-			<notNullPath>Path is null or empty. Fill the path, please!</notNullPath>
-		</msg>
-	</UIJcrExplorerEditForm>
-		
-	<UIViewSearchResult>
-		<tooltip>
-			<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
-		</tooltip>
-	</UIViewSearchResult>
-	
-	<SameNamePopup>
-		<title>
-			<UIUploadBehaviorWithSameName>Upload file</UIUploadBehaviorWithSameName>		
-		</title>
-	</SameNamePopup>	
-		
-	<UISingleUploadForm>
+    <msg>
+      <AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>      
+    </msg>
+  </Taxonomy>
+  
+  <UIJcrExplorerEditForm>    
+    <msg>
+      <notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
+      <notNullPath>Path is null or empty. Fill the path, please!</notNullPath>
+    </msg>
+  </UIJcrExplorerEditForm>
+    
+  <UIViewSearchResult>
+    <tooltip>
+      <remove-attachment>Do you want to remove this attachment file?</remove-attachment>
+    </tooltip>
+  </UIViewSearchResult>
+  
+  <SameNamePopup>
+    <title>
+      <UIUploadBehaviorWithSameName>Upload file</UIUploadBehaviorWithSameName>    
+    </title>
+  </SameNamePopup>  
+    
+  <UISingleUploadForm>
     <title>Upload a file</title>
     <label>
       <upload>Select a file</upload>
@@ -2774,17 +2774,17 @@
     </tab>
   </UISingleUploadContainer>
   <UISingleExternalMetadataForm>
-		<action>
-			<Add>Add</Add>
-			<Cancel>Cancel</Cancel>
-		</action>
-	</UISingleExternalMetadataForm>
-	<UISingleUploadContainer>
-  	<tab>
-  		<label>
-  			<UIListMetadata>List external metadatas</UIListMetadata>
-  		</label>
-  	</tab>
+    <action>
+      <Add>Add</Add>
+      <Cancel>Cancel</Cancel>
+    </action>
+  </UISingleExternalMetadataForm>
+  <UISingleUploadContainer>
+    <tab>
+      <label>
+        <UIListMetadata>List external metadatas</UIListMetadata>
+      </label>
+    </tab>
   </UISingleUploadContainer>
   <AddMetadataPopup>
     <title>
@@ -2817,14 +2817,14 @@
   </UIAllItems>
   
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Alphabetic</Alphabetic>
-  				<Type>Type</Type>
-  				<CreatedDate>Created Date</CreatedDate>
-  				<ModifiedDate>Modified Date</ModifiedDate>
-  				<Ascending>Ascending</Ascending>
-  				<Descending>Descending</Descending>
-  		</label>
+      <label>
+          <Alphabetic>Alphabetic</Alphabetic>
+          <Type>Type</Type>
+          <CreatedDate>Created Date</CreatedDate>
+          <ModifiedDate>Modified Date</ModifiedDate>
+          <Ascending>Ascending</Ascending>
+          <Descending>Descending</Descending>
+      </label>
   </UIPreferencesForm>
   
   <UIDocumentInfo>
@@ -2838,19 +2838,19 @@
     <header>
       <dateTime>Date time</dateTime>
       <name>Name</name>
-    </header>  	
+    </header>   
     <tooltip>
       <View>View</View>
-      <RemoveFromFavourite>Remove from favourite</RemoveFromFavourite>
-      <AddToFavourite>Add to favourite</AddToFavourite>
-      <timelineFavouriteDESC>Sort by favourite in descending order</timelineFavouriteDESC>
-      <timelineFavouriteASC>Sort by favourite in ascending order</timelineFavouriteASC>
+      <RemoveFromFavourite>Remove from favorite</RemoveFromFavourite>
+      <AddToFavourite>Add to favorite</AddToFavourite>
+      <timelineFavouriteDESC>Sort by favorite in descending order</timelineFavouriteDESC>
+      <timelineFavouriteASC>Sort by favorite in ascending order</timelineFavouriteASC>
       <timelineDateTimeASC>Sort by modified time in ascending order</timelineDateTimeASC>
       <timelineDateTimeDESC>Sort by modified time in descending order</timelineDateTimeDESC>
       <timelineNameASC>Sort by name in ascending order</timelineNameASC>
       <timelineNameDESC>Sort by name in descending order</timelineNameDESC>
     </tooltip>    
-  </UIDocumentInfo>	
+  </UIDocumentInfo> 
   
   <UISavedSearches>
     <title>
@@ -2859,37 +2859,37 @@
   </UISavedSearches>
   <DocumentType>
     <label>
-    	 <Images>Images</Images>
-    	 <Video>Video</Video>
-    	 <Music>Music</Music>
-    	 <Documents>Documents</Documents>
-    	 <Contents>Contents</Contents>
+       <Images>Images</Images>
+       <Video>Video</Video>
+       <Music>Music</Music>
+       <Documents>Documents</Documents>
+       <Contents>Contents</Contents>
     </label>
   </DocumentType>
   
   <UIDocumentFilterForm>
-  	<label>
-    	<Images>My Images</Images>
-    	<Video>My Video</Video>
+    <label>
+      <Images>My Images</Images>
+      <Video>My Video</Video>
     </label>
     <title>Set up filter preferences</title>
     <action>
-  		<Save>#{word.save}</Save>
+      <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>      
     </action>
   </UIDocumentFilterForm>
   
   <UIAllItemsByType>
-  	<label>
-  		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
-  	</label>
-  	<title>
-  	  <ShowVideo>Show all video files</ShowVideo>
-  	  <ShowMusic>Show all music files</ShowMusic>
-  	  <ShowImages>Show all image files</ShowImages>
-  	  <ShowDocuments>Show all document files</ShowDocuments>
-  	  <ShowContents>Show all contents type document</ShowContents>
-  	</title>
+    <label>
+      <DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
+    </label>
+    <title>
+      <ShowVideo>Show all video files</ShowVideo>
+      <ShowMusic>Show all music files</ShowMusic>
+      <ShowImages>Show all image files</ShowImages>
+      <ShowDocuments>Show all document files</ShowDocuments>
+      <ShowContents>Show all contents type document</ShowContents>
+    </title>
   </UIAllItemsByType>
   
   <Views>
@@ -2929,9 +2929,9 @@
     </msg>
   </EmptyTrashManageComponent> 
   <UICategoryForm>
-	  <label>
-	  	<name>Category Name</name>
-	  </label>
+    <label>
+      <name>Category Name</name>
+    </label>
     <action>
       <Save>Save</Save>
       <Cancel>Cancel</Cancel>      
@@ -2946,7 +2946,7 @@
     <tooltip>
       <AddCategory>Add category</AddCategory>
     </tooltip>
-	 </UIActionBar>
+   </UIActionBar>
 
    <UITaggingForm>
     <label>
@@ -2963,32 +2963,32 @@
    <UITagExplorer>
     <title>
       <EditPrivateTags>Edit private tags</EditPrivateTags>
-			<PublicTags>Public tags</PublicTags>
-			<EditPublicTags>Edit public tags</EditPublicTags>
-			<PrivateTags>Private tags</PrivateTags>
+      <PublicTags>Public tags</PublicTags>
+      <EditPublicTags>Edit public tags</EditPublicTags>
+      <PrivateTags>Private tags</PrivateTags>
      </title>
    </UITagExplorer>
    
-	<UIEditingTagsForm>
-	  <header>
-			<name>Name</name>
-			<relatedDocuments>Related documents</relatedDocuments>
-			<action>Action</action>
-	  </header>
-	
-	<action>
-	  <title>
-	    <EditTag>Edit tag</EditTag>
-	    <RemoveTag>Remove tag</RemoveTag>
-	    <AddTag>Add tag</AddTag>
-	  </title>
-	</action>
-	  <msg>
-	    <confirm-remove>Are you sure want to delete?</confirm-remove>
-	  </msg>
-	</UIEditingTagsForm>
-	
-	
+  <UIEditingTagsForm>
+    <header>
+      <name>Name</name>
+      <relatedDocuments>Related documents</relatedDocuments>
+      <action>Action</action>
+    </header>
+  
+  <action>
+    <title>
+      <EditTag>Edit tag</EditTag>
+      <RemoveTag>Remove tag</RemoveTag>
+      <AddTag>Add tag</AddTag>
+    </title>
+  </action>
+    <msg>
+      <confirm-remove>Are you sure want to delete?</confirm-remove>
+    </msg>
+  </UIEditingTagsForm>
+  
+  
   <UIPopupWindow>
     <title>
       <UIEditingTagsForm>Edit tag form</UIEditingTagsForm>
@@ -3011,10 +3011,10 @@
       <UITagForm>Tag form</UITagForm>
     </title>
   </TagPopup>
-		
-		<UIPopupMenu>
-  	<msg>
-  		<node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing>	
+    
+    <UIPopupMenu>
+    <msg>
+      <node-locked-editing>This node with path {0} is being locked by other user for editing!</node-locked-editing> 
     </msg>
   </UIPopupMenu>
   <UITagStyleForm>
@@ -3035,26 +3035,26 @@
     </title>
   </UIPopupWindow>
 
-		<PopupComponent>
+    <PopupComponent>
     <title>
       <UINodeTypeSelector>Select node type</UINodeTypeSelector>
     </title>
   </PopupComponent>
-		
-		<UIActionForm>
-  	<title>
-  		<ShowComponent>Show component</ShowComponent>
-  		<removeReference>Remove</removeReference>
-  	</title>
-  </UIActionForm>		
-		
-	<EditFormAction>
-  	<title>
-  		<ShowComponent>Show component</ShowComponent>
-  		<removeReference>Remove</removeReference>
-  	</title>
+    
+    <UIActionForm>
+    <title>
+      <ShowComponent>Show component</ShowComponent>
+      <removeReference>Remove</removeReference>
+    </title>
+  </UIActionForm>   
+    
+  <EditFormAction>
+    <title>
+      <ShowComponent>Show component</ShowComponent>
+      <removeReference>Remove</removeReference>
+    </title>
   </EditFormAction>
-		
+    
   <NodeTypeNameValidator>
     <msg>
       <Invalid-char>There are some invalid characters. Type another value, please!</Invalid-char>
@@ -3063,11 +3063,11 @@
   </NodeTypeNameValidator>
   
   <UIPreferencesForm>
-  		<label>
-						<queryType>Query Type</queryType>
-						<SQL>SQL</SQL>
-						<XPATH>XPATH</XPATH>  			
-  		</label>
+      <label>
+            <queryType>Query Type</queryType>
+            <SQL>SQL</SQL>
+            <XPATH>XPATH</XPATH>        
+      </label>
   </UIPreferencesForm>
   
   <UIDocumentInfo>
@@ -3082,13 +3082,13 @@
     </msg>
   </UITreeExplorer>
   <UIDocumentForm>
-  	<msg>
-  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
-  	</msg>
+    <msg>
+      <constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+    </msg>
   </UIDocumentForm>
   <UIActionForm>
-  	<msg>
-  		<constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
-  	</msg>
-  </UIActionForm>  		    
+    <msg>
+      <constraintviolation-exception>Can not save document. Data input is missed or invalid!</constraintviolation-exception>
+    </msg>
+  </UIActionForm>         
 </bundle>
