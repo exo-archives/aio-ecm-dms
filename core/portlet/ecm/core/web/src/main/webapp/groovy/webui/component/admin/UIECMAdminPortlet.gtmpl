@@ -18,7 +18,7 @@
 	<%
 	/* uicomponent.renderChild(UIRepositoryControl.class); */
 	%>
-	<div class="UIResizableBlock" style="height: 400px">
+	<div class="UIResizableBlock" style="height: 600px">
 	  <%
 	    int style = 6;
 	    def sideBar = "NotShowSideBar";
