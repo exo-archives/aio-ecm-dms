@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.utils;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatCountValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
@@ -108,7 +110,92 @@ public class DialogFormUtil {
       property = (JcrInputProperty) iter.next() ;
       rawinputs.put(property.getJcrPath(), property) ;
     }
+    List<UIFormUploadInput> formUploadList = new ArrayList<UIFormUploadInput>();
+    for (Object input : inputs) {
+      if (input instanceof UIFormMultiValueInputSet) {
+        UIFormMultiValueInputSet uiSet = (UIFormMultiValueInputSet) input;
+        if (uiSet.getId() != null && uiSet.getUIFormInputBase().equals(UIFormUploadInput.class) && uiSet.getId().equals("attachment__")) {
+          List<UIComponent> list = uiSet.getChildren();
+          for (UIComponent component : list) {
+            if (!formUploadList.contains(component)) formUploadList.add((UIFormUploadInput) component);
+          }
+        }
+      } else if (input instanceof UIFormUploadInput) {
+        if (!formUploadList.contains(input)) formUploadList.add((UIFormUploadInput) input);
+      }
+    }
+    if (formUploadList.size() > 0) {
+      List<String> keyListToRemove = new ArrayList<String>();
+      Map<String, JcrInputProperty> jcrPropertiesToAdd = new HashMap<String, JcrInputProperty>();
+      for (Object inputJCRKeyTmp : rawinputs.keySet()) {
+        String inputJCRKey = (String) inputJCRKeyTmp;
+        if (inputJCRKey.contains("attachment__")) {
+          JcrInputProperty jcrInputProperty = rawinputs.get(inputJCRKey);
+          for (UIFormUploadInput formUploadInput : formUploadList) {
+            JcrInputProperty newJcrInputProperty = clone(jcrInputProperty);
+            if(formUploadInput == null || formUploadInput.getUploadResource() == null || formUploadInput.getUploadResource().getFileName()==null)
+              continue;
+            String fileName = formUploadInput.getUploadResource().getFileName();
+            String newJCRPath = inputJCRKey.replace("attachment__", fileName);
+            newJcrInputProperty.setJcrPath(newJCRPath);
+            if (inputJCRKey.endsWith("attachment__")) {
+              newJcrInputProperty.setValue(fileName);
+              JcrInputProperty mimeTypeInputPropertyTmp = new JcrInputProperty();
+              mimeTypeInputPropertyTmp.setJcrPath(newJCRPath + "/jcr:content/jcr:mimeType");
+              mimeTypeInputPropertyTmp.setValue(formUploadInput.getUploadResource().getMimeType());
+              jcrPropertiesToAdd.put(mimeTypeInputPropertyTmp.getJcrPath(), mimeTypeInputPropertyTmp);
+            }
+            if (inputJCRKey.endsWith("jcr:data")) {
+              InputStream inputStream = formUploadInput.getUploadDataAsStream();
+              byte[] content = new byte[inputStream.available()];
+              inputStream.read(content);
+              newJcrInputProperty.setValue(content);
+            }
+            jcrPropertiesToAdd.put(newJCRPath, newJcrInputProperty);
+          }
+          keyListToRemove.add(inputJCRKey);
+        } else if (inputJCRKey.endsWith("jcr:data")) {
+          JcrInputProperty jcrInputProperty = rawinputs.get(inputJCRKey);
+          for (UIFormUploadInput formUploadInput : formUploadList) {
+            JcrInputProperty newJcrInputProperty = clone(jcrInputProperty);
+            if(formUploadInput == null || formUploadInput.getUploadResource() == null || formUploadInput.getUploadResource().getFileName()==null)
+              continue;
+            String fileName = formUploadInput.getUploadResource().getFileName();
+            String newJCRPath = inputJCRKey;
+            newJcrInputProperty.setJcrPath(newJCRPath);        
+            newJcrInputProperty.setValue(fileName);
+            JcrInputProperty mimeTypeInputPropertyTmp = new JcrInputProperty();
+            mimeTypeInputPropertyTmp.setJcrPath(newJCRPath.replace("jcr:data", "jcr:mimeType"));
+            mimeTypeInputPropertyTmp.setValue(formUploadInput.getUploadResource().getMimeType());
+            jcrPropertiesToAdd.put(mimeTypeInputPropertyTmp.getJcrPath(), mimeTypeInputPropertyTmp);
+            
+            InputStream inputStream = formUploadInput.getUploadDataAsStream();
+            byte[] content = new byte[inputStream.available()];
+            inputStream.read(content);
+            newJcrInputProperty.setValue(content);
+            jcrPropertiesToAdd.put(newJCRPath, newJcrInputProperty);
+          }
+          keyListToRemove.add(inputJCRKey);
+        }
+      }
+      for (String keyToRemove : keyListToRemove) {
+        rawinputs.remove(keyToRemove);
+      }
+      rawinputs.putAll(jcrPropertiesToAdd);
+    }
+    
     return rawinputs;
+  }
+  
+  private static JcrInputProperty clone(JcrInputProperty fileNodeInputProperty) {
+    JcrInputProperty jcrInputProperty = new JcrInputProperty();
+    jcrInputProperty.setJcrPath(fileNodeInputProperty.getJcrPath());
+    jcrInputProperty.setMixintype(fileNodeInputProperty.getMixintype());
+    jcrInputProperty.setNodetype(fileNodeInputProperty.getNodetype());
+    jcrInputProperty.setType(fileNodeInputProperty.getType());
+    jcrInputProperty.setValue(fileNodeInputProperty.getValue());
+    jcrInputProperty.setValueType(fileNodeInputProperty.getValueType());
+    return jcrInputProperty;
   }
 
   /**
