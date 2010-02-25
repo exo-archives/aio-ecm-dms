@@ -375,6 +375,16 @@
   cursor: col-resize;
 }
 
+.UIJCRExplorerPortlet .UIListGrid .ResizeHandle {
+		cursor: col-resize;
+		width: 1px;
+		height: 190px; /* default height */
+		border-right: 1px dashed #000;
+		position: absolute;
+		top: 0;
+		left: 0;
+}
+
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
 	width: 95%;
