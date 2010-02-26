@@ -58,6 +58,8 @@ public class UISelectDocumentForm extends UIForm {
       UIDocumentFormController uiDCFormController = uiSelectForm.getParent() ;
       UIDocumentForm documentForm = uiDCFormController.getChild(UIDocumentForm.class) ;
       documentForm.getChildren().clear() ;
+      // reset the interceptors
+      documentForm.resetInterceptors();
       documentForm.resetProperties() ;
       // set path to DocumentForm
       documentForm.setContentType(uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT).getValue()) ;

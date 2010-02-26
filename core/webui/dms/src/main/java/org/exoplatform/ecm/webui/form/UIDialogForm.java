@@ -1016,6 +1016,11 @@ public class UIDialogForm extends UIForm {
   public void setDataRemoved(boolean dataRemoved) { dataRemoved_ = dataRemoved; }
 
   public void resetProperties() { properties.clear(); }
+  
+  public void resetInterceptors(){
+    this.prevScriptInterceptor.clear();
+    this.postScriptInterceptor.clear();
+  }
 
   public void setChildPath(String childPath) { this.childPath = childPath; }
 
