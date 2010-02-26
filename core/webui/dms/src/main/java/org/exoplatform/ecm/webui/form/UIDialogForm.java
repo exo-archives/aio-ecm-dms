@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -1136,6 +1137,11 @@ public class UIDialogForm extends UIForm {
   public void setDataRemoved(boolean dataRemoved) { dataRemoved_ = dataRemoved; }
 
   public void resetProperties() { properties.clear(); }
+  
+  public void resetInterceptors(){
+    this.prevScriptInterceptor.clear();
+    this.postScriptInterceptor.clear();
+  }
 
   public void setChildPath(String childPath) { this.childPath = childPath; }
 
