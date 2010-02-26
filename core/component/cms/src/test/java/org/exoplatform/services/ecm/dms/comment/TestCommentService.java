@@ -78,7 +78,7 @@ public class TestCommentService extends BaseDMSTestCase {
     super.setUp();
     commentsService = (CommentsService) container.getComponentInstanceOfType(CommentsService.class);
     multiLangService = (MultiLanguageService) container.getComponentInstanceOfType(MultiLanguageService.class);
-
+    initNode();
   }
   
   /**
@@ -114,7 +114,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      Test node has comment node with 2 comments.
    */
   public void testAddComment2() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     NodeIterator iter = test.getNode(COMMENT).getNodes();
@@ -136,7 +136,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      Test node has comment node which added more comment.
    */
   public void testAddComment3() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     NodeIterator iter = test.getNode(COMMENT).getNodes();
@@ -175,10 +175,10 @@ public class TestCommentService extends BaseDMSTestCase {
    *      comment node is added in en node with 2 comments
    */
   public void testAddComment5() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
-    NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
+    NodeIterator iter = test.getNode(COMMENT).getNodes();
     int i = 0;
     while (iter.hasNext()) {
       check(i++, iter.nextNode());
@@ -194,10 +194,10 @@ public class TestCommentService extends BaseDMSTestCase {
    *      comment node with en language will be added more comments
    */
   public void testAddComment6() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
-    NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
+    NodeIterator iter = test.getNode(COMMENT).getNodes();
     int i = 0;
     while (iter.hasNext()) {
       check(i++, iter.nextNode());
@@ -213,7 +213,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *         comment node is added jp node with comments.
    */
   public void testAddComment7() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "jp");
     NodeIterator iter = multiLangService.getLanguage(test, "jp").getNode(COMMENT).getNodes();
@@ -252,7 +252,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      commenter's name will be assigned ANONYMOUS.
    */
   public void testAddComment9() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
+    Node test = session.getRootNode().getNode("test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
     }
@@ -275,7 +275,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      comment doesn't have COMMENTOR_EMAIL property.
    */
   public void testAddComment10() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
+    Node test = session.getRootNode().getNode("test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
     }
@@ -298,7 +298,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      Comment message is "Ciao"
    */
   public void testUpdateComment() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     List<Node> nodes = commentsService.getComments(test, multiLangService.getDefault(test));
     commentsService.updateComment(nodes.get(0), "Ciao");
@@ -314,7 +314,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *      Comment for node is delete
    */
   public void testDeleteComment() throws Exception{
-    Node test = initNode();
+    Node test = session.getRootNode().getNode("test");
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     List<Node> nodes = commentsService.getComments(test, multiLangService.getDefault(test));
     assertEquals(1, nodes.size());
@@ -330,7 +330,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *        Get all comment nodes with default language.
    */
   public void testGetComments1() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
+    Node test = session.getRootNode().getNode("test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
     }
@@ -353,7 +353,7 @@ public class TestCommentService extends BaseDMSTestCase {
    *        Get all comment nodes with jp language.
    */
   public void testGetComments2() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
+    Node test = session.getRootNode().getNode("test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
     }
@@ -447,8 +447,8 @@ public class TestCommentService extends BaseDMSTestCase {
    * Clean data test
    */
   public void tearDown() throws Exception {
-    if (session.itemExists("/Test")) {
-      Node test = session.getRootNode().getNode("Test");
+    if (session.itemExists("/test")) {
+      Node test = session.getRootNode().getNode("test");
       test.remove();
       session.save();
     }

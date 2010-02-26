@@ -54,7 +54,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   public void setUp() throws Exception {
     super.setUp();
     taxonomyService = (TaxonomyService) container.getComponentInstanceOfType(TaxonomyService.class);
-    dmsSesssion = repository.login(credentials, DMSSYSTEM_WS);
+    dmsSesssion = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
     nodeHierarchyCreator = (NodeHierarchyCreator) container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     linkManage = (LinkManager)container.getComponentInstanceOfType(LinkManager.class);
     definitionPath =  nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH);
@@ -108,7 +108,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     taxonomyService.addTaxonomyTree(docTree);
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Doc"));
     Node definitionDocTree = (Node)dmsSesssion.getItem(definitionPath + "/Doc");
-    assertEquals(docTree, linkManage.getTarget(definitionDocTree));
+    assertEquals(docTree, linkManage.getTarget(definitionDocTree, true));
   }
 
   /**
@@ -146,7 +146,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     taxonomyService.addTaxonomyTree(musicTree);
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Music"));
     Node musicTreeDefinition = (Node)dmsSesssion.getItem(definitionPath + "/Music");
-    assertEquals(musicTree, linkManage.getTarget(musicTreeDefinition));
+    assertEquals(musicTree, linkManage.getTarget(musicTreeDefinition, true));
   }
 
   /**
@@ -197,7 +197,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     int totalTree1 = taxonomyService.getAllTaxonomyTrees(REPO_NAME).size();
     taxonomyService.addTaxonomyTree(championLeague);
     taxonomyService.addTaxonomyTree(europa);
-    int totalTree2 = taxonomyService.getAllTaxonomyTrees(REPO_NAME).size();
+    int totalTree2 = taxonomyService.getAllTaxonomyTrees(REPO_NAME, true).size();
     assertEquals(2, totalTree2 - totalTree1);
   }
 
@@ -302,7 +302,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     Node rootTree = (Node)session.getItem("/MyDocuments/Serie");
     session.save();
     taxonomyService.addTaxonomyTree(rootTree);
-    taxonomyService.addCategory(article, "Serie", "A");
+    taxonomyService.addCategory(article, "Serie", "A", true);
     Node link = (Node)session.getItem("/MyDocuments/Serie/A/Article");
     assertTrue(link.isNodeType("exo:taxonomyLink"));
     assertEquals(article, linkManage.getTarget(link));
@@ -325,7 +325,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Serie", "B", "root");
     Node rootTree = (Node)session.getItem("/MyDocuments/Serie");
     taxonomyService.addTaxonomyTree(rootTree);
-    taxonomyService.addCategories(article, "Serie", new String[] {"A", "B"});
+    taxonomyService.addCategories(article, "Serie", new String[] {"A", "B"}, true);
     Node link1 = (Node)session.getItem("/MyDocuments/Serie/A/Article");
     Node link2 = (Node)session.getItem("/MyDocuments/Serie/B/Article");
     assertTrue(link1.isNodeType("exo:taxonomyLink"));
@@ -355,9 +355,9 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     Node rootTree2 = (Node)session.getItem("/MyDocuments/Budesliga");
     taxonomyService.addTaxonomyTree(rootTree1);
     taxonomyService.addTaxonomyTree(rootTree2);
-    taxonomyService.addCategories(article, "Serie", new String[] {"A", "B"});
-    assertTrue(taxonomyService.hasCategories(article, "Serie"));
-    assertFalse(taxonomyService.hasCategories(article, "Budesliga"));
+    taxonomyService.addCategories(article, "Serie", new String[] {"A", "B"}, true);
+    assertTrue(taxonomyService.hasCategories(article, "Serie", true));
+    assertFalse(taxonomyService.hasCategories(article, "Budesliga", true));
   }
   
   /**
@@ -377,8 +377,8 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     taxonomyService.addTaxonomyNode(REPO_NAME, COLLABORATION_WS, "/MyDocuments/Stories", "Fairy", "root");
     Node rootTree = (Node)session.getItem("/MyDocuments/Stories");
     taxonomyService.addTaxonomyTree(rootTree);
-    taxonomyService.addCategories(article, "Stories", new String[] {"Homorous", "Fairy"});
-    List<Node> lstNode = taxonomyService.getCategories(article, "Stories");
+    taxonomyService.addCategories(article, "Stories", new String[] {"Homorous", "Fairy"}, true);
+    List<Node> lstNode = taxonomyService.getCategories(article, "Stories", true);
     Node taxoLink1 = (Node)session.getItem("/MyDocuments/Stories/Homorous");
     Node taxoLink2 = (Node)session.getItem("/MyDocuments/Stories/Fairy");
     assertEquals(2, lstNode.size());
@@ -407,9 +407,9 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     Node rootTree2 = (Node)session.getItem("/MyDocuments/News");
     taxonomyService.addTaxonomyTree(rootTree1);
     taxonomyService.addTaxonomyTree(rootTree2);
-    taxonomyService.addCategories(article, "Culture", new String[] {"Foods", "Art"});
-    taxonomyService.addCategory(article, "News", "Politics");
-    List<Node> lstNode = taxonomyService.getAllCategories(article);
+    taxonomyService.addCategories(article, "Culture", new String[] {"Foods", "Art"}, true);
+    taxonomyService.addCategory(article, "News", "Politics", true);
+    List<Node> lstNode = taxonomyService.getAllCategories(article, true);
     Node taxoLink1 = (Node)session.getItem("/MyDocuments/Culture/Foods");
     Node taxoLink2 = (Node)session.getItem("/MyDocuments/Culture/Art");
     Node taxoLink3 = (Node)session.getItem("/MyDocuments/News/Politics");
@@ -439,20 +439,20 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     taxonomyService.addTaxonomyTree(rootTree1);
     Node rootTree2 = (Node)session.getItem("/MyDocuments/News");
     taxonomyService.addTaxonomyTree(rootTree2);
-    taxonomyService.addCategory(article, "Education", "Language");
-    taxonomyService.addCategory(article, "News", "Weather");
-    List<Node> lstNode = taxonomyService.getAllCategories(article);
+    taxonomyService.addCategory(article, "Education", "Language", true);
+    taxonomyService.addCategory(article, "News", "Weather", true);
+    List<Node> lstNode = taxonomyService.getAllCategories(article, true);
     assertEquals(2, lstNode.size());
-    taxonomyService.removeCategory(article, "Education", "Language");
-    lstNode = taxonomyService.getAllCategories(article);
+    taxonomyService.removeCategory(article, "Education", "Language", true);
+    lstNode = taxonomyService.getAllCategories(article, true);
     assertEquals(1, lstNode.size());
-    taxonomyService.removeCategory(article, "News", "Weather");
-    lstNode = taxonomyService.getAllCategories(article);
+    taxonomyService.removeCategory(article, "News", "Weather", true);
+    lstNode = taxonomyService.getAllCategories(article, true);
     assertEquals(0, lstNode.size());
   }
 
   public void tearDown() throws Exception {
-    List<Node> lstNode = taxonomyService.getAllTaxonomyTrees(REPO_NAME);
+    List<Node> lstNode = taxonomyService.getAllTaxonomyTrees(REPO_NAME, true);
     for(Node tree : lstNode) {
       if (!tree.getName().equals("System"))
         taxonomyService.removeTaxonomyTree(tree.getName());

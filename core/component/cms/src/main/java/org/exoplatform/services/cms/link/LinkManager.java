@@ -104,6 +104,16 @@ public interface LinkManager {
    * @throws RepositoryException if an unexpected error occurs
    */
   public boolean isTargetReachable(Node link) throws RepositoryException;
+  
+  /**
+   * Checks if the target node of the given link can be reached using the user
+   * session
+   * 
+   * @param link The node of type exo:symlink
+   * @param system
+   * @throws RepositoryException if an unexpected error occurs
+   */
+  public boolean isTargetReachable(Node link, boolean system) throws RepositoryException;  
 
   /**
    * Indicates whether the given item is a link

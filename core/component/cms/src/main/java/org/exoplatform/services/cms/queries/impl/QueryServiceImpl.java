@@ -279,7 +279,12 @@ public class QueryServiceImpl implements QueryService, Startable{
    */
   public void addSharedQuery(String queryName, String statement, String language, 
       String[] permissions, boolean cachedResult, String repository) throws Exception {
-    SessionProvider provider = SessionProviderFactory.createSessionProvider();
+    addSharedQuery(queryName, statement, language, 
+        permissions, cachedResult, repository, SessionProviderFactory.createSessionProvider());
+  }
+  
+  public void addSharedQuery(String queryName, String statement, String language, 
+      String[] permissions, boolean cachedResult, String repository, SessionProvider provider) throws Exception {
     Session session = getSession(repository, provider, true);
     ValueFactory vt = session.getValueFactory();
     String queryPath;
@@ -315,7 +320,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     session.logout();
     removeFromCache(queryPath);
-  }
+  }  
 
   /**
    * {@inheritDoc}

@@ -64,7 +64,7 @@ public class TestLinkManager extends BaseDMSTestCase {
   }
   
   public void createTree() throws Exception {
-    session = repository.login(credentials, COLLABORATION_WS);
+    session = sessionProviderService_.getSystemSessionProvider(null).getSession(COLLABORATION_WS, repository);
     rootNode = session.getRootNode();
     Node testNode = rootNode.addNode("TestTreeNode");
     Node nodeA1 = testNode.addNode("A1");
@@ -329,7 +329,6 @@ public class TestLinkManager extends BaseDMSTestCase {
   public void tearDown() throws Exception {
     Node root;
     try {
-      session = repository.login(credentials, COLLABORATION_WS);
       root = session.getRootNode();
       root.getNode("TestTreeNode").remove();
       root.save();

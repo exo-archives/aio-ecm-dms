@@ -147,9 +147,16 @@ public class LinkManagerImpl implements LinkManager {
    * {@inheritDoc}
    */
   public boolean isTargetReachable(Node link) throws RepositoryException {
+    return isTargetReachable(link, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isTargetReachable(Node link, boolean system) throws RepositoryException {
     Session session = null;
     try {
-      session = getSession(link, false);
+      session = getSession(link, system);
       session.getNodeByUUID(link.getProperty(UUID).getString());
     } catch (ItemNotFoundException e) {
       return false;
@@ -157,7 +164,7 @@ public class LinkManagerImpl implements LinkManager {
       if(session != null) session.logout();
     }
     return true;
-  }
+  }  
 
   /**
    * {@inheritDoc}

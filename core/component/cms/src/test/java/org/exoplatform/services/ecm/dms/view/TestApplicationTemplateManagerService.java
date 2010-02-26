@@ -48,7 +48,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     basedApplicationTemplatesPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
     System.out.println("basedApplicationTemplatesPath :" + basedApplicationTemplatesPath );
-    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
+    sessionDMS = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
   }
   
   /**
@@ -75,7 +75,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    */
   public void testGetTemplatesByApplication() throws Exception {
     assertNull(appTemplateManagerService.getTemplatesByApplication(REPO_NAME, 
-        "UIBrowseContentPortlet", SessionProviderFactory.createSessionProvider()));
+        "UIBrowseContentPortlet", sessionProviderService_.getSystemSessionProvider(null)));
   }
   
   /**
@@ -92,7 +92,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    */
   public void testGetTemplatesByCategory() throws Exception {
     assertEquals(1, appTemplateManagerService.getTemplatesByCategory(REPO_NAME, "content-browser", 
-        "detail-document", SessionProviderFactory.createSessionProvider()).size());
+        "detail-document", sessionProviderService_.getSystemSessionProvider(null)).size());
   }
   
   /**
@@ -111,7 +111,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    */
   public void testGetTemplateByName() throws Exception {
     assertNotNull(appTemplateManagerService.getTemplateByName(REPO_NAME, "content-browser", 
-        "detail-document", "DocumentView", SessionProviderFactory.createSessionProvider()));
+        "detail-document", "DocumentView", sessionProviderService_.getSystemSessionProvider(null)));
   }
   
   /**
@@ -126,7 +126,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    */
   public void testGetTemplateByPath() throws Exception {
     assertNotNull(appTemplateManagerService.getTemplateByPath(REPO_NAME, 
-        "/exo:ecm/views/templates/content-browser/detail-document/DocumentView", SessionProviderFactory.createSessionProvider()));
+        "/exo:ecm/views/templates/content-browser/detail-document/DocumentView", sessionProviderService_.getSystemSessionProvider(null)));
   }
   
   /**
@@ -150,7 +150,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
     appTemplateManagerService.addTemplate(portletTemplateHome, config);
     
     assertNotNull(appTemplateManagerService.getTemplateByPath(REPO_NAME, 
-        "/exo:ecm/views/templates/categoryA/HelloName", SessionProviderFactory.createSessionProvider()));
+        "/exo:ecm/views/templates/categoryA/HelloName", sessionProviderService_.getSystemSessionProvider(null)));
     
     sessionDMS.getItem("/exo:ecm/views/templates/categoryA").remove();
     sessionDMS.save();

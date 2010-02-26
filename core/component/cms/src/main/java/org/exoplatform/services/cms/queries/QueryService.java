@@ -103,6 +103,22 @@ public interface QueryService {
    */
   public void addSharedQuery(String queryName, String statement, String language,
       String[] permissions, boolean cachedResult, String repository) throws Exception;
+  
+  /**
+   * Add new shared query by giving the following params: queryName, statement,
+   * language, permissions, cachedResult, repository
+   * 
+   * @param queryName String The name of query
+   * @param statement String The statement query
+   * @param language String The language is requested
+   * @param permissions String[]
+   * @param cachedResult boolean Choosen for caching results
+   * @param repository String The name of repository
+   * @param provider Session provider
+   * @throws Exception
+   */
+  public void addSharedQuery(String queryName, String statement, String language,
+      String[] permissions, boolean cachedResult, String repository, SessionProvider provider) throws Exception;  
 
   /**
    * Get shared queries by giving the following params : userId, repository,

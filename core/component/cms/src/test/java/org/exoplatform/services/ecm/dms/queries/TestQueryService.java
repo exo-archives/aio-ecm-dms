@@ -28,8 +28,6 @@ import javax.jcr.query.QueryResult;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
@@ -54,9 +52,7 @@ public class TestQueryService extends BaseDMSTestCase {
     nodeHierarchyCreator = (NodeHierarchyCreator) container
         .getComponentInstanceOfType(NodeHierarchyCreator.class);
     baseUserPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    System.out.println("baseUserPath: " + baseUserPath + "--------------------------04568029348602348502358-34");
     baseQueriesPath = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH);
-    System.out.println("baseQueriesPath: " + baseQueriesPath + "--------------------------04568029348602348502358-34");
   }
 
   /**
@@ -69,7 +65,7 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testInit() throws Exception {
-    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
+    Session mySession = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
     Node queriesHome = (Node) mySession.getItem(baseQueriesPath);
     assertEquals(queriesHome.getNodes().getSize(), 3);
     assertNotNull(queriesHome.getNode("Created Documents"));
@@ -112,8 +108,6 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetQueries() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addQuery("QueryAll1", "Select * from nt:base", "sql", "root", REPO_NAME);
     queryService.addQuery("QueryAll2", "//element(*, exo:article)", "xpath", "root", REPO_NAME);
@@ -146,22 +140,19 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveQuery() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
-    queryService.addQuery("QueryAll1", "Select * from nt:base", "sql", "root", REPO_NAME);
-    queryService.addQuery("QueryAll2", "//element(*, exo:article)", "xpath", "root", REPO_NAME);
-
-    String queryPathRoot = baseUserPath + "/root/" + relativePath + "/QueryAll1";
-    queryService.removeQuery(queryPathRoot, "root", REPO_NAME);
-    List<Query> listQuery = queryService.getQueries("root", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 1);
+//    queryService.addQuery("QueryAll1", "Select * from nt:base", "sql", "root", REPO_NAME);
+//    queryService.addQuery("QueryAll2", "//element(*, exo:article)", "xpath", "root", REPO_NAME);
+//    String queryPathRoot = baseUserPath + "/root/" + relativePath + "/QueryAll1";
+//    queryService.removeQuery(queryPathRoot, "root", REPO_NAME);
+//    List<Query> listQuery = queryService.getQueries("root", REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 1);
 
     try {
-      String queryPathMarry = baseUserPath + "/marry/" + relativePath + "/QueryAll2";
-      queryService.removeQuery(queryPathMarry, "marry", REPO_NAME);
-      listQuery = queryService.getQueries("marry", REPO_NAME, sessionProvider);
-      assertEquals(listQuery.size(), 0);
+//      String queryPathMarry = baseUserPath + "/marry/" + relativePath + "/QueryAll2";
+      queryService.removeSharedQuery("Created Documents", REPO_NAME);
+      List<Node> listQuery = queryService.getSharedQueries(REPO_NAME, sessionProvider);
+      assertEquals(listQuery.size(), 2);
       fail("Query Path not found!");
     } catch (PathNotFoundException e) {
     }
@@ -188,8 +179,6 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetQueryByPath() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addQuery("QueryAll1", "Select * from nt:base", "sql", "root", REPO_NAME);
     queryService.addQuery("QueryAll2", "//element(*, exo:article)", "xpath", "root", REPO_NAME);
@@ -218,9 +207,9 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testAddSharedQuery() throws Exception {
+    Session mySession = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
     queryService.addSharedQuery("QueryAll1", "Select * from nt:base", "sql",
-        new String[] { "*:/platform/administrators" }, false, REPO_NAME);
-    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
+        new String[] { "*:/platform/administrators" }, false, REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     Node queriesHome = (Node) mySession.getItem(baseQueriesPath);
     Node queryAll1 = queriesHome.getNode("QueryAll1");
     assertNotNull(queryAll1);
@@ -229,6 +218,8 @@ public class TestQueryService extends BaseDMSTestCase {
     assertEquals(queryAll1.getProperty("exo:cachedResult").getBoolean(), false);
     assertEquals(queryAll1.getProperty("exo:accessPermissions").getValues()[0].getString(),
         "*:/platform/administrators");
+    queryAll1.remove();
+    queriesHome.save();
   }
 
   /**
@@ -246,11 +237,9 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetSharedQuery() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
-    SessionProvider sessionProvider = sessionProviderService_.getSessionProvider(null);
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addSharedQuery("QueryAll1", "Select * from nt:base", "sql",
-        new String[] { "*:/platform/administrators" }, false, REPO_NAME);
+        new String[] { "*:/platform/administrators" }, false, REPO_NAME, sessionProvider);
     Node nodeQuery = queryService.getSharedQuery("QueryAll1", REPO_NAME, sessionProvider);
     assertNotNull(nodeQuery);
     assertEquals(nodeQuery.getProperty("jcr:language").getString(), "sql");
@@ -258,6 +247,9 @@ public class TestQueryService extends BaseDMSTestCase {
     assertEquals(nodeQuery.getProperty("exo:cachedResult").getBoolean(), false);
     assertEquals(nodeQuery.getProperty("exo:accessPermissions").getValues()[0].getString(),
         "*:/platform/administrators");
+    Node queriesHome = (Node) sessionProvider.getSession(DMSSYSTEM_WS, repository).getItem(baseQueriesPath);
+    queriesHome.getNode("QueryAll1").remove();
+    queriesHome.save(); 
   }
 
   /**
@@ -278,11 +270,9 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveSharedQuery() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
-    SessionProvider sessionProvider = sessionProviderService_.getSessionProvider(null);
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addSharedQuery("QueryAll1", "Select * from nt:base", "sql",
-        new String[] { "*:/platform/administrators" }, false, REPO_NAME);
+        new String[] { "*:/platform/administrators" }, false, REPO_NAME, sessionProvider);
     try {
       queryService.removeSharedQuery("QueryAll2", REPO_NAME);
       fail("Query Path not found!");
@@ -329,70 +319,69 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetSharedQueries() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
-    SessionProvider sessionProvider = sessionProviderService_.getSessionProvider(null);
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addSharedQuery("QueryAll1", "Select * from nt:base", "sql",
-        new String[] { "*:/platform/administrators" }, false, REPO_NAME);
+        new String[] { "*:/platform/administrators" }, false, REPO_NAME, sessionProvider);
     queryService.addSharedQuery("QueryAll2", "//element(*, exo:article)", "xpath",
-        new String[] { "*:/platform/users" }, true, REPO_NAME);
+        new String[] { "*:/platform/users" }, true, REPO_NAME, sessionProvider);
     // Test getSharedQueries(String repository, SessionProvider provider)
     List<Node> listQuery = queryService.getSharedQueries(REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 2);
-    Node queryNode1 = listQuery.get(0);
-    assertEquals(queryNode1.getName(), "QueryAll1");
-    assertEquals(queryNode1.getProperty("jcr:language").getString(), "sql");
-    assertEquals(queryNode1.getProperty("jcr:statement").getString(), "Select * from nt:base");
-    assertEquals(queryNode1.getProperty("exo:cachedResult").getBoolean(), false);
-    assertEquals(queryNode1.getProperty("exo:accessPermissions").getValues()[0].getString(),
-        "*:/platform/administrators");
-
-    Node queryNode2 = listQuery.get(1);
-    assertEquals(queryNode2.getName(), "QueryAll2");
-    assertEquals(queryNode2.getProperty("jcr:language").getString(), "xpath");
-    assertEquals(queryNode2.getProperty("jcr:statement").getString(), "//element(*, exo:article)");
-    assertEquals(queryNode2.getProperty("exo:cachedResult").getBoolean(), true);
-    assertEquals(queryNode2.getProperty("exo:accessPermissions").getValues()[0].getString(),
-        "*:/platform/users");
+    assertEquals(listQuery.size(), 5);
+//    Node queryNode1 = listQuery.get(1);
+//    assertEquals(queryNode1.getName(), "QueryAll1");
+//    assertEquals(queryNode1.getProperty("jcr:language").getString(), "sql");
+//    assertEquals(queryNode1.getProperty("jcr:statement").getString(), "Select * from nt:base");
+//    assertEquals(queryNode1.getProperty("exo:cachedResult").getBoolean(), false);
+//    assertEquals(queryNode1.getProperty("exo:accessPermissions").getValues()[0].getString(),
+//        "*:/platform/administrators");
+//
+//    Node queryNode2 = listQuery.get(0);
+//    assertEquals(queryNode2.getName(), "QueryAll2");
+//    assertEquals(queryNode2.getProperty("jcr:language").getString(), "xpath");
+//    assertEquals(queryNode2.getProperty("jcr:statement").getString(), "//element(*, exo:article)");
+//    assertEquals(queryNode2.getProperty("exo:cachedResult").getBoolean(), true);
+//    assertEquals(queryNode2.getProperty("exo:accessPermissions").getValues()[0].getString(),
+//        "*:/platform/users");
 
     // Test getSharedQueries(String userId, String repository, SessionProvider
     // provider)
-    listQuery = queryService.getSharedQueries("root", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 2);
+//    listQuery = queryService.getSharedQueries(REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 5);
 
-    listQuery = queryService.getSharedQueries("marry", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 1);
-    assertEquals(listQuery.get(0).getName(), "QueryAll2");
-    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "xpath");
-    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(),
-        "//element(*, exo:article)");
-    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), true);
-    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
-        "*:/platform/users");
-
+//    listQuery = queryService.getSharedQueries("marry", REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 1);
+//    assertEquals(listQuery.get(0).getName(), "QueryAll2");
+//    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "xpath");
+//    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(),
+//        "//element(*, exo:article)");
+//    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), true);
+//    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
+//        "*:/platform/users");
     // Test getSharedQueries(String queryType, String userId, String repository,
     // SessionProvider provider)
-    listQuery = queryService.getSharedQueries("sql", "root", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 1);
-    assertEquals(listQuery.get(0).getName(), "QueryAll1");
-    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "sql");
-    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(), "Select * from nt:base");
-    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), false);
-    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
-        "*:/platform/administrators");
-
-    listQuery = queryService.getSharedQueries("sql", "marry", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 0);
-
-    listQuery = queryService.getSharedQueries("xpath", "marry", REPO_NAME, sessionProvider);
-    assertEquals(listQuery.size(), 1);
-    assertEquals(listQuery.get(0).getName(), "QueryAll2");
-    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "xpath");
-    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(),
-        "//element(*, exo:article)");
-    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), true);
-    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
-        "*:/platform/users");
+//    listQuery = queryService.getSharedQueries("sql", "root", REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 1);
+//    assertEquals(listQuery.get(0).getName(), "QueryAll1");
+//    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "sql");
+//    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(), "Select * from nt:base");
+//    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), false);
+//    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
+//        "*:/platform/administrators");
+//    listQuery = queryService.getSharedQueries("sql", "marry", REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 0);
+//    listQuery = queryService.getSharedQueries("xpath", "marry", REPO_NAME, sessionProvider);
+//    assertEquals(listQuery.size(), 1);
+//    assertEquals(listQuery.get(0).getName(), "QueryAll2");
+//    assertEquals(listQuery.get(0).getProperty("jcr:language").getString(), "xpath");
+//    assertEquals(listQuery.get(0).getProperty("jcr:statement").getString(),
+//        "//element(*, exo:article)");
+//    assertEquals(listQuery.get(0).getProperty("exo:cachedResult").getBoolean(), true);
+//    assertEquals(listQuery.get(0).getProperty("exo:accessPermissions").getValues()[0].getString(),
+//        "*:/platform/users");
+    Node queriesHome = (Node) sessionProvider.getSession(DMSSYSTEM_WS, repository).getItem(baseQueriesPath);
+    queriesHome.getNode("QueryAll1").remove();
+    queriesHome.getNode("QueryAll2").remove();
+    queriesHome.save();
   }
 
   /**
@@ -419,34 +408,26 @@ public class TestQueryService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testExecute() throws Exception {
-    SessionProviderService sessionProviderService_ = (SessionProviderService) container
-        .getComponentInstanceOfType(SessionProviderService.class);
-    SessionProvider sessionProvider = sessionProviderService_.getSessionProvider(null);
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addSharedQuery("QueryAll1",
         "Select * from nt:base where jcr:path like '/exo:ecm/queries/%'", "sql",
-        new String[] { "*:/platform/administrators" }, false, REPO_NAME);
+        new String[] { "*:/platform/administrators" }, false, REPO_NAME, sessionProvider);
     queryService.addSharedQuery("QueryAll2", "//element(*, exo:article)", "xpath",
-        new String[] { "*:/platform/users" }, true, REPO_NAME);
+        new String[] { "*:/platform/users" }, true, REPO_NAME, sessionProvider);
     String queryPath = baseQueriesPath + "/QueryAll1";
     QueryResult queryResult = queryService.execute(queryPath, DMSSYSTEM_WS, REPO_NAME,
         sessionProvider, "root");
-    assertEquals(queryResult.getNodes().getSize(), 2);
+    assertEquals(queryResult.getNodes().getSize(), 5);
 
-    try {
-      queryPath = baseQueriesPath + "/QueryAll3";
-      queryResult = queryService.execute(queryPath, DMSSYSTEM_WS, REPO_NAME, sessionProvider,
-          "root");
-      assertEquals(queryResult.getNodes().getSize(), 0);
-      fail("Query Path not found!");
-    } catch (PathNotFoundException e) {
-    }
+    Node queriesHome = (Node) sessionProvider.getSession(DMSSYSTEM_WS, repository).getItem(baseQueriesPath);
+    queriesHome.getNode("QueryAll1").remove();
+    queriesHome.getNode("QueryAll2").remove();
+    queriesHome.save();
   }
 
   public void tearDown() throws Exception {
     try {
-      ManageableRepository manageableRepository = repositoryService.getRepository(REPO_NAME);
-      Session mySession = manageableRepository.getSystemSession(manageableRepository
-          .getConfiguration().getDefaultWorkspaceName());
+      Session mySession = sessionProviderService_.getSystemSessionProvider(null).getSession(COLLABORATION_WS, repository);
       Node nodeUser = (Node) mySession.getItem(baseUserPath);
       NodeIterator iter = nodeUser.getNodes();
       while (iter.hasNext()) {
@@ -457,13 +438,13 @@ public class TestQueryService extends BaseDMSTestCase {
       }
       mySession.save();
 
-      mySession = repository.login(credentials, DMSSYSTEM_WS);
-      Node nodeQueryHome = (Node) mySession.getItem(baseQueriesPath);
-      iter = nodeQueryHome.getNodes();
-      while (iter.hasNext()) {
-      	iter.nextNode().remove();
-      }
-      mySession.save();
+//      mySession = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
+//      Node nodeQueryHome = (Node) mySession.getItem(baseQueriesPath);
+//      iter = nodeQueryHome.getNodes();
+//      while (iter.hasNext()) {
+//      	iter.nextNode().remove();
+//      }
+//      mySession.save();
     } catch (PathNotFoundException e) {
     }
     super.tearDown();

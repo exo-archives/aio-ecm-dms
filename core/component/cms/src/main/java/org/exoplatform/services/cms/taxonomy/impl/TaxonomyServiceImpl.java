@@ -309,13 +309,20 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    * {@inheritDoc}
    */
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException {
+    return getCategories(node, taxonomyName, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */  
+  public List<Node> getCategories(Node node, String taxonomyName, boolean system) throws RepositoryException {
     List<Node> listCate = new ArrayList<Node>();
     Session session = null;
     try {
       if (node.isNodeType("mix:referenceable")) {
         String repository = ((ManageableRepository) node.getSession().getRepository())
-            .getConfiguration().getName();
-        Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
+        .getConfiguration().getName();
+        Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName, system);
         if (rootNodeTaxonomy != null) {
           String sql = null;
           sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
@@ -339,17 +346,23 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
     return listCate;
   }
-  
   /**
    * {@inheritDoc}
    */
   public List<Node> getAllCategories(Node node) throws RepositoryException {
+    return getAllCategories(node, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public List<Node> getAllCategories(Node node, boolean system) throws RepositoryException {
     List<Node> listCategories = new ArrayList<Node>();
     String repository = ((ManageableRepository) node.getSession().getRepository())
     .getConfiguration().getName();
-    List<Node> allTrees = getAllTaxonomyTrees(repository);
+    List<Node> allTrees = getAllTaxonomyTrees(repository, system);
     for (Node tree : allTrees) {
-      List<Node> categories = getCategories(node, tree.getName());
+      List<Node> categories = getCategories(node, tree.getName(), system);
       for (Node category : categories) listCategories.add(category);
     }
     return listCategories;
@@ -366,13 +379,29 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   /**
    * {@inheritDoc}
    */
+  public void addCategory(Node node, String taxonomyName, String categoryPath, boolean system)
+      throws RepositoryException {
+    addCategories(node, taxonomyName, new String[] { categoryPath }, system);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
   public void addCategories(Node node, String taxonomyName, String[] categoryPaths)
+      throws RepositoryException {
+    addCategories(node, taxonomyName, categoryPaths, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void addCategories(Node node, String taxonomyName, String[] categoryPaths, boolean system)
       throws RepositoryException {
     String category = "";
     try {
       String repository = ((ManageableRepository) node.getSession().getRepository())
-          .getConfiguration().getName();
-      Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
+      .getConfiguration().getName();
+      Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName, system);
       for (String categoryPath : categoryPaths) {        
         if (rootNodeTaxonomy.getPath().equals("/")) {
           category = categoryPath;
@@ -392,17 +421,25 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     } catch (PathNotFoundException e) {
       throw new RepositoryException(e);
     }
+    
   }
 
   /**
    * {@inheritDoc}
    */
   public boolean hasCategories(Node node, String taxonomyName) throws RepositoryException {
-    List<Node> listCate = getCategories(node, taxonomyName);
+    return hasCategories(node, taxonomyName, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public boolean hasCategories(Node node, String taxonomyName, boolean system) throws RepositoryException {
+    List<Node> listCate = getCategories(node, taxonomyName, system);
     if (listCate != null && listCate.size() > 0)
       return true;
     return false;
-  }
+  }  
 
   /**
    * {@inheritDoc}
@@ -434,11 +471,19 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    */
   public void removeCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException {
+    removeCategory(node, taxonomyName, categoryPath, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void removeCategory(Node node, String taxonomyName, String categoryPath, boolean system)
+      throws RepositoryException {
     try {
       String category = "";
       String repository = ((ManageableRepository) node.getSession().getRepository())
           .getConfiguration().getName();
-      Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
+      Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName, system);
       if (rootNodeTaxonomy.getPath().equals("/")) {
         category = categoryPath;
       } else if (!categoryPath.startsWith("/")) {

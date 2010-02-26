@@ -23,6 +23,8 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -38,13 +40,10 @@ public class NodeFinderImpl implements NodeFinder {
   
   private final RepositoryService repositoryService_;
   
-  private final SessionProviderService sessionProviderService_;
-  
   private final LinkManager linkManager_;
   
-  public NodeFinderImpl(RepositoryService repositoryService, SessionProviderService   sessionProviderService, LinkManager linkManager){
+  public NodeFinderImpl(RepositoryService repositoryService, LinkManager linkManager){
     this.repositoryService_ = repositoryService;
-    this.sessionProviderService_ = sessionProviderService;
     this.linkManager_ = linkManager;
   }
 
@@ -53,15 +52,23 @@ public class NodeFinderImpl implements NodeFinder {
    */
   public Item getItem(String repository, String workspace, String absPath, boolean giveTarget) throws PathNotFoundException,
                                                                           RepositoryException {
+    return getItemGiveTargetSys(repository, workspace, absPath, giveTarget, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Item getItemGiveTargetSys(String repository, String workspace, String absPath, 
+      boolean giveTarget, boolean system) throws PathNotFoundException, RepositoryException {
     if (!absPath.startsWith("/"))
       throw new IllegalArgumentException(absPath + " isn't absolute path");
     try {
       Session session = getSession(repositoryService_.getRepository(repository), workspace);
-      return getItem(session, absPath, giveTarget);
+      return getItemTarget(session, absPath, giveTarget, system);
     } catch (RepositoryConfigurationException e) {
       throw new RepositoryException(e);
     }
-  }
+  }  
 
   /**
    * {@inheritDoc}
@@ -70,6 +77,14 @@ public class NodeFinderImpl implements NodeFinder {
                                                                           RepositoryException {
     return getItem(repository, workspace, absPath, false);
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Item getItemSys(String repository, String workspace, String absPath, boolean system) throws PathNotFoundException,
+                                                                          RepositoryException {
+    return getItemGiveTargetSys(repository, workspace, absPath, false, system);
+  }  
   
   /**
    * {@inheritDoc}
@@ -99,8 +114,15 @@ public class NodeFinderImpl implements NodeFinder {
    * {@inheritDoc}
    */
   public Item getItem(Session session, String absPath, boolean giveTarget) throws PathNotFoundException, RepositoryException {
-    return getItem(session, absPath, giveTarget, 0);
+    return getItem(session, absPath, giveTarget, 0, false);
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Item getItemTarget(Session session, String absPath, boolean giveTarget, boolean system) throws PathNotFoundException, RepositoryException {
+    return getItem(session, absPath, giveTarget, 0, system);
+  }  
   
   /**
    * {@inheritDoc}
@@ -128,7 +150,7 @@ public class NodeFinderImpl implements NodeFinder {
    * @param giveTarget Indicates if the target must be returned in case the item is a link
    * @return the item corresponding to the path
    */
-  private Item getItem(Session session, String absPath, boolean giveTarget, int fromIdx) throws PathNotFoundException, RepositoryException {
+  private Item getItem(Session session, String absPath, boolean giveTarget, int fromIdx, boolean system) throws PathNotFoundException, RepositoryException {
     if (session.itemExists(absPath)) {
       // The item corresponding to absPath can be found
       Item item = session.getItem(absPath);
@@ -152,14 +174,14 @@ public class NodeFinderImpl implements NodeFinder {
         if (linkManager_.isLink(item)) {
           // The item is a link
           Node link = (Node) item;
-          if (linkManager_.isTargetReachable(link)) {
+          if (linkManager_.isTargetReachable(link, system)) {
             // The target can be reached
-            Node target = linkManager_.getTarget(link);
+            Node target = linkManager_.getTarget(link, system);
             String targetPath = target.getPath();
             return getItem(target.getSession(),
                            targetPath + absPath.substring(partPath.length()),
                            giveTarget,
-                           targetPath.substring(1).split("/").length);
+                           targetPath.substring(1).split("/").length, system);
           } 
           // The target cannot be found
           session.logout();
@@ -184,7 +206,10 @@ public class NodeFinderImpl implements NodeFinder {
    */
   
   private Session getSession(ManageableRepository manageableRepository, String workspace) throws RepositoryException{
-    return sessionProviderService_.getSessionProvider(null).getSession(workspace, manageableRepository);
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    SessionProviderService service =
+      (SessionProviderService)container.getComponentInstanceOfType(SessionProviderService.class);
+    return service.getSystemSessionProvider(null).getSession(workspace, manageableRepository);
   }
   
   /**

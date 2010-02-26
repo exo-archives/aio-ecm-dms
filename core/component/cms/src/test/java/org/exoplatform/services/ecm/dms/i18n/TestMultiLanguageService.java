@@ -17,10 +17,8 @@
  **************************************************************************/
 package org.exoplatform.services.ecm.dms.i18n;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +32,6 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 
 /**
  * Created by The eXo Platform SARL
@@ -96,7 +93,7 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     session.save();
     multiLanguageService.addLanguage(test, createMapInput1(), "vi", false);
     List<String> lstLanguages = multiLanguageService.getSupportedLanguages(test);
-    assertTrue(lstLanguages.contains("English"));
+    assertTrue(lstLanguages.contains("en"));
     assertTrue(lstLanguages.contains("vi"));
     
   }
@@ -357,7 +354,7 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     test.addMixin(I18NMixin);
     session.save();
     String defaultLanguage = multiLanguageService.getDefault(test);
-    assertEquals("English", defaultLanguage);
+    assertEquals("en", defaultLanguage);
     multiLanguageService.addLanguage(test, createMapInput1(), "fr", false);
     multiLanguageService.setDefault(test, "fr", REPO_NAME);
     assertEquals("fr", multiLanguageService.getDefault(test));
@@ -384,23 +381,22 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     test.addMixin(VOTEABLE);
     
     session.save();
-    ValueFactoryImpl valueFactory = session.getValueFactory();
     InputStream is = getClass().getResource("/conf/standalone/system-configuration.xml").openStream();
-    Value contentValue = valueFactory.createValue(is);
+    Value contentValue = session.getValueFactory().createValue(is);
     
     multiLanguageService.addFileLanguage(test, "system-configuration.xml" , contentValue, "text/xml", "fr", REPO_NAME, false);
     String defaultLanguage = test.getProperty(MultiLanguageService.EXO_LANGUAGE).getString();
-    assertEquals("English", defaultLanguage);
+    assertEquals("en", defaultLanguage);
     Node testlanguage = test.getNode("languages/fr/system-configuration.xml");
     is = getClass().getResource("/conf/standalone/system-configuration.xml").openStream();
     assertTrue(compareInputStream(getClass().getResource("/conf/standalone/system-configuration.xml").openStream(), testlanguage.getNode(CONTENT).getProperty(DATA).getStream()));
 
-    Value contentValue1 = valueFactory.createValue(getClass().getResource("/conf/standalone/test-configuration.xml").openStream());
+    Value contentValue1 = session.getValueFactory().createValue(getClass().getResource("/conf/standalone/test-configuration.xml").openStream());
     multiLanguageService.addFileLanguage(test, "test-configuration.xml" , contentValue1, "text/xml", "vi", REPO_NAME, true);
     defaultLanguage = test.getProperty(MultiLanguageService.EXO_LANGUAGE).getString();
     assertEquals("vi", defaultLanguage);
-    assertTrue(test.hasNode("languages/English/test/jcr:content"));
-    assertTrue(compareInputStream(getClass().getResource("/conf/standalone/test-configuration.xml").openStream(), test.getNode("languages/English/test/jcr:content").getProperty(DATA).getStream()));
+    assertTrue(test.hasNode("languages/en/test/jcr:content"));
+    assertTrue(compareInputStream(getClass().getResource("/conf/standalone/test-configuration.xml").openStream(), test.getNode("languages/en/test/jcr:content").getProperty(DATA).getStream()));
     assertTrue(compareInputStream(getClass().getResource("/conf/standalone/test-configuration.xml").openStream(), test.getNode(CONTENT).getProperty(DATA).getStream()));
     
   }
@@ -424,7 +420,7 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     
     multiLanguageService.addFileLanguage(test, "fr" , createPodcastMapInput(), false);
     String defaultLanguage = test.getProperty(MultiLanguageService.EXO_LANGUAGE).getString();
-    assertEquals("English", defaultLanguage);
+    assertEquals("en", defaultLanguage);
     assertTrue(test.hasNode("languages/fr"));
     Node testlanguage = test.getNode("languages/fr");
     assertTrue(compareInputStream(getClass().getResource("/conf/standalone/system-configuration.xml").openStream(), testlanguage.getNode(CONTENT).getProperty(DATA).getStream()));

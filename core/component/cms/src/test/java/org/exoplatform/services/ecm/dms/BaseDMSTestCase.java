@@ -17,7 +17,9 @@
 package org.exoplatform.services.ecm.dms;
 
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
@@ -45,9 +47,9 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
   protected RepositoryService   repositoryService;
 
-  protected StandaloneContainer container;
+  protected PortalContainer     container;
   
-  protected SessionImpl         session;
+  protected Session         session;
 
   protected RepositoryImpl      repository;
   
@@ -62,26 +64,26 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
   protected final String         COLLABORATION_WS = "collaboration".intern();
 
   public void setUp() throws Exception {
-    String containerConf = BaseDMSTestCase.class.getResource("/conf/standalone/test-configuration.xml").toString();
+//    String containerConf = BaseDMSTestCase.class.getResource("/conf/standalone/test-configuration.xml").toString();
 
-    StandaloneContainer.addConfigurationURL(containerConf);
+//    StandaloneContainer.addConfigurationURL(containerConf);
 //
 //    String loginConf = Thread.currentThread().getContextClassLoader().getResource("conf/standalone/login.conf").toString();
 //    System.setProperty("java.security.auth.login.config", loginConf);
     
-    container = StandaloneContainer.getInstance();
+    container = PortalContainer.getInstance();
 
-    if (System.getProperty("java.security.auth.login.config") == null)
-       System.setProperty("java.security.auth.login.config", Thread.currentThread().getContextClassLoader()
-          .getResource("conf/standalone/login.conf").toString());
+//    if (System.getProperty("java.security.auth.login.config") == null)
+//       System.setProperty("java.security.auth.login.config", Thread.currentThread().getContextClassLoader()
+//          .getResource("conf/standalone/login.conf").toString());
 
-    credentials = new CredentialsImpl("root", "exo".toCharArray());
+//    credentials = new CredentialsImpl("root", "gtn".toCharArray());
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
     sessionProviderService_ = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class);
     repository = (RepositoryImpl) repositoryService.getDefaultRepository();
-    
-    session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);
-    sessionProviderService_.setSessionProvider(null, new SessionProvider(((SessionImpl)session).getUserState()));
+    session = sessionProviderService_.getSystemSessionProvider(null).getSession(COLLABORATION_WS, repository);
+    //session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);
+    //sessionProviderService_.setSessionProvider(null, new SessionProvider(session.getUserState()));
   }
 
   protected void checkMixins(String[] mixins, NodeImpl node) {

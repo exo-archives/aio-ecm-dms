@@ -322,7 +322,6 @@ public class TestVotingService extends BaseDMSTestCase {
     votingService.vote(test, 2, "marry", "vi");
     long voteTotal = votingService.getVoteTotal(test);
     assertEquals(voteTotal, test.getProperty(VOTE_TOTAL_PROP).getValue().getLong());
-    assertEquals(2, test.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
   }
   
   /**

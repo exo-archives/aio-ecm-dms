@@ -160,6 +160,16 @@ public interface TaxonomyService {
    * @throws RepositoryException if categories cannot be checked
    */
   public boolean hasCategories(Node node, String taxonomyName) throws RepositoryException;
+  
+  /**
+   * Returns true if the given node has categories in the given taxonomy
+   * 
+   * @param node The node to check
+   * @param taxonomyName The name of the taxonomy
+   * @param system check system provider or not
+   * @throws RepositoryException if categories cannot be checked
+   */
+  public boolean hasCategories(Node node, String taxonomyName, boolean system) throws RepositoryException;  
 
   /**
    * Returns all the paths of the categories (relative to the root node of the
@@ -171,6 +181,18 @@ public interface TaxonomyService {
    * @throws RepositoryException if the categories cannot be retrieved
    */
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException;
+  
+  /**
+   * Returns all the paths of the categories (relative to the root node of the
+   * given taxonomy) which have been associated to the given node for the given
+   * taxonomy
+   * 
+   * @param node The node for which we seek the categories
+   * @param taxonomyName The name of the taxonomy
+   * @param system 
+   * @throws RepositoryException if the categories cannot be retrieved
+   */
+  public List<Node> getCategories(Node node, String taxonomyName, boolean system) throws RepositoryException;  
 
   /**
    * Returns all the paths of the categories which have been associated to the given node
@@ -178,6 +200,14 @@ public interface TaxonomyService {
    * @throws RepositoryException
    */
   public List<Node> getAllCategories(Node node) throws RepositoryException;
+
+  /**
+   * Returns all the paths of the categories which have been associated to the given node
+   * @param node  The node for which we seek the categories
+   * @param system check system provider or not
+   * @throws RepositoryException
+   */
+  public List<Node> getAllCategories(Node node, boolean system) throws RepositoryException;
   
   /**
    * Removes a category to the given node
@@ -192,6 +222,19 @@ public interface TaxonomyService {
       throws RepositoryException;
 
   /**
+   * Removes a category to the given node
+   * 
+   * @param node The node for which we remove the category
+   * @param taxonomyName The name of the taxonomy
+   * @param categoryPath The path of the category relative to the root node of
+   *          the given taxonomy
+   * @param system check system provider or not
+   * @throws RepositoryException if the category cannot be removed
+   */
+  public void removeCategory(Node node, String taxonomyName, String categoryPath, boolean system)
+      throws RepositoryException;
+  
+  /**
    * Adds several categories to the given node
    * 
    * @param node The node for which we add the categories
@@ -204,6 +247,19 @@ public interface TaxonomyService {
       throws RepositoryException;
 
   /**
+   * Adds several categories to the given node
+   * 
+   * @param node The node for which we add the categories
+   * @param taxonomyName The name of the taxonomy
+   * @param categoryPaths An array of category paths relative to the given
+   *          taxonomy
+   * @param system check system provider or not
+   * @throws RepositoryException if the categories cannot be added
+   */
+  public void addCategories(Node node, String taxonomyName, String[] categoryPaths, boolean system)
+      throws RepositoryException;
+  
+  /**
    * Adds a new category path to the given node
    * 
    * @param node the node for which we add the category
@@ -213,6 +269,18 @@ public interface TaxonomyService {
    */
   public void addCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException;
+  
+  /**
+   * Adds a new category path to the given node
+   * 
+   * @param node the node for which we add the category
+   * @param taxonomyName The name of the taxonomy
+   * @param categoryPath The path of the category relative to the given taxonomy
+   * @param system check system provider or not
+   * @throws RepositoryException if the category cannot be added
+   */
+  public void addCategory(Node node, String taxonomyName, String categoryPath, boolean system)
+      throws RepositoryException;  
   
   public Map<String, String[]> getTaxonomyTreeDefaultUserPermission();
 

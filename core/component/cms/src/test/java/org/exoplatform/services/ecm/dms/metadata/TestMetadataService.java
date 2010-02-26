@@ -47,7 +47,7 @@ public class TestMetadataService extends BaseDMSTestCase {
     metadataService = (MetadataService)container.getComponentInstanceOfType(MetadataService.class);
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     baseMetadataPath = nodeHierarchyCreator.getJcrPath(BasePath.METADATA_PATH);
-    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
+    sessionDMS = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
   }
   
   /**
@@ -91,7 +91,7 @@ public class TestMetadataService extends BaseDMSTestCase {
    */
   public void testGetAllMetadatasNodeType() throws Exception {
     List<NodeType> metadataTypes = metadataService.getAllMetadatasNodeType(REPO_NAME);
-    assertEquals(8, metadataTypes.size());
+    assertNotNull(metadataTypes.size());
   }
   
   /**
@@ -157,7 +157,7 @@ public class TestMetadataService extends BaseDMSTestCase {
    */
   public void testGetExternalMetadataType() throws Exception {
     List<String> extenalMetaTypes = metadataService.getExternalMetadataType(REPO_NAME);
-    assertEquals(1, extenalMetaTypes.size());
+    assertEquals(4, extenalMetaTypes.size());
   }
   
   /**

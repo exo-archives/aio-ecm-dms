@@ -55,8 +55,6 @@ public class TestRelationsService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testInit() throws Exception {
-    relationsService.init(REPO_NAME);
-    assertTrue(!session.itemExists(cmsPublicationsPath));
   }
   
   /**
@@ -117,7 +115,7 @@ public class TestRelationsService extends BaseDMSTestCase {
     relationsService.addRelation(aaa, bbb.getPath(), COLLABORATION_WS, REPO_NAME);
     relationsService.addRelation(aaa, ccc.getPath(), COLLABORATION_WS, REPO_NAME);
     
-    List<Node> listRelation = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<Node> listRelation = relationsService.getRelations(aaa, REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     List<String> relationPathList = new ArrayList<String>();    
     for (Node relation : listRelation) {
       relationPathList.add(relation.getPath());
@@ -147,7 +145,7 @@ public class TestRelationsService extends BaseDMSTestCase {
     relationsService.addRelation(aaa, ccc.getPath(), COLLABORATION_WS, REPO_NAME);
     relationsService.addRelation(aaa, ddd.getPath(), COLLABORATION_WS, REPO_NAME);
     
-    List<Node> listBeforeRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<Node> listBeforeRemove = relationsService.getRelations(aaa, REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     List<String> pathBeforeRemove = new ArrayList<String>();    
     for (Node relation : listBeforeRemove) {
       pathBeforeRemove.add(relation.getPath());
@@ -158,7 +156,7 @@ public class TestRelationsService extends BaseDMSTestCase {
     
     relationsService.removeRelation(aaa, "/DDD", REPO_NAME);
     
-    List<Node> listAfterRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<Node> listAfterRemove = relationsService.getRelations(aaa, REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     List<String> pathAfterRemove = new ArrayList<String>();    
     for (Node relation : listAfterRemove) {
       pathAfterRemove.add(relation.getPath());

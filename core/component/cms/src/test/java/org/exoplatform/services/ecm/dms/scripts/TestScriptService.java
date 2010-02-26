@@ -47,7 +47,7 @@ public class TestScriptService extends BaseDMSTestCase {
     scriptService = (ScriptService)container.getComponentInstanceOfType(ScriptService.class);
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     cmsScriptsPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_SCRIPTS_PATH);
-    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
+    sessionDMS = sessionProviderService_.getSystemSessionProvider(null).getSession(DMSSYSTEM_WS, repository);
   }
   
   /**
@@ -73,9 +73,9 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetECMScriptHome() throws Exception {
-    assertNotNull(scriptService.getECMScriptHome(REPO_NAME, SessionProviderFactory.createSessionProvider()));
+    assertNotNull(scriptService.getECMScriptHome(REPO_NAME, sessionProviderService_.getSystemSessionProvider(null)));
     assertEquals(expectedECMScriptHomePath, scriptService.getECMScriptHome(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).getPath());
+        sessionProviderService_.getSystemSessionProvider(null)).getPath());
   }
   
   /**
@@ -87,9 +87,9 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetCBScriptHome() throws Exception {
-    assertNotNull(scriptService.getCBScriptHome(REPO_NAME, SessionProviderFactory.createSessionProvider()));
+    assertNotNull(scriptService.getCBScriptHome(REPO_NAME, sessionProviderService_.getSystemSessionProvider(null)));
     assertEquals(expectedCBScriptHomePath, scriptService.getCBScriptHome(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).getPath());
+        sessionProviderService_.getSystemSessionProvider(null)).getPath());
   }
   
   /**
@@ -101,7 +101,7 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetECMActionScripts() throws Exception {
-    List<Node> listECMScripts = scriptService.getECMActionScripts(REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<Node> listECMScripts = scriptService.getECMActionScripts(REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     assertTrue(listECMScripts.size() >0);
     
     List<String> scriptPathList = new ArrayList<String>();    
@@ -130,7 +130,7 @@ public class TestScriptService extends BaseDMSTestCase {
    */
   public void testGetECMInterceptorScripts() throws Exception {
     List<Node> listECMInterceptorcripts = scriptService.getECMInterceptorScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider());
+        sessionProviderService_.getSystemSessionProvider(null));
     assertTrue(listECMInterceptorcripts.size() >0);
     
     List<String> scriptPathList = new ArrayList<String>();    
@@ -152,7 +152,7 @@ public class TestScriptService extends BaseDMSTestCase {
    */
   public void testGetECMWidgetScripts() throws Exception {
     List<Node> listECMWidgetScripts = scriptService.getECMWidgetScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider());
+        sessionProviderService_.getSystemSessionProvider(null));
     assertTrue(listECMWidgetScripts.size() >0);
     
     List<String> scriptPathList = new ArrayList<String>();    
@@ -204,7 +204,7 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testAddScript() throws Exception {
-    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     Node hello = (Node)sessionDMS.getItem("/exo:ecm/scripts/Hello Name");
     assertNotNull(hello);    
     assertEquals("Hello Text", hello.getProperty("jcr:data").getString());
@@ -220,7 +220,7 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetScriptAsText() throws Exception {
-    scriptService.addScript("My script", "This is my script as text", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    scriptService.addScript("My script", "This is my script as text", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     assertEquals("This is my script as text", scriptService.getScriptAsText("My script", REPO_NAME));
   }
   
@@ -235,9 +235,9 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */  
   public void testGetScriptNode() throws Exception {
-    scriptService.addScript("My script 2", "This is my script as text 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    scriptService.addScript("My script 2", "This is my script as text 2", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     
-    Node scriptNode = scriptService.getScriptNode("My script 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    Node scriptNode = scriptService.getScriptNode("My script 2", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     assertEquals("My script 2", scriptNode.getName());
     assertEquals("This is my script as text 2", scriptNode.getProperty("jcr:data").getString());
   }
@@ -253,15 +253,15 @@ public class TestScriptService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveScript() throws Exception {
-    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
     
     Node hello = scriptService.getScriptNode("Hello Name", REPO_NAME, 
-        SessionProviderFactory.createSessionProvider());
+        sessionProviderService_.getSystemSessionProvider(null));
     assertNotNull(hello);
     assertEquals("Hello Text", hello.getProperty("jcr:data").getString());
     
-    scriptService.removeScript("Hello Name", REPO_NAME, SessionProviderFactory.createSessionProvider());
-    assertNull(scriptService.getScriptNode("Hello Name", REPO_NAME, SessionProviderFactory.createSessionProvider()));
+    scriptService.removeScript("Hello Name", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null));
+    assertNull(scriptService.getScriptNode("Hello Name", REPO_NAME, sessionProviderService_.getSystemSessionProvider(null)));
   }
   
   /**
