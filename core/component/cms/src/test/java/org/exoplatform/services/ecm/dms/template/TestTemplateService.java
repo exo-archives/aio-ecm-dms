@@ -153,10 +153,11 @@ public class TestTemplateService extends BaseDMSTestCase {
    * Expect: Return set with 2 element nt:folder,nt:unstructured;
    * @throws Exception
    */
-  public void testGetAllowanceFolderType() throws Exception {    
+/*  public void testGetAllowanceFolder6Type() throws Exception {
     assertTrue(templateService.getAllowanceFolderType(REPO_NAME).contains("nt:unstructured"));
     assertTrue(templateService.getAllowanceFolderType(REPO_NAME).contains("nt:folder"));
-  }
+
+  }*/
   
   /**
    * Test method: TemplateServiceImpl.getTemplatePathByUser()

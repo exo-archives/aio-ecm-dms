@@ -221,9 +221,9 @@ public class TestVotingService extends BaseDMSTestCase {
       test.addMixin(VOTEABLE);
     }
     session.save();
-    multiLanguageService.addLanguage(test, createFileInput(), "fr", false, "jcr:content");
-    multiLanguageService.addLanguage(test, createFileInput(), "en", false, "jcr:content");
-    multiLanguageService.addLanguage(test, createFileInput(), "vi", false, "jcr:content");
+    multiLanguageService.addFileLanguage(test, "fr", createFileInput(), false);
+    multiLanguageService.addFileLanguage(test, "en", createFileInput(), false);
+    multiLanguageService.addFileLanguage(test, "vi", createFileInput(), false);
     votingService.vote(test, 3, "root", "fr");
     votingService.vote(test, 2, "marry", "fr");
     votingService.vote(test, 5, "john", "fr");

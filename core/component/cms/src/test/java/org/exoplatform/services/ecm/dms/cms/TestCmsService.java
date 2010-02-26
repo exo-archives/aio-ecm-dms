@@ -317,6 +317,7 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals("this is title", articleNode.getProperty("exo:title").getValue().getString());
     map = createArticleEditMapInput();
     path = cmsService.storeNode(ARTICLE, storeNode, map, false, REPO_NAME);
+    articleNode = (Node)session.getItem(path);
     assertTrue(session.itemExists(path));
     assertEquals(referencedNode.getUUID(), articleNode.getProperty("exo:category").getValues()[0].getString());
     assertEquals("this is title edit", articleNode.getProperty("exo:title").getValue().getString());

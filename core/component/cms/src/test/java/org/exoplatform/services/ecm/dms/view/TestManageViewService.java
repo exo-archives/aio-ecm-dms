@@ -321,6 +321,8 @@ public class TestManageViewService extends BaseDMSTestCase {
     assertEquals(TEMPLATE_NODETYPE, simpleViewNode.getPrimaryNodeType().getName());
     assertEquals(templateFile, simpleViewNode.getProperty("exo:templateFile").getString());
     
+    manageViewService.removeTemplate(templatesPathEx + "/SimpleView", REPO_NAME);
+    
     manageViewService.addTemplate("SystemView", templateFile, templatesPathEx, REPO_NAME);
     Node systemViewNode = (Node)sessionDMS.getItem(templatesPathEx + "/SystemView");
     assertEquals(TEMPLATE_NODETYPE, systemViewNode.getPrimaryNodeType().getName());
@@ -334,8 +336,14 @@ public class TestManageViewService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveTemplate() throws Exception {
-    manageViewService.removeTemplate(templatesPathCb + "/PathList", REPO_NAME);
-    assertFalse(sessionDMS.itemExists(templatesPathCb + "/PathList"));
+  	String templateFile = "<%import org.exoplatform.ecm.webui.utils.Utils; " +
+					                "import org.exoplatform.web.application.Parameter;" +
+					                "import org.exoplatform.webui.core.UIRightClickPopupMenu;%>" +
+					                "<div id=$componentId></div>";
+	    manageViewService.addTemplate("SimpleView", templateFile, templatesPathEx, REPO_NAME);      
+	        
+	    manageViewService.removeTemplate(templatesPathEx + "/SimpleView", REPO_NAME);
+	    assertFalse(sessionDMS.itemExists(templatesPathEx + "/SimpleView"));
   }
   
   /**

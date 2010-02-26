@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.portlet.Portlet;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
@@ -35,7 +36,10 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
  */
 public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
     
-  private ApplicationTemplateManagerService appTemplateManagerService;
+	private static final String PORTLET_ABC = "portletABC";
+	private static final String CATEGORY_A = "categoryA";
+	
+	private ApplicationTemplateManagerService appTemplateManagerService;
   private NodeHierarchyCreator nodeHierarchyCreator;
   private String basedApplicationTemplatesPath;
   private Session sessionDMS;
@@ -136,11 +140,12 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    */
   public void testAddTemplate() throws Exception {
     Node portletTemplateHome = (Node) sessionDMS.getItem(basedApplicationTemplatesPath);
+    System.out.println("Path: " + portletTemplateHome.getPath());
     
     PortletTemplateConfig config = new PortletTemplateConfig();
     ArrayList<String> accessPermissions = new ArrayList<String>();
     accessPermissions.add("*:/platform/administrators");
-    config.setCategory("categoryA");
+    config.setCategory(CATEGORY_A);
     config.setAccessPermissions(accessPermissions);
     config.setEditPermissions(accessPermissions);
     config.setTemplateName("HelloName");
@@ -148,7 +153,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
     appTemplateManagerService.addTemplate(portletTemplateHome, config);
     
     assertNotNull(appTemplateManagerService.getTemplateByPath(REPO_NAME, 
-        "/exo:ecm/views/templates/categoryA/HelloName", SessionProviderFactory.createSessionProvider()));
+        "/exo:ecm/views/templates/" + CATEGORY_A + "/HelloName", SessionProviderFactory.createSessionProvider()));
   }
   
   /**
@@ -166,18 +171,37 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveTemplate() throws Exception {
-    appTemplateManagerService.removeTemplate(REPO_NAME, "content-browser", "detail-document", 
-        "DocumentView", SessionProviderFactory.createSessionProvider());
+    Node templateHome = (Node) sessionDMS.getItem(basedApplicationTemplatesPath);
+    Node portletTemplateHome = templateHome.addNode(PORTLET_ABC);
+    templateHome.save();
     
-    assertEquals(0, appTemplateManagerService.getTemplatesByCategory(REPO_NAME, "content-browser", 
-        "detail-document", SessionProviderFactory.createSessionProvider()).size());
+    PortletTemplateConfig config = new PortletTemplateConfig();
+    ArrayList<String> accessPermissions = new ArrayList<String>();
+    accessPermissions.add("*:/platform/administrators");
+    config.setCategory(CATEGORY_A);
+    config.setAccessPermissions(accessPermissions);
+    config.setEditPermissions(accessPermissions);
+    config.setTemplateName("HelloName");
+    config.setTemplateData("Hello teamplate data");    
+    appTemplateManagerService.addTemplate(portletTemplateHome, config);
+    
+    assertNotNull(appTemplateManagerService.getTemplateByPath(REPO_NAME, 
+        "/exo:ecm/views/templates/" + PORTLET_ABC + '/' + CATEGORY_A + "/HelloName", SessionProviderFactory.createSessionProvider()));
+  	
+    appTemplateManagerService.removeTemplate(REPO_NAME, PORTLET_ABC, CATEGORY_A, 
+        "HelloName", SessionProviderFactory.createSessionProvider());
+    
+    assertEquals(0, appTemplateManagerService.getTemplatesByCategory(REPO_NAME, PORTLET_ABC, 
+        CATEGORY_A, SessionProviderFactory.createSessionProvider()).size());
   }
   
   public void tearDown() throws Exception {
     Node nodeAppTemplate = (Node) sessionDMS.getItem(basedApplicationTemplatesPath);
-    if (nodeAppTemplate.hasNode("categoryA")) {
-      nodeAppTemplate.getNode("categoryA").remove();
-    }
+    String[] names = {PORTLET_ABC, CATEGORY_A};
+    for(String name : names)
+	    if (nodeAppTemplate.hasNode(name)) {
+	      nodeAppTemplate.getNode(name).remove();
+	    }
     sessionDMS.save();
     
     super.tearDown();

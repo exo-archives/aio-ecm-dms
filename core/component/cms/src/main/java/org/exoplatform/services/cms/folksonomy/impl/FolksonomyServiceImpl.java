@@ -320,10 +320,12 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
           for (; iter.hasNext();) {
             Property folksonomy = iter.nextProperty();
             Node document = folksonomy.getParent();
-            String docUUID = document.getUUID();
+            //String docUUID = document.getUUID();
+            String docPath = document.getPath();
             Session docSession = sessionProvider.getSession(workspaceName, repo);
             try {
-	            document = docSession.getNodeByUUID(docUUID);
+	            //document = docSession.getNodeByUUID(docUUID);
+            	document = (Node)docSession.getItem(docPath);
 	            documentList.add(document);
             } catch (Exception ex) {}
           }

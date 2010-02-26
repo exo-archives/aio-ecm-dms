@@ -288,13 +288,13 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
   }
 
   /**
-   * Test method MultiLanguagetService.addLanguage(Node node, Map inputs, String language, boolean isDefault)
+   * Test method MultiLanguagetService.addFileLanguage(Node node, Map inputs, String language, boolean isDefault)
    * Input: Add language fr for node test with child node is a nt:file node type
    * Expect: if language fr is added as not default language then language node is add following relative path = languages/fr
    *         if language fr is added as default language then content of test node contains data defined in method createFileInput()  
    * @throws Exception
    */
-  public void testAddLanguage3() throws Exception {
+  public void testAddFileLanguage0() throws Exception {
     Node test = session.getRootNode().addNode("test", FILE);
     Node testFile = test.addNode(CONTENT, RESOURCE);
     testFile.setProperty(DATA, getClass().getResource("/conf/standalone/system-configuration.xml").openStream());
@@ -303,7 +303,7 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     test.addMixin(I18NMixin);
     session.save();
 
-    multiLanguageService.addLanguage(test, createFileInput(), "fr", false, "jcr:content");
+    multiLanguageService.addFileLanguage(test, "fr", createFileInput(), false);
     String defaultLanguage = test.getProperty(MultiLanguageService.EXO_LANGUAGE).getString();
     assertEquals("English", defaultLanguage);
     assertTrue(test.hasNode("languages/fr"));
@@ -311,7 +311,7 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     assertTrue(testlanguage.hasNode(CONTENT));
     assertTrue(compareInputStream(getClass().getResource("/conf/standalone/system-configuration.xml").openStream(), testlanguage.getNode(CONTENT).getProperty(DATA).getStream()));
     
-    multiLanguageService.addLanguage(test, createFileInput(), "vi", true, CONTENT);
+    multiLanguageService.addFileLanguage(test, "vi", createFileInput(), true);
     defaultLanguage = test.getProperty(MultiLanguageService.EXO_LANGUAGE).getString();
     assertEquals("vi", defaultLanguage);
     assertTrue(test.hasNode(CONTENT));
@@ -451,13 +451,13 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     testFile.setProperty(DATA, getClass().getResource("/conf/standalone/test-configuration.xml").openStream());
     test.addMixin(I18NMixin);
     session.save();
-    multiLanguageService.addLanguage(test, createPodcastMapInput(), "fr", false);
+    multiLanguageService.addFileLanguage(test, "fr", createPodcastMapInput(), false);
     assertTrue(test.hasNode("languages/fr"));
     Node node = multiLanguageService.getLanguage(test, "fr");
     assertEquals("this is podcast", node.getProperty(TITLE).getString());
     assertEquals("connect", node.getProperty(LINK).getString());
-    multiLanguageService.addLanguage(test, createPodcastMapInput(), "fr", true);
-    assertNull(multiLanguageService.getLanguage(test, "fr"));
+    multiLanguageService.addFileLanguage(test, "fr", createPodcastMapInput(), true);
+    assertNotNull(multiLanguageService.getLanguage(test, "fr"));
   }
   
   /**

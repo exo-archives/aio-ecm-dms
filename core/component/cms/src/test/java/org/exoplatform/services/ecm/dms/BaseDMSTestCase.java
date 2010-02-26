@@ -19,6 +19,7 @@ package org.exoplatform.services.ecm.dms;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
@@ -45,7 +46,8 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
   protected RepositoryService   repositoryService;
 
-  protected StandaloneContainer container;
+//  protected StandaloneContainer container;
+  protected PortalContainer container;
   
   protected SessionImpl         session;
 
@@ -62,12 +64,13 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
   protected final String         COLLABORATION_WS = "collaboration".intern();
 
   public void setUp() throws Exception {
-    String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
+//    String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
     String loginConf = Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
-
-    StandaloneContainer.addConfigurationURL(containerConf);
-    container = StandaloneContainer.getInstance();
-    
+//
+//    StandaloneContainer.addConfigurationURL(containerConf);
+//    container = StandaloneContainer.getInstance();
+//
+    container = PortalContainer.getInstance();
     if (System.getProperty("java.security.auth.login.config") == null)
       System.setProperty("java.security.auth.login.config", loginConf);
 

@@ -263,7 +263,7 @@ public class TestThumbnailService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testProcessThumbnailList() throws Exception {
-    Node test = session.getRootNode().addNode("test");
+    Node test = session.getRootNode().addNode("test2");
     Node child1 = test.addNode("child1", "nt:file");
     child1.addNode("jcr:content", "nt:resource");
     ValueFactory valueFactory = session.getValueFactory();
@@ -287,9 +287,10 @@ public class TestThumbnailService extends BaseDMSTestCase {
     lstNode.add(child2);
     lstNode.add(child3);
     lstNode.add(child4);
+    session.save();
     thumbnailService.processThumbnailList(lstNode, ThumbnailService.SMALL_SIZE);
-    assertTrue(session.itemExists("/test/" + ThumbnailService.EXO_THUMBNAILS_FOLDER));
-    Node thumbnailsFolder = (Node)session.getItem("/test/" + ThumbnailService.EXO_THUMBNAILS_FOLDER);
+    assertTrue(session.itemExists("/test2/" + ThumbnailService.EXO_THUMBNAILS_FOLDER));
+    Node thumbnailsFolder = (Node)session.getItem("/test2/" + ThumbnailService.EXO_THUMBNAILS_FOLDER);
     assertTrue(thumbnailsFolder.hasNode(((NodeImpl)child1).getInternalIdentifier()));
     assertTrue(thumbnailsFolder.hasNode(((NodeImpl)child2).getInternalIdentifier()));
     assertTrue(thumbnailsFolder.hasNode(((NodeImpl)child3).getInternalIdentifier()));
@@ -345,7 +346,7 @@ public class TestThumbnailService extends BaseDMSTestCase {
    * Clean data
    */
   public void tearDown() throws Exception {
-    String[] paths = {"test", ThumbnailService.EXO_THUMBNAILS_FOLDER};
+    String[] paths = {"test", "test2", ThumbnailService.EXO_THUMBNAILS_FOLDER};
     for (String path : paths) {
       if (session.getRootNode().hasNode(path)) {
         session.getRootNode().getNode(path).remove();

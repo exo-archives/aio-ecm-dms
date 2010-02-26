@@ -203,7 +203,7 @@ public interface TemplateService {
    * Get set of folder type
    * @param repository
    */
-  public Set<String> getAllowanceFolderType(String repository);
+//  public Set<String> getAllowanceFolderType(String repository);
   
   /**
    * Remove a template of NodeType by giving the following params

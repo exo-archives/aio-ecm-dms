@@ -152,11 +152,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   /**
    * {@inheritDoc}
    */
-  public Set<String> getAllowanceFolderType(String repository) {
+/*  public Set<String> getAllowanceFolderType(String repository) {
     Map<String,List<String>> folderFilterMap = foldersFilterMap.get(repository);
     if (folderFilterMap == null) folderFilterMap = foldersFilterMap.get("repository");
     return folderFilterMap.keySet();
-  }
+  }*/
 
   /**
    * {@inheritDoc}
