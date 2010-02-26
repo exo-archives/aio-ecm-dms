@@ -919,7 +919,7 @@ var ListView = function() {
 			DOM.findFirstDescendantByClass(documentInfo, "div", "UIListGrid").appendChild(resizeDiv);	
 		}
 				
-		var X_Resize = eXo.core.Browser.findMouseXInPage(event) - 343;				
+		var X_Resize = eXo.core.Browser.findMouseRelativeX(listGrid,event);				
 		eXo.core.Browser.setPositionInContainer(listGrid, resizeDiv, X_Resize, 0);		
 	}
 			
