@@ -846,6 +846,28 @@ var ListView = function() {
 		}
 	}
 	
+	ListView.prototype.hideColumn = function(obj, event) {
+		var event = event || window.event;
+		event.cancelBubble = true;
+		
+		var listGrid = DOM.findAncestorByClass(obj, "UIListGrid");
+		var rowClazz = DOM.findDescendantsByClass(listGrid, "div", "RowView Normal");						
+		if(!eXo.ecm.UIListView.mapColumn) {
+			eXo.ecm.UIListView.mapColumn = new eXo.core.HashMap();
+		}		
+		var objResize = obj;									
+		objResize.style.display = "none";
+		
+		// Resize the whole column
+		try {
+			for (var i in rowClazz) {				
+				var objColumn = DOM.findFirstDescendantByClass(rowClazz[i], "div", objResize.className);
+				objColumn.style.display = "none";				
+			}
+		} catch(err) {}						
+	}	
+	
+	
 	ListView.prototype.resizeColumn = function(obj, event) {
 		var event = event || window.event;
 		event.cancelBubble = true;
@@ -859,6 +881,7 @@ var ListView = function() {
 		}
 		eXo.ecm.UIListView.currentMouseX = event.clientX;
 		
+		
 		eXo.ecm.UIListView.listGrid = listGrid;
 		eXo.ecm.UIListView.objResize = previousClass;		
 		eXo.ecm.UIListView.objRowClazz = rowClazz;
@@ -866,17 +889,15 @@ var ListView = function() {
 		document.onmousemove = eXo.ecm.UIListView.resizeMouseMoveListView;		
 		document.onmouseup = eXo.ecm.UIListView.resizeMouseUpListView;
 	}
-	
+		
 	ListView.prototype.resizeMouseMoveListView = function(event) {
 		var event = event || window.event;
 		var objResize = eXo.ecm.UIListView.objResize;
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;
 		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;		
 		var listGrid = DOM.findAncestorByClass(objResize, "UIListGrid");	
-		
-		
-		if (eXo.ecm.UIListView.objResizeValue + resizeValue < 8 ) return;		
-		
+				
+		if (eXo.ecm.UIListView.objResizeValue + resizeValue < 8 ) return;				
 		var rightContainer = DOM.findAncestorByClass(objResize, "RightContainer");						
 		if (resizeValue > 0) 
 		{											
@@ -906,9 +927,11 @@ var ListView = function() {
 	}
 			
 	ListView.prototype.resizeMouseUpListView = function(event) {
+		var event = event || window.event;
+		event.cancelBubble = true;
 		var objResize = eXo.ecm.UIListView.objResize;		
 		var objResizeClazz = eXo.ecm.UIListView.objRowClazz;		
-		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;						
+		var resizeValue = event.clientX - eXo.ecm.UIListView.currentMouseX;	
 		objResize.style.width = eXo.ecm.UIListView.objResizeValue + resizeValue + "px";		
 		
 		if(eXo.ecm.UIListView.mapColumn.get(objResize.className)) {
@@ -944,22 +967,21 @@ var ListView = function() {
 		var root = document.getElementById("UIDocumentWorkspace");
 		var workingArea = document.getElementById("UIWorkingArea");
 		var leftContainer = document.getElementById("LeftContainer");
-		var dynamicWidth = workingArea.offsetWidth - leftContainer.offsetWidth - 6 ;
-		
+		var dynamicWidth = workingArea.offsetWidth - leftContainer.offsetWidth - 6 ;		
 		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		root.style.overflow = "hidden";
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
-		if(eXo.ecm.UIListView.widthListView) {
-			rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
+		if(eXo.ecm.UIListView.widthListView) {			
+			//rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
 			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
 			var documentInfo = document.getElementById("UIDocumentInfo");		
 			var page = eXo.core.DOMUtil.findFirstDescendantByClass(documentInfo, "div", "PageAvailable");				
 			
 			// Fix default width of pageAvailable DIV on reloading page
-			page.style.width = 680 + "px";
+			page.style.width = 680 + "px";			
 		} else {			
 			rightContainer.style.width = dynamicWidth + "px";
-			listGrid.style.width = listGrid.offsetWidth + 0 + "px";
+			listGrid.style.width = listGrid.offsetWidth + 0 + "px";			
 		}
 		if(!eXo.ecm.UIListView.mapColumn) return;
 		for(var name in eXo.ecm.UIListView.mapColumn.properties) {
