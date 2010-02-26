@@ -841,8 +841,7 @@ var ListView = function() {
 			  if (view) {
 					view.style.height = workingArea.offsetHeight + 'px';
 					documentWorkspace.style.height = workingArea.offsetHeight + 'px';
-				}
-				
+				}				
 		}
 	}
 	
@@ -879,9 +878,7 @@ var ListView = function() {
 		if(!eXo.ecm.UIListView.mapColumn) {
 			eXo.ecm.UIListView.mapColumn = new eXo.core.HashMap();
 		}
-		eXo.ecm.UIListView.currentMouseX = event.clientX;
-		
-		
+		eXo.ecm.UIListView.currentMouseX = event.clientX;			
 		eXo.ecm.UIListView.listGrid = listGrid;
 		eXo.ecm.UIListView.objResize = previousClass;		
 		eXo.ecm.UIListView.objRowClazz = rowClazz;
@@ -971,17 +968,18 @@ var ListView = function() {
 		var listGrid = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		root.style.overflow = "hidden";
 		var rightContainer = DOM.findAncestorByClass(listGrid, "RightContainer");
-		if(eXo.ecm.UIListView.widthListView) {			
-			//rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";
-			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";
-			var documentInfo = document.getElementById("UIDocumentInfo");		
-			var page = eXo.core.DOMUtil.findFirstDescendantByClass(documentInfo, "div", "PageAvailable");				
+		if(eXo.ecm.UIListView.widthListView) {
+			
+			//rightContainer.style.width = eXo.ecm.UIListView.widthListView + "px";						
+			listGrid.style.width = eXo.ecm.UIListView.widthListView + "px";			
+			// var documentInfo = document.getElementById("UIDocumentInfo");		
+			// var page = eXo.core.DOMUtil.findFirstDescendantByClass(documentInfo, "div", "PageAvailable");				
 			
 			// Fix default width of pageAvailable DIV on reloading page
-			page.style.width = 680 + "px";			
+			//page.style.marginRight = eXo.ecm.UIListView.widthListView - 680 + "px";						
 		} else {			
 			rightContainer.style.width = dynamicWidth + "px";
-			listGrid.style.width = listGrid.offsetWidth + 0 + "px";			
+			listGrid.style.width = listGrid.offsetWidth + 0 + "px";						
 		}
 		if(!eXo.ecm.UIListView.mapColumn) return;
 		for(var name in eXo.ecm.UIListView.mapColumn.properties) {
@@ -995,7 +993,7 @@ var ListView = function() {
 				} catch(err) {
 				}
 			}
-		}
+		}		
 	}
 	
 };
