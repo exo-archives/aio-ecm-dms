@@ -124,7 +124,7 @@ public class UISideBar extends UIContainer {
   static public class ClipboardActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource();
-      uiSideBar.setCurrentComp(uiSideBar.getChild(UIClipboard.class).getId());
+      uiSideBar.setCurrentComp(uiSideBar.getChild(UIClipboard.class).getId());      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent());
     }
   }
@@ -133,7 +133,7 @@ public class UISideBar extends UIContainer {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource();
       uiSideBar.setCurrentComp(uiSideBar.getChild(UISavedSearches.class).getId());
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent());
     }
   }    
 }
