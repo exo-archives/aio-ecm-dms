@@ -530,8 +530,16 @@ public class UIDialogForm extends UIForm {
     addUIFormInput(uiSelectBox);
     if(isNotEditNode) {      
       Node child = getChildNode();
-      if(child != null && child.hasProperty(propertyName)) 
-        uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName)); 
+      if(child != null && child.hasProperty(propertyName)) {
+        if(child.getProperty(propertyName).getDefinition().isMultiple()) {
+          Value[] values = child.getProperty(propertyName).getValues();
+          for(Value value : values) {
+            uiSelectBox.setValue(value.getString());
+          }
+        } else {
+          uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName));
+        }
+      }  
     }
     if(formSelectBoxField.isOnchange()) uiSelectBox.setOnChange("Onchange");
     if (findComponentById(name) == null) addUIFormInput(uiSelectBox);

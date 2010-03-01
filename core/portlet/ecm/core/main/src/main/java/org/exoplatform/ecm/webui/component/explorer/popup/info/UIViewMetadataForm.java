@@ -28,11 +28,9 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -109,8 +107,14 @@ public class UIViewMetadataForm extends UIDialogForm {
               valueList.add(uiJCRExplorer.getSession().getValueFactory().createValue(uiFormDateTime.getCalendar()));
               node.setProperty(name, valueList.toArray(new Value[] {}));
             } else {
-              List<String> values = (List<String>) ((UIFormMultiValueInputSet)uiForm.getUIInput(inputName)).getValue();
-              node.setProperty(name, values.toArray(new String[values.size()]));
+              UIFormInput uiInput = uiForm.getUIInput(inputName);
+              if(uiInput instanceof UIFormSelectBox) {
+                String[] valuesReal = ((UIFormSelectBox)uiInput).getSelectedValues();
+                node.setProperty(name, valuesReal);                
+              } else {
+                List<String> values = (List<String>) ((UIFormMultiValueInputSet)uiInput).getValue();
+                node.setProperty(name, values.toArray(new String[values.size()]));
+              }              
             }
           } else {
             if (requiredType == 6) { // boolean
