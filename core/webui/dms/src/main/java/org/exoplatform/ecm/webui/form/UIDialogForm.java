@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -628,9 +627,11 @@ public class UIDialogForm extends UIForm {
       if(child != null && child.hasProperty(propertyName)) {
         if(child.getProperty(propertyName).getDefinition().isMultiple()) {
           Value[] values = child.getProperty(propertyName).getValues();
+          List<String> listValues = new ArrayList<String>();
           for(Value value : values) {
-            uiSelectBox.setValue(value.getString());
+            listValues.add(value.getString());
           }
+          uiSelectBox.setSelectedValues(listValues.toArray(new String[listValues.size()]));
         } else {
           uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName));
         }
