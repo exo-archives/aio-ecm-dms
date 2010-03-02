@@ -197,6 +197,26 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      UIFormStringInput homePathInput = actionForm.getUIStringInput("homePath");
+      if (homePathInput != null) {      
+        String targetPath = homePathInput.getValue();
+        if ((targetPath == null) || (targetPath.length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.homePath-emty", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }
+      UIFormStringInput targetPathInput = actionForm.getUIStringInput("targetPath");
+      if (targetPathInput != null) {      
+        String targetPath = targetPathInput.getValue();
+        if ((targetPath == null) || (targetPath.length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.targetPath-emty", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }
       try{
         if (uiExplorer.nodeIsLocked(currentNode)) return;
         if (!actionForm.isAddNew_) {
@@ -333,7 +353,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         String repositoryName = explorer.getRepositoryName();
         SessionProvider provider = explorer.getSessionProvider();        
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField");
-        String wsName = "";
+        String wsName = explorer.getCurrentWorkspace();
         if(wsFieldName != null && wsFieldName.length() > 0) {
           wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue();          
           ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);           

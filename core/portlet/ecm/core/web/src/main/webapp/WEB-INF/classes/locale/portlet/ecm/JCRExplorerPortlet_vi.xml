@@ -3142,5 +3142,11 @@
     <label>
 	  <nodePath>Lựa chọn đường dẫn</nodePath>
     </label>
-  </UIJcrExplorerEditForm>   	
+  </UIJcrExplorerEditForm>
+  <UIActionForm>
+    <msg>
+      <homePath-emty>Đường dẫn nguồn đang trống</homePath-emty>
+      <targetPath-emty>Đường dẫn đích đang trống</targetPath-emty>
+    </msg>
+		</UIActionForm>   	
 </bundle>
