@@ -109,6 +109,7 @@ var SimpleView = function() {
 	SimpleView.prototype.mouseDownTree = function(event) {
 		var event = event || window.event;
 		var element = this;
+		Self.clickItem(event, element);
 		Self.enableDragDrop = true;
 		resetArrayItemsSelected();
 		Self.srcPath = element.getAttribute("objectId");

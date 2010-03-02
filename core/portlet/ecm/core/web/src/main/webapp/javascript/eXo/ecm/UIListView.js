@@ -185,6 +185,7 @@ var ListView = function() {
 		if (!mobileElement)
 			mobileElement = document.getElementById(eXo.ecm.UISimpleView.mobileId);
 		
+//		Self.clickItem(event, element);		
 		if (mobileElement && mobileElement.move) {
 			//post action
 			var actionArea = document.getElementById("UIWorkingArea");
@@ -219,6 +220,7 @@ var ListView = function() {
 				}
 			}			
 		}
+//		Self.clickItem(event, element);		
 	};
 	
 	//event in item
