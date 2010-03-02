@@ -1,18 +1,20 @@
 package org.exoplatform.ecm.webui.component.explorer.auditing;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
 
-import org.exoplatform.services.log.Log;
-import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -56,8 +58,23 @@ public class UIActivateAuditing extends UIContainer implements UIPopupComponent 
 
         currentNode.getSession().save();   
         currentNode.getSession().refresh(true) ;      
-        uiExplorer.updateAjax(event) ;  
-      }catch(Exception e){
+        uiExplorer.updateAjax(event) ;
+      } catch(LockException lockException){
+        UIActivateAuditing uiActivateAuditing = event.getSource();
+        UIJCRExplorer uiExplorer = uiActivateAuditing.getAncestorOfType(UIJCRExplorer.class) ;
+        WebuiRequestContext contx = event.getRequestContext();     
+        UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, ApplicationMessage.WARNING)) ;
+        contx.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      } catch(AccessDeniedException accessDeniedException) {
+        UIActivateAuditing uiActivateAuditing = event.getSource();
+        UIJCRExplorer uiExplorer = uiActivateAuditing.getAncestorOfType(UIJCRExplorer.class) ;
+        WebuiRequestContext contx = event.getRequestContext();     
+        UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-denied",null,ApplicationMessage.WARNING)) ;
+        contx.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      } catch(Exception e){
         LOG.error("Unexpected error", e);
         UIActivateAuditing uiActivateAuditing = event.getSource();
         UIJCRExplorer uiExplorer = uiActivateAuditing.getAncestorOfType(UIJCRExplorer.class) ;

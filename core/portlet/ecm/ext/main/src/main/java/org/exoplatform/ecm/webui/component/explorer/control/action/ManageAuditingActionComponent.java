@@ -16,18 +16,28 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.control.action;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.auditing.UIActivateAuditing;
 import org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotRootNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
 /**
  * Created by The eXo Platform SAS
@@ -40,7 +50,15 @@ import org.exoplatform.webui.event.Event;
        @EventConfig(listeners = ManageAuditingActionComponent.ManageAuditingActionListener.class)
      }
  )
-public class ManageAuditingActionComponent extends UIComponent {
+public class ManageAuditingActionComponent extends UIAbstractManagerComponent {
+  
+  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new IsNotRootNodeFilter(), 
+      new CanSetPropertyFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
+  
+  @UIExtensionFilters
+  public List<UIExtensionFilter> getFilters() {
+    return FILTERS;
+  }
   
   public static class ManageAuditingActionListener extends UIActionBarActionListener<ManageAuditingActionComponent> {
     public void processEvent(Event<ManageAuditingActionComponent> event) throws Exception {
@@ -57,5 +75,10 @@ public class ManageAuditingActionComponent extends UIComponent {
       uiAuditingInfo.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
+  }
+  
+  @Override
+  public Class<? extends UIAbstractManager> getUIAbstractManagerClass() {
+    return null;
   }
 }
