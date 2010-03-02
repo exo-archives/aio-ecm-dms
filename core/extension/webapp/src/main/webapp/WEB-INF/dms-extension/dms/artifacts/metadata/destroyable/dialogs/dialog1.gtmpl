@@ -6,8 +6,8 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Destroyable.dialog.label.destruction-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDestructionDate = ["jcrPath=/node/rma:destructionDate", "false", "options=false,true"] ;
-		        uicomponent.addSelectBoxField("destructionDate", fieldDestructionDate) ;
+		        String[] fieldDestructionDate = ["jcrPath=/node/rma:destructionDate", "visible=true"] ;
+		        uicomponent.addCalendarField("destructionDate", fieldDestructionDate) ;
 		      %>
 		    </td>
 		  </tr>
