@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -114,7 +115,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       scheduleActionActivationJob(repository, srcWorkspace, srcPath, actionName,
           actionType, actionExecutable, mappings) ;
     }else {
-      Map<String,Object> variables = getExecutionVariables(mappings) ;
+      Map<String,Object> variables = getExecutionVariables(mappings);
       ECMEventListener listener = createEventListener(actionName, actionExecutable, repository,
           srcWorkspace, srcPath, variables, actionType);
       Session session = getSystemSession(repository, srcWorkspace);

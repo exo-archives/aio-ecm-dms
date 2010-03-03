@@ -195,7 +195,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           uiPopup.setRendered(false);
           uiManager.setDefaultConfig();
           actionForm.isEditInList_ = false;
-          actionForm.isAddNew_ = true;
+          //actionForm.isAddNew_ = true;
           actionForm.setIsOnchange(false);
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
           uiExplorer.setIsHidePopup(true);
@@ -205,7 +205,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           uiExplorer.updateAjax(event);
         }
         actionForm.setPath(storedHomeNode.getPath());
-        return;
+        actionServiceContainer.removeAction(currentNode, currentActionNode.getName(), repository);
+        //return;
       }
       try{
         JcrInputProperty rootProp = sortedInputs.get("/node");
@@ -228,15 +229,16 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           }
         }
         Node parentNode = actionForm.getParentNode();
-        if(parentNode.hasNode(EXO_ACTIONS)) {
-          if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
-            Object[] args = {actionName};
-            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
-                ApplicationMessage.WARNING));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
+        if (actionForm.isAddNew_) 
+	        if(parentNode.hasNode(EXO_ACTIONS)) {
+	          if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
+	            Object[] args = {actionName};
+	            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
+	                ApplicationMessage.WARNING));
+	            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+	            return;
+	          }
+	        }
         if(parentNode.isNew()) {
           String[] args = {parentNode.getPath()};
           uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args));
@@ -252,7 +254,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class);
         actionForm.reset();
-        actionForm.isEditInList_ = false;
+        //actionForm.isEditInList_ = false;
       } catch(RepositoryException repo) {      
         String key = "UIActionForm.msg.repository-exception";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
@@ -271,6 +273,10 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } finally {
+        if (actionForm.isEditInList_) {
+          actionForm.isEditInList_ = false;          
+        }
       }      
     }
   }
