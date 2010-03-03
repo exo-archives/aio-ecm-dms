@@ -542,7 +542,7 @@
 	};
 	
 	ECMUtils.prototype.resizeSideBar = function(event) {
-    var event = event || window.event;
+		var event = event || window.event;
 		eXo.ecm.ECMUtils.currentMouseX = event.clientX;
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
@@ -553,6 +553,7 @@
 		eXo.ecm.ECMUtils.currentTitleWidth = title.offsetWidth;
 		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
 		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;
+		
 	}				
 	
 	ECMUtils.prototype.resizeMouseMoveSideBar = function(event) {
@@ -570,6 +571,14 @@
 	}
 	
 	ECMUtils.prototype.resizeMouseUpSideBar = function(event) {
+		var event = event || window.event;
+		var resizableListGrid = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
+		if (resizableListGrid > 0) {
+			var documentInfo = document.getElementById("UIDocumentInfo");
+			var listGrid = DOM.findFirstDescendantByClass(documentInfo, "div", "UIListGrid");		
+			if (listGrid)
+				listGrid.style.width = listGrid.offsetWidth + resizableListGrid + "px";
+		}	
 		document.onmousemove = null;
 		delete eXo.ecm.ECMUtils.currentWidth;
 		delete eXo.ecm.ECMUtils.currentMouseX;
@@ -586,12 +595,16 @@
 	}
 	
 	ECMUtils.prototype.loadEffectedSideBar = function(id) {
-	  var container = document.getElementById("LeftContainer");
+		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
-		if(eXo.ecm.ECMUtils.savedLeftContainer && eXo.ecm.ECMUtils.savedResizableMouseX) {
+		if(eXo.ecm.ECMUtils.savedLeftContainer && eXo.ecm.ECMUtils.savedResizableMouseX) {			
 			container.style.width = eXo.ecm.ECMUtils.savedLeftContainer;
-			resizableBlock.style.width = eXo.ecm.ECMUtils.savedResizableMouseX;
-		}
+			resizableBlock.style.width = eXo.ecm.ECMUtils.savedResizableMouseX;			
+			var documentInfo = document.getElementById("UIDocumentInfo");
+			var listGrid = DOM.findFirstDescendantByClass(documentInfo, "div", "UIListGrid");		 		
+			if (listGrid)
+				listGrid.style.width = listGrid.offsetWidth + 200 + parseInt(eXo.ecm.ECMUtils.savedResizableMouseX) + "px";		
+		}		
 		eXo.ecm.ECMUtils.focusCurrentNodeInTree(id);
 	}
 	
