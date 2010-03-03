@@ -5,9 +5,9 @@
   
   
   <portlet>
-    <description xml:lang="EN">Portlet ECM File Explorer</description>
+    <description xml:lang="EN">Content Explorer</description>
     <portlet-name>FileExplorerPortlet</portlet-name>
-    <display-name xml:lang="EN">File Explorer</display-name>
+    <display-name xml:lang="EN">Content Explorer</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -25,9 +25,9 @@
     <resource-bundle>locale.portlet.ecm.JCRExplorerPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>File Explorer</title>
-      <short-title>file explorer</short-title>
-      <keywords>portlet, explorer</keywords>
+      <title>Content Explorer</title>
+      <short-title>Content Explorer</short-title>
+      <keywords>Contents</keywords>
     </portlet-info>
     <portlet-preferences>
     	<preference>
@@ -101,9 +101,9 @@
   </portlet>  
   
   <portlet>
-    <description xml:lang="EN">Portlet ECM Admin</description>
+    <description xml:lang="EN">ECM Admin</description>
     <portlet-name>ECMAdminPortlet</portlet-name>
-    <display-name xml:lang="EN">ECMAdmin</display-name>
+    <display-name xml:lang="EN">ECM Admin</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -120,9 +120,9 @@
     <resource-bundle>locale.portlet.ecm.ECMAdminPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>ECMAdmin</title>
+      <title>ECM Admin</title>
       <short-title>ECM Admin</short-title>
-      <keywords>ecm, admin</keywords>
+      <keywords>Admin</keywords>
     </portlet-info>
     <portlet-preferences>
     	<!-- Setup the default repository name of this portlet -->
@@ -134,61 +134,9 @@
     </portlet-preferences>  
   </portlet> 
   
-  <portlet>
-    <description xml:lang="EN">Fast Content Creator</description>
-    <portlet-name>FastContentCreatorPortlet</portlet-name>
-    <display-name xml:lang="EN">Fast Content Creator</display-name>
-    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
-    
-    <init-param>
-      <name>webui.configuration</name>
-      <value>/WEB-INF/conf/portlet/ecm/FastContentCreatorPortlet/webui/configuration.xml</value>
-    </init-param>    
-
-    <expiration-cache>0</expiration-cache>
-    <supports>
-      <mime-type>text/html</mime-type>
-      <portlet-mode>help</portlet-mode>
-      <portlet-mode>edit</portlet-mode>
-    </supports>
-    <supported-locale>en</supported-locale>    
-    <resource-bundle>locale.portlet.ecm.FastContentCreatorPortlet</resource-bundle>    																														
-    
-    <portlet-info>
-      <title>Fast Content Creator</title>
-      <short-title>ECM Fast Content Creator</short-title>
-      <keywords>ecm, fastcontentcreator</keywords>
-    </portlet-info>
-    <portlet-preferences>
-			<!-- Setup the default repository name for fast content creator portlet -->
-    	<preference>
-        <name>repository</name>
-        <value>repository</value>
-        <read-only>false</read-only>
-      </preference>
-      <!-- Specify the workspace name will be use in repository	-->
-      <preference>
-        <name>workspace</name>
-        <value>collaboration</value>
-        <read-only>false</read-only>
-      </preference>
-      <!-- Specify the destination path which will be use to store saved documents -->
-      <preference>
-        <name>path</name>     
-        <value>/Groups/platform/users/Documents</value>        
-        <read-only>false</read-only>
-      </preference>
-      <!-- Specify the node type of document which will be show on the dialog form -->
-      <preference>
-        <name>type</name>     
-        <value>exo:article</value>        
-        <read-only>false</read-only>
-      </preference>
-    </portlet-preferences>
-  </portlet> 
   
   <portlet>
-    <description xml:lang="EN">Portlet content browser</description>
+    <description xml:lang="EN">Content Browser</description>
     <portlet-name>ContentBrowserPortlet</portlet-name>
     <display-name xml:lang="EN">Content Browser</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>   
@@ -210,8 +158,8 @@
     
     <portlet-info>
       <title>Content Browser</title>
-      <short-title>Browser</short-title>
-      <keywords>portlet, content</keywords>
+      <short-title>Content Browser</short-title>
+      <keywords>ECM</keywords>
     </portlet-info>
     
     <portlet-preferences> 
