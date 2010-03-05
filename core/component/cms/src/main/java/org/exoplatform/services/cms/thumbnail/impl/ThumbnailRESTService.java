@@ -83,7 +83,7 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @throws Exception
  */  
   
-  @Path("/medium/{repoName}/{workspaceName}/{nodePath}/")
+  @Path("/medium/{repoName}/{workspaceName}/{nodePath:.*}/")
   @GET
   public Response getThumbnailImage(@PathParam("repoName") String repoName, 
                                     @PathParam("workspaceName") String wsName,
@@ -100,7 +100,7 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @Path("/big/{repoName}/{workspaceName}/{nodePath}/")
+  @Path("/big/{repoName}/{workspaceName}/{nodePath:.*}/")
   @GET
   public Response getCoverImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -117,7 +117,7 @@ public class ThumbnailRESTService implements ResourceContainer {
  * @return Response inputstream
  * @throws Exception
  */   
-  @Path("/small/{repoName}/{workspaceName}/{nodePath}/")
+  @Path("/small/{repoName}/{workspaceName}/{nodePath:.*}/")
   @GET
   public Response getSmallImage(@PathParam("repoName") String repoName, 
                                 @PathParam("workspaceName") String wsName,
@@ -134,7 +134,7 @@ public class ThumbnailRESTService implements ResourceContainer {
    * @return Response data stream
    * @throws Exception
    */   
-  @Path("/origin/{repoName}/{workspaceName}/{nodePath}/")
+  @Path("/origin/{repoName}/{workspaceName}/{nodePath:.*}/")
   @GET
   public Response getOriginImage(@PathParam("repoName") String repoName,
                                  @PathParam("workspaceName") String wsName, 
