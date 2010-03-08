@@ -66,6 +66,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String[] acceptedMimeTypes = {};
   
   private String[] exceptedNodeTypesInPathPanel = {};
+  private String[] exceptedNodeTypesInTree = {};
   
   private String[] defaultExceptedNodeTypes = {"exo:symlink"};
 
@@ -173,6 +174,14 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
 
   public void setAcceptedNodeTypesInPathPanel(String[] acceptedNodeTypesInPathPanel) {
     this.acceptedNodeTypesInPathPanel = acceptedNodeTypesInPathPanel;
+  }
+  
+  public String[] getExceptedNodeTypesInTree() {
+    return exceptedNodeTypesInTree;
+  }
+
+  public void setExceptedNodeTypesInTree(String[] exceptedNodeTypesInTree) {
+    this.exceptedNodeTypesInTree = exceptedNodeTypesInTree;
   }
   
   public String[] getExceptedNodeTypesInPathPanel() {

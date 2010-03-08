@@ -3140,6 +3140,36 @@
 	  <nodePath>Select path</nodePath>
     </label>
   </UIJcrExplorerEditForm>
+   	  <UISelectRestorePath>
+    <action>
+      <Save>Save</Save>
+      <Cancel>Cancel</Cancel>
+    </action>
+    <label>
+      <formInput>Old path lost, please choose new one!</formInput>
+    </label>
+  </UISelectRestorePath>         
+  <PathNode>
+    <title>
+      <Add>Add</Add>
+    </title>
+  </PathNode>
+  <UIPopupPathFoRestore>
+    <title>
+      <UIOneNodePathSelector>Select Parent Node</UIOneNodePathSelector>
+    </title>
+  </UIPopupPathFoRestore>
+  <rootNodeInfo>
+    <title>
+      <AddRootNode>Add root node</AddRootNode>
+    </title>
+  </rootNodeInfo>
+  
+  <UIPopupWindow>
+    <title>
+      <UISelectRestorePath>Select Restore Path</UISelectRestorePath>
+    </title>
+  </UIPopupWindow>
   <UIActionForm>
     <msg>
       <homePath-emty>The Home path is empty</homePath-emty>

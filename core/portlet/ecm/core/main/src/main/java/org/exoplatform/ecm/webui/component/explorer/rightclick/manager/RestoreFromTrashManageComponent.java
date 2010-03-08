@@ -42,6 +42,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsInTrashFilt
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UISelectRestorePath;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
@@ -54,6 +55,8 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -142,7 +145,7 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 	
 	public static void doRestore(String srcPath, Node node, Event<? extends UIComponent> event) throws Exception {
 		UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-		
+		UIWorkingArea uiWorkingArea = event.getSource().getParent();
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
     TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
     UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);    
@@ -162,11 +165,24 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     	Session trashSession = uiExplorer.getSessionByWorkspace(trashWorkspace);
     	Node trashHomeNode = (Node) trashSession.getItem(trashHomeNodePath);
     	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
-    	trashService.restoreFromTrash(trashHomeNode, 
-    								  srcPath, 
-    								  repository, 
-    								  sessionProvider);
-    	uiExplorer.updateAjax(event);
+    	try {
+	    	trashService.restoreFromTrash(trashHomeNode, 
+	    								  srcPath, 
+	    								  repository, 
+	    								  sessionProvider);
+	    	uiExplorer.updateAjax(event);
+    	} catch(PathNotFoundException e) {
+    		UIPopupContainer uiPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+				UISelectRestorePath uiSelectRestorePath = 
+					uiWorkingArea.createUIComponent(UISelectRestorePath.class, null, null);
+				
+				uiSelectRestorePath.setTrashHomeNode(trashHomeNode);
+				uiSelectRestorePath.setSrcPath(srcPath);
+				uiSelectRestorePath.setRepository(repository);
+				uiPopupContainer.activate(uiSelectRestorePath, 600, 300);
+				
+				event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
+    	}
     } catch (PathNotFoundException e) {
     	LOG.error("Path not found! Maybe, it was removed or path changed, can't restore node :" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);

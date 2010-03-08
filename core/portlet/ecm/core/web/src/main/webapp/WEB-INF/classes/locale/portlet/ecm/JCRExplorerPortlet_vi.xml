@@ -3143,6 +3143,36 @@
 	  <nodePath>Lựa chọn đường dẫn</nodePath>
     </label>
   </UIJcrExplorerEditForm>
+  <UISelectRestorePath>
+    <action>
+      <Save>Lưu</Save>
+      <Cancel>Bỏ qua</Cancel>
+    </action>
+    <label>
+      <formInput>Đường dẫn cũ đã bị mất, mời bạn chọn đường dẫn mới!</formInput>
+    </label>
+  </UISelectRestorePath>         
+  <PathNode>
+    <title>
+      <Add>Lưu</Add>
+    </title>
+  </PathNode>
+  <UIPopupPathFoRestore>
+    <title>
+      <UIOneNodePathSelector>Chọn nút cha</UIOneNodePathSelector>
+    </title>
+  </UIPopupPathFoRestore>
+  <rootNodeInfo>
+    <title>
+      <AddRootNode>Thêm nốt gốc</AddRootNode>
+    </title>
+  </rootNodeInfo>
+  
+  <UIPopupWindow>
+    <title>
+      <UISelectRestorePath>Chọn đường dẫn phục hồi</UISelectRestorePath>
+    </title>
+  </UIPopupWindow>
   <UIActionForm>
     <msg>
       <homePath-emty>Đường dẫn nguồn đang trống</homePath-emty>
