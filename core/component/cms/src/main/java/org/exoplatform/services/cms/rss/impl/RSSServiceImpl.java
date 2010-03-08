@@ -420,12 +420,14 @@ public class RSSServiceImpl implements RSSService{
       Node rootNode = session.getRootNode();
       String[] arrayPaths = rssStoredPath.split("/") ;
       for(String path : arrayPaths) {
-        try {
-          rootNode = rootNode.getNode(path.trim()) ;
-        } catch(PathNotFoundException pe) {
-          rootNode.addNode(path.trim(),NT_UNSTRUCTURED) ;
-          rootNode.save() ;
-          rootNode = rootNode.getNode(path.trim()) ;
+        if (path.trim().length() > 0) {
+          try {
+            rootNode = rootNode.getNode(path.trim()) ;
+          } catch(PathNotFoundException pe) {
+            rootNode.addNode(path.trim(),NT_UNSTRUCTURED) ;
+            rootNode.save() ;
+            rootNode = rootNode.getNode(path.trim()) ;
+          }
         }
       }
       session.save() ;

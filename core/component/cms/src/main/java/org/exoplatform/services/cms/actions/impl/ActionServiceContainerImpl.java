@@ -540,8 +540,12 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     for(PropertyDefinition def:nodeType.getDeclaredPropertyDefinitions()) {
       String propName = def.getName();
       if (actionNode.hasProperty(propName)) {
-        String propValue = actionNode.getProperty(propName).getString();
-        variables.put(propName, propValue);
+        if(actionNode.getProperty(propName).getDefinition().isMultiple()) {
+          
+        } else {
+          String propValue = actionNode.getProperty(propName).getString();
+          variables.put(propName, propValue);
+        }
       }
     }    
   }

@@ -24,10 +24,10 @@ import java.util.regex.Matcher;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.services.log.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
@@ -46,13 +46,14 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
   private static final Log LOG  = ExoLogger.getLogger(UIWorkingAreaActionListener.class);
   
   private Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer) throws Exception {
+    nodePath = uiExplorer.getCurrentWorkspace() + ":" + nodePath;
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
     String wsName = null;
     if (matcher.find()) {
       wsName = matcher.group(1);
       nodePath = matcher.group(2);
     } else {
-      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      wsName = uiExplorer.getCurrentWorkspace();
     }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     return uiExplorer.getNodeByPath(nodePath, session);
