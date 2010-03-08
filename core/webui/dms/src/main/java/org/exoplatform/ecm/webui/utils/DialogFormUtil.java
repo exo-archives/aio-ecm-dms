@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.utils;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +32,6 @@ import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatCountValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
@@ -110,7 +108,9 @@ public class DialogFormUtil {
       property = (JcrInputProperty) iter.next() ;
       rawinputs.put(property.getJcrPath(), property) ;
     }
-    List<UIFormUploadInput> formUploadList = new ArrayList<UIFormUploadInput>();
+    
+    // TODO: Need to check with multi upload problem
+    /*List<UIFormUploadInput> formUploadList = new ArrayList<UIFormUploadInput>();
     for (Object input : inputs) {
       if (input instanceof UIFormMultiValueInputSet) {
         UIFormMultiValueInputSet uiSet = (UIFormMultiValueInputSet) input;
@@ -168,7 +168,6 @@ public class DialogFormUtil {
             mimeTypeInputPropertyTmp.setJcrPath(newJCRPath.replace("jcr:data", "jcr:mimeType"));
             mimeTypeInputPropertyTmp.setValue(formUploadInput.getUploadResource().getMimeType());
             jcrPropertiesToAdd.put(mimeTypeInputPropertyTmp.getJcrPath(), mimeTypeInputPropertyTmp);
-            
             InputStream inputStream = formUploadInput.getUploadDataAsStream();
             byte[] content = new byte[inputStream.available()];
             inputStream.read(content);
@@ -182,11 +181,13 @@ public class DialogFormUtil {
         rawinputs.remove(keyToRemove);
       }
       rawinputs.putAll(jcrPropertiesToAdd);
-    }
+    }*/
     
     return rawinputs;
   }
-  
+
+  // TODO: Need to check with multi upload problem  
+  /*
   private static JcrInputProperty clone(JcrInputProperty fileNodeInputProperty) {
     JcrInputProperty jcrInputProperty = new JcrInputProperty();
     jcrInputProperty.setJcrPath(fileNodeInputProperty.getJcrPath());
@@ -197,7 +198,7 @@ public class DialogFormUtil {
     jcrInputProperty.setValueType(fileNodeInputProperty.getValueType());
     return jcrInputProperty;
   }
-
+*/
   /**
    * Creates the form input.
    * 
