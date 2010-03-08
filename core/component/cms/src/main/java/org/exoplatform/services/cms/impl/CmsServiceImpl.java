@@ -293,7 +293,7 @@ public class CmsServiceImpl implements CmsService {
           if(inputVariable != null) {
             value = inputVariable.getValue();
           }
-          if(value != null) {
+          if(value != null || propertyDef.isMandatory()) {
             processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
           }
           //TODO: Related to ECM-3491. Need to check.
