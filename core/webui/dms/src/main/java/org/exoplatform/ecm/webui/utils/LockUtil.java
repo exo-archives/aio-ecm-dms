@@ -31,7 +31,7 @@ import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.impl.core.lock.LockManager;
+import org.exoplatform.services.jcr.impl.core.lock.LockManagerImpl;
 import org.exoplatform.services.organization.OrganizationService;
 
 /**
@@ -45,7 +45,7 @@ public class LockUtil {
   public static ExoCache getLockCache() throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     CacheService cacheService = (CacheService)container.getComponentInstanceOfType(CacheService.class);
-    return cacheService.getCacheInstance(LockManager.class.getName());
+    return cacheService.getCacheInstance(LockManagerImpl.class.getName());
   }
   
   @SuppressWarnings("unchecked")

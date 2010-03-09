@@ -29,7 +29,7 @@ import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.impl.core.lock.LockManager;
+import org.exoplatform.services.jcr.impl.core.lock.LockManagerImpl;
 import org.exoplatform.services.listener.Event;
 import org.exoplatform.services.listener.Listener;
 import org.exoplatform.services.log.ExoLogger;
@@ -57,7 +57,7 @@ public class LockManagerListener extends Listener<ConversationRegistry, Conversa
     RootContainer rootContainer = RootContainer.getInstance() ;
     PortalContainer portalContainer = rootContainer.getPortalContainer("portal") ;
     CacheService cacheService = (CacheService)portalContainer.getComponentInstanceOfType(CacheService.class);
-    ExoCache lockcache = cacheService.getCacheInstance(LockManager.class.getName());
+    ExoCache lockcache = cacheService.getCacheInstance(LockManagerImpl.class.getName());
     try {
       Map<String,String> lockedNodes = (Map<String,String>)lockcache.get(userid);
       if(lockedNodes == null || lockedNodes.values().isEmpty()) return;      

@@ -17,19 +17,19 @@
 	
 	<properties>
 
-		<org.exoplatform.kernel.version>2.2.0-Beta05</org.exoplatform.kernel.version>
-		<org.exoplatform.core.version>2.3.0-Beta05</org.exoplatform.core.version>
-		<org.exoplatform.ws.version>2.1.0-Beta05</org.exoplatform.ws.version>
-		<org.exoplatform.jcr.version>1.12.0-Beta05</org.exoplatform.jcr.version>
+		<org.exoplatform.kernel.version>2.2.0-CR2</org.exoplatform.kernel.version>
+    <org.exoplatform.core.version>2.3.0-CR2</org.exoplatform.core.version>
+    <org.exoplatform.ws.version>2.1.0-CR2</org.exoplatform.ws.version>
+    <org.exoplatform.jcr.version>1.12.0-CR2</org.exoplatform.jcr.version>
 		<org.exoplatform.jcr-services.version>1.12.0-Beta01</org.exoplatform.jcr-services.version>
-		<org.exoplatform.portal.version>3.0.0-Beta05-CP01</org.exoplatform.portal.version>
+		<org.exoplatform.portal.version>3.0.0-CR01-CP01</org.exoplatform.portal.version>
 		<exo.tool.framework.junit.version>1.2.0</exo.tool.framework.junit.version>
-		<org.exoplatform.exopackage.version>1.1.0-Beta05</org.exoplatform.exopackage.version>
+		<org.exoplatform.exopackage.version>1.1.0-Beta06-SNAPSHOT</org.exoplatform.exopackage.version>
 		
 		<org.exoplatform.ecm.workflow.version>1.0.5</org.exoplatform.ecm.workflow.version>
 		<org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
 		<bonita.version>4.0</bonita.version>
-		<version.chromattic>1.0.0-beta14</version.chromattic>
+		<version.chromattic>1.0.0-cr2</version.chromattic>
 
 		<!-- 3rd parties -->
 		<org.shindig.version>SNAPSHOT-r790473</org.shindig.version>

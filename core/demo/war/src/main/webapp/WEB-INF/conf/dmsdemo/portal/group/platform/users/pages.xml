@@ -3,6 +3,7 @@
   
   <page>
     <name>FileExplorer</name>
+		<title>File Explorer</title>
     <access-permissions>*:/platform/users</access-permissions>
     <edit-permission>*:/platform/administrators</edit-permission>
     
@@ -91,6 +92,7 @@
   
   <page>
     <name>FastContentCreator</name>
+		<title>Fast Content Creator</title>
     <access-permissions>*:/platform/users</access-permissions>
     <edit-permission>*:/platform/administrators</edit-permission>
     
@@ -130,6 +132,7 @@
   
   <page>
     <name>ContentBrowser</name>
+		<title>Content Browser</title>
     <access-permissions>*:/platform/users</access-permissions>
     <edit-permission>*:/platform/administrators</edit-permission>
     
@@ -277,6 +280,7 @@
   
   <page>
     <name>WorkflowController</name>
+		<title>Workflow Controller</title>
     <access-permissions>*:/platform/users</access-permissions>
     <edit-permission>*:/platform/administrators</edit-permission>   
            

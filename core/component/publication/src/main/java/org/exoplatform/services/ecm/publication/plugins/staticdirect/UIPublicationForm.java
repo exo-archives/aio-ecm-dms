@@ -32,7 +32,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.impl.core.lock.LockManager;
+import org.exoplatform.services.jcr.impl.core.lock.LockManagerImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -134,7 +134,7 @@ public class UIPublicationForm extends UIForm {
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
     String key = createLockKey(node);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManagerImpl.class.getName());
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  
