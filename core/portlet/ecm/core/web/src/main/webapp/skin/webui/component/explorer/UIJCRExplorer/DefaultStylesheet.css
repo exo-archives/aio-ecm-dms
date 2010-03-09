@@ -52,6 +52,12 @@
 	height: 100%;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar .ShowLeftContent{
+	background: url('DefaultSkin/background/ShowLeftContent.gif') no-repeat center center;
+	width: 5px;
+	height: 100%;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
 	overflow: auto;
 }
