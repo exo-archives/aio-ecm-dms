@@ -151,7 +151,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   }
   
   private boolean hasMembership(String userId, String roleExpression) {
-    if (roleExpression.indexOf(":/") < 0) return false;
+    if ((roleExpression == null) || (roleExpression.length() == 0) || (roleExpression.indexOf(":/") < 0)) return false;
     if("*".equals(roleExpression))
       return true;
     OrganizationService organizationService_ = getApplicationComponent(OrganizationService.class);
