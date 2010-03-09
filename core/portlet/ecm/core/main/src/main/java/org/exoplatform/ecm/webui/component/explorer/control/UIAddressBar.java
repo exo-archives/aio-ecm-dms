@@ -32,9 +32,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.utils.text.Text;
-import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -257,7 +255,9 @@ public class UIAddressBar extends UIForm {
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);      
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      if(!uiDocumentWorkspace.isRendered()) {
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      }
     }
   }
   
