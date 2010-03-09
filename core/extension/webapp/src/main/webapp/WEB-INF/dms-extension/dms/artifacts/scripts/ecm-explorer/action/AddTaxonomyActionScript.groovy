@@ -68,8 +68,8 @@ public class AddTaxonomyActionScript implements CmsScript {
     String targetWorkspace = (String)variables.get("exo:targetWorkspace");
     String targetPath = (String)variables.get("exo:targetPath");
     if(storeFullPath.indexOf(":/") > -1) {
-      storeWorkspace = storeFullPath.split(":/")[0];
-      storeHomePath = storeFullPath.split(":/")[1];
+      storeWorkspace = storeFullPath.split(":")[0];
+      storeHomePath = storeFullPath.split(":")[1];
       if(!storeHomePath.startsWith("/")) storeHomePath = "/" + storeHomePath;
     } else {
       storeWorkspace = targetWorkspace;
@@ -118,7 +118,9 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     sessionTargetNode.save();
     targetNode = (Node)sessionTargetNode.getItem(targetPath);
-    Node nodeLink = linkManager_.createLink((Node)storeNode.getSession().getItem(nodePath.substring(0, nodePath.lastIndexOf("/"))), "exo:taxonomyLink", targetNode, nodeName);
+    String nodeLinkPath = nodePath.substring(0, nodePath.lastIndexOf("/"));
+    if (!nodeLinkPath.startsWith("/")) nodeLinkPath = "/" + nodeLinkPath;     
+    Node nodeLink = linkManager_.createLink((Node)storeNode.getSession().getItem(nodeLinkPath), "exo:taxonomyLink", targetNode, nodeName);
     // rename added node to recover official name
     sessionTargetNode.move(targetPath, targetParentPath.concat("/").concat(nodeName));
     sessionTargetNode.save();
