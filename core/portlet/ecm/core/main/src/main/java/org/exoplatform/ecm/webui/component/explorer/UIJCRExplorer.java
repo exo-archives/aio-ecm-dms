@@ -163,7 +163,7 @@ public class UIJCRExplorer extends UIContainer {
     getChild(UIWorkingArea.class).initialize();
   }
 
-  private String filterPath(String currentPath) throws Exception {
+  public String filterPath(String currentPath) throws Exception {
     if(LinkUtils.getDepth(currentRootPath_) == 0) return currentPath ;
     if(currentRootPath_.equals(currentPath_)) return "/" ;
     return currentPath.replaceFirst(currentRootPath_, "") ;
@@ -401,6 +401,11 @@ public class UIJCRExplorer extends UIContainer {
   public void refreshExplorer() throws Exception {
     refreshExplorer(null);
   }
+  
+  public void setPathToAddressBar(String path) throws Exception {
+    findFirstComponentOfType(UIAddressBar.class).getUIStringInput(
+                                          UIAddressBar.FIELD_ADDRESS).setValue(filterPath(path)) ;
+  } 
   
   private void refreshExplorer(Node currentNode) throws Exception { 
     try {
