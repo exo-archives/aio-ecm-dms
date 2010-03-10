@@ -293,9 +293,8 @@ public class CmsServiceImpl implements CmsService {
           if(inputVariable != null) {
             value = inputVariable.getValue();
           }          
-          if(value != null || propertyDef.isMandatory()) {
-            if (value != null) processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
-            else if (!propertyDef.isMandatory()) processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
+          if((value != null) || propertyDef.isMandatory()) {
+            processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
           }
           //TODO: Related to ECM-3491. Need to check.
           /*if(value != null || (propertyDef.getRequiredType() == PropertyType.DATE && propertyDef.isMandatory())) {
