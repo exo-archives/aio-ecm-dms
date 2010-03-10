@@ -16,7 +16,7 @@
 
 <%
 
-  def idSelected = uicomponent.getCurrentPath();  
+  def idSelected = uicomponent.getSelectedPath();  
   _ctx.getRequestContext().getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.selectedPath('${idSelected}')");
 
   public void writeNodes(TreeNode rootTree) {
