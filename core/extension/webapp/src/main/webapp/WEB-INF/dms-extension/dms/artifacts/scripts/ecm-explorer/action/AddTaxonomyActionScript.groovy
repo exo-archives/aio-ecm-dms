@@ -68,8 +68,11 @@ public class AddTaxonomyActionScript implements CmsScript {
     String targetWorkspace = (String)variables.get("exo:targetWorkspace");
     String targetPath = (String)variables.get("exo:targetPath");
     if(storeFullPath.indexOf(":/") > -1) {
-      storeWorkspace = storeFullPath.split(":")[0];
-      storeHomePath = storeFullPath.split(":")[1];
+      storeWorkspace = storeFullPath.split(":/")[0];
+      if (storeFullPath.split(":/")[1] == null)
+        storeHomePath = "";
+      else
+        storeHomePath = storeFullPath.split(":/")[1];      
       if(!storeHomePath.startsWith("/")) storeHomePath = "/" + storeHomePath;
     } else {
       storeWorkspace = targetWorkspace;
