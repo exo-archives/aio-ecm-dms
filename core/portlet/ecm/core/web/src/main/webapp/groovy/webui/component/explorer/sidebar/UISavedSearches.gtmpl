@@ -25,16 +25,19 @@
         <div><span>No query found</span></div>
     <%} else {
         for(object in uicomponent.queryList()) {
+          String selectedCss;
           if(object instanceof Query) {
             def storedQueryPath = object.getStoredQueryPath() ;
 	          def queryName =  storedQueryPath.substring(storedQueryPath.lastIndexOf("/") + 1) ;
-	          println("<a href=\"" + uicomponent.event("Execute", Utils.formatNodeName(storedQueryPath)) + "\" title=\"" + _ctx.appRes("UISavedQuery.tooltip.Execute") + "\">");
-	          println("  <div class=\"ArrowSidContent TextSiderContent\">" + queryName + "</div>");
+	          selectedCss = (storedQueryPath.equals(uicomponent.getQueryPath()) ? "SelectedNode" : "");
+			  		println("<a class=\"$selectedCss\" href=\"" + uicomponent.event("Execute", Utils.formatNodeName(storedQueryPath)) + "\" title=\"" + _ctx.appRes("UISavedQuery.tooltip.Execute") + "\">");			  			  
+	          println("  <div class=\"ArrowSidContent TextSiderContent\">" + queryName +"</div>");			  			  
 	          println("</a>");
-          } else if(object instanceof Node) {
-            println("<a href=\"" + uicomponent.event("Execute", object.getPath()) + "\" title=\"" + _ctx.appRes("UISavedQuery.tooltip.Execute") + "\">");
-	          println("  <div class=\"ArrowSidContent TextSiderContent\">" + object.getName() + "</div>");
-	          println("</a>");
+          } else if(object instanceof Node) {			
+						selectedCss = object.getPath().equals(uicomponent.getQueryPath()) ? "SelectedNode" : "";	          
+            println("<a class=\"$selectedCss\" href=\"" + uicomponent.event("Execute", object.getPath()) + "\" title=\"" + _ctx.appRes("UISavedQuery.tooltip.Execute") + "\">");						
+			  		println("<div class=\"ArrowSidContent TextSiderContent\">" +object.getName()+ "</div>");			  
+	          println("</a>"); 
           }
         }
       }

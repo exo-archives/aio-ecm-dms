@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -66,7 +67,7 @@ public class UISavedSearches extends UIComponent {
 
   private List<Node> sharedQueries_ = new ArrayList<Node>();  
   private List<Query> privateQueries = new ArrayList<Query>();
-  
+  private String queryPath;
   public UISavedSearches() throws Exception {
     // TODO Auto-generated constructor stub
   }
@@ -113,33 +114,45 @@ public class UISavedSearches extends UIComponent {
   
   public List<Node> getSharedQueries() { return sharedQueries_; }  
   
+  public void setQueryPath(String queryPath) throws Exception {
+    this.queryPath = queryPath;    
+  }
+  
+  public String getQueryPath() throws Exception {
+    return this.queryPath;
+  }
+  
   private String getRepositoryName() {
     return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-  }
+  }    
   
   static public class ExecuteActionListener extends EventListener<UISavedSearches> {
     public void execute(Event<UISavedSearches> event) throws Exception {
       UISavedSearches uiSavedSearches = event.getSource();
-      UIJCRExplorer uiExplorer = uiSavedSearches.getAncestorOfType(UIJCRExplorer.class);
-      String wsName = uiSavedSearches.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      UIJCRExplorer uiExplorer = uiSavedSearches.getAncestorOfType(UIJCRExplorer.class);      
+      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiSavedSearches.setQueryPath(queryPath);
+           
+      uiExplorer.setPathToAddressBar(Text.unescapeIllegalJcrChars(
+                                                           uiExplorer.filterPath(queryPath)));
+      String wsName = uiSavedSearches.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();      
       UIApplication uiApp = uiSavedSearches.getAncestorOfType(UIApplication.class);
       QueryService queryService = uiSavedSearches.getApplicationComponent(QueryService.class);
-      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIComponent uiSearch = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
       UISearchResult uiSearchResult = ((UIDocumentWorkspace)uiSearch).getChild(UISearchResult.class);
       QueryResult queryResult = null;
-      try {
+      try {        
         queryResult = queryService.execute(queryPath, wsName, uiExplorer.getRepositoryName(),
             SessionProviderFactory.createSystemProvider(), uiSavedSearches.getCurrentUserId());
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING));
-        return;
+        // return;
       } finally {
         if(queryResult == null || queryResult.getNodes().getSize() ==0) {
-          uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)); 
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
+          // uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)); 
+          // event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          // return;
         }        
         uiSearchResult.clearAll();
         uiSearchResult.setQueryResults(queryResult);
