@@ -543,6 +543,7 @@
 	
 	ECMUtils.prototype.resizeSideBar = function(event) {
 		var event = event || window.event;
+		
 		eXo.ecm.ECMUtils.currentMouseX = event.clientX;
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
@@ -551,38 +552,61 @@
 		var sideBarContent = DOM.findFirstDescendantByClass(container, "div", "SideBarContent");
 		var title = DOM.findFirstDescendantByClass(sideBarContent, "div", "Title");
 		eXo.ecm.ECMUtils.currentTitleWidth = title.offsetWidth;
-		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
-		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;
 		
-	}				
+		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
+		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;		
+	}
 	
 	ECMUtils.prototype.resizeMouseMoveSideBar = function(event) {
-		var event = event || window.event;
+		var event = event || window.event;		
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
 		var deltaX = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
+		eXo.ecm.ECMUtils.savedResizeDistance = deltaX;
 		var sideBarContent = DOM.findFirstDescendantByClass(container, "div", "SideBarContent");
 		var title = DOM.findFirstDescendantByClass(sideBarContent, "div", "Title");
 		title.style.width = eXo.ecm.ECMUtils.currentTitleWidth + deltaX + "px";
-		container.style.width = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
-		resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
+		// container.style.width = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
+		// resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
 		eXo.ecm.ECMUtils.savedResizableMouseX = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
 		eXo.ecm.ECMUtils.savedLeftContainer = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
+		
+		var resizeDiv = document.getElementById("ResizeSideBarDiv");
+		if (resizeDiv == null) {		
+			resizeDiv = document.createElement("div");
+			resizeDiv.className = "ResizeHandle";
+			resizeDiv.id = "ResizeSideBarDiv";
+			var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");			
+			resizeDiv.style.height = container.offsetHeight + "px";						
+			workingArea.appendChild(resizeDiv);						
+		}
+		var X_Resize = eXo.core.Browser.findMouseRelativeX(workingArea,event);						
+		eXo.core.Browser.setPositionInContainer(workingArea, resizeDiv, X_Resize, 235);										
 	}
 	
-	ECMUtils.prototype.resizeMouseUpSideBar = function(event) {
-		var event = event || window.event;
-		var resizableListGrid = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
-		if (resizableListGrid > 0) {
+	ECMUtils.prototype.resizeMouseUpSideBar = function(event) {	
+		document.onmousemove = null;	
+		if (eXo.ecm.ECMUtils.savedResizeDistance > 0) {
 			var documentInfo = document.getElementById("UIDocumentInfo");
 			var listGrid = DOM.findFirstDescendantByClass(documentInfo, "div", "UIListGrid");		
 			if (listGrid)
-				listGrid.style.width = listGrid.offsetWidth + resizableListGrid + "px";
+				listGrid.style.width = listGrid.offsetWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";
 		}	
-		document.onmousemove = null;
+		
+		var container = document.getElementById("LeftContainer");		
+		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");				
+		container.style.width = eXo.ecm.ECMUtils.currentWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";
+		resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";			
+		var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");								
+		if (workingArea) {
+			var resizeDiv = document.getElementById("ResizeSideBarDiv");	
+			workingArea.removeChild(resizeDiv);
+		}
+				
 		delete eXo.ecm.ECMUtils.currentWidth;
 		delete eXo.ecm.ECMUtils.currentMouseX;
 		delete eXo.ecm.ECMUtils.resizableBlockWidth;
+		delete eXo.ecm.ECMUtils.savedResizeDistance;
 	}
 	
 	ECMUtils.prototype.showHideSideBar = function(event) {
@@ -699,6 +723,12 @@
 		var clickedElement = document.getElementById(id);		
 		tagNameInput = DOM.findFirstDescendantByClass(clickedElement,"div", "UITagNameInput");
 		DOM.findDescendantById(tagNameInput, "names").setAttribute("autocomplete", "off");
+	}
+	
+	ECMUtils.prototype.selectedPath = function(id) {
+	  var select = document.getElementById(id);
+	  if (select)
+		select.className = select.className + " " + "SelectedNode";
 	}
 	
 };

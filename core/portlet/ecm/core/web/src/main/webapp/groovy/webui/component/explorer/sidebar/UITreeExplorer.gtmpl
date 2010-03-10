@@ -15,6 +15,10 @@
 %>
 
 <%
+
+  def idSelected = uicomponent.getCurrentPath();  
+  _ctx.getRequestContext().getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.selectedPath('${idSelected}')");
+
   public void writeNodes(TreeNode rootTree) {
     UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
     def uiCustomActionComponent = uicomponent.getWorkingArea().getCustomAction();

@@ -310,11 +310,17 @@ public class UITreeExplorer extends UIContainer {
   
   public void buildTree() throws Exception {    
     buildTree(null);
+    
   }
   
   public boolean isDocumentNodeType(Node node) throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     return templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), getRepository());
+  }    
+  
+  public String getSelectedPath() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;    
+    return encodeBase64(uiExplorer.getCurrentPath());
   }
   
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
@@ -369,7 +375,7 @@ public class UITreeExplorer extends UIContainer {
 //      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
 //      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
       
-      uiExplorer.updateAjax(event) ;      
+      uiExplorer.updateAjax(event);
     }
   }
   
