@@ -23,12 +23,15 @@ import java.util.regex.Matcher;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
@@ -45,7 +48,7 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
 
   private static final Log LOG  = ExoLogger.getLogger(UIWorkingAreaActionListener.class);
   
-  private Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer) throws Exception {
+  private Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer, boolean giveTarget) throws Exception {
     nodePath = uiExplorer.getCurrentWorkspace() + ":" + nodePath;
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
     String wsName = null;
@@ -56,7 +59,26 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
       wsName = uiExplorer.getCurrentWorkspace();
     }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
-    return uiExplorer.getNodeByPath(nodePath, session);
+    
+    return uiExplorer.getNodeByPath(nodePath, session, giveTarget);
+  }
+  
+  private Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer) throws Exception {
+  	return getNodeByPath(nodePath, uiExplorer, true);
+  }
+  
+  private boolean inTrash(String nodePath) {
+  	PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+  	String trashHomeNodePath = portletPref.getValue(Utils.TRASH_HOME_NODE_PATH, "");
+		if (nodePath.startsWith(trashHomeNodePath)) return true;
+    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    if (matcher.find()) {
+      return matcher.group(2).startsWith(trashHomeNodePath);
+    } else {
+      return false;
+    }
+
   }
   
   public boolean acceptForMultiNode(Event<T> event, String path) {
@@ -87,7 +109,7 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
     String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
     if (nodePath == null || nodePath.length() == 0 || nodePath.contains(";")) return null;
     // Use the method getNodeByPath because it is link aware
-    Node currentNode = getNodeByPath(nodePath, uiExplorer); 
+    Node currentNode = getNodeByPath(nodePath, uiExplorer, !inTrash(nodePath)); 
     WebuiRequestContext requestContext = event.getRequestContext();
     UIApplication uiApp = requestContext.getUIApplication();
     context.put(UIWorkingArea.class.getName(), uiWorkingArea);

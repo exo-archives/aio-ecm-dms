@@ -62,6 +62,8 @@ import org.exoplatform.services.log.Log;
  * 31 mars 2009  
  */
 public class NodeLinkAware extends ItemLinkAware implements ExtendedNode {
+	
+  final static public String EXO_RESTORE_LOCATION = "exo:restoreLocation";	
 
   /**
    * Logger.
@@ -407,6 +409,8 @@ public class NodeLinkAware extends ItemLinkAware implements ExtendedNode {
    * {@inheritDoc}
    */  
   public boolean isNodeType(String nodeTypeName) throws RepositoryException {
+  	if (EXO_RESTORE_LOCATION.equals(nodeTypeName))
+  		return this.node.isNodeType(nodeTypeName);
     Node node = getTargetReachable();
     return node == null ? false : node.isNodeType(nodeTypeName);
   }

@@ -117,12 +117,12 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
       return;
     }
 		//--------------
-  	ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-  	LinkManager linkManager = (LinkManager)myContainer.getComponentInstanceOfType(LinkManager.class);
-    if (linkManager.isLink(node)) {
-    	node = linkManager.getTarget(node);
-    	srcPath = node.getPath();
-    }
+//  	ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+//  	LinkManager linkManager = (LinkManager)myContainer.getComponentInstanceOfType(LinkManager.class);
+//    if (linkManager.isLink(node)) {
+//    	node = linkManager.getTarget(node);
+//    	srcPath = node.getPath();
+//    }
   	confirmToRestore(node, srcPath, event);  
 	}
 	
