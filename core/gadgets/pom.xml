@@ -1,19 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>3.0.0-Beta01-SNAPSHOT</version>
-  </parent> 
-
-  <modelVersion>4.0.0</modelVersion>
+  </parent>
   <artifactId>exo.ecm.dms.core.gadgets</artifactId>
-  <packaging>war</packaging> 
+  <packaging>war</packaging>
   <name>eXo DMS Gadgets</name>
-
-  <build>
-    <finalName>eXoDMSGadgets</finalName>
-  </build>
-  
   <dependencies>
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
@@ -21,7 +16,6 @@
       <version>${org.exoplatform.portal.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
       <artifactId>exo.portal.webui.portal</artifactId>
@@ -30,9 +24,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.shindig</groupId>
-      <version>${org.shindig.version}</version>
       <artifactId>shindig-common</artifactId>
-	    <scope>provided</scope>
+      <version>${org.shindig.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
+  <build>
+    <finalName>eXoDMSGadgets</finalName>
+  </build>
 </project>

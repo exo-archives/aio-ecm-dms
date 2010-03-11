@@ -1,141 +1,118 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>3.0.0-Beta01-SNAPSHOT</version>
-  </parent> 
-
-  <modelVersion>4.0.0</modelVersion>
+  </parent>
   <artifactId>exo.ecm.dms.core.component.cms</artifactId>
   <packaging>jar</packaging>
   <name>eXo CMS Service</name>
-  <url>http://www.exoplatform.org</url>
   <description>eXo CMS Service</description>
-
+  <url>http://www.exoplatform.org</url>
   <dependencies>
-    
-		<dependency>
+    <dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.core</artifactId>
       <version>${version.chromattic}</version>
       <scope>test</scope>
     </dependency>
-		
-		<dependency>
+    <dependency>
       <groupId>org.exoplatform.kernel</groupId>
       <artifactId>exo.kernel.container</artifactId>
       <version>${org.exoplatform.kernel.version}</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.core</groupId>
       <artifactId>exo.core.component.security.core</artifactId>
       <version>${org.exoplatform.core.version}</version>
       <scope>compile</scope>
-    </dependency>    
-
+    </dependency>
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.webdav</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.ext</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
-		
     <dependency>
       <groupId>org.exoplatform</groupId>
       <artifactId>exo-jcr-services</artifactId>
       <version>${org.exoplatform.jcr-services.version}</version>
       <scope>compile</scope>
     </dependency>
-		
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.publication</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
-	
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
-	
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all-minimal</artifactId>
       <version>1.5.4</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>rome</groupId>
       <artifactId>rome</artifactId>
       <version>0.9</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>com.totsp.feedpod</groupId>
       <artifactId>itunes-com-podcast</artifactId>
       <version>0.2</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>ical4j</groupId>
       <artifactId>ical4j</artifactId>
       <version>0.9.20</version>
       <scope>compile</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.icepdf</groupId>
       <artifactId>icepdf-viewer</artifactId>
       <version>3.0</version>
       <scope>compile</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.icepdf</groupId>
       <artifactId>icepdf-core</artifactId>
       <version>3.0</version>
       <scope>compile</scope>
-    </dependency>     
+    </dependency>
   </dependencies>
-  
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
-
     <resources>
       <resource>
         <directory>src/main/java</directory>
         <includes>
-          <include>**/*.xml</include> 
-          <include>**/*.properties</include>         
+          <include>**/*.xml</include>
+          <include>**/*.properties</include>
         </includes>
       </resource>
     </resources>
-
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>
@@ -153,7 +130,7 @@
           <include>**/*.sha1</include>
           <include>**/*.conf</include>
           <include>**/*.gtmpl</include>
-          <include>**/*.groovy</include>          
+          <include>**/*.groovy</include>
         </includes>
       </testResource>
       <testResource>
@@ -162,28 +139,30 @@
           <include>**/*.xml</include>
           <include>**/*.gtmpl</include>
           <include>**/*.groovy</include>
-		  <include>**/*.jpg</include>
+          <include>**/*.jpg</include>
         </includes>
       </testResource>
     </testResources>
-
-    <plugins>      
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
           <forkMode>${exo.test.forkmode}</forkMode>
-          <includes>
-            <!--include>The file path need to run unit test by default</include-->    						
-          </includes>
+          <includes/>
+          <!--include>The file path need to run unit test by default</include-->
           <excludes>
-            <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
-            <exclude>**/BaseDMSTestCase.java</exclude>            
+            <exclude>**/*$*</exclude>
+            <!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
+            <exclude>**/BaseDMSTestCase.java</exclude>
           </excludes>
         </configuration>
       </plugin>
     </plugins>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
   </build>
-  
 </project>
