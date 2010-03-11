@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -441,18 +442,17 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public void addAction(Node storeActionNode, String repository, String actionType, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception {
-    if (!storeActionNode.isNodeType(ACTIONABLE)) {
-      storeActionNode.addMixin(ACTIONABLE);
-      storeActionNode.save();
-    }
     Node actionsNode = null;
     try {
-      actionsNode = storeActionNode.getNodes(EXO_ACTIONS).nextNode();
-    } catch (Exception e) {
+      actionsNode = storeActionNode.getNode(EXO_ACTIONS);
+    } catch (PathNotFoundException e) {
       actionsNode = storeActionNode.addNode(EXO_ACTIONS,ACTION_STORAGE) ;
       actionsNode.addMixin(EXO_HIDDENABLE) ;
       storeActionNode.save();
-      storeActionNode.getSession().save();
+    }
+    if (!storeActionNode.isNodeType(ACTIONABLE)) {
+      storeActionNode.addMixin(ACTIONABLE);
+      storeActionNode.save();
     }
     String newActionPath = cmsService_.storeNode(actionType, actionsNode, mappings,true,repository);
     storeActionNode.save();
