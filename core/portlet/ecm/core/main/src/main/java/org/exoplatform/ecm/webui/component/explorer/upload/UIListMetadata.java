@@ -61,7 +61,7 @@ public class UIListMetadata extends UIContainer {
   
   public Node getUploadedNode() { return ((UIUploadContainer)getParent()).getUploadedNode() ; }
   
-  private boolean isExternalUse(NodeType nodeType) throws Exception{
+  private boolean isInternalUse(NodeType nodeType) throws Exception{
     for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
       if(pro.getName().equals("exo:internalUse")) {
         return pro.getDefaultValues()[0].getBoolean();
@@ -76,18 +76,18 @@ public class UIListMetadata extends UIContainer {
   public List<String> getExternalList() throws Exception { 
     NodeType[] mixinTypes = getUploadedNode().getMixinNodeTypes();        
     for(NodeType nodeType : mixinTypes) {
-      if(nodeType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+      if(nodeType.getName().equals(Utils.EXO_METADATA) && !isInternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
         externalList_.add(nodeType.getName()) ;
       }
       for(NodeType superType : nodeType.getSupertypes()) {
-        if(superType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+        if(superType.getName().equals(Utils.EXO_METADATA) && !isInternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
           externalList_.add(nodeType.getName()) ;
         }
       }
     }
     if(getUploadedNode().hasNode(Utils.JCR_CONTENT)) {
       for(NodeType nodeType : getUploadedNode().getNode(Utils.JCR_CONTENT).getMixinNodeTypes()) {
-        if(nodeType.isNodeType(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+        if(nodeType.isNodeType(Utils.EXO_METADATA) && !isInternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
           externalList_.add(nodeType.getName()) ;
         }
       }

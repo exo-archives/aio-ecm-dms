@@ -17,14 +17,19 @@
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
+import javax.jcr.PropertyType;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
@@ -66,7 +71,7 @@ public class UIExternalMetadataForm extends UIForm {
     UIFormCheckBoxInput<String> uiCheckBox ;
     for(NodeType nodeType : metadataService.getAllMetadatasNodeType(repository)) {
       uiCheckBox = new UIFormCheckBoxInput<String>(nodeType.getName(), nodeType.getName(), "") ;
-      if(isExternalUse(nodeType)) {
+      if(!isInternalUse(nodeType)) {
         if(hasExternalMetadata(nodeType.getName())) {
           uiCheckBox.setChecked(true) ;
           uiCheckBox.setEnable(false) ;
@@ -79,7 +84,7 @@ public class UIExternalMetadataForm extends UIForm {
     }
   }
   
-  private boolean isExternalUse(NodeType nodeType) throws Exception{
+  private boolean isInternalUse(NodeType nodeType) throws Exception{
     for(PropertyDefinition pro : nodeType.getPropertyDefinitions()) {
       if(pro.getName().equals("exo:internalUse")) {
         return pro.getDefaultValues()[0].getBoolean();
@@ -110,7 +115,7 @@ public class UIExternalMetadataForm extends UIForm {
     try {
       return res.getString("UIExternalMetadataForm.label." + id) ;
     } catch (MissingResourceException ex) {
-      return id ;
+      return '_' + id ;
     }
   }
   
@@ -143,7 +148,8 @@ public class UIExternalMetadataForm extends UIForm {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          uploadedNode.addMixin(metadataName) ;
+          uploadedNode.addMixin(metadataName);
+          createMandatoryPropertyValue(uploadedNode, metadataName);
           uploadedNode.save() ;
           UIUploadContent uiUploadContent = uiContainer.getChild(UIUploadContent.class) ;
           uiUploadContent.externalList_.add(metadataName) ;
@@ -155,6 +161,54 @@ public class UIExternalMetadataForm extends UIForm {
       uiPopup.setRendered(false) ;
       uiContainer.setRenderedChild(UIUploadContent.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager) ;
+    }
+    
+    private void createMandatoryPropertyValue(Node node, String nodeTypeName) throws Exception {
+      NodeTypeManager nodeTypeManager = node.getSession().getWorkspace().getNodeTypeManager();
+      NodeType nodeType = nodeTypeManager.getNodeType(nodeTypeName);
+      for (PropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
+      	if (propertyDefinition.isMandatory() && 
+      			(!propertyDefinition.isAutoCreated() || !node.hasProperty(propertyDefinition.getName()))&& 
+      			!propertyDefinition.isProtected()) {
+      		String propertyName = propertyDefinition.getName();
+      		int requiredType = propertyDefinition.getRequiredType();
+      		if (!propertyDefinition.isMultiple()) {
+      			switch (requiredType) {
+      				case PropertyType.STRING: node.setProperty(propertyName, StringUtils.EMPTY);
+      				break;
+      				case PropertyType.BINARY: node.setProperty(propertyName, "");
+      				break;
+      				case PropertyType.BOOLEAN: node.setProperty(propertyName, false);
+      				break;
+      				case PropertyType.LONG: node.setProperty(propertyName, 0);
+      				break;
+      				case PropertyType.DOUBLE: node.setProperty(propertyName, 0);
+      				break;
+      				case PropertyType.DATE: node.setProperty(propertyName, new GregorianCalendar());
+      				break;
+      				case PropertyType.REFERENCE: node.setProperty(propertyName, "");
+      				break;
+      			}
+      		} else {
+      			switch (requiredType) {
+						case PropertyType.STRING: node.setProperty(propertyName, new String[] {StringUtils.EMPTY});
+    				break;
+    				case PropertyType.BINARY: node.setProperty(propertyName, new String[] {""});
+    				break;
+    				case PropertyType.BOOLEAN: node.setProperty(propertyName, new Value[]{node.getSession().getValueFactory().createValue(false)});
+    				break;
+    				case PropertyType.LONG: node.setProperty(propertyName, new Value[]{node.getSession().getValueFactory().createValue(0L)});
+    				break;
+    				case PropertyType.DOUBLE: node.setProperty(propertyName, new Value[]{node.getSession().getValueFactory().createValue(0)});
+    				break;
+    				case PropertyType.DATE: node.setProperty(propertyName, new Value[]{node.getSession().getValueFactory().createValue(new GregorianCalendar())});
+    				break;
+    				case PropertyType.REFERENCE: node.setProperty(propertyName, new String[] {});
+    				break;
+      			}
+      		}
+      	}
+      }
     }
   }
 }
