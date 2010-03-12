@@ -33,7 +33,7 @@
     <org.exoplatform.jcr-services.version>1.12.0-Beta01</org.exoplatform.jcr-services.version>
     <org.exoplatform.portal.version>3.0.0-CR01-CP01</org.exoplatform.portal.version>
     <exo.tool.framework.junit.version>1.2.0</exo.tool.framework.junit.version>
-    <org.exoplatform.exopackage.version>1.1.0-Beta06-SNAPSHOT</org.exoplatform.exopackage.version>
+    <org.exoplatform.exopackage.version>1.1.0-Beta06</org.exoplatform.exopackage.version>
     <org.exoplatform.ecm.workflow.version>1.0.5</org.exoplatform.ecm.workflow.version>
     <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
     <bonita.version>4.0</bonita.version>
