@@ -541,9 +541,8 @@
 		}
 	};
 	
-	ECMUtils.prototype.resizeSideBar = function(event) {
-		var event = event || window.event;
-		
+	ECMUtils.prototype.resizeSideBar = function(event) {		
+		var event = event || window.event;		
 		eXo.ecm.ECMUtils.currentMouseX = event.clientX;
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
@@ -552,9 +551,11 @@
 		var sideBarContent = DOM.findFirstDescendantByClass(container, "div", "SideBarContent");
 		var title = DOM.findFirstDescendantByClass(sideBarContent, "div", "Title");
 		eXo.ecm.ECMUtils.currentTitleWidth = title.offsetWidth;
-		
-		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
-		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;		
+			
+		if(container.style.display == '' || container.style.display == 'block') {
+			document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
+			document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;		
+		}		
 	}
 	
 	ECMUtils.prototype.resizeMouseMoveSideBar = function(event) {
@@ -580,12 +581,15 @@
 			resizeDiv.style.height = container.offsetHeight + "px";						
 			workingArea.appendChild(resizeDiv);						
 		}
-		var X_Resize = eXo.core.Browser.findMouseRelativeX(workingArea,event);						
-		eXo.core.Browser.setPositionInContainer(workingArea, resizeDiv, X_Resize, 235);										
+		var X_Resize = eXo.core.Browser.findMouseRelativeX(workingArea,event);				
+		var Y_Resize = eXo.core.Browser.findPosYInContainer(container,workingArea);
+		eXo.core.Browser.setPositionInContainer(workingArea, resizeDiv, X_Resize, Y_Resize);										
 	}
 	
 	ECMUtils.prototype.resizeMouseUpSideBar = function(event) {	
 		document.onmousemove = null;	
+		
+		// Case of increase width
 		if (eXo.ecm.ECMUtils.savedResizeDistance > 0) {
 			var documentInfo = document.getElementById("UIDocumentInfo");
 			var listGrid = DOM.findFirstDescendantByClass(documentInfo, "div", "UIListGrid");		
@@ -594,15 +598,22 @@
 		}	
 		
 		var container = document.getElementById("LeftContainer");		
-		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");				
-		container.style.width = eXo.ecm.ECMUtils.currentWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";
-		resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";			
-		var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");								
-		if (workingArea) {
-			var resizeDiv = document.getElementById("ResizeSideBarDiv");	
-			workingArea.removeChild(resizeDiv);
+		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");	
+
+		// Fix minimium width can be resized
+		if (eXo.ecm.ECMUtils.currentWidth + eXo.ecm.ECMUtils.savedResizeDistance > 50) {
+			container.style.width = eXo.ecm.ECMUtils.currentWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";
+			resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + eXo.ecm.ECMUtils.savedResizeDistance + "px";			
 		}
-				
+		
+		// Remove new added div 
+		var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");								
+		if (workingArea) {			
+			var resizeDiv = document.getElementById("ResizeSideBarDiv");	
+			if (resizeDiv)
+				workingArea.removeChild(resizeDiv);
+		}
+						
 		delete eXo.ecm.ECMUtils.currentWidth;
 		delete eXo.ecm.ECMUtils.currentMouseX;
 		delete eXo.ecm.ECMUtils.resizableBlockWidth;
@@ -611,10 +622,14 @@
 	
 	ECMUtils.prototype.showHideSideBar = function(event) {
 	  var container = document.getElementById("LeftContainer");
+	  var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");			  
+	  var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");	 
 	  if(container.style.display == 'none') {
 	    container.style.display = 'block';
+		resizeButton.className = "ResizeButton";
 	  } else {
-  	  container.style.display = 'none';
+		container.style.display = 'none';
+		resizeButton.className = "ResizeButton ShowLeftContent";
 	  }
 	}
 	
@@ -633,12 +648,13 @@
 	}
 	
 	ECMUtils.prototype.resizeTreeInSideBar = function(event) {
-    var event = event || window.event;
+		var event = event || window.event;
 		eXo.ecm.ECMUtils.currentMouseY = event.clientY;
-		var container = document.getElementById("UITreeExplorer");
+		
+		var container = document.getElementById("UITreeExplorer");		
 		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;		
 						
-		// The block are updated by lampt	
+		// The block are updated by lampt
 		var workingArea = document.getElementById('UIWorkingArea');
 		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
 		var uiResizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");	
@@ -647,59 +663,91 @@
 		// end
 		
 		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveItemsInSideBar;
-		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpItemsInSideBar;
-		
+		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpItemsInSideBar;		
 	}
 
 	ECMUtils.prototype.resizeMouseMoveItemsInSideBar = function(event) {
 		var event = event || window.event;
 		var container = document.getElementById("UITreeExplorer");		
 		var deltaY = event.clientY - eXo.ecm.ECMUtils.currentMouseY ;
-		container.style.height = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";	
-						
+		eXo.ecm.ECMUtils.resizableY = deltaY;	
+										
+		var resizeDiv = document.getElementById("ResizeVerticalSideBarDiv");
+		if (resizeDiv == null) {		
+			resizeDiv = document.createElement("div");
+			resizeDiv.className = "VResizeHandle";
+			resizeDiv.id = "ResizeVerticalSideBarDiv";
+			var workingArea = DOM.findAncestorByClass(container, "UIWorkingArea");		
+			var uiResizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");				
+			resizeDiv.style.width = container.offsetWidth + "px";						
+			uiResizableBlock.appendChild(resizeDiv);						
+		}
+		var Y_Resize = eXo.core.Browser.findMouseRelativeY(uiResizableBlock,event);				
+		var X_Resize = eXo.core.Browser.findPosXInContainer(container,uiResizableBlock);
+		eXo.core.Browser.setPositionInContainer(uiResizableBlock, resizeDiv, X_Resize, Y_Resize);			
+		eXo.ecm.ECMUtils.savedTreeSizeMouseY = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";		
+	}
+	
+	ECMUtils.prototype.resizeMouseUpItemsInSideBar = function(event) {		
+		document.onmousemove = null;		
+		
 		// The block are updated by lampt
 		var workingArea = document.getElementById('UIWorkingArea');
 		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
 		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
-		
-		if (eXo.ecm.ECMUtils.resizableHeight + deltaY >= eXo.ecm.ECMUtils.defaultHeight) {				
-			sizeBarContainer.style.height = eXo.ecm.ECMUtils.resizableHeight + deltaY + 20 + "px";
-			resizeButton.style.height = eXo.ecm.ECMUtils.resizableHeight + deltaY + 20 + "px";		
+						
+		// Remove new added div 
+		var uiResizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");			
+		if (uiResizableBlock) {			
+			var resizeDiv = document.getElementById("ResizeVerticalSideBarDiv");
+			if (resizeDiv)
+				uiResizableBlock.removeChild(resizeDiv);
 		}
-		// end
 		
-		eXo.ecm.ECMUtils.savedTreeSizeMouseY = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";		
-	}
-	
-	ECMUtils.prototype.resizeMouseUpItemsInSideBar = function(event) {
-		document.onmousemove = null;
+		if (eXo.ecm.ECMUtils.resizableHeight + eXo.ecm.ECMUtils.resizableY >= eXo.ecm.ECMUtils.defaultHeight) {				
+			sizeBarContainer.style.height = eXo.ecm.ECMUtils.resizableHeight + eXo.ecm.ECMUtils.resizableY + 20 + "px";
+			resizeButton.style.height = eXo.ecm.ECMUtils.resizableHeight + eXo.ecm.ECMUtils.resizableY + 20 + "px";		
+		}		
+		
+		var container = document.getElementById("UITreeExplorer");	
+		container.style.height = eXo.ecm.ECMUtils.currentHeight + eXo.ecm.ECMUtils.resizableY + "px"				
 		delete eXo.ecm.ECMUtils.currentHeight;
-		delete eXo.ecm.ECMUtils.currentMouseY;
-		
-		// Updated by lampt
+		delete eXo.ecm.ECMUtils.currentMouseY;				
 		delete eXo.ecm.ECMUtils.resizableHeight		
+		delete eXo.ecm.ECMUtils.resizableY;
 	}
 	
-	ECMUtils.prototype.showHideItemsInSideBar = function(event) {
+	ECMUtils.prototype.showHideItemsInSideBar = function(event) {				
 	  var itemArea = document.getElementById("SelectItemArea");
 	  var container = document.getElementById("UITreeExplorer");
 	  eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea
+	  
 	  if(typeof(eXo.ecm.ECMUtils.heightOfItemArea) == "undefined") {
+		
 	    eXo.ecm.ECMUtils.heightOfItemArea = itemArea.offsetHeight;
 	  }
-    if(typeof(eXo.ecm.ECMUtils.heightOfTree) == "undefined") {
-      eXo.ecm.ECMUtils.heightOfTree = container.offsetHeight;
-    }
-	  if(itemArea.style.display == 'none') {
-      container.style.height = container.offsetHeight - eXo.ecm.ECMUtils.heightOfItemArea + "px";
+	  
+      if(typeof(eXo.ecm.ECMUtils.heightOfTree) == "undefined") {		
+		eXo.ecm.ECMUtils.heightOfTree = container.offsetHeight;
+	  }
+	  
+	  var workingArea = document.getElementById('UIWorkingArea');	  
+	  var resizeBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");
+	  var resizeTreeButton = DOM.findFirstDescendantByClass(resizeBlock, "div", "ResizeTreeButton");
+	  
+	  if(itemArea.style.display == 'none') {	  
+		container.style.height = container.offsetHeight - eXo.ecm.ECMUtils.heightOfItemArea + "px";
 	    itemArea.style.display = 'block';
 	    eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea = 'block';
-	  } else {
-  	  container.style.height = eXo.ecm.ECMUtils.heightOfTree + eXo.ecm.ECMUtils.heightOfItemArea + "px";
-  	  itemArea.style.display = 'none';
-  	  eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea = 'none';
+		resizeTreeButton.className = "ResizeTreeButton";
+	  } else {	  
+		container.style.height = eXo.ecm.ECMUtils.heightOfTree + eXo.ecm.ECMUtils.heightOfItemArea + "px";
+		itemArea.style.display = 'none';
+		eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea = 'none';
+		resizeTreeButton.className = "ResizeTreeButton ShowContentButton";
 	  }
-			eXo.ecm.UIListView.setHeight();
+	  
+		eXo.ecm.UIListView.setHeight();
 	}
 	
 	ECMUtils.prototype.loadEffectedItemsInSideBar = function() {
@@ -726,7 +774,7 @@
 	}
 	
 	ECMUtils.prototype.selectedPath = function(id) {
-	  var select = document.getElementById(id);
+	  var select = document.getElementById(id);	  
 	  if (select)
 		select.className = select.className + " " + "SelectedNode";
 	}

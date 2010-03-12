@@ -112,15 +112,15 @@
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ResizeTreeButton{
   background: url('DefaultSkin/background/ResizeTreeButton.gif') no-repeat center;
 	height: 7px;
-	width: 7px;
+	width: 10px;
 	margin: auto;
 }
 
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ShowContentButton{
   background: url('DefaultSkin/background/ShowContentButton.gif') no-repeat center;
 	height: 7px;
-	width: 10px;
-	margin: auto;
+	width: 10px;	
+	margin: auto;		
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
@@ -337,6 +337,14 @@
   display: block;
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .SelectedNode {    	
+	
+	padding: 0 0 0 18px; /* orientation=lt */
+	padding: 0 18px 0 0; /* orientation=rt */
+	display: block;
+	background-color: #E7F3FF;	
+}
+
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
   color: blue;
 }
@@ -451,4 +459,24 @@
 	height: 105px;
 	_overflow-x: hidden;
 	_width: 183px;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .ResizeHandle {
+		cursor: col-resize;
+		width: 1px;
+		height: 100px; /* default height */
+		border-right: 1px dashed #000;
+		position: absolute;
+		top: 0;
+		left: 0;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .VResizeHandle {
+		cursor: row-resize;
+		height : 3px;
+		width: 300px; /* default width */
+		border-bottom: 1px dashed #000;
+		position: absolute;
+		top: 0;
+		left: 0;		
 }

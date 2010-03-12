@@ -10,10 +10,12 @@
       <% 
         String[] arrComp = [uicomponent.getCurrentComp()];
         uicomponent.renderSideBarChild(arrComp); 
-       %>
-      <div class="ResizeTreeExplorer" onmousedown="eXo.ecm.ECMUtils.resizeTreeInSideBar(event)" ondblclick="eXo.ecm.ECMUtils.showHideItemsInSideBar(this)">
-        <div class="ResizeTreeButton ShowContentButton"><span></span></div>
-      </div>
+       %>        
+     <div class="ResizeTreeExplorer" onmousedown="eXo.ecm.ECMUtils.resizeTreeInSideBar(event)" onclick="eXo.ecm.ECMUtils.showHideItemsInSideBar(this)">
+      <div class="ResizeTreeButton"><span></span></div>
+     </div>
+    
+      
       <div class="SelectItem" id ="SelectItemArea">
         <% 
           String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
@@ -38,7 +40,7 @@
         <div class="ItemIcon TagExplorerIcon"><span></span></div>
       </div>
       <div class="<%=getCSSClassName("UISavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISavedSearches.title.savedSearches")%>">
-        <div class="ItemIcon AdvancedSearchIcon"><span></span></div>
+        <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
     </div>
   </div>
