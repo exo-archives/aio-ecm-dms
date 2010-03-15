@@ -356,19 +356,24 @@ public class UIDialogForm extends UIForm {
     UIFormCheckBoxField formCheckBoxField =  new UIFormCheckBoxField(name, lable, arguments);
     String jcrPath = formCheckBoxField.getJcrPath();
     String defaultValue = formCheckBoxField.getDefaultValue();
+    if (defaultValue == null) defaultValue = "false";
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty);
     String propertyName = getPropertyName(jcrPath);
     propertiesName.put(name, propertyName);
     fieldNames.put(propertyName, name);
+    Value value = null;
+    if (getNode() != null && getNode().hasProperty(propertyName))
+    	value = getNode().getProperty(propertyName).getValue();
     UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
 
     if(uiCheckBoxInput == null) {
       uiCheckBoxInput = new UIFormCheckBoxInput(name, name, Boolean.class);
       if(defaultValue != null) {
-        uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
-        uiCheckBoxInput.setValue(defaultValue);
+//        uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
+        uiCheckBoxInput.setChecked((value != null?value.getBoolean():Boolean.valueOf(defaultValue)));
+//        uiCheckBoxInput.setValue(defaultValue);      	
       }
     }
     
