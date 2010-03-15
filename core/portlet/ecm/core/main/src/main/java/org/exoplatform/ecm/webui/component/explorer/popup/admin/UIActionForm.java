@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
@@ -50,7 +51,9 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 
 /**
  * Created by The eXo Platform SARL
@@ -94,9 +97,20 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   private Node getParentNode() throws Exception{ return (Node) getSession().getItem(parentPath_); }
   
-  public void doSelect(String selectField, Object value) {
+  public void doSelect(String selectField, Object value) throws Exception {
     isUpdateSelect = true;
-    getUIStringInput(selectField).setValue(value.toString());
+    UIFormInput formInput = getUIInput(selectField);
+    if (formInput instanceof UIFormInputBase) {
+      ((UIFormInputBase)formInput).setValue(value.toString());
+    }else if(formInput instanceof UIFormMultiValueInputSet) {
+      UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;            
+      String valueSelected = String.valueOf(value).trim();
+      List valueList = inputSet.getValue();
+      if (!valueList.contains(valueSelected)) {
+        valueList.add(valueSelected);
+      }      
+      inputSet.setValue(valueList);
+    }
     if(isEditInList_) {
       UIActionManager uiManager = getAncestorOfType(UIActionManager.class);
       UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class);
@@ -347,7 +361,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIActionForm uiForm = event.getSource();
       uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiForm.getUIStringInput(fieldName).setValue(null);
+      UIFormInput formInput = uiForm.getUIInput(fieldName);
+      formInput.setValue(null);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

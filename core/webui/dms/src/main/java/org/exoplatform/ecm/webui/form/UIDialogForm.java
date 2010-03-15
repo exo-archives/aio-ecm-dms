@@ -162,10 +162,33 @@ public class UIDialogForm extends UIForm {
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty);    
-    if(formActionField.isReference()) isReference = true; 
-    else isReference = false;      
+    //if(formActionField.isReference()) isReference = true; 
+    //else isReference = false;      
     if(formActionField.isMultiValues()) {      
-      renderMultiValuesInput(UIFormStringInput.class,name,label);      
+      //renderMultiValuesInput(UIFormStringInput.class,name,label);      
+      //return;
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
+      uiMulti.setId(name);
+      uiMulti.setName(name);
+      uiMulti.setType(UIFormStringInput.class);      
+      List<String> valueList = new ArrayList<String>();
+      List<UIComponent> listChildren = uiMulti.getChildren();
+      if (listChildren.size() == 0) {
+        valueList.add(formActionField.getDefaultValue());
+      } else {
+        for (UIComponent component : listChildren) {
+          UIFormStringInput uiStringInput = (UIFormStringInput)component;
+          if(uiStringInput.getValue() != null) {
+            valueList.add(uiStringInput.getValue().trim());            
+          } else{
+            valueList.add(formActionField.getDefaultValue());
+          }
+        }
+      }
+      uiMulti.setValue(valueList);      
+      addUIFormInput(uiMulti);
+      if(label != null) uiMulti.setLabel(label);
+      renderField(name);
       return;
     }
     UIFormStringInput uiInput = findComponentById(name);
