@@ -530,7 +530,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   }
   
   private boolean passNameValidation(String name) throws Exception {
-		if (name == null || name.contains("[") || name.contains("]") || 
+		if (name == null || name.length() == 0 || name.contains("[") || name.contains("]") || 
 				name.contains("\"") || name.contains("/")) 
 		return false;
 	
