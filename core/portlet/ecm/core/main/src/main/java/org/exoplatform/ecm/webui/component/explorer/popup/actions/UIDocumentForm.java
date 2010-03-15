@@ -489,7 +489,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIDocumentForm uiForm = event.getSource();
       uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiForm.getUIInput(fieldName).setValue(null);
+      UIFormInput formInput = uiForm.getUIInput(fieldName);
+      formInput.setValue(null);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
