@@ -484,6 +484,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }
   }  
 
+  @SuppressWarnings("unchecked")
   static public class RemoveReferenceActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm uiForm = event.getSource();
