@@ -17,10 +17,6 @@ StringBuilder sB;%>
   <%}%> 
   </td>
 </tr>
-<%
-  def node = uicomponent.getNode();
-  StringBuilder sB;
-%>
 <tr>
   <td style="width:25%"><%=_ctx.appRes("EnableVersioning.view.label.nodeTypeName")%></td>
   <td>

@@ -55,9 +55,6 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		session = (SessionImpl) sessionProviderService_.
-							getSystemSessionProvider(null).
-							getSession(COLLABORATION_WS, repository);
 		newFolksonomyService_ = (NewFolksonomyService)
 				container.getComponentInstanceOfType(NewFolksonomyService.class);
 		linkManager 

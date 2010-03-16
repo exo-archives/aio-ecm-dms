@@ -54,10 +54,10 @@
 	        	<name>repository</name>
 	        	<value>repository</value>
 	        </value-param>	 
-									<value-param>
-									 <name>workspace</name>
-							   <value>dms-system</value>
-									</value-param>
+					<value-param>
+					  <name>workspace</name>
+			   		<value>dms-system</value>
+					</value-param>
 	        <value-param>
 	        	<name>treeName</name>
 	        	<value>System</value>
@@ -82,16 +82,16 @@
 					                </value>			                  
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/administrators</string></field>
+						              		<field name="identity"><string>*:/platform/administrators</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						             			<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -121,23 +121,23 @@
                       <field  name="targetWspace"><string>collaboration</string></field>
                       <field  name="targetPath"><string>/Documents</string></field>
                       <field  name="lifecyclePhase">
-																							<collection type="java.util.ArrayList">
-												            	<value><string>node_added</string></value>		
-												            </collection>
-																						</field>
-																						<field  name="roles"><string>*:/platform/administrators</string></field>
-																						<field  name="mixins">
-												            <collection type="java.util.ArrayList">
-												            	<value>
-                    						<object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
-                    							<field  name="name"><string>mix:affectedNodeTypes</string></field>
-                    							<field  name="properties">
-                    								<string>exo:affectedNodeTypeNames=exo:article,exo:podcast,exo:sample,kfx:document,nt:file,rma:filePlan</string>
-																												</field>
-																										</object>
-                    					</value>		
-												            </collection>
-												          </field>   
+												<collection type="java.util.ArrayList">
+						            	<value><string>node_added</string></value>		
+						            </collection>
+											</field>
+											<field  name="roles"><string>*:/platform/administrators</string></field>
+											<field  name="mixins">
+						            <collection type="java.util.ArrayList">
+						            	<value>
+        										<object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
+        											<field  name="name"><string>mix:affectedNodeTypes</string></field>
+        											<field  name="properties">
+        												<string>exo:affectedNodeTypeNames=exo:article,exo:podcast,exo:sample,kfx:document,nt:file,rma:filePlan</string>
+															</field>
+														</object>
+        									</value>		
+						            </collection>
+						          </field>   
                     </object>  
                   </value>                                  
                 </collection>   
@@ -175,9 +175,9 @@
 			                      <field name="remove"><string>true</string></field>                  
 				                  </object>  
 				                </value>
-								<value>                            
+												<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						             	 		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -196,12 +196,12 @@
 					            <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -212,9 +212,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -233,12 +233,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -249,9 +249,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -270,12 +270,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -286,9 +286,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -307,12 +307,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -323,9 +323,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -344,12 +344,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -360,9 +360,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -381,12 +381,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -397,9 +397,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						             			<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -418,12 +418,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -434,9 +434,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						             		  <field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -456,12 +456,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -472,9 +472,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -493,12 +493,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -509,9 +509,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -530,12 +530,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -546,9 +546,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -567,12 +567,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -583,9 +583,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -604,12 +604,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -620,9 +620,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+					              			<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -641,12 +641,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -657,9 +657,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -678,12 +678,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -694,9 +694,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -715,12 +715,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -731,9 +731,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -752,12 +752,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -768,9 +768,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                
@@ -789,12 +789,12 @@
 					              <collection type="java.util.ArrayList">               
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-					                      <field name="identity"><string>any</string></field>
-					                      <field name="read"><string>true</string></field>                
-					                      <field name="addNode"><string>false</string></field>                
-					                      <field name="setProperty"><string>false</string></field>                
-					                      <field name="remove"><string>false</string></field>                
-					                    </object>  
+				                      <field name="identity"><string>any</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>false</string></field>                
+				                      <field name="setProperty"><string>false</string></field>                
+				                      <field name="remove"><string>false</string></field>                
+				                    </object>  
 					                </value>
 					                <value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
@@ -805,9 +805,9 @@
 				                      <field name="remove"><string>true</string></field>                  
 					                  </object>  
 					                </value>
-									<value>                            
+													<value>                            
 					                  <object type="org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig$Permission">             
-						              <field name="identity"><string>*:/platform/users</string></field>
+						              		<field name="identity"><string>*:/platform/users</string></field>
 				                      <field name="read"><string>true</string></field>                
 				                      <field name="addNode"><string>true</string></field>                
 				                      <field name="setProperty"><string>true</string></field>                

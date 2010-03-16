@@ -327,11 +327,11 @@ public class TestLinkManager extends BaseDMSTestCase {
   }
   
   public void tearDown() throws Exception {
-    Node root;
     try {
-      root = session.getRootNode();
+      Node root = session.getRootNode();
       root.getNode("TestTreeNode").remove();
       root.save();
+      session.save();
     } catch (PathNotFoundException e) {
     }
     super.tearDown();

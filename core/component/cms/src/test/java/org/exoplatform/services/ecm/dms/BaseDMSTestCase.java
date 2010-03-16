@@ -20,14 +20,11 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
-import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
-import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.test.BasicTestCase;
@@ -51,7 +48,7 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
   
   protected Session         session;
 
-  protected RepositoryImpl      repository;
+  protected ManageableRepository     repository;
   
   protected SessionProviderService   sessionProviderService_;
   
@@ -78,14 +75,20 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 //          .getResource("conf/standalone/login.conf").toString());
 
 //    credentials = new CredentialsImpl("root", "gtn".toCharArray());
+    
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+//    System.out.println("\n\nRepository====" +repositoryService.getRepository(REPO_NAME).getConfiguration().getName()+ "\n\n");
+//    if(repositoryService.getRepository(REPO_NAME) == null) {
+//      ((RepositoryServiceConfigurationImpl) container.getComponentInstanceOfType(RepositoryServiceConfigurationImpl.class)).start();
+//      ((RepositoryServiceImpl) container.getComponentInstanceOfType(RepositoryServiceImpl.class)).start();
+//    }
     sessionProviderService_ = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class);
-    repository = (RepositoryImpl) repositoryService.getDefaultRepository();
+    repository = repositoryService.getRepository(REPO_NAME);
     session = sessionProviderService_.getSystemSessionProvider(null).getSession(COLLABORATION_WS, repository);
     //session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);
     //sessionProviderService_.setSessionProvider(null, new SessionProvider(session.getUserState()));
   }
-
+  
   protected void checkMixins(String[] mixins, NodeImpl node) {
     try {
       String[] nodeMixins = node.getMixinTypeNames();

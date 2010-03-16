@@ -102,7 +102,7 @@ public class RecordsServiceImpl implements RecordsService {
     processCutoffInformation(filePlan, record);
 
     //make the record auditable
-    record.addMixin("exo:auditable");    
+    record.addMixin("exo:auditable");  
     record.save() ;
     filePlan.save();    
     filePlan.getSession().save() ;

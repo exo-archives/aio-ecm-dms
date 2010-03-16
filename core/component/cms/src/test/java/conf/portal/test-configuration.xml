@@ -81,7 +81,19 @@
     </init-params>
   </component>  
 	-->
-
+  <component>
+    <type>org.exoplatform.groovyscript.text.TemplateStatisticService</type>
+    <init-params>
+      <value-param>
+        <name>name</name>
+        <value>false</value>
+      </value-param>
+    </init-params>
+  </component>
+	<component>
+		<type>org.exoplatform.groovyscript.text.TemplateService</type>
+	</component>
+	
   <component>
     <type>org.exoplatform.container.xml.PortalContainerInfo</type>
   </component>

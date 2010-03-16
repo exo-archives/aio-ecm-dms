@@ -79,11 +79,11 @@ public class TestFavoriteService extends BaseDMSTestCase {
 		favoriteService.addFavorite(testAddFavouriteNode, "james");
 
 		int rootFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "root").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "root").size();
 		int demoFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "demo").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "demo").size();
 		int jamesFav = favoriteService.
-		getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "james").size();
+		getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "james").size();
 		
 		assertEquals("testAddFavorite failed!", 1, rootFav);
 		assertEquals("testAddFavorite failed!", 1, demoFav);
@@ -118,13 +118,13 @@ public class TestFavoriteService extends BaseDMSTestCase {
 		favoriteService.removeFavorite(testRemove, "james");
 
 		int rootFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "root").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "root").size();
 		int jamesFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "james").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "james").size();
 		int johnFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "john").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "john").size();
 		int marryFav = favoriteService.
-				getAllFavoriteNodesByUser(session.getWorkspace().getName(), repository.getName(), "marry").size();
+				getAllFavoriteNodesByUser(session.getWorkspace().getName(), REPO_NAME, "marry").size();
 		
 		assertEquals("testRemoveFavorite failed!", 0, rootFav);
 		assertEquals("testRemoveFavorite failed!", 1, johnFav);

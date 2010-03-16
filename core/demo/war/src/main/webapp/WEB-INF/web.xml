@@ -4,17 +4,23 @@
 <web-app>
 	<display-name>dmsdemo</display-name>
 
-	<context-param>
-		<param-name>org.exoplatform.frameworks.jcr.command.web.fckeditor.digitalAssetsWorkspace</param-name>
-		<param-value>portal</param-value>
-		<description>Binary assets workspace name</description>
-	</context-param>
+  <context-param>
+    <param-name>org.exoplatform.frameworks.jcr.command.web.fckeditor.digitalAssetsWorkspace</param-name>
+    <param-value>collaboration</param-value>
+    <description>Binary assets workspace name</description>
+  </context-param>
 
-	<context-param>
-		<param-name>org.exoplatform.frameworks.jcr.command.web.fckeditor.digitalAssetsPath</param-name>
-		<param-value>/</param-value>
-		<description>Binary assets path</description>
-	</context-param>
+  <context-param>
+    <param-name>org.exoplatform.frameworks.jcr.command.web.fckeditor.digitalAssetsPath</param-name>
+    <param-value>/Digital Assets/</param-value>
+    <description>Binary assets path</description>
+  </context-param>
+
+  <context-param>
+    <param-name>CurrentFolder</param-name>
+    <param-value>/Digital Assets/</param-value>
+    <description>Binary assets workspace name</description>
+  </context-param>
 
 	<!-- ================================================================== -->
 	<!--   RESOURCE FILTER TO CACHE MERGED JAVASCRIPT AND CSS               -->
@@ -32,6 +38,15 @@
 		<filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
 		<filter-class>org.exoplatform.frameworks.jcr.web.ThreadLocalSessionProviderInitializedFilter</filter-class>
 	</filter>
+
+  <filter>
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
+    <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>
+		<init-param>
+      <param-name>context-name</param-name>
+      <param-value>/rest-dmsdemo/private</param-value>
+    </init-param>
+  </filter>
 
 	<filter>
 		<filter-name>SetCurrentIdentityFilter</filter-name>
@@ -101,6 +116,17 @@
 		<filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+  <filter-mapping>
+  <!-- This must be before ThreadLocalSessionProviderInitializedFilter for URI /rest/private/* -->
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
+    <url-pattern>/rest-dmsdemo/private/*</url-pattern>
+  </filter-mapping>
+	
+  <filter-mapping>
+    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
+    <url-pattern>/rest-dmsdemo/private/*</url-pattern>
+  </filter-mapping>		
 
 	<!-- ================================================================== -->
 	<!--           LISTENER                                                 -->
@@ -201,6 +227,10 @@
 		<servlet-name>portal</servlet-name>
 		<url-pattern>/command/*</url-pattern>
 	</servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RestServer</servlet-name>
+    <url-pattern>/rest-dmsdemo/private/*</url-pattern>
+  </servlet-mapping>	
 	<servlet-mapping>
 		<servlet-name>RestServer</servlet-name>
 		<url-pattern>/rest-dmsdemo/*</url-pattern>
