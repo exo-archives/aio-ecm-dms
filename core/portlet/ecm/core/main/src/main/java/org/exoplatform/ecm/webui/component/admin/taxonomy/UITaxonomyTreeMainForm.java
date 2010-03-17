@@ -89,11 +89,11 @@ public class UITaxonomyTreeMainForm extends UIForm {
     String[] wsNames = getApplicationComponent(RepositoryService.class)
                       .getRepository(repository).getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>();
-    String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getSystemWorkspaceName(repository);
+    // String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getSystemWorkspaceName(repository);
     String dmsSystemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getDmsSystemWorkspaceName(repository);
     
     for(String wsName : wsNames) {
-      if (!systemWorkspace.equals(wsName))
+    // if (!systemWorkspace.equals(wsName))
         workspace.add(new SelectItemOption<String>(wsName, wsName));
     }
     if (taxonomyTree == null) taxonomyTree = new TaxonomyTreeData();
