@@ -33,6 +33,7 @@ import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatCountValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.upload.UploadResource;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
@@ -43,6 +44,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
+import org.exoplatform.webui.form.validator.NullFieldValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /*
@@ -68,10 +70,15 @@ public class DialogFormUtil {
   public static Map<String, JcrInputProperty> prepareMap(List inputs, Map properties) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
+    String inputName = null;
+    String mimeTypeJcrPath = null;
+    InputStream inputStream = null;
+    byte[] content = null;
+    Map<String, JcrInputProperty> mimeTypes = new HashMap<String, JcrInputProperty>();
     for (int i = 0; i < inputs.size(); i++) {
       JcrInputProperty property = null;
       if(inputs.get(i) instanceof UIFormMultiValueInputSet) {        
-        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;        
+        inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;        
         if(!hasMap.containsKey(inputName)) {
           List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
           property = (JcrInputProperty) properties.get(inputName);        
@@ -85,8 +92,17 @@ public class DialogFormUtil {
         property = (JcrInputProperty) properties.get(input.getName());
         if(property != null) {
           if (input instanceof UIFormUploadInput) {
-            InputStream content = ((UIFormUploadInput) input).getUploadDataAsStream() ; 
-            property.setValue(content);
+        	  inputStream = ((UIFormUploadInput) input).getUploadDataAsStream();
+              content = new byte[inputStream.available()];
+              inputStream.read(content);
+              property.setValue(content);
+              mimeTypeJcrPath = property.getJcrPath().replace("jcr:data", "jcr:mimeType");
+              JcrInputProperty mimeTypeInputPropertyTmp = new JcrInputProperty();
+              mimeTypeInputPropertyTmp.setJcrPath(mimeTypeJcrPath);
+              UploadResource uploadResource = ((UIFormUploadInput) input).getUploadResource();
+              if (uploadResource == null) continue;
+              mimeTypeInputPropertyTmp.setValue(((UIFormUploadInput) input).getUploadResource().getMimeType());
+              mimeTypes.put(mimeTypeJcrPath, mimeTypeInputPropertyTmp);
           } else if(input instanceof UIFormDateTimeInput) {
             property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
           } else if(input instanceof UIFormSelectBox) {
@@ -109,6 +125,11 @@ public class DialogFormUtil {
     while (iter.hasNext()) {
       property = (JcrInputProperty) iter.next() ;
       rawinputs.put(property.getJcrPath(), property) ;
+    }
+    for (String jcrPath : mimeTypes.keySet()) {
+    	if (!rawinputs.containsKey(jcrPath)) {
+    		rawinputs.put(jcrPath, mimeTypes.get(jcrPath)) ;
+    	}
     }
     List<UIFormUploadInput> formUploadList = new ArrayList<UIFormUploadInput>();
     for (Object input : inputs) {
@@ -146,36 +167,15 @@ public class DialogFormUtil {
               jcrPropertiesToAdd.put(mimeTypeInputPropertyTmp.getJcrPath(), mimeTypeInputPropertyTmp);
             }
             if (inputJCRKey.endsWith("jcr:data")) {
-              InputStream inputStream = formUploadInput.getUploadDataAsStream();
-              byte[] content = new byte[inputStream.available()];
+              inputStream = formUploadInput.getUploadDataAsStream();
+              content = new byte[inputStream.available()];
               inputStream.read(content);
               newJcrInputProperty.setValue(content);
             }
             jcrPropertiesToAdd.put(newJCRPath, newJcrInputProperty);
           }
           keyListToRemove.add(inputJCRKey);
-        } else if (inputJCRKey.endsWith("jcr:data")) {
-          JcrInputProperty jcrInputProperty = rawinputs.get(inputJCRKey);
-          for (UIFormUploadInput formUploadInput : formUploadList) {
-            JcrInputProperty newJcrInputProperty = clone(jcrInputProperty);
-            if(formUploadInput == null || formUploadInput.getUploadResource() == null || formUploadInput.getUploadResource().getFileName()==null)
-              continue;
-            String fileName = formUploadInput.getUploadResource().getFileName();
-            String newJCRPath = inputJCRKey;
-            newJcrInputProperty.setJcrPath(newJCRPath);        
-            newJcrInputProperty.setValue(fileName);
-            JcrInputProperty mimeTypeInputPropertyTmp = new JcrInputProperty();
-            mimeTypeInputPropertyTmp.setJcrPath(newJCRPath.replace("jcr:data", "jcr:mimeType"));
-            mimeTypeInputPropertyTmp.setValue(formUploadInput.getUploadResource().getMimeType());
-            jcrPropertiesToAdd.put(mimeTypeInputPropertyTmp.getJcrPath(), mimeTypeInputPropertyTmp);
-            
-            InputStream inputStream = formUploadInput.getUploadDataAsStream();
-            byte[] content = new byte[inputStream.available()];
-            inputStream.read(content);
-            newJcrInputProperty.setValue(content);
-            jcrPropertiesToAdd.put(newJCRPath, newJcrInputProperty);
-          }
-          keyListToRemove.add(inputJCRKey);
+          keyListToRemove.add(inputJCRKey.replace("jcr:data", "jcr:mimeType"));
         }
       }
       for (String keyToRemove : keyListToRemove) {
@@ -272,6 +272,8 @@ public class DialogFormUtil {
       return NumberFormatValidator.class;
     } else if (validatorType.equals("empty")){
       return MandatoryValidator.class ;
+    }else if(validatorType.equals("null")) {
+        return NullFieldValidator.class;
     }else if(validatorType.equals("datetime")) {
       return DateTimeValidator.class;
     }else if(validatorType.equals("cronExpressionValidator")) {      
