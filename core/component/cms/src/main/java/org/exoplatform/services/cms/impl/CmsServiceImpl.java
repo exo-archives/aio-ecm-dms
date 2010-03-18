@@ -620,8 +620,6 @@ public class CmsServiceImpl implements CmsService {
               node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
             }
         }
-        session.save();
-        session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
@@ -642,8 +640,13 @@ public class CmsServiceImpl implements CmsService {
               valueObj = session2.getValueFactory().createValue(v);
             }            
           }else {            
+            if (v.startsWith("/")) v = v.substring(1); 
             if(session.getRootNode().hasNode(v)) {
               Node referenceNode = session.getRootNode().getNode(v);
+              if(!referenceNode.isNodeType(MIX_REFERENCEABLE)) {
+                referenceNode.addMixin(MIX_REFERENCEABLE);
+                referenceNode.save();
+              }
               valueObj = session.getValueFactory().createValue(referenceNode);
             }else {
               valueObj = session.getValueFactory().createValue(v);
