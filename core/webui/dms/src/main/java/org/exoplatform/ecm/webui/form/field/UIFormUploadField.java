@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.form.field;
 
 import org.exoplatform.ecm.webui.form.DialogFormField;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
@@ -36,6 +37,13 @@ public class UIFormUploadField extends DialogFormField{
   public <T extends UIFormInputBase> T createUIFormInput() throws Exception {
     UIFormUploadInput uiInputUpload = new UIFormUploadInput(name, name) ;
     if(label != null) uiInputUpload.setLabel(label) ;
+    if(validateType != null) {
+        String[] validatorList = null;
+        if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+        else validatorList = new String[] {validateType};
+        for (String validator : validatorList)
+        	uiInputUpload.addValidator(DialogFormUtil.getValidator(validator.trim())) ;
+      }
     return (T)uiInputUpload;
   }
 
