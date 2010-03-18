@@ -272,9 +272,10 @@ public class UIWorkingArea extends UIContainer {
           if(holdsLock) actionsList.append(",Unlock");
           else if(!isLocked) actionsList.append(",Lock");
         }
-        actionsList.append(",Copy");
         actionsList.append(",Rename");
       }
+      actionsList.append(",Copy");
+      actionsList.append(",Cut");
       if (!realNode.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     } else {
       if(isEditable) actionsList.append(",EditDocument");
