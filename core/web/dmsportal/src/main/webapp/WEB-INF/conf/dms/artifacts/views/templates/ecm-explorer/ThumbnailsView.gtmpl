@@ -132,7 +132,7 @@
 		              strActs += "</a>" ;
 		            }            
 		          }
-		          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
+		          String clipboardLink = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath();
 		          strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
 							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
 							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
