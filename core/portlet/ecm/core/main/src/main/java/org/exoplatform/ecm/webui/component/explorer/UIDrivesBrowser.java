@@ -282,13 +282,14 @@ public class UIDrivesBrowser extends UIContainer {
       UIJcrExplorerContainer explorerContainer = uiParent.getChild(UIJcrExplorerContainer.class);
       UIJCRExplorer uiJCRExplorer = explorerContainer.getChild(UIJCRExplorer.class);
 
-      Preference pref = new Preference();
+//      Preference pref = new Preference();
+      Preference pref = uiJCRExplorer.getPreference();
       pref.setShowSideBar(drive.getViewSideBar());
       pref.setShowNonDocumentType(drive.getViewNonDocument());
       pref.setShowPreferenceDocuments(drive.getViewPreferences());
       pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
       pref.setShowHiddenNode(drive.getShowHiddenNode());
-      uiJCRExplorer.setPreferences(pref);
+//      uiJCRExplorer.setPreferences(pref);
       uiJCRExplorer.setDriveData(drive);
       uiJCRExplorer.setIsReferenceNode(false);
       

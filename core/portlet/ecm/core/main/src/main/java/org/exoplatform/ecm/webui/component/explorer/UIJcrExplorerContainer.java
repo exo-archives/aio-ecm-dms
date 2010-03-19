@@ -92,6 +92,7 @@ public class UIJcrExplorerContainer extends UIContainer {
     String isDirectlyDrive =  portletPref.getValue("isDirectlyDrive", "").trim();
     if (isDirectlyDrive.equals("true")) {
       if (getChild(UIJCRExplorer.class) == null) addChild(UIJCRExplorer.class, null, null);
+      initExplorerPreference(portletPref);
       if (getChild(UIDrivesBrowserContainer.class) == null) addChild(UIDrivesBrowserContainer.class, null, null).setRendered(false);
       String driveName = portletPref.getValue("driveName", "").trim();
       List<DriveData> listDriver = getDrives(portletPref);
@@ -107,9 +108,23 @@ public class UIJcrExplorerContainer extends UIContainer {
     } else {
       flag = true;
       if (getChild(UIDrivesBrowserContainer.class) == null) addChild(UIDrivesBrowserContainer.class, null, null);
-      if (getChild(UIJCRExplorer.class) == null) addChild(UIJCRExplorer.class, null, null).setRendered(false);    
+      if (getChild(UIJCRExplorer.class) == null) addChild(UIJCRExplorer.class, null, null).setRendered(false);
+      initExplorerPreference(portletPref);
     }
   }
+  
+  private void initExplorerPreference(PortletPreferences portletPref) {
+  	UIJCRExplorer uiExplorer = getChild(UIJCRExplorer.class);
+  	if (uiExplorer != null) {
+  		Preference pref = uiExplorer.getPreference();
+  		if (pref == null) {
+  			pref = new Preference();
+  		}
+  		pref.setNodesPerPage(Integer.parseInt(portletPref.getValue(
+  				Preference.NODES_PER_PAGE, "10")));
+  		uiExplorer.setPreferences(pref);
+  	}
+  }  
   
   private PortletPreferences getPreference() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
@@ -279,13 +294,14 @@ public class UIJcrExplorerContainer extends UIContainer {
       if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
       UIJCRExplorer uiJCRExplorer = getChild(UIJCRExplorer.class);
   
-      Preference pref = new Preference();
+//      Preference pref = new Preference();
+      Preference pref = uiJCRExplorer.getPreference();
       pref.setShowSideBar(drive.getViewSideBar());
       pref.setShowNonDocumentType(drive.getViewNonDocument());
       pref.setShowPreferenceDocuments(drive.getViewPreferences());
       pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
       pref.setShowHiddenNode(drive.getShowHiddenNode());
-      uiJCRExplorer.setPreferences(pref);
+//      uiJCRExplorer.setPreferences(pref);
       uiJCRExplorer.setDriveData(drive);
       uiJCRExplorer.setIsReferenceNode(false);
       
