@@ -24,6 +24,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -31,6 +33,7 @@ import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -40,6 +43,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -177,6 +181,30 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
   
   static public class SaveActionListener extends EventListener<UIActionForm> {
+  	
+  	private void addInputInfo(Map<String, JcrInputProperty> input, UIActionForm actionForm) throws Exception {
+      UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class);
+      UIJCRExplorerPortlet uiExplorerPortlet = actionForm.getAncestorOfType(UIJCRExplorerPortlet.class);
+      PortalRequestContext pContext = Util.getPortalRequestContext();
+      PortletRequestContext portletContext 
+      	= (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+      //portletname
+      JcrInputProperty portletNameProperty = new JcrInputProperty();
+      portletNameProperty.setValue(portletContext.getWindowId());
+      portletNameProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
+      input.put("/node/exo:portletName", portletNameProperty);
+      //drive name
+      UITreeExplorer treeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class);
+      JcrInputProperty driveNameProperty = new JcrInputProperty();
+      driveNameProperty.setValue(treeExplorer.getDriveName());
+      driveNameProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
+      input.put("/node/exo:driveName", driveNameProperty);
+      //portalUri
+      JcrInputProperty portalUriProperty = new JcrInputProperty();
+      portalUriProperty.setValue(pContext.getPortalURI());
+      portalUriProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
+      input.put("/node/exo:portalUri", portalUriProperty);
+  	}
     public void execute(Event<UIActionForm> event) throws Exception {      
       UIActionForm actionForm = event.getSource();
       UIApplication uiApp = actionForm.getAncestorOfType(UIApplication.class);
@@ -184,6 +212,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class);   
       String repository = actionForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
+      
+      addInputInfo(sortedInputs, actionForm);
+      
       Node currentNode = uiExplorer.getCurrentNode();
       if(!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null));

@@ -218,5 +218,10 @@
         <value>/</value>        
         <read-only>false</read-only>
       </preference>
+      <preference>
+        <name>nodesPerPage</name>     
+        <value>20</value>        
+        <read-only>false</read-only>
+      </preference>
    </portlet-preferences>
 </portlet-preferences-set>

@@ -393,6 +393,16 @@
        
       <propertyDefinition name="exo:url" requiredType="String" autoCreated="false" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="false" />
+        
+      <propertyDefinition name="exo:portalUri" requiredType="String" autoCreated="false" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false" />
+
+      <propertyDefinition name="exo:portletName" requiredType="String" autoCreated="false" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false" />
+
+      <propertyDefinition name="exo:driveName" requiredType="String" autoCreated="false" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false" />
+        
     </propertyDefinitions>
   </nodeType>  
   

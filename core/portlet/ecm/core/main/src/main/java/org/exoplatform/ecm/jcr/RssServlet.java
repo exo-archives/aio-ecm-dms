@@ -33,8 +33,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.webui.application.WebuiRequestContext;
 /**
  * Created by The eXo Platform SARL        .
  * @author: Nguyen Quang Hung
@@ -59,6 +61,9 @@ public class RssServlet extends HttpServlet {
       (RepositoryService)pcontainer.getComponentInstanceOfType(RepositoryService.class);
     TemplateService tservice = 
       (TemplateService)pcontainer.getComponentInstanceOfType(TemplateService.class);
+//    WebuiRequestContext  webuiContext =  Util.getPortalRequestContext();
+    Object o = getServletContext();
+    Object o2 = getServletConfig();
     Session session = null ;
     try{
       session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
@@ -94,8 +99,9 @@ public class RssServlet extends HttpServlet {
           request.setAttribute("wsName", wsName) ;
           request.setAttribute("templateName", "jcr:"+templateName) ;
           request.setAttribute("curNode", file) ;
-          RequestDispatcher rd = request.getRequestDispatcher("/viewcontent");
-          rd.forward(request, response);
+//          RequestDispatcher rd = request.getRequestDispatcher("/viewcontent");
+//          rd.forward(request, response);
+          response.sendRedirect("/portal/private/classic");          
         }else {
           throw new Exception("This node type is not document node");
         }
