@@ -9,6 +9,7 @@
 %>
 <% 
 	import org.exoplatform.ecm.webui.utils.Utils;
+
 	import java.net.URLEncoder;
 	import org.exoplatform.services.jcr.util.Text;
 %>
@@ -40,7 +41,7 @@
 				      <tr class="$rowClass">
 				        <td>
 				        <%
-				          String nodeName = Text.unescapeIllegalJcrChars(node.getName());
+				          String nodeName = Text.unescapeIllegalJcrChars(Utils.getIndexName(node));
 								  				String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
 				          def clazz = "Text"				          
 				          if(Utils.isSymLink(node)) clazz = "TextSymLink";

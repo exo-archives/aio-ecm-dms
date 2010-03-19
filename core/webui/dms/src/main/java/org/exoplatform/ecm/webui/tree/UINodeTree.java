@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.tree;
 import java.net.URLEncoder;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.util.Text;
@@ -45,13 +46,15 @@ import org.exoplatform.webui.core.UITree;
    * */
 public class UINodeTree extends UITree {
 
+  
+  
   /* 
    * render nodetype icon for node in tree
    * @see org.exoplatform.webui.core.UITree#renderNode(java.lang.Object)
    */
   public String renderNode(Object obj) throws Exception {
     Node node = (Node) obj;
-    String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");       
+    String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");          
     
     String nodeIcon = this.getExpandIcon();
     String iconGroup = this.getIcon();
@@ -77,7 +80,7 @@ public class UINodeTree extends UITree {
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
     String beanLabelField = getBeanLabelField();
     String nodeName = getFieldValue(obj, beanLabelField).toString();
-    nodeName = Text.unescapeIllegalJcrChars(node.getName());
+    nodeName = Text.unescapeIllegalJcrChars(Utils.getIndexName((node)));
     String className="NodeIcon";
     boolean flgSymlink = false;
     if (Utils.isSymLink(node)) {
