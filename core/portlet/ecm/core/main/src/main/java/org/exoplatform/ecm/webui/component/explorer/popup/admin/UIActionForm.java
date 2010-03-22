@@ -183,28 +183,33 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   static public class SaveActionListener extends EventListener<UIActionForm> {
   	
   	private void addInputInfo(Map<String, JcrInputProperty> input, UIActionForm actionForm) throws Exception {
+      String rssUrlKey = "/node/exo:url";  		
+  		if (input.get(rssUrlKey) == null) return;
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class);
-      UIJCRExplorerPortlet uiExplorerPortlet = actionForm.getAncestorOfType(UIJCRExplorerPortlet.class);
-      PortalRequestContext pContext = Util.getPortalRequestContext();
-      PortletRequestContext portletContext 
-      	= (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       //portletname
-      JcrInputProperty portletNameProperty = new JcrInputProperty();
-      portletNameProperty.setValue(portletContext.getWindowId());
-      portletNameProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
-      input.put("/node/exo:portletName", portletNameProperty);
-      //drive name
-      UITreeExplorer treeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class);
-      JcrInputProperty driveNameProperty = new JcrInputProperty();
-      driveNameProperty.setValue(treeExplorer.getDriveName());
-      driveNameProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
-      input.put("/node/exo:driveName", driveNameProperty);
+      PortletRequestContext portletContext 
+    	= (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+      String portletName = portletContext.getWindowId();
+      //drive name      
+      UITreeExplorer treeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class);      
+      String driveName = treeExplorer.getDriveName();
       //portalUri
-      JcrInputProperty portalUriProperty = new JcrInputProperty();
-      portalUriProperty.setValue(pContext.getPortalURI());
-      portalUriProperty.setValueType(JcrInputProperty.SINGLE_VALUE);
-      input.put("/node/exo:portalUri", portalUriProperty);
+      PortalRequestContext pContext = Util.getPortalRequestContext();      
+      String portalUri = pContext.getPortalURI();
+      
+      String rssUrl = (String)input.get(rssUrlKey).getValue();
+      String repository = uiExplorer.getRepositoryName();
+      
+      StringBuilder url = new StringBuilder("") ;
+      url.append(rssUrl.substring(0, rssUrl.indexOf("/", 8))).
+      		append(portalUri).
+      		append(portletName).append("/").
+      		append(repository).append("/").
+      		append(driveName);
+      
+      input.get(rssUrlKey).setValue(url.toString());
   	}
+  	
     public void execute(Event<UIActionForm> event) throws Exception {      
       UIActionForm actionForm = event.getSource();
       UIApplication uiApp = actionForm.getAncestorOfType(UIApplication.class);

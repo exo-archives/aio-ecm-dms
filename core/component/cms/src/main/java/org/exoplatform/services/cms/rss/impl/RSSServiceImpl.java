@@ -135,9 +135,6 @@ public class RSSServiceImpl implements RSSService{
    * @see               Map
    */
   private void generateRSS(Map context) {
-  	String portalURI = (String)context.get("exo:portalUri");  	
-  	String portletName = (String)context.get("exo:portletName");
-  	String driveName = (String)context.get("exo:driveName");
   	
     String actionName = (String)context.get("actionName") ;
     String srcWorkspace = (String)context.get(SRC_WORKSPACE);                   
@@ -186,7 +183,7 @@ public class RSSServiceImpl implements RSSService{
       while (iter.hasNext()) {        
         Node child = iter.nextNode(); 
         if(child.isNodeType("exo:rss-enable")) {
-          String url = getEntryUrl(portalURI, portletName, driveName, repository, child.getPath(), rssUrl) ;
+          String url = rssUrl + child.getPath();
           entry = new SyndEntryImpl();
           try {
             entry.setTitle(child.getProperty(title).getString());                
@@ -236,9 +233,6 @@ public class RSSServiceImpl implements RSSService{
   private void generatePodcast(Map context){
     Session session = null;
     try{
-    	String portalURI = (String)context.get("exo:portalUri");  	
-    	String portletName = (String)context.get("exo:portletName");
-    	String driveName = (String)context.get("exo:driveName");
     	
       String actionName = (String)context.get("actionName") ;
       String srcWorkspace = (String)context.get(SRC_WORKSPACE);                   
@@ -343,7 +337,7 @@ public class RSSServiceImpl implements RSSService{
         enc.setType(mimeType) ;
         String path = child.getPath().trim() + "." + ext.trim() ; 
         if(child.hasProperty(LENGTH)) enc.setLength(child.getProperty(LENGTH).getLong()) ;
-        String encUrl = getEntryUrl(portalURI, portletName, driveName, repository, path, rssUrl) ;
+        String encUrl = rssUrl + path;
         enc.setUrl(encUrl) ;
         enclosureList.add(enc) ;
         entry.setEnclosures(enclosureList) ;
@@ -484,24 +478,4 @@ public class RSSServiceImpl implements RSSService{
     }
   }
   
-  /**
-   * Return entry url of specified path
-   * @param portalName        String
-   *                          The name of specified portal
-   * @param wsName            String
-   *                          The name of specified workspace
-   * @param path              String
-   * @param rssUrl            String
-   *                          The url of given RSS 
-   * @throws Exception
-   */
-  private String getEntryUrl(String portalURI, String portletName, String driveName, String repoName, String path, String rssUrl) throws Exception{
-    StringBuilder url = new StringBuilder("") ;
-    url.append(rssUrl.substring(0, rssUrl.indexOf("/", 8))).
-    		append(portalURI).
-    		append(portletName).append("/").
-    		append(repoName).append("/").
-    		append(driveName).append(path);           
-    return url.toString();
-  }
 }
