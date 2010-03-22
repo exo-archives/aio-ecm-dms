@@ -218,6 +218,13 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         Object[] agrs = { uiRenameForm.renameNode_.getPrimaryNodeType().getName() };
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      } catch (RepositoryException re) {
+        if (nodeSession != null) nodeSession.refresh(false);
+        uiJCRExplorer.refreshExplorer();
+        Object[] args = { uiRenameForm.renameNode_.getName() };
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.illegal-name-exception", args, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

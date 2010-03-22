@@ -205,6 +205,7 @@
       <version-exception>This node is not checked out or ancestor of this node is not checked out.</version-exception>
       <lock-exception>This node is locked. Unlock before rename this node.</lock-exception>
       <constraintViolation-exception>'{0}' is not allowed as child's node type for parent node type</constraintViolation-exception>
+						<illegal-name-exception>Invalid characters found in the field '{0}'</illegal-name-exception>
     </msg>
   </UIRenameForm>
   <UIPopupWindow>
@@ -1895,7 +1896,7 @@
   </ItemNotFoundException>
   <PathNotFoundException>
     <msg>Path not found!Maybe, It was removed or path changed!</msg>
-  </PathNotFoundException>
+  </PathNotFoundException>				
   <!--
   ###################################################################################
   # Publication Manage																														  #
