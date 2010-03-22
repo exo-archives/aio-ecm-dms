@@ -56,7 +56,7 @@ public class UploadActionComponent extends UIComponent {
   public static void upload(Event<? extends UIComponent> event, UIJCRExplorer uiExplorer) throws Exception {
     UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
     UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null);
-    UIPopupContainer.activate(uiUploadManager, 600, 500);
+    UIPopupContainer.activate(uiUploadManager, 600, 0);
     event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
   }
   

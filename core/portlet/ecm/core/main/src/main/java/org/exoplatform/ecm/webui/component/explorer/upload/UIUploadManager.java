@@ -46,7 +46,7 @@ public class UIUploadManager extends UIContainer implements UIPopupComponent {
     if (uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, id);
     }
-    uiPopup.setWindowSize(700, 350);
+    uiPopup.setWindowSize(700, 0);
     uiPopup.setShow(false);
     uiPopup.setResizable(true);
     return uiPopup;
@@ -57,7 +57,7 @@ public class UIUploadManager extends UIContainer implements UIPopupComponent {
     if (uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, SAMENAME_POPUP);
     }
-    uiPopup.setWindowSize(500, 180);
+    uiPopup.setWindowSize(500, 0);
     uiPopup.setShow(false);
     uiPopup.setResizable(true);
     return uiPopup;
