@@ -73,7 +73,7 @@ public class UIUploadManager extends UIContainer implements UIPopupComponent {
   public void initMetadataPopup() throws Exception {
     removeChildById(EXTARNAL_METADATA_POPUP) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, EXTARNAL_METADATA_POPUP) ;
-    uiPopup.setWindowSize(400, 400);
+    uiPopup.setWindowSize(400, 0);
     UIExternalMetadataForm uiExternalMetadataForm = createUIComponent(UIExternalMetadataForm.class, null, null) ;
     uiPopup.setUIComponent(uiExternalMetadataForm) ;
     uiExternalMetadataForm.renderExternalList() ;
