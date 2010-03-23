@@ -223,8 +223,11 @@ public class UIDrivesBrowser extends UIContainer {
     List<DriveData> personalDrives = new ArrayList<DriveData>();
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
     for(DriveData drive : driveList) {
       if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
+        personalDrives.add(drive);
+      } else if(drive.getHomePath().startsWith(userPath + "/" + userId + "/")){
         personalDrives.add(drive);
       }
     }
