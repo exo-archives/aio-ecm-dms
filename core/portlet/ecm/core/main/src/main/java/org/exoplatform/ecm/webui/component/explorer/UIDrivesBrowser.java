@@ -205,10 +205,12 @@ public class UIDrivesBrowser extends UIContainer {
           }
         }
         for(String permission : drive.getAllPermissions()) {
-          String[] arrPer = permission.split(":/");
-          if(groups.contains("/" + arrPer[1]) && !groupDrives.contains(drive)) {
-            groupDrives.add(drive);
-            break;
+          if (permission.indexOf(":/") > 0) {
+            String[] arrPer = permission.split(":/");
+            if(groups.contains("/" + arrPer[1]) && !groupDrives.contains(drive)) {
+              groupDrives.add(drive);
+              break;
+            }
           }
         }
       } 
