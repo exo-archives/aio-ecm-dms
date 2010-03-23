@@ -528,6 +528,7 @@
       <UnLock>Déverrouiller</UnLock>
       <ViewProperties>Visualiser les propriétés du noeud</ViewProperties>
       <GetURL>Copier l'URL dans le presse-papier</GetURL>
+      <DownloadAndAllowEdition>Télécharger pour permettre l'édition</DownloadAndAllowEdition>
       <AddThumbnail>Ajouter/Supprimer une vignette</AddThumbnail>
     </event>
   </ECMContextMenu>
