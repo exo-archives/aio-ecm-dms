@@ -252,18 +252,18 @@
 			        else subName = name.substring(0,50) + "..." ;
 		        %>
 	        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
-	           <%= Utils.isAuditable(data)%>
-	           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
-	                println "("+ uicomponent.getNumAuditHistory(data)+")";
+	           <%= _ctx.appRes("ListView.view.label." + Utils.isAuditable(data) )%>
+	           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data))
+	          	 		println "(" +  uicomponent.getNumAuditHistory(data) + ")";
 	              else
 	                println ""; 
 	            %>
 	        </div>
 	        <div class="RightColumn">
-		         	<%=Utils.isVersionable(data)%>
+		         	<%=_ctx.appRes("ListView.view.label." + Utils.isVersionable(data) )%>
 		          <%
 		            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
-		              println "(" + uicomponent.getVersionName(data) + ")" ;
+		              println "(" + uicomponent.getVersionName(data) + ")";
 		            }
 		          %>
 	        </div>

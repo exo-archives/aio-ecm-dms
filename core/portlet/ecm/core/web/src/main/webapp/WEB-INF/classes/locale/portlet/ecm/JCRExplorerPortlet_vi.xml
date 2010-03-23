@@ -533,6 +533,7 @@
       <UnLock>Mở khóa</UnLock>
       <ViewProperties>Xem các thuộc tính</ViewProperties>
       <GetURL>Sao chép liên kết vào bảng ghi tạm</GetURL>
+      <DownloadAndAllowEdition>Tải xuống và cho phép sửa</DownloadAndAllowEdition>      
       <AddThumbnail>Thêm mới/Xóa bỏ ảnh nhỏ</AddThumbnail>
     </event>
   </ECMContextMenu>

@@ -528,6 +528,7 @@
       <UnLock>Unlock</UnLock>
       <ViewProperties>View properties</ViewProperties>
       <GetURL>Copy URL to clipboard</GetURL>
+      <DownloadAndAllowEdition>Download And Allow Edition</DownloadAndAllowEdition>
       <AddThumbnail>Add/Remove thumbnail</AddThumbnail>
     </event>
   </ECMContextMenu>

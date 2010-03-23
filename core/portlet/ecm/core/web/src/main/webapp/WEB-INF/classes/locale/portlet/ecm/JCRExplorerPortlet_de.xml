@@ -526,6 +526,7 @@
       <UnLock>Aufsperren</UnLock>
       <ViewProperties>Knoteneigenschaften ansehen</ViewProperties>
       <GetURL>URL in die Zwischenablage kopieren</GetURL>
+      <DownloadAndAllowEdition>Download And Allow Edition</DownloadAndAllowEdition>      
       <AddThumbnail>Hinzufügen/Entfernen thumbnail</AddThumbnail>
     </event>
   </ECMContextMenu>
