@@ -134,15 +134,17 @@ public class UIJcrExplorerContainer extends UIContainer {
   public List<String> getDrives() throws Exception {
     List<DriveData> driveList = new ArrayList<DriveData>();
     driveList = getDrives(getPreference());
-    List<DriveData> listDriveAll = new ArrayList<DriveData>();
     List<String> listDriveNameAll = new ArrayList<String>();
+    /*
+    List<DriveData> listDriveAll = new ArrayList<DriveData>();    
     List<DriveData> generalDrives = generalDrives(driveList);
     List<DriveData> groupDrives = groupDrives(driveList);
     List<DriveData> personalDrives = personalDrives(driveList);
     listDriveAll.addAll(generalDrives);
     listDriveAll.addAll(groupDrives);
     listDriveAll.addAll(personalDrives);
-    for (DriveData driveData : listDriveAll) {
+    */
+    for (DriveData driveData : driveList) {
       listDriveNameAll.add(driveData.getName());
     }
     return listDriveNameAll;
