@@ -15,25 +15,65 @@
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
 
-import java.util.Map;
+ 
 
+import java.util.Map;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+import org.exoplatform.services.mail.MailService;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.services.cms.scripts.CmsScript;
+import org.exoplatform.services.jcr.RepositoryService;
 
 /*
 * Will need to get The MailService when it has been moved to exo-platform
 */
 public class SendMailScript implements CmsScript {
-  
-  public SendMailScript() {
+  private RepositoryService repositoryService_;
+ 
+  public SendMailScript(RepositoryService repositoryService) {
+          repositoryService_ = repositoryService;
   }
-  
-  public void execute(Object context) {
-    Map variables = (Map) context;       
 
-    //TODO Should send an email
-    println("Send message in SendMailScript to " + variables.get("exo:to"));
+  public void execute(Object context) {
+             Map variables = (Map) context;
+             String to = variables.get("exo:to");
+             //String srcWorkspace = (String) variables.get("srcWorkspace");
+             String nodePath = (String) variables.get("nodePath");
+             //javax.jcr.Session session = null;
+             try {
+               //session = repositoryService_.getRepository().login(srcWorkspace);
+               //Node node = (Node) session.getItem(nodePath);
+               String nodeName = nodePath.split("/")[nodePath.split("/").size() -1]
+               String subject = variables.get("actionName");
+               String message = variables.get("exo:description");
+               
+               MailService service = (MailService)PortalContainer.getComponent(MailService.class);
+               Session mailSession = service.getMailSession();
+               MimeMessage msg = new MimeMessage(mailSession);
+               msg.setFrom(new InternetAddress("alerte@secours-catholique.org"));
+               msg.setRecipient(RecipientType.TO, new InternetAddress("lamtrongphan@gmail.com"));
+               msg.setSubject(subject);
+               
+               msg.setContent("abc", "text/html ; charset=ISO-8859-1");
+               
+               service.sendMessage(msg);
+               println("Send message in SendMailScript from " + msg.getFrom() + "to " + variables.get("exo:to"));
+            } catch (Exception e) {
+
+//                       if (mailSession != null) {
+//                         mailSession();
+//                       }
+                       e.printStackTrace();
+       }
   }
+
+ 
 
   public void setParams(String[] params) {}
+
+ 
 
 }
