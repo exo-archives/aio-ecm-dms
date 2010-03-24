@@ -255,7 +255,7 @@
 /*############################## --End UIRepositoryControl -- ########################*/
 
 .UIECMAdminPortlet .UIResizableBlock {
-	overflow: auto;
+	overflow: hidden;
 	height: 400px;
 }
 
