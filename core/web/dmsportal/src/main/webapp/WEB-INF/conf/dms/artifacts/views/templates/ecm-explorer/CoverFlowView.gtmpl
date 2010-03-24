@@ -112,16 +112,12 @@
 							    wsName = image.getSession().getWorkspace().getName();
 							    actionLink = uicomponent.event("ChangeNode", image.getPath(), new Parameter("workspaceName", wsName));
 							    primaryType = image.getPrimaryNodeType().getName();
-							    System.out.println(image.getPath());
-							    System.out.println("Done1");
 	  					    def thumbnailNode = uicomponent.getThumbnailNode(image);
-	  					    System.out.println("Done2");
 	  					    boolean isShowCoverFlow = false;
 	  					    String[] arrSize = {};
 	  					    if(thumbnailNode != null && thumbnailNode.hasProperty("exo:bigSize")) {
 							      isShowCoverFlow = true;
 							      imageSize = uicomponent.getThumbnailSize(thumbnailNode);
-		  					    System.out.println("Done3");
 							      arrSize = imageSize.split("x");
 	  					    } else {
 	  					      isShowCoverFlow = false;
