@@ -204,8 +204,7 @@
       <newName-same-oldName>الاسم الجديد مطابق للاسم القديم. تأكد مرة أخرى ،من فضلك!</newName-same-oldName>
       <version-exception>.هذه العقدة أو سلف منها لم يتم مراجعتها بعد</version-exception>
       <lock-exception>هذه العقدة مقفلة. حرر العقدة قبل إعادة التسمية.</lock-exception>
-      <constraintViolation-exception>.غير مسموح بإضافة النوع المختار من العقد '{0}' تحت هذه العقدة</constraintViolation-exception>
-						<illegal-name-exception>Invalid characters found in the field '{0}'</illegal-name-exception>
+      <constraintViolation-exception>.غير مسموح بإضافة النوع المختار من العقد '{0}' تحت هذه العقدة</constraintViolation-exception>						
     </msg>
   </UIRenameForm>
   <UIPopupWindow>

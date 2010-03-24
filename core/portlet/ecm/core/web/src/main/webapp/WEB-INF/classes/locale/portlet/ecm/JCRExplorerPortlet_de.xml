@@ -204,8 +204,7 @@
       <newName-same-oldName><![CDATA[Neuer und alter Name sind identisch. Bitte &uuml;berpr&uuml;fen!]]></newName-same-oldName>
       <version-exception><![CDATA[Dieser Knoten wurde nicht gepr&uuml;ft bzw. Vorg&auml;nger des Knotens wurde nicht &uuml;berpr&uuml;ft.]]></version-exception>
       <lock-exception>Der Knoten ist gesperrt. Entsperren vor Wiederbenennung.</lock-exception>
-      <constraintViolation-exception><![CDATA['{0}' ist nicht als Nachfolgeknotentyp f&uuml;r Vorl&auml;uferknotentyp erlaubt]]></constraintViolation-exception>
-						<illegal-name-exception>Invalid characters found in the field '{0}'</illegal-name-exception>
+      <constraintViolation-exception><![CDATA['{0}' ist nicht als Nachfolgeknotentyp f&uuml;r Vorl&auml;uferknotentyp erlaubt]]></constraintViolation-exception>						
     </msg>
   </UIRenameForm>
   <UIPopupWindow>

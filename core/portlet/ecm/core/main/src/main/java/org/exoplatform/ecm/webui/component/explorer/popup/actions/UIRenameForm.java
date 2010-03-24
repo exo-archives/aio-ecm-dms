@@ -33,6 +33,7 @@ import javax.jcr.version.VersionException;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.validator.IllegalDMSCharValidator;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -86,7 +87,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public UIRenameForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null));
     addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null)
-        .addValidator(MandatoryValidator.class));
+        .addValidator(MandatoryValidator.class).addValidator(IllegalDMSCharValidator.class));
   }
 
   public void update(Node renameNode) throws Exception {
@@ -218,13 +219,6 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         Object[] agrs = { uiRenameForm.renameNode_.getPrimaryNodeType().getName() };
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      } catch (RepositoryException re) {
-        if (nodeSession != null) nodeSession.refresh(false);
-        uiJCRExplorer.refreshExplorer();
-        Object[] args = { uiRenameForm.renameNode_.getName() };
-        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.illegal-name-exception", args, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

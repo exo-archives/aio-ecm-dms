@@ -204,8 +204,7 @@
       <newName-same-oldName>Nieuwe naam is dezelfde als oude naam. Controleer</newName-same-oldName>
       <version-exception>node is niet checked out of ancestor van deze node is niet checked out.</version-exception>
       <lock-exception>node is op slot. Maak vrij voor u deze node hernoem</lock-exception>
-      <constraintViolation-exception>'{0}' is niet toegelaten als child's node type voor parent node type</constraintViolation-exception>
-						<illegal-name-exception>Invalid characters found in the field '{0}'</illegal-name-exception>
+      <constraintViolation-exception>'{0}' is niet toegelaten als child's node type voor parent node type</constraintViolation-exception>						
     </msg>
   </UIRenameForm>
   <UIPopupWindow>

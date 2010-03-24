@@ -204,8 +204,7 @@
       <newName-same-oldName>Tên mới trùng với tên cũ. Vui lòng kiểm tra lại!</newName-same-oldName>
       <version-exception>Node này chưa được check out hoặc node cha của nó chưa được check out.</version-exception>
       <lock-exception>Node này đã bị khóa. Mở khóa trước khi đổi tên node này.</lock-exception>
-      <constraintViolation-exception>'{0}' không cho phép đổi tên. Vui lòng kiểm tra điều kiện rằng buộc.</constraintViolation-exception>
-						<illegal-name-exception>Ký tự nhập vào không hợp lệ tại trường '{0}'</illegal-name-exception>
+      <constraintViolation-exception>'{0}' không cho phép đổi tên. Vui lòng kiểm tra điều kiện rằng buộc.</constraintViolation-exception>						
     </msg>
   </UIRenameForm>
   <UIPopupWindow>
