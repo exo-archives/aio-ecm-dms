@@ -3,8 +3,10 @@
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
-  import org.exoplatform.services.jcr.util.Text;  
-    
+  import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.services.cms.link.LinkManager;
+  
+	def linkManager = uicomponent.getComponentInstanceOfType("org.exoplatform.services.cms.link.LinkManager");
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   String componentId = uicomponent.getId();
   String serverUrl= uicomponent.getWebDAVServerPrefix();
@@ -107,7 +109,7 @@
 		          String actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
 		          //Begin WebDav Action
 		          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
-			        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
+			        if ((!linkManager.isLink(data) || linkManager.isTargetReachable(data)) && data.getPrimaryNodeType().getName().equals("nt:file")) {
 						  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
 						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+portalName+"','"+repository+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
 			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        

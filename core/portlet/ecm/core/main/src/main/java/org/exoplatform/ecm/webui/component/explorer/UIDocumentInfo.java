@@ -200,11 +200,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public boolean isImageType(Node node) throws Exception {
-    if (node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
-      Node contentNode = node.getNode(Utils.JCR_CONTENT);
-      if (contentNode.getProperty(Utils.JCR_MIMETYPE).getString().startsWith("image"))
-        return true;
-    }
+  	LinkManager linkManager = this.getApplicationComponent(LinkManager.class);
+  	if (!linkManager.isLink(node) || linkManager.isTargetReachable(node))
+	    if (node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
+	      Node contentNode = node.getNode(Utils.JCR_CONTENT);
+	      if (contentNode.getProperty(Utils.JCR_MIMETYPE).getString().startsWith("image"))
+	        return true;
+	    }
     return false;
   }
 
@@ -216,8 +218,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   public Node getThumbnailNode(Node node) throws Exception {
     ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode()
-        : node;
+    LinkManager linkManager = this.getApplicationComponent(LinkManager.class);
+    if (!linkManager.isLink(node) || linkManager.isTargetReachable(node))
+    	node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode()
+    				: node;
     return thumbnailService.getThumbnailNode(node);
   }
 
