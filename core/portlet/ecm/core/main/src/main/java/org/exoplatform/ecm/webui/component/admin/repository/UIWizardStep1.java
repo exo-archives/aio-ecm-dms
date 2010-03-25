@@ -121,8 +121,10 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
     if (permission != null) {
       List<String> userList = new ArrayList<String>();
       for(String perm : permission.split(";")) {
-        String userName = perm.substring(0,perm.lastIndexOf(" "));
-        if(!userList.contains(userName)) userList.add(userName);      
+        if (perm.lastIndexOf(" ") > 0) {
+          String userName = perm.substring(0,perm.lastIndexOf(" "));
+          if(!userList.contains(userName)) userList.add(userName);
+        }
       }
       for(String user : userList) {
         StringBuilder sb = new StringBuilder();

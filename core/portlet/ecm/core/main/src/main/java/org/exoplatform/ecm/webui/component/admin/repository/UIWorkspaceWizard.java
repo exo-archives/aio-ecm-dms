@@ -890,7 +890,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          if(uiFormWizard.isNewWizard_ && uiWSFormStep1.isPermissionEmpty()) {
+          if(uiWSFormStep1.isPermissionEmpty()) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
