@@ -409,6 +409,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIActionManager uiManager = uiForm.getAncestorOfType(UIActionManager.class);
       if(uiForm.isAddNew_) {
         uiManager.setRenderedChild(UIActionListContainer.class);
+        uiManager.setDefaultConfig();
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
       } else {
         if(uiForm.isEditInList_) {
