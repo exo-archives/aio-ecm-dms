@@ -2231,5 +2231,10 @@
   				<constraint-violation-exception>Không thể thêm node '{0}' vào '{1}' trong vùng làm việc '{2}' Bởi vì bạn có vài vấn đề với quyền và ràng buộc dữ liệu</constraint-violation-exception>
   		</msg>	
  </UIActionForm>
+ <UIViewFormTabPane>
+		<label>
+			<addCategory>Thêm phân loại</addCategory>
+		</label>
+	</UIViewFormTabPane>
 </bundle>
 
