@@ -1672,10 +1672,13 @@ public class UIBrowseContainer extends UIContainer {
       if (uiContainer.listHistoryNode.size() > 0) {
         Node nodeTemp1 = uiContainer.listHistoryNode.get(uiContainer.listHistoryNode.size() - 1);
         if (uiContainer.listHistoryNode.size() > 1) {
-          Node nodeTemp2 = uiContainer.listHistoryNode.get(uiContainer.listHistoryNode.size() - 2);
-          Node nodeTemp2Parent = nodeTemp2.getParent();
-          if (!historyNode.getPath().equals(nodeTemp2.getPath()) && historyNode.getPath().equals(nodeTemp2Parent.getPath())) 
-            uiContainer.listHistoryNode.remove(nodeTemp2);
+          Node nodeTemp2 = uiContainer.listHistoryNode.get(uiContainer.listHistoryNode.size() - 2);          
+          try {          
+            Node nodeTemp2Parent = nodeTemp2.getParent();
+            if (!historyNode.getPath().equals(nodeTemp2.getPath()) && historyNode.getPath().equals(nodeTemp2Parent.getPath())) 
+              uiContainer.listHistoryNode.remove(nodeTemp2);
+          } catch (ItemNotFoundException e) {            
+          }
         }
         uiContainer.listHistoryNode.remove(nodeTemp1);
       }
