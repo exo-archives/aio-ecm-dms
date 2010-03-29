@@ -333,7 +333,7 @@ public class UIBrowseContainer extends UIContainer {
         }
         if (targetNode != null) return targetNode;
       }
-      LOG.error("PathNotFoundException when get node by path = " + nodePath, path);
+      // LOG.error("PathNotFoundException when get node by path = " + nodePath, path);
       return null;
     } catch(AccessDeniedException ace) {
       LOG.error("AccessDeniedException when get node by path = " + nodePath, ace);
@@ -1209,6 +1209,9 @@ public class UIBrowseContainer extends UIContainer {
             //UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
             //uiPorlet.setPorletMode(PortletMode.HELP);
             //uiPorlet.reload();
+          } else if (getSelectedTab() == null) {
+            setSelectedTabPath(null);
+            setCurrentNodePath(null);
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
             setSelectedTabPath(null);
