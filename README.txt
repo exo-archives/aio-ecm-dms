@@ -1,5 +1,5 @@
 Enterprise Content Management(ECM) > Document Management System(DMS)
-Version 2.5.3
+Version 2.5.4
 
 You may find it helpful to see the details at wiki place of ECM
 http://wiki.exoplatform.org/xwiki/bin/view/ECM/
@@ -60,6 +60,124 @@ and navigate to URL: http://localhost:8080/portal
 
 3. RELEASE NOTES 
 ---------------------------------------------------
+
+
+Release Notes - exo-ecm-dms - Version dms-2.5.4
+
+** Bug
+    * [ECM-2469] - IE6 - Combo-box appears on top of all others components
+    * [ECM-3792] - Advanced search: Return blank search result when search location contains space
+    * [ECM-4102] - Need to click F5 to refresh to see the updated image for Picture on head document in Site Explorer
+    * [ECM-4356] - Can not drag and drop sub of sub node to parent node
+    * [ECM-4426] - Can't migrate taxonomy from ECM 2.2 to DMS 2.5.1
+    * [ECM-4442] - Can not add category for document while user has only read permission with taxonomy tree
+    * [ECM-4486] - Unknown error when add action for taxonomy created in workspace with root node type is nt:folder
+    * [ECM-4489] - Show both 2 types of folder while editing drive created in workspace with root node type is nt:folder
+    * [ECM-4494] - Field to select drive disappears when click on Cancel button while editing File Explorer
+    * [ECM-4498] - Show all nodes of other drive when view related document 
+    * [ECM-4502] - Exception when access CB while user does not have permssion 
+    * [ECM-4543] -  Show form to create exo:addMetadataAction action while action type's name is the action has just created
+    * [ECM-4545] - Still display image after delete in dialogs
+    * [ECM-4640] - Error message "msg" on Site Explorer
+    * [ECM-4698] - Cannot create a simlink in file explorer
+    * [ECM-4747] - Litte error in Tab Form when create/edit a view
+    * [ECM-4750] - Block Site Explorer when upload a file with name including special characters
+    * [ECM-4755] - Can not delete child node of symlink node
+    * [ECM-4813] - File name accepts special characters (like @%#^$^$^#$^^#$^) 
+    * [ECM-4819] - Still display content of dialog/view/tab after deleting
+    * [ECM-4820] - The check-box "Set as DMS System workspace" is not checked
+    * [ECM-4840] - Too much unwanted moving nodes in FileExplorer
+    * [ECM-4855] - Can add workspace for new repository without select permission in special case
+    * [ECM-4872] - Unknown error when create new repostiory after deleting 1 workspace
+    * [ECM-4878] - Show message "Repository error " when copy/ paste a node in root path
+    * [ECM-4879] - Exception when copy/paste 1 node in the same path when node's name has number character at the first
+    * [ECM-4880] - Do not show icon to delete attachement of Article document
+    * [ECM-4916] - Can not drag and drop node to Document Folder
+    * [ECM-4922] - Category is disappeared after restore document
+    * [ECM-4948] - FileExplorer : Displaying error in the right click menu
+    * [ECM-4959] - NPE while accessing File Explorer in Parameterized mode
+    * [ECM-4961] - Print Mode: exo:article template is not printable ( really ugly)
+    * [ECM-4964] - NodeItemLinkAware.getDepth() fails
+    * [ECM-4973] - unknown error when create Repository in some special cases
+    * [ECM-4990] - can't drag&drop document (except for  file Plan) when it is viewing
+    * [ECM-4996] - showing  name of folders are not exactly when they are the same name in special case
+    * [ECM-5015] - Branches : File explorer edit form is still shown when finished editing 
+    * [ECM-5040] - Default value of addRadioBoxField method in UIDialogForm
+    * [ECM-5049] - don't access File explore in special case
+    * [ECM-5063] - How can we set permission * for drive when edit drive
+    * [ECM-5068] - FileExplorer in mode "parameterized", dosen't work after logout /login
+    * [ECM-5070] - still can edit File explorer while don't allow to edit
+    * [ECM-5096] - Unknown error when choose target Node whose name includes special character
+    * [ECM-5100] - Unknown error when upload file in special case
+    * [ECM-5104] - there are some error messages when go to File Explorer
+    * [ECM-5105] - An upload field in a document dialog does not extract filename nor mimetype
+    * [ECM-5111] - ComponentSelector : selectorParams putted in gtmpl fields is not passed to the specific ComponentSelector(s)
+    * [ECM-5112] - ComponentSelector in multivalued field
+    * [ECM-5113] - Can't drag & drop node when tree folder is divided in many pages
+    * [ECM-5120] - IE7: Menu is not shown when right click  a folder  on folder tree
+    * [ECM-5123] - Problem with action publication:workflowAction and publication plugin WorkflowPublication
+    * [ECM-5134] - We can't validate an actionField in a dialog template of a nodetype
+    * [ECM-5144] - Unknown error when label of version begin with Space character OR end with Space character
+    * [ECM-5150] - template is reappeared in spcecial case  althought it was deleted 
+    * [ECM-5158] - "confirm-delete" & "confirm-delete-multi" english labels indicates a remove to Recycle Bin
+    * [ECM-5168] - Wrong Interceptors Management
+    * [ECM-5185] - Impossible to select a exo:image node path for a nodetype in its dialog template
+    * [ECM-5187] - Correct user permission of Taxonomy Tree
+    * [ECM-5203] - Checkbox value is not displayed when re-opening UIDialogForm 
+    * [ECM-5218] - [ERROR] UIJCRExplorer - The node '***' cannot be found
+    * [ECM-5219] - problem import export content
+    * [ECM-5237] - Modification of an action script's variables is considered only after server restart.
+    * [ECM-5312] - Add new Taxonomy , no work space is shown
+    * [ECM-5326] - Link not good after rgit click > copy url to clipboard
+    * [ECM-5351] - Copy/Cut functionalities unavailable
+    * [ECM-5363] - Advanced Search : exception when using "*"
+    * [ECM-5366] - Jcrexplorer : spelling error
+    * [ECM-5370] - JCRexplorer : Rename a node
+    * [ECM-5374] - ArrayIndexOutOfBoundsException in File Explorer if drive's permission is "any"
+    * [ECM-5396] - We are able to remove a file used by a Symlink and it will cause a problem of display in the fileExplorer
+
+** Improvement
+    * [ECM-4867] - JCRexplorer : ambiguous  message, to change
+    * [ECM-5024] - Add validator for UIFormSelectBoxField and UIFormCheckBoxField
+    * [ECM-5136] - Build, quality and automation improvements
+    * [ECM-5184] - Allow Taxonomy Service can run (get node's category for example) with SystemSessionProvider
+    * [ECM-5329] - Problem in initializing NbPerPage property of file explorer's paginator
+    * [ECM-5343] - webdav links not correct in private folder
+
+** New Feature
+    * [ECM-5106] - Allow multiple upload fields
+
+** Task
+    * [ECM-4960] - Remove publication:workflowAction in configuration
+    * [ECM-5115] - Display of File Explorer very long when there is a lot of users
+    * [ECM-5269] - Integrate the support for the Multivalued UISelectbox
+    * [ECM-5362] - Jcrexplorer : delete files confirmation message
+    * [ECM-5367] - JCRexplorer : Message to be corrected
+    * [ECM-5368] - JCRexplorer : Message to be corrected
+    * [ECM-5369] - JCRexplorer: Translate false & true
+    * [ECM-5373] - JCRexplorer : fix height of Upload and Save forms
+    * [ECM-5385] - JCRexplorer: traslation :  right click menu on a node 
+    * [ECM-5424] - Release DMS 2.5.4
+
+** Sub-task
+    * [ECM-5013] - [DEV] Block Site Explorer when upload a file with name including special characters
+    * [ECM-5021] - [TEST] Block Site Explorer when upload a file with name including special characters
+    * [ECM-5025] - [DEV] Error message "msg" on Site Explorer
+    * [ECM-5043] - Fix duplicated dependencies
+    * [ECM-5083] - [DEV] can't drag&drop document (except for file Plan) when it is viewed
+    * [ECM-5108] - [DEV] there are some error messages when go to File Explorer
+    * [ECM-5116] - [DEV] Create new OrganistationService for JAAS Module
+    * [ECM-5135] - Cleanup and reactivate tests
+    * [ECM-5137] - Upgrade to exo parent 8
+    * [ECM-5143] - Cleanup POMs
+    * [ECM-5311] - Remove usage of property org.exoplatform.mvnexobuild.version
+    * [ECM-5390] - [DEV] Rename a node
+    * [ECM-5391] - [TEST] - Rename a node
+    * [ECM-5401] - [DEV] - ECM Administration Portlet: Augment height size to avoid vertical scroller
+    * [ECM-5402] - [TEST] - ECM Administration Portlet: Augment height size to avoid vertical scroller
+    * [ECM-5405] - [DEV] - Add SendMail Groovy script
+
+
 
 Release Notes - exo-ecm-dms - Version dms-2.5.3
 
