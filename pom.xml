@@ -51,6 +51,7 @@
     <org.shindig.version>0.8.1-1-r719456</org.shindig.version>
     <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
     <bonita.version>4.0</bonita.version>
+    <maven.test.skip>true</maven.test.skip>
   </properties>
   <build>
     <resources>
