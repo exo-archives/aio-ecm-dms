@@ -61,20 +61,25 @@
   </component>
   
   <component>
-    <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>  
+    <type>org.exoplatform.services.jcr.ext.registry.RegistryService</type>
+    <init-params>
+      <properties-param>
+        <name>locations</name>
+        <property name="repository" value="system" />
+      </properties-param>
+    </init-params>
+  </component>	
+	
+  <!--component>
+    <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>
     <type>org.exoplatform.services.jcr.ext.audit.AuditServiceImpl</type>
-      <init-params>
-        <!-- Group or user who may view audit information -->
-        <value-param>
-          <name>adminIdentity</name>
-          <value>*:/Platform/Administrators</value>
-        </value-param>
-        <value-param>
-          <name>repository</name>
-          <value>repository</value>
+    <init-params>
+      <value-param>
+        <name>adminIdentity</name>
+        <value>root;john</value>
       </value-param>
     </init-params>
-  </component>
+  </component-->
 
   <external-component-plugins>
     <target-component>org.exoplatform.services.naming.InitialContextInitializer</target-component>
