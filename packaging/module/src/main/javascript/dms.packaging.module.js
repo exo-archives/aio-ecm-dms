@@ -32,7 +32,14 @@ function getModule(params) {
     addDependency(new Project("jdom", "jdom", "jar", "1.0")).
     addDependency(new Project("org.apache.ws.commons", "ws-commons-util", "jar", "1.0.1")).
     addDependency(new Project("com.sun.xml.stream", "sjsxp", "jar", "1.0")).
-    addDependency(new Project("pdfbox", "pdfbox", "jar", "0.7.2"));
+    addDependency(new Project("pdfbox", "pdfbox", "jar", "0.7.2")).
+    addDependency(new Project("net.sf.ehcache", "ehcache", "jar", "1.6.0")).    
+    addDependency(new Project("org.hibernate", "hibernate", "jar", "3.2.6.ga")).
+    addDependency(new Project("org.hibernate", "hibernate-annotations", "jar", "3.4.0.GA")).
+    addDependency(new Project("org.hibernate", "hibernate-core", "jar", "3.3.2.GA")).
+    addDependency(new Project("javassist", "javassist", "jar", "3.4.GA")).
+    addDependency(new Project("org.slf4j", "slf4j-api", "jar", "1.5.6")).
+    addDependency(new Project("org.slf4j", "slf4j-jdk14", "jar", "1.5.6"));
     module.portlet.dms.deployName = "ecm";
   
   module.portlet.jcr_console = 
