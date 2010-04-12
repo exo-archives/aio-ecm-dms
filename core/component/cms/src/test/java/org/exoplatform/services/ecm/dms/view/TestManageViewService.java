@@ -18,6 +18,7 @@
 package org.exoplatform.services.ecm.dms.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -31,8 +32,6 @@ import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SARL

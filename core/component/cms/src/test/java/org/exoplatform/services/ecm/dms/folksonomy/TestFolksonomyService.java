@@ -17,6 +17,7 @@
  **************************************************************************/
 package org.exoplatform.services.ecm.dms.folksonomy;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -32,8 +33,6 @@ import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by eXo Platform
