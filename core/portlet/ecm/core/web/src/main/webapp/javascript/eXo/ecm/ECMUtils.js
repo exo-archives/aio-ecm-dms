@@ -346,12 +346,12 @@
 		        path += encodeURIComponent(nodePath[i]) + "/";
 		      }
 		    }
-		    window.open(serverInfo + "/rest/private/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
+		    window.open(serverInfo + "/rest/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
 	   	} else {
-	 	  	window.open(serverInfo + "/rest/private/jcr/" + repository + "/" +workspace + nodePath, '_new');
+	 	  	window.open(serverInfo + "/rest/jcr/" + repository + "/" +workspace + nodePath, '_new');
 	 	  } 	  
 	  } else {
-		  window.open(serverInfo + "/rest/private/jcr/" + repository + "/" + workspace + nodePath, '_new');
+		  window.open(serverInfo + "/rest/jcr/" + repository + "/" + workspace + nodePath, '_new');
 	  } 
 	} ;
 	

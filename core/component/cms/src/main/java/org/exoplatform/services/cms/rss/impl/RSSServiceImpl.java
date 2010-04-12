@@ -163,7 +163,7 @@ public class RSSServiceImpl implements RSSService{
       session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryPath, Query.XPATH);
+      Query query = queryManager.createQuery(queryPath, Query.SQL);
       QueryResult queryResult = query.execute();            
       SyndFeed feed = new SyndFeedImpl();      
       feed.setFeedType(rssVersion);      
@@ -267,7 +267,7 @@ public class RSSServiceImpl implements RSSService{
       session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryPath, Query.XPATH);
+      Query query = queryManager.createQuery(queryPath, Query.SQL);
       QueryResult queryResult = query.execute();            
       SyndFeed feed = new SyndFeedImpl() ;
       FeedInformation infor = new FeedInformationImpl() ;
