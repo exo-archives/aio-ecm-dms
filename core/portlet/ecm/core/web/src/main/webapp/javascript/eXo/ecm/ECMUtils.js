@@ -335,7 +335,7 @@
 	} ;
 	
 	
-	ECMUtils.prototype.generateWebDAVLink = function(serverInfo,repository,workspace,nodePath,mimetype) {		
+	ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
 	  if(eXo.core.Browser.getBrowserType() == "ie") {
 	 	  if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		 		
 	      // query parameter s must be encoded.
@@ -346,12 +346,32 @@
 		        path += encodeURIComponent(nodePath[i]) + "/";
 		      }
 		    }
-		    window.open(serverInfo + "/rest/private/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
+		    window.open(serverInfo + "/" + portalName + "/rest/private/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
 	   	} else {
-	 	  	window.open(serverInfo + "/rest/private/jcr/" + repository + "/" +workspace + nodePath, '_new');
+	 	  	window.open(serverInfo + "/" + portalName + "/rest/private/jcr/" + repository + "/" +workspace + nodePath, '_new');
 	 	  } 	  
 	  } else {
-		  window.open(serverInfo + "/rest/private/jcr/" + repository + "/" + workspace + nodePath, '_new');
+		  window.open(serverInfo + "/" + portalName + "/rest/private/jcr/" + repository + "/" + workspace + nodePath, '_new');
+	  } 
+	};
+	
+	ECMUtils.prototype.generateWebDAVLinkWithoutPortalName = function(serverInfo,repository,workspace,nodePath,mimetype) {		
+	  if(eXo.core.Browser.getBrowserType() == "ie") {
+	 	  if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		 		
+	      // query parameter s must be encoded.
+	      var path = "/";
+	      nodePath = nodePath.substr(1).split("\/");
+		    if (typeof(nodePath.length) == 'number') {
+		      for (var i=0; i < nodePath.length; i++) {
+		        path += encodeURIComponent(nodePath[i]) + "/";
+		      }
+		    }
+		    window.open(serverInfo + "/rest/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
+	   	} else {
+	 	  	window.open(serverInfo + "/rest/jcr/" + repository + "/" +workspace + nodePath, '_new');
+	 	  } 	  
+	  } else {
+		  window.open(serverInfo + "/rest/jcr/" + repository + "/" + workspace + nodePath, '_new');
 	  } 
 	} ;
 	
