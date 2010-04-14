@@ -30,9 +30,9 @@
   <packaging>pom</packaging>
   <name>eXo ECM - DMS</name>
   <scm>
-    <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/tags/2.5.4</connection>
-    <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/tags/2.5.4</developerConnection>
-    <url>http://fisheye.exoplatform.org/browse/projects/ecm/dms/tags/2.5.4</url>
+    <connection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.5</connection>
+    <developerConnection>scm:svn:http://svn.exoplatform.org/projects/ecm/dms/branches/2.5.5</developerConnection>
+    <url>http://fisheye.exoplatform.org/browse/projects/ecm/dms/branches/2.5.5</url>
   </scm>
   <ciManagement>
     <system>hudson</system>
