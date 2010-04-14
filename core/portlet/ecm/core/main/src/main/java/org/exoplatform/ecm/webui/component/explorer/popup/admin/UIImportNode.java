@@ -314,6 +314,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
           uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.constraint-violation-exception",
                                                   args,
                                                   ApplicationMessage.WARNING));
+          log.error("XML Import error " + e, e);
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
