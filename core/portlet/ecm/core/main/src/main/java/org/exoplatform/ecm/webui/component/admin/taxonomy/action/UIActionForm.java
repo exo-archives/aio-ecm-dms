@@ -399,7 +399,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_, sortedInputs);
           session.save();
           // Set permission for action node
-          uiActionForm.setPermissionAction(currentNode);
+//          uiActionForm.setPermissionAction(currentNode);
           Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
           taxoTreeData.setTaxoTreeActionName(actionNode.getName());
           uiActionForm.setIsOnchange(false);
