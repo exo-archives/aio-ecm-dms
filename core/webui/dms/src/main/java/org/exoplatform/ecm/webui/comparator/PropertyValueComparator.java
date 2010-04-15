@@ -24,12 +24,18 @@ import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
+
 /**
  * Created by The eXo Platform SARL Author : Hoang Van Hung hunghvit@gmail.com
  * Mar 8, 2009
  */
 public class PropertyValueComparator implements Comparator<Node> {
-
+	
+	
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorer");
+	
   public static final String ASCENDING_ORDER  = "Ascending";
 
   public static final String DESCENDING_ORDER = "Descending";
@@ -70,7 +76,7 @@ public class PropertyValueComparator implements Comparator<Node> {
         throw new RepositoryException("Unknown type " + requireType);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+    	LOG.warn("Unknown type exception",e);      
       return 0;
     }
   }
@@ -81,8 +87,8 @@ public class PropertyValueComparator implements Comparator<Node> {
         return node.getProperty(propertyName).getDefinition().getRequiredType();
       }
       return -1;
-    } catch (RepositoryException e) {
-      e.printStackTrace();
+    } catch (RepositoryException e) {    	
+      LOG.warn("Repository exception", e);      
       return -1;
     }
   }
@@ -96,7 +102,7 @@ public class PropertyValueComparator implements Comparator<Node> {
       }
       return propertyValue1.compareToIgnoreCase(propertyValue0);
     } catch(RepositoryException e) {
-      e.printStackTrace();
+    	LOG.warn("Could not find node's property", e);
       return 0;
     }
   }
@@ -110,7 +116,7 @@ public class PropertyValueComparator implements Comparator<Node> {
         }
         return date1.compareTo(date0) ;
     } catch (Exception e) {
-      e.printStackTrace();
+    	LOG.warn("Exception when comparing dates of nodes", e);
     }    
     return 0;
   }
