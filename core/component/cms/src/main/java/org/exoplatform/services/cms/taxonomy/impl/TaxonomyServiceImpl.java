@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -135,7 +136,12 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       while (nodeIter.hasNext()) {
         Node node = (Node) nodeIter.next();
         if (node.isNodeType(EXOSYMLINK_LINK)) {
-          Node target = linkManager_.getTarget(node, system);
+          Node target = null;
+          try {
+            target = linkManager_.getTarget(node, system);
+          } catch (ItemNotFoundException e) {
+            target = null;
+          }
           if (target != null)
             listNode.add(target);
         }
