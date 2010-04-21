@@ -48,6 +48,7 @@
     <org.exoplatform.webos.version>1.5.5</org.exoplatform.webos.version>
     <org.exoplatform.ecm.workflow.version>1.0.6</org.exoplatform.ecm.workflow.version>
     <org.exoplatform.exopackage.version>1.2.2</org.exoplatform.exopackage.version>
+		<org.exoplatform.exobuild.maven-plugin.version>1.2.1</org.exoplatform.exobuild.maven-plugin.version>
     <org.shindig.version>0.8.1-1-r719456</org.shindig.version>
     <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
     <bonita.version>4.0</bonita.version>

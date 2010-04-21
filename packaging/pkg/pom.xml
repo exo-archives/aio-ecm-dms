@@ -101,7 +101,7 @@
           <plugin>
             <groupId>org.exoplatform.maven.plugins</groupId>
             <artifactId>maven-exobuild-plugin</artifactId>
-						<version>${org.exoplatform.exopackage.version}</version>
+						<version>${org.exoplatform.exobuild.maven-plugin.version}</version>
             <executions>
               <execution>
                 <phase>install</phase>
