@@ -166,14 +166,14 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     UINodeTree tree = getChild(UINodeTree.class) ;
     Node selectedNode = getNodeByPathBreadcumbs();
     tree.setSelected(selectedNode);
-    if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
+    if ((selectedNode != null) && (Utils.getNodeSymLink(selectedNode).getDepth() > 0)) {
     if (!selectedNode.getPath().equals(rootTreeNode.getPath()))
         tree.setParentSelected(selectedNode.getParent()) ;
       sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
       children = Utils.getNodeSymLink(selectedNode).getNodes() ;
     } else {
       tree.setParentSelected(selectedNode) ;
-      sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
+      if (selectedNode != null) sibbling = Utils.getNodeSymLink(selectedNode).getNodes();
       children = null;
     }
     if (sibbling != null) {

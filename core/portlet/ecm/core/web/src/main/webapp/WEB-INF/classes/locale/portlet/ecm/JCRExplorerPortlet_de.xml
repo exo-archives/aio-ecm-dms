@@ -2558,5 +2558,10 @@
   	<msg>
   	  <repository-error>Error, information about repository lost!</repository-error>
   	</msg>
-  </UITreeExplorer>  
+  </UITreeExplorer>
+  <UIActionBar>
+				<msg>
+				  <not-exist-categories>There isn't any category</not-exist-categories>
+				</msg>
+		</UIActionBar>  
 </bundle>

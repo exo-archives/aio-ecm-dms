@@ -116,7 +116,7 @@ public class UITreeTaxonomyList extends UIForm {
     public void execute(Event<UITreeTaxonomyList> event) throws Exception {
       UITreeTaxonomyList uiTreeTaxonomyList = event.getSource();
       UIOneTaxonomySelector uiOneTaxonomySelector = uiTreeTaxonomyList.getParent();
-      String taxoTreeName = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();  
+      String taxoTreeName = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();
       Node taxoTreeNode = uiOneTaxonomySelector.getTaxoTreeNode(taxoTreeName);
       String workspaceName = taxoTreeNode.getSession().getWorkspace().getName();
       String pathTaxonomy = taxoTreeNode.getPath();

@@ -2542,4 +2542,9 @@
       <AddCategory>Add category</AddCategory>
     </tooltip>
 	 </UIActionBar>
+	 <UIActionBar>
+				<msg>
+				  <not-exist-categories>There isn't any category</not-exist-categories>
+				</msg>
+		</UIActionBar>
 </bundle>

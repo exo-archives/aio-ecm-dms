@@ -2568,5 +2568,10 @@
   	<msg>
   	  <repository-error>Lỗi, mất thông tin về trình chứa!</repository-error>
   	</msg>
-  </UITreeExplorer>  
+  </UITreeExplorer>
+  <UIActionBar>
+				<msg>
+				  <not-exist-categories>Không tồn tại bất kỳ danh mục phân loại nào</not-exist-categories>
+				</msg>
+		</UIActionBar>  
 </bundle>
