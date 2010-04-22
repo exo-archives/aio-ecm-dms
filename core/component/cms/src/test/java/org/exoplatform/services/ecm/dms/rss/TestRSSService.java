@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.query.Query;
 
 import org.exoplatform.services.cms.rss.RSSService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
@@ -56,7 +57,8 @@ public class TestRSSService extends BaseDMSTestCase {
     contextRss.put("exo:description", "Hello Description");
     contextRss.put("exo:storePath", "/Feeds");
     contextRss.put("exo:feedName", "feedName");
-    contextRss.put("exo:queryPath", "/jcr:root/Documents//element(*, exo:article)");    
+    contextRss.put("exo:queryPath", "/jcr:root/Documents//element(*, exo:article)");  
+    contextRss.put("exo:queryType", Query.XPATH);
     contextRss.put("exo:title", "Hello Title");
     contextRss.put("exo:url", "http://www.facebook.com");    
     rssService.generateFeed(contextRss);
@@ -89,6 +91,7 @@ public class TestRSSService extends BaseDMSTestCase {
     contextPodcast.put("exo:storePath", "/Feeds");
     contextPodcast.put("exo:feedName", "podcastName");
     contextPodcast.put("exo:queryPath", "/jcr:root/Documents//element(*, exo:article)");    
+    contextPodcast.put("exo:queryType", Query.XPATH);
     contextPodcast.put("exo:title", "Hello Title");
     contextPodcast.put("exo:url", "http://twitter.com");    
     rssService.generateFeed(contextPodcast);

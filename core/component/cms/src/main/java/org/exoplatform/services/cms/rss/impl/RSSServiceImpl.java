@@ -90,6 +90,7 @@ public class RSSServiceImpl implements RSSService{
   static private String EXPLICIT = "exo:explicit".intern() ;
   static private String FEED_NAME = "exo:feedName".intern() ;
   static private String QUERY_PATH = "exo:queryPath".intern() ;
+  static private String QUERY_TYPE = "exo:queryType".intern() ;
   static private String URL = "exo:url".intern() ;
   static private String SUMMARY = "exo:summary";
   static private String LENGTH = "exo:length".intern() ;
@@ -146,6 +147,8 @@ public class RSSServiceImpl implements RSSService{
     String storePath = (String) context.get(STORE_PATH) ;
     String feedName = (String) context.get(FEED_NAME) ;      
     String queryPath = (String) context.get(QUERY_PATH) ;
+    String queryType = (String) context.get(QUERY_TYPE) ;
+    if(queryType == null) queryType = Query.SQL;
     String rssUrl = (String) context.get(URL) ;
     String title = (String) context.get(TITLE) ;
     String repository = (String) context.get("repository") ;
@@ -163,7 +166,7 @@ public class RSSServiceImpl implements RSSService{
       session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryPath, Query.SQL);
+      Query query = queryManager.createQuery(queryPath, queryType);
       QueryResult queryResult = query.execute();            
       SyndFeed feed = new SyndFeedImpl();      
       feed.setFeedType(rssVersion);      
@@ -259,6 +262,8 @@ public class RSSServiceImpl implements RSSService{
       String feedName = (String) context.get(FEED_NAME) ;
       String rssVersion = (String) context.get(RSS_VERSION) ;
       String queryPath = (String) context.get(QUERY_PATH) ;
+      String queryType = (String) context.get(QUERY_TYPE) ;
+      if(queryType == null) queryType = Query.SQL;
       String rssUrl = (String) context.get(URL) ;
       String repository = (String) context.get("repository") ;
       storePath = storePath + "/" + feedType ;
@@ -267,7 +272,7 @@ public class RSSServiceImpl implements RSSService{
       session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryPath, Query.SQL);
+      Query query = queryManager.createQuery(queryPath, queryType);
       QueryResult queryResult = query.execute();            
       SyndFeed feed = new SyndFeedImpl() ;
       FeedInformation infor = new FeedInformationImpl() ;
