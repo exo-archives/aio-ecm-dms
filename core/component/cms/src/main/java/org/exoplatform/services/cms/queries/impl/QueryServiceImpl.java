@@ -396,8 +396,8 @@ public class QueryServiceImpl implements QueryService, Startable{
   /**
    * {@inheritDoc}
    */
-  public QueryResult execute(String queryPath, String workspace, String repository, SessionProvider provider, String userId) throws Exception {
-    Session session = getSession(repository, provider, true);    
+  public QueryResult execute(String queryPath, String workspace, String repository, SessionProvider provider, String userId) throws Exception {    
+    Session session = getSession(repository, provider, false);
     Session querySession = getSession(repository, workspace, provider);
     Node queryNode = null;
     try {
