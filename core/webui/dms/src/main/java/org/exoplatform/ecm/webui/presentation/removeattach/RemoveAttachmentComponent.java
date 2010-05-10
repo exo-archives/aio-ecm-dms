@@ -97,7 +97,7 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
                  
         session.save();
         session.logout();
-        uicomponent.updateAjax(requestcontext);
+        requestcontext.addUIComponentToUpdateByAjax(uicomponent.getParent());
         return;
       } catch (Exception e) {
         LOG.error("an unexpected error occurs while removing the node", e);
