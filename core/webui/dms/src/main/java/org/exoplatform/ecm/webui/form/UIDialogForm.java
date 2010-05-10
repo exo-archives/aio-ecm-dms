@@ -1041,6 +1041,7 @@ public class UIDialogForm extends UIForm {
   @Override
   public void processAction(WebuiRequestContext context) throws Exception {
     String action = context.getRequestParameter(UIForm.ACTION);
+    boolean clearInterceptor = false;
     if (SAVE_ACTION.equalsIgnoreCase(action)) {
       try {
         if (executePreSaveEventInterceptor()) {
@@ -1048,11 +1049,17 @@ public class UIDialogForm extends UIForm {
           String nodePath_ = (String) context.getAttribute("nodePath");
           if (nodePath_ != null) {
             executePostSaveEventInterceptor(nodePath_);
+            clearInterceptor = true;
           }
+        } else {
+          context.setProcessRender(true) ;
+          super.processAction(context);
         }
       } finally {
-        prevScriptInterceptor.clear();
-        postScriptInterceptor.clear();
+        if (clearInterceptor) {
+          prevScriptInterceptor.clear();
+          postScriptInterceptor.clear();
+        }
       }
     } else {
       super.processAction(context);
