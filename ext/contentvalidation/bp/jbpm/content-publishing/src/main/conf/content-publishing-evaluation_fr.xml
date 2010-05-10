@@ -7,32 +7,32 @@
     <value>Approuver le document</value>
   </approve>
   <disapprove>
-    <submit>D\u00e9sapprouver</submit>
-    <value>D\u00e9sapprouver le document</value>
+    <submit>Désapprouver</submit>
+    <value>Désapprouver Document</value>
   </disapprove>
   <refuse>
     <submit>Refuser</submit>
     <value>Refuser document</value>
   </refuse>
   <delegate>
-    <submit>D\u00e9l\u00e9guer</submit>
-    <value>D\u00e9l\u00e9guer la validation</value>
-    <title>D\u00e9l\u00e9guer la validation</title>
-    <label>D\u00e9l\u00e9guer la validation :</label>
+    <submit>Délégué</submit>
+    <value>Délégué à la validation</value>
+    <title>Délégué à la validation</title>
+    <label>Délégué à la validation :</label>
   </delegate>
   <!--
   #variable title and label
   -->
   <initiator>
-    <title>Qui a cr\u00e9\u00e9 le document</title>
-    <label>Cr\u00e9ateur :</label>
+    <title>Qui a créé le document</title>
+    <label>Créateur :</label>
   </initiator>
   <startDate>
-    <title>Quand d\u00e9buter la publication</title>
-    <label>D\u00e9but de la publication le :</label>
+    <title>Quand commencer la publication</title>
+    <label>Publication commence :</label>
   </startDate>
   <endDate>
-    <title>Quand arr\u00eater la publication</title>
+    <title>Quand arrêter la publication</title>
     <label>Fin de la publication le :</label>
   </endDate>
   <document-id>
@@ -43,7 +43,11 @@
     <label>Raison:</label>
     <title>Raison</title>
   </reason>
+  <delegator>
+  		<title>Délégué à la validation</title>
+    <label>Délégué à la validation :</label>
+  </delegator> 
   
-  <cancel>Cancel</cancel>
+  <cancel>Annuler</cancel>
 </bundle>
 
