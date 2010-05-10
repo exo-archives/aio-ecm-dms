@@ -151,3 +151,9 @@
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
 }
+
+.UIDocumentFormController .FCKEditor {
+  width: 98%;
+  float: left;
+}
+
