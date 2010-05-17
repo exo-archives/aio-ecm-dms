@@ -3,8 +3,32 @@
   <Homepage>
     <ecm>
       <label>
-        <slogan>"بث الحياة في مستنداتك!</slogan>
+        <slogan>بث الحياة في مستنداتك!</slogan>
         <productIntro>استخدام أدوات متقدمة للتعاون الجماعي."</productIntro>
+        <FE>
+			<name>مستكشف الملفات</name>
+			<bullet1>واجهة مستخدم أنيقة و قابلة للتجديد</bullet1>
+			<bullet2>إمكانية إستخدام تقنية الزر الأيمن (للماوس) كذلك خاصية السحب والإسقاط </bullet2>
+			<bullet3>إمكانية تصنيف الفروع لملفاتك </bullet3>
+			<bullet4>إضفاء رمزية للوصلات</bullet4>
+			<bullet5>إجراءات، تدقيق ، إضافة علامات وغيرها الكثير !</bullet5>
+		</FE>
+		<CB>
+			<name>مستعرض المحتوى</name>
+			<bullet1>العثور على / عرض المستندات الخاصة بك بسهولة</bullet1>
+			<bullet2>خريطة العلامات</bullet2>
+			<bullet3>امكانية اضافة تعليق، امكانية التصويت</bullet3>
+			<bullet4>عملية سريعة للبحث</bullet4>
+			<bullet5>تخصيص نوعية العرض</bullet5>
+		</CB>
+		<ECMA>
+			<name>إدارة الــ ECM</name>
+			<bullet1>واجهة مستخدم قابلة للإثراء</bullet1>
+			<bullet2>إدارة التصنيفات </bullet2>
+			<bullet3>إدارة وجهات العرض</bullet3>
+			<bullet4>إدارة نماذج العرض</bullet4>
+			<bullet5>إدارة السكريبتات وغيرها الكثير!</bullet5>
+		</ECMA>
       </label>
     </ecm>
   </Homepage>
