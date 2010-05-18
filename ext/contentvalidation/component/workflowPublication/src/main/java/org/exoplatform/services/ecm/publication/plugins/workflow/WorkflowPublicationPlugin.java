@@ -226,6 +226,7 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
         }          
         Map<String, String> variables = new HashMap<String, String>();
         variables.put("initiator", userId);
+        variables.put("actionName", CONTENT_VALIDATION);
         variables.put("exo:validator", node.getProperty(WorkflowPublicationPlugin.VALIDATOR).getString());
         variables.put("nodePath", node.getPath());
         variables.put("repository", repositoryName);
