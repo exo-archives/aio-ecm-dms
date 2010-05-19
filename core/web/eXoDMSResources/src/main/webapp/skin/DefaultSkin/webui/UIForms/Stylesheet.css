@@ -157,3 +157,8 @@
   float: left;
 }
 
+.EditFormController .FCKEditor {
+  width: 98%;
+  float: left;
+}
+
