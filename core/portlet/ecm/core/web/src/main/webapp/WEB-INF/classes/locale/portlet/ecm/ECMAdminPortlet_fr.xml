@@ -2198,7 +2198,7 @@
 		  
 	<UITaxonomyTreeContainer>
 		<action>
-			<Cancel>Cancel</Cancel>
+			<Cancel>Annuler</Cancel>
 		</action>
 	</UITaxonomyTreeContainer>
 
@@ -2220,7 +2220,7 @@
 
 	<UITaxonomyTreeWorkingArea>
 		<action>
-			<Previous>Previous</Previous>
+			<Previous>Précédent</Previous>
 		</action>
 	</UITaxonomyTreeWorkingArea>
 	<UIActionForm>
