@@ -2422,7 +2422,7 @@
   </UIPopupMenu>
   <UIUploadForm>
     <msg>
-      <upload-not-null>You need upload file before add category</upload-not-null>
+      <upload-not-null>Il faut uploader un fichier avant d'ajouter une taxonomie.</upload-not-null>
     </msg>
   </UIUploadForm>
   <UIActionBar>
