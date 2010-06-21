@@ -312,7 +312,7 @@ var SimpleView = function() {
 				var idTarget = element.getAttribute('objectId');
 				//Dunghm: check symlink
 				var regex = new RegExp("^"+idTarget);
-				if(regex.test(Self.srcPath)){
+				if(regex.test(Self.srcPath) || (Self.srcPath.indexOf(idTarget) == 0)){
 				  delete Self.srcPath;
 				  return ;
 				}
