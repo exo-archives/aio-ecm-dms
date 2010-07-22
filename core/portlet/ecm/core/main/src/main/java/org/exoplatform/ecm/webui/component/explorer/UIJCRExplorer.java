@@ -466,7 +466,7 @@ public class UIJCRExplorer extends UIContainer {
         if(primaryNode.isNodeType(nodeType)) return primaryNode ;
       }
     } catch(Exception e) { 
-      LOG.error("The node cannot be seen", e);      
+      LOG.warn("The node cannot be seen");      
       return getCurrentNode() ;
     }
     return getCurrentNode() ;
