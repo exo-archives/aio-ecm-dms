@@ -1,0 +1,33 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java	(revision 48018)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java	(working copy)
+@@ -234,8 +234,13 @@
+    * @throws RepositoryException
+    */
+   private void removeCurrentIdentites(Node linkNode) throws AccessControlException, RepositoryException {
++    String currentUser = linkNode.getSession().getUserID();
++    if (currentUser != null)
++      ((ExtendedNode)linkNode).setPermission(currentUser, PermissionType.ALL);
+     for(AccessControlEntry accessEntry : ((ExtendedNode)linkNode).getACL().getPermissionEntries()) {
+-      if(canRemovePermission(linkNode, accessEntry.getIdentity())) {
++      if(canRemovePermission(linkNode, accessEntry.getIdentity()) 
++         && ((ExtendedNode)linkNode).getACL().getPermissions(accessEntry.getIdentity()).size() > 0
++         && !accessEntry.getIdentity().equals(currentUser)) {
+         ((ExtendedNode) linkNode).removePermission(accessEntry.getIdentity());
+       }
+     }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/info/UIPermissionForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/info/UIPermissionForm.java	(revision 48018)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/info/UIPermissionForm.java	(working copy)
+@@ -247,8 +247,8 @@
+           }
+         } 
+         if(PermissionUtil.canChangePermission(node)) node.setPermission(userOrGroup, permsArray);
++        node.save();        
+         uiParent.getChild(UIPermissionInfo.class).updateGrid(1);
+-        node.save();
+         if (uiExplorer.getRootNode().equals(node)) {
+           if (!PermissionUtil.canRead(currentNode)) {
+             uiExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
