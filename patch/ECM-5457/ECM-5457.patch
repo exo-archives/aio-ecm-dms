@@ -1,0 +1,13 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(revision 48393)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(working copy)
+@@ -466,7 +466,7 @@
+         if(primaryNode.isNodeType(nodeType)) return primaryNode ;
+       }
+     } catch(Exception e) { 
+-      LOG.error("The node cannot be seen", e);      
++      LOG.warn("The node cannot be seen");      
+       return getCurrentNode() ;
+     }
+     return getCurrentNode() ;
