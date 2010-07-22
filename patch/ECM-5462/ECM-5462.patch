@@ -1,0 +1,14 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(revision 48206)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(working copy)
+@@ -429,6 +429,9 @@
+ 	ECMUtils.prototype.checkAvailableSpace = function() { 
+ 		var actionBar = document.getElementById('UIActionBar');
+ 		var prtNode = document.getElementById('DMSMenuItemContainer');
++		if (prtNode == null) { 
++		  return;
++		}
+ 		var uiTabs = DOM.findDescendantsByClass(prtNode, "div", "SubTabItem");
+ 		var listHideIcon = document.getElementById('IconListHideElement');
+ 		var viewBarContainer = document.getElementById("UIViewBarContainer");
