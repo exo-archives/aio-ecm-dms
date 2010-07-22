@@ -339,6 +339,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if (!listType.contains(PermissionType.ADD_NODE)) rootNode.removePermission("any", PermissionType.ADD_NODE);
       if (!listType.contains(PermissionType.SET_PROPERTY)) rootNode.removePermission("any", PermissionType.SET_PROPERTY);
       if (!listType.contains(PermissionType.REMOVE)) rootNode.removePermission("any", PermissionType.REMOVE);
+      if (!listType.contains(PermissionType.READ)) rootNode.removePermission("any", PermissionType.READ); 
     }
     rootNode.save();
   }
