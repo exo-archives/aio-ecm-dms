@@ -1,0 +1,307 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentIndexer.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentIndexer.java	(revision 0)
++++ core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentIndexer.java	(revision 0)
+@@ -0,0 +1,40 @@
++/***************************************************************************
++ * Copyright (C) 2003-2009 eXo Platform SAS.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Affero General Public License
++ * as published by the Free Software Foundation; either version 3
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see<http://www.gnu.org/licenses/>.
++ *
++ **************************************************************************/
++package org.exoplatform.services.jcr.analyzer;
++
++import org.apache.lucene.analysis.Analyzer;
++import org.exoplatform.container.configuration.ConfigurationManager;
++import org.exoplatform.services.jcr.config.QueryHandlerEntry;
++import org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex;
++
++/**
++ * Created by The eXo Platform SARL
++ * Author : Nguyen Van Chien
++ *          chien.nguyen@exoplatform.com
++ * Jul 19, 2010  
++ */
++public class IgnoreAccentIndexer extends SearchIndex {
++  
++  public IgnoreAccentIndexer(QueryHandlerEntry queryHandlerConfig, ConfigurationManager cfm) {
++    super(queryHandlerConfig, cfm);
++  }
++  
++  public Analyzer getTextAnalyzer() {
++    return new IgnoreAccentAnalyzer();
++  }
++}
+Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentAnalyzer.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentAnalyzer.java	(revision 0)
++++ core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/IgnoreAccentAnalyzer.java	(revision 0)
+@@ -0,0 +1,45 @@
++/***************************************************************************
++ * Copyright (C) 2003-2009 eXo Platform SAS.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Affero General Public License
++ * as published by the Free Software Foundation; either version 3
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see<http://www.gnu.org/licenses/>.
++ *
++ **************************************************************************/
++package org.exoplatform.services.jcr.analyzer;
++
++import java.io.Reader;
++
++import org.apache.lucene.analysis.Analyzer;
++import org.apache.lucene.analysis.ISOLatin1AccentFilter;
++import org.apache.lucene.analysis.LowerCaseFilter;
++import org.apache.lucene.analysis.TokenStream;
++import org.apache.lucene.analysis.WhitespaceTokenizer;
++import org.apache.lucene.analysis.standard.StandardFilter;
++
++/**
++ * Created by The eXo Platform SARL
++ * Author : Nguyen Van Chien
++ *          chien.nguyen@exoplatform.com
++ * Jul 19, 2010  
++ */
++public class IgnoreAccentAnalyzer extends Analyzer {
++  
++  public TokenStream tokenStream(String fieldName, Reader reader) {
++    TokenStream result = new WhitespaceTokenizer(reader);
++    result = new UnescapeHTMLFilter(result);
++    result = new StandardFilter(result);
++    result = new LowerCaseFilter(result);
++    result = new ISOLatin1AccentFilter(result);
++    return result;
++  }
++}
+Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(revision 0)
++++ core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(revision 0)
+@@ -0,0 +1,57 @@
++/*
++ * Copyright (C) 2003-2009 eXo Platform SAS.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Affero General Public License
++ * as published by the Free Software Foundation; either version 3
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see<http://www.gnu.org/licenses/>.
++ */
++package org.exoplatform.services.jcr.analyzer;
++
++import org.apache.commons.lang.StringEscapeUtils;
++import org.apache.lucene.analysis.TokenFilter;
++import org.apache.lucene.analysis.TokenStream;
++import org.apache.lucene.analysis.Token;
++
++/**
++ * Created by The eXo Platform SARL
++ * Author : Nguyen Van Chien
++ *          chien.nguyen@exoplatform.com
++ * Jul 19, 2010
++ * A filter that replaces accented characters in the ISO Latin 1 character set
++ * (ISO-8859-1) by their unaccented equivalent. The case will not be altered.
++ * <p>
++ * For instance, '&agrave;' will be replaced by 'a'.
++ * <p>
++ */
++public class UnescapeHTMLFilter extends TokenFilter {
++  public UnescapeHTMLFilter(TokenStream input) {
++    super(input);
++  }
++
++  public final Token next() throws java.io.IOException {
++    Token nextToken = input.next();
++    if (nextToken != null) {
++      String tokenText = nextToken.termText();
++      tokenText = StringEscapeUtils.unescapeHtml(tokenText);
++      tokenText = tokenText.replaceAll("\\<.*?>", "");
++      // Finally we return a new token with transformed characters.
++      if(tokenText.equals("")||tokenText.trim().equals("")){
++    	  return new Token("", 0, 0, nextToken.type());
++      }else{
++      return new Token(tokenText.trim(), nextToken.startOffset(), nextToken.startOffset()+tokenText.length(), nextToken.type());
++      }
++
++    } else
++      return null;
++  }
++
++ }
+\ No newline at end of file
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.xml	(revision 49496)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.xml	(working copy)
+@@ -37,11 +37,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/system"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -85,11 +86,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/collaboration"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -133,11 +135,12 @@
+               <property name="live-time" value="20m"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/backup"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -184,9 +187,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
++              <property name="support-highlighting" value="true"/>
++              <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -230,11 +236,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/dms-system"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.tmpl.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.tmpl.xml	(revision 49496)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/jcr/repository-configuration.tmpl.xml	(working copy)
+@@ -37,11 +37,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/system"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -85,11 +86,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/collaboration"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -133,11 +135,12 @@
+               <property name="live-time" value="20m"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/backup"/>
+               <property name="support-highlighting" value="true"/>
+-              <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>              
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -184,9 +187,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
++              <property name="support-highlighting" value="true"/>
++              <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
+@@ -230,11 +236,12 @@
+               <property name="live-time" value="1h"/>
+             </properties>
+           </cache>
+-          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
++          <query-handler class="org.exoplatform.services.jcr.analyzer.IgnoreAccentIndexer">
+             <properties>
+               <property name="index-dir" value="../temp/jcrlucenedb/dms-system"/>
+               <property name="support-highlighting" value="true"/>
+               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
++              <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
+             </properties>
+           </query-handler>
+           <lock-manager>
