@@ -1,0 +1,93 @@
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(revision 49555)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(working copy)
+@@ -11,6 +11,7 @@
+   import org.exoplatform.ecm.webui.utils.Utils;
+   import org.exoplatform.web.application.Parameter;
+   import org.exoplatform.webui.core.UIRightClickPopupMenu;
++  import org.exoplatform.services.jcr.util.Text;
+   
+   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
+   String componentId = uicomponent.getId();
+@@ -141,8 +142,8 @@
+ 	          def isPreferenceNode = uicomponent.isPreferenceNode(data);
+ 	          def preferenceWS = data.getSession().getWorkspace().getName();
+ 	          String nodePath = data.getPath();
+-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length());   
+-	          String subName;
++	         String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()));
++	         String subName;
+ 	          //nodePath = nodePath + "&workspaceName=" + preferenceWS;
+ 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS));
+ 	      %>
+@@ -187,7 +188,7 @@
+ 	        </div>
+ 	        <div class="ResizeColumn">
+ 							<div class="NodeLabel">
+-								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
++								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(subName)%></div>
+ 		 					</div>
+ 	        </div>
+ 	        <div style="clear: both"><span></span></div>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(revision 49555)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(working copy)
+@@ -192,7 +192,7 @@
+ 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+ 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
+ 	          String nodePath = data.getPath() ;
+-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
++	          String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length())) ;    
+ 	          String subName ;
+ 	          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+ 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl	(revision 49555)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl	(working copy)
+@@ -5,6 +5,7 @@
+ 	import javax.jcr.NodeIterator;
+ 	import org.exoplatform.webui.core.UIPopupWindow;
+ 	import org.exoplatform.web.application.Parameter;
++	import org.exoplatform.services.jcr.util.Text;
+ 	
+ 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
+   def resizeBlock = "class=\"UIResizableBlock\"";
+@@ -94,7 +95,7 @@
+ 		      <div class="UITabContentContainer">
+ 		        <div class="UITabContent" style="display: block;"> 
+ 			        <div class="NavigationContainer">       
+-		    				<div class="TopTitle">$originalNode.name</div>
++		    				<div class="TopTitle"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></div>
+ 				        <%
+ 				        	if(contentNode.hasProperty("jcr:data")){
+ 				        	  String iframeId = uicomponent.getId() + "ifame" ;
+@@ -108,7 +109,7 @@
+ 		        </div>
+ 		        <div class="UITabContent" style="display: none;"> 
+ 		        	<div class="NavigationContainer">       
+-	    					<div class="TopTitle">$originalNode.name</div>
++	    					<div class="TopTitle"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></div>
+ 			        	<div class="Content">
+ 			        		<div class="TextContent">
+ 						        <%
+@@ -126,7 +127,7 @@
+ 		</div>  
+ 		<%} else {%>
+ 		  <div class="NavigationContainer">       
+-		    <div class="TopTitle">$originalNode.name</div>
++		    <div class="TopTitle"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></div>
+ 		    <div class="Content">
+ 		    	<div class="TextContent">
+ 			      <%        
+@@ -163,7 +164,7 @@
+ 		  <table class="ActionContainer">  
+ 		  	<tr>
+ 		  		<td>
+-			      <div onclick="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(currentNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
++			       <div onclick="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=Text.escapeIllegalJcrChars(currentNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
+ 			        <div class="ButtonLeft">
+ 			          <div class="ButtonRight">
+ 			            <div class="ButtonMiddle">
