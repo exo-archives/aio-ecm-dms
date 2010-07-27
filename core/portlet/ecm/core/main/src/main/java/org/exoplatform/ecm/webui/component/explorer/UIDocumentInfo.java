@@ -860,4 +860,26 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 		  }
     }
   }
+  
+  public boolean isEnableComment() {
+    return true;
+  }
+
+  public boolean isEnableVote() {
+    return true;
+  }
+
+  /**
+   * This method is not used in this class and not implemented
+   */
+  @SuppressWarnings("unused")
+  public void setEnableComment(boolean value) {
+  }
+
+  /**
+   * This method is not used in this class and not implemented
+   */
+  @SuppressWarnings("unused")
+  public void setEnableVote(boolean value) {
+  }
 }

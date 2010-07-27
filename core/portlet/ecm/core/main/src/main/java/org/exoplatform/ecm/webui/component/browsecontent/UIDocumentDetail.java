@@ -515,5 +515,27 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
           "ajaxRedirect('" + downloadLink + "');");
     }
   }
+  
+  public boolean isEnableComment() {
+    return false;
+  }
+ 
+  public boolean isEnableVote() {
+    return false;
+  }
+ 
+  /**
+   * This method is not used in this class and not implemented
+   */
+  @SuppressWarnings("unused")
+  public void setEnableComment(boolean value) {
+  }
+  
+  /**
+   * This method is not used in this class and not implemented
+   */
+  @SuppressWarnings("unused")
+  public void setEnableVote(boolean value) {
+  }
 
 }

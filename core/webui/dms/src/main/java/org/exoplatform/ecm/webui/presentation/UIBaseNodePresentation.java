@@ -58,6 +58,8 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
 
   /** The language_. */
   private String language_ ;
+  private boolean enableVote_;
+  private boolean enableComment_;
 
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getNode()
@@ -369,4 +371,11 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     return null;
   }
   
+  public boolean isEnableVote() { return enableVote_; }
+  
+  public void setEnableVote(boolean value) { enableVote_ = value; }
+  
+  public boolean isEnableComment() { return enableComment_; }
+  
+  public void setEnableComment(boolean value) { enableComment_ = value; }
 }
