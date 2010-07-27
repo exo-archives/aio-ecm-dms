@@ -192,7 +192,7 @@
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
 	          String nodePath = data.getPath() ;
-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
+	          String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length())) ;    
 	          String subName ;
 	          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;

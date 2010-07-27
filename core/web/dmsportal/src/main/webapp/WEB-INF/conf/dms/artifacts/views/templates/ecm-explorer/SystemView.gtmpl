@@ -11,6 +11,7 @@
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.web.application.Parameter;
   import org.exoplatform.webui.core.UIRightClickPopupMenu;
+  import org.exoplatform.services.jcr.util.Text;
   
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
   String componentId = uicomponent.getId();
@@ -141,8 +142,8 @@
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data);
 	          def preferenceWS = data.getSession().getWorkspace().getName();
 	          String nodePath = data.getPath();
-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length());   
-	          String subName;
+	         String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()));
+	         String subName;
 	          //nodePath = nodePath + "&workspaceName=" + preferenceWS;
 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS));
 	      %>
@@ -187,7 +188,7 @@
 	        </div>
 	        <div class="ResizeColumn">
 							<div class="NodeLabel">
-								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
+								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(subName)%></div>
 		 					</div>
 	        </div>
 	        <div style="clear: both"><span></span></div>
