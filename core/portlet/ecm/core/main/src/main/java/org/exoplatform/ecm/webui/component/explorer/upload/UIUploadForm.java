@@ -60,6 +60,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
+import org.exoplatform.services.listener.ListenerService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.upload.UploadResource;
 import org.exoplatform.upload.UploadService;
@@ -405,13 +406,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           contentNode.setProperty(Utils.JCR_DATA, inputStream);
           contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
           contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
-          node.save() ;       
-          node.checkin() ;
-          node.checkout() ;
           if (node.isNodeType("exo:datetime")) {
             node.setProperty("exo:dateModified",new GregorianCalendar()) ;
           }
           node.save();
+          ListenerService listenerService = getApplicationComponent(ListenerService.class);
+          listenerService.broadcast(CmsService.POST_EDIT_CONTENT_EVENT, this, node);
           for (String categoryPath : listTaxonomyNameNew) {
             if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
             taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
