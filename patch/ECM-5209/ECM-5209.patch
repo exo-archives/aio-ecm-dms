@@ -1,0 +1,237 @@
+Index: ext/contentvalidation/component/webui/src/main/java/org/exoplatform/contentvalidation/webui/UIDocumentContent.java
+===================================================================
+--- ext/contentvalidation/component/webui/src/main/java/org/exoplatform/contentvalidation/webui/UIDocumentContent.java	(revision 49822)
++++ ext/contentvalidation/component/webui/src/main/java/org/exoplatform/contentvalidation/webui/UIDocumentContent.java	(working copy)
+@@ -422,5 +422,27 @@
+       uiComp.setNode(selectedNode) ;
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
+     }
++  }
++  
++  public boolean isEnableComment() {
++    return false;
+   }
++
++  public boolean isEnableVote() {
++    return false;
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused") 
++  public void setEnableComment(boolean value) {
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused") 
++  public void setEnableVote(boolean value) {
++  }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIViewSearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIViewSearchResult.java	(revision 49822)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIViewSearchResult.java	(working copy)
+@@ -413,5 +413,27 @@
+       uicomp.setNode(selectedNode);
+       event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent());
+     }
++  }
++  
++  public boolean isEnableComment() {
++    return false;
+   }
+-}
+\ No newline at end of file
++
++  public boolean isEnableVote() {
++    return false;
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableComment(boolean value) {
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableVote(boolean value) {
++  }
++}
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/versions/UIViewVersion.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/versions/UIViewVersion.java	(revision 49822)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/versions/UIViewVersion.java	(working copy)
+@@ -383,6 +383,28 @@
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+       return;
+     }
++  }
++  
++  public boolean isEnableComment() {
++    return false;
+   }
+ 
+-}
+\ No newline at end of file
++  public boolean isEnableVote() {
++    return false;
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableComment(boolean value) {
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableVote(boolean value) {
++  }
++
++}
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(revision 49822)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(working copy)
+@@ -859,5 +859,27 @@
+ 		    return;
+ 		  }
+     }
++  }
++  
++  public boolean isEnableComment() {
++    return true;
+   }
++
++  public boolean isEnableVote() {
++    return true;
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableComment(boolean value) {
++  }
++
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableVote(boolean value) {
++  }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(revision 49822)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(working copy)
+@@ -514,6 +514,28 @@
+       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript(
+           "ajaxRedirect('" + downloadLink + "');");
+     }
++  }
++  
++  public boolean isEnableComment() {
++    return false;
+   }
++ 
++  public boolean isEnableVote() {
++    return false;
++  }
++ 
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableComment(boolean value) {
++  }
++  
++  /**
++   * This method is not used in this class and not implemented
++   */
++  @SuppressWarnings("unused")
++  public void setEnableVote(boolean value) {
++  }
+ 
+-}
+\ No newline at end of file
++}
+Index: core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/NodePresentation.java
+===================================================================
+--- core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/NodePresentation.java	(revision 49822)
++++ core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/NodePresentation.java	(working copy)
+@@ -27,9 +27,35 @@
+  * minh.dang@exoplatform.com May 8, 2008 3:22:08 PM
+  */
+ 
+-public interface NodePresentation {
++public interface NodePresentation {
++
++  /**
++   * Sets enable vote
++   * 
++   * @param value value to set
++   */
++  public void setEnableVote(boolean value);
++    
++  /**
++   * checks if enable vote
++   * 
++   */  
++  public boolean isEnableVote();
++  
++  /**
++   * Sets enable comment
++   * 
++   * @param value value to set
++   */
++  public void setEnableComment(boolean value);
+   
+   /**
++   * checks if enable comment
++   * 
++   */  
++  public boolean isEnableComment();  
++  
++  /**
+    * Sets the node.
+    * 
+    * @param node the new node
+Index: core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java
+===================================================================
+--- core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java	(revision 49822)
++++ core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java	(working copy)
+@@ -57,7 +57,9 @@
+ public abstract class UIBaseNodePresentation extends UIContainer implements NodePresentation {
+ 
+   /** The language_. */
+-  private String language_ ;
++  private String language_ ;
++  private boolean enableVote_;
++  private boolean enableComment_;
+ 
+   /* (non-Javadoc)
+    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getNode()
+@@ -368,5 +370,12 @@
+     }    
+     return null;
+   }
++  
++  public boolean isEnableVote() { return enableVote_; }
+   
++  public void setEnableVote(boolean value) { enableVote_ = value; }
++  
++  public boolean isEnableComment() { return enableComment_; }
++  
++  public void setEnableComment(boolean value) { enableComment_ = value; }
+ }
