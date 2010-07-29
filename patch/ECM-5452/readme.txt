@@ -8,17 +8,17 @@ Summary
 The Proposal
 Problem description
 
-What is the problem to fix ?
+What is the problem to fix?
 
     *  
 
 Fix description
 
-How the problem is fixed ?
+How is the problem fixed?
 
     *  
 
-Patch informations:
+Patch information:
 
     * Final files to use should be attached to this page (Jira is for the dicussion)
 
@@ -26,7 +26,7 @@ Patches files:
 There are currently no attachments on this page.
 Tests to perform
 
-Tests performed at DevLevel ?
+Tests performed at DevLevel?
 *
 
 To reproduce this problem:
@@ -37,6 +37,6 @@ To reproduce this problem:
 
 When displaying document's title, The unescapeIllegalJcrChars method of org.exoplatform.ecm.utils.text.Text should be applied in order to revert changes done to save node in the JCR. The changes should be done in the view1.gtmpl related to the nt:file
 
-Tests performed at QA/Support Level ?
+Tests performed at QA/Support Level?
 *
 
