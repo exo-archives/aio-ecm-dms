@@ -17,16 +17,16 @@ How is the problem fixed?
 
     *  Added a if/else clause to check the vote and comment is shown or not
 
-Patch informations:
+Patch information:
 Patch files:
 ECM-5209.patch 	  	
 
 Tests to perform
 
-Tests performed at DevLevel ?
+Tests performed at DevLevel?
 *
 
-Tests performed at QA/Support Level ?
+Tests performed at QA/Support Level?
 *
 
 
@@ -47,9 +47,9 @@ Will previous configuration continue to work?
 
 Risks and impacts
 
-Can this bug fix have an impact on current client projects ?
+Can this bug fix have an impact on current client projects?
 
-    * Function or ClassName change ?
+    * Function or ClassName change?
 
 Is there a performance risk/cost?
 *
