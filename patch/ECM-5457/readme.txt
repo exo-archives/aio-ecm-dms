@@ -3,9 +3,7 @@ Summary
     * Status: Exception while "Viewing Metadata"
     * CCP Issue: N/A, Product Jira Issue: ECM-5457
     * Complexity: N/A
-    * Impacted Client(s): N/A
-    * Client expectations (date/content): N/A
-
+    
 The Proposal
 Problem description
 
@@ -25,7 +23,7 @@ ECM-5457.patch
 
 Tests to perform
 
-Which test should have detect the issue ?
+Which test should have detect the issue?
 * To reproduce the problem you have to:
 
     * Add a new Action with a exo:addMetadaAction as action type and dc:elementset as Metadata for a directory (ie:/Documents/Live).
@@ -34,10 +32,10 @@ Which test should have detect the issue ?
     * At the server console you will have this exception:
       [ERROR] UIJCRExplorer - The node cannot be seen <javax.jcr.ItemNotFoundException: Primary item not found for /Documents/Live/new article>javax.jcr.ItemNotFoundException: Primary item not found for /Documents/Live/new article
 
-Is a test missing in the TestCase file ?
+Is a test missing in the TestCase file?
 * Yes
 
-Added UnitTest ?
+Added UnitTest?
 * No
 
 Recommended Performance test?
@@ -46,7 +44,7 @@ Recommended Performance test?
 
 Documentation changes
 
-Where is the documentation for this feature ?
+Where is the documentation for this feature?
 *
 
 Changes Needed:
@@ -55,7 +53,7 @@ Changes Needed:
 
 Configuration changes
 
-Is this bug changing the product configuration ?
+Is this bug changing the product configuration?
 * No
 
 Describe configuration changes:
@@ -67,10 +65,10 @@ Previous configuration will continue to work?
 
 Risks and impacts
 
-Is there a risk applying this bug fix ?
+Is there a risk applying this bug fix?
 * No
 
-Is this bug fix can have an impact on current client projects ?
+Can this bug fix have an impact on current client projects?
 * No
 
 Is there a performance risk/cost?
