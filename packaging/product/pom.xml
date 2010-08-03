@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.exoplatform.ecm.dms</groupId>
     <artifactId>exo.ecm.dms.packaging</artifactId>
-    <version>2.5.7</version>
+    <version>2.5.8-SNAPSHOT</version>
   </parent>
   <artifactId>dms.packaging.product</artifactId>
   <packaging>pom</packaging>
@@ -300,56 +300,56 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.web.portal</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.jcr-console</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.ext.config</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.portlet.ecm.core.web</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.publication</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.deployment</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
@@ -357,35 +357,35 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.jbpmconfig</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation.bp</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.bp.jbpm.content.publishing</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.plugin</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.workflowPublication</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.webui</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
@@ -414,14 +414,14 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.bonitaconfig</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation.bp</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.bp.bonita.content-publishing</artifactId>
-      <version>2.5.7</version>
+      <version>2.5.8-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <!-- 2.5.3-SNAPSHOT-->
