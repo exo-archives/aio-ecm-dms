@@ -1,0 +1,121 @@
+Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java
+===================================================================
+--- component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(révision 49579)
++++ component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(copie de travail)
+@@ -509,5 +509,41 @@
+     } finally {
+       if (systemSession != null) systemSession.logout();
+     }    
+-  }   
++  }
++    /**
++	 * {@inheritDoc}
++	 */
++	public void removeLinkedTagsOfDocument(String uuid, Node document,
++			String repository) throws Exception {
++		Session systemSession = null;
++		try {
++			if (document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP))
++				return;
++			
++			systemSession = getSystemSession(repository);
++			try {
++				Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP)
++						.getValues();
++				List<Value> newValues = new ArrayList<Value>();
++				for (Value v : values) {
++					if (!uuid.equals(v.getString()))
++						newValues.add(v);
++				}
++				document.setProperty(EXO_FOLKSONOMY_PROP, newValues
++						.toArray(new Value[newValues.size()]));
++				document.getSession().save();
++				Node taggNode=(Node)systemSession.getNodeByUUID(uuid);
++				updateTagStatus(taggNode.getPath(), repository,
++						SessionProviderFactory.createSystemProvider());
++			} catch (Exception e) {
++				LOG.error("You haven't permission to remove tag: ", e);
++
++			}
++
++		} finally {
++			if (systemSession != null)
++				systemSession.logout();
++		}
++		
++	}
+ }
+Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java
+===================================================================
+--- component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(révision 49579)
++++ component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(copie de travail)
+@@ -113,6 +113,16 @@
+    * Init all TagStylePlugin with session in repository name
+    * @param repository     repository name
+    */
+-  public void init(String repository) throws Exception ;
++  public void init(String repository) throws Exception ;
++  /**
++	 * Remove linked tags of current document by uuid.
++	 * remove the EXO_FOLKSONOMY_PROP
++	 * 
++	 * @param uuid
++	 * @param document
++	 * @param repository
++	 * @throws Exception
++	 */
++	public void removeLinkedTagsOfDocument(String uuid, Node document,String repository) throws Exception ;
+   
+ }
+Index: portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java
+===================================================================
+--- portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(révision 49579)
++++ portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(copie de travail)
+@@ -51,6 +51,7 @@
+     template = "system:/groovy/webui/form/UIForm.gtmpl",
+     events = {
+       @EventConfig(listeners = UITaggingForm.AddTagActionListener.class),
++      @EventConfig(listeners = UITaggingForm.RemoveActionListener.class, phase = Phase.DECODE),
+       @EventConfig(listeners = UITaggingForm.CancelActionListener.class, phase = Phase.DECODE)
+     }
+ )
+@@ -70,6 +71,7 @@
+     uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName");
+     addUIComponentInput(uiInputSet);
+     uiInputSet.setIsView(false);
++    setActions(new String[]{"AddTag", "Cancel"});
+   }
+   
+   public void activate() throws Exception {
+@@ -83,7 +85,9 @@
+     }
+     UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET);
+     uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString());
++    uiLinkedInput.setActionInfo(LINKED_TAGS, new String[] { "Edit", "Remove"});
+     uiLinkedInput.setIsShowOnly(true);
++    uiLinkedInput.setIsDeleteOnly(false);
+     
+   }
+   public void deActivate() throws Exception {}
+@@ -183,4 +187,21 @@
+       uiExplorer.cancelAction();
+     }
+   }
++  
++  static public class RemoveActionListener extends EventListener<UITaggingForm> {
++	    public void execute(Event<UITaggingForm> event) throws Exception {
++	    	UITaggingForm uiForm = event.getSource();
++	        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
++	        FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class);
++	        String tagName = event.getRequestContext().getRequestParameter(OBJECTID);
++	    	String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
++	    	List<Node> tags=folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository);
++	    	 for(Node tag:tags){
++	    		 if(tag.getName().equals(tagName))
++			    	 folksonomyService.removeLinkedTagsOfDocument(tag.getUUID(),uiExplorer.getCurrentNode(),repository);
++		    		 uiForm.activate();
++	    		  	      
++	    	            }
++	    		 }
++	    	 }
+ }
