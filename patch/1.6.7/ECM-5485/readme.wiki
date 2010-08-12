@@ -1,0 +1,112 @@
+h1. Summary
+{panel}
+* *Status:* {excerpt}Sort documents by Modified date and creation date doesn't work{excerpt}
+* *CCP Issue:* [CCP-508@JIRA], Product Jira Issue: [ECM-5485@JIRA]
+* *Complexity:* N/A
+{panel}
+
+h1. The Proposal
+
+h2. Problem description
+{panel}
+*What is the problem to fix?*
+* In File Explorer: impossible to sort documents by Modified/Created date.
+{panel}
+
+h2. Fix description
+{panel}
+*How is the problem fixed?*
+* &nbsp;In UIJCRExplorer, there is a method called sort(List<Node> childrenList). It receives a list of nodes, then orders that list by using one of the Preferences like Preference.SORT_BY_AUDITING or Preference.SORT_BY_VERSIONABLE etc... The problem was the method didn't sort the given list by SORT_BY_CREATED_DATE or SORT_BY_MODIFIED_DATE when required.
+* Therefore, this bug was fixed by adding two more IF ELSE blocks to check and sort the list of nodes by Preference.SORT_BY_CREATED_DATE and Preference.SORT_BY_MODIFIED_DATE.
+{panel}
+
+*Patch information:*
+{panel}
+
+Patches files:
+ECM-5485.patch
+{panel}
+
+h2. Tests to perform
+
+{panel}
+*Which test should have detect the issue?*
+\* To reproduce the problem:
+# Under File Explorer go to sites management.
+# Unde acme/documents select the preference setting.
+# Try to sort document by modified date/created date with ascending or descending order.
+Observation: Sort doesn't work.
+
+*Is a test missing in the TestCase file?*
+\*
+
+*Added UnitTest?*
+\*
+
+*Recommended Performance test?*
+\*
+
+{panel}
+
+h2. Documentation changes
+
+{panel}
+*Where is the documentation for this feature?*
+\*
+
+*Changes Needed:*
+\*
+
+{panel}
+
+h2. Configuration changes
+
+{panel}
+*Is this bug changing the product configuration?*
+\*
+
+*Describe configuration changes:*
+\*
+
+*Previous configuration will continue to work?*
+\*
+
+{panel}
+
+h2. Risks and impacts
+
+{panel}
+*Is there a risk applying this bug fix?*
+\*
+
+*Can this bug fix have an impact on current client projects?*
+\*
+
+*Is there a performance risk/cost?*
+\*
+
+{panel}
+
+
+h1. Validation By PM & Support
+
+{panel}
+*PM Comment*
+\*VALIDATED BY PM
+{panel}
+
+{panel}
+*Support Comment*
+\*Patch validated by Support Team
+{panel}
+
+
+h1. QA Feedbacks
+
+{panel}
+*Performed Tests*
+\*
+
+{panel}
+{panel}
+{panel} 
