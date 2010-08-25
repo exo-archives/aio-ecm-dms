@@ -509,5 +509,41 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     } finally {
       if (systemSession != null) systemSession.logout();
     }    
-  }   
+  }
+    /**
+	 * {@inheritDoc}
+	 */
+	public void removeLinkedTagsOfDocument(String uuid, Node document,
+			String repository) throws Exception {
+		Session systemSession = null;
+		try {
+			if (document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP))
+				return;
+			
+			systemSession = getSystemSession(repository);
+			try {
+				Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP)
+						.getValues();
+				List<Value> newValues = new ArrayList<Value>();
+				for (Value v : values) {
+					if (!uuid.equals(v.getString()))
+						newValues.add(v);
+				}
+				document.setProperty(EXO_FOLKSONOMY_PROP, newValues
+						.toArray(new Value[newValues.size()]));
+				document.getSession().save();
+				Node taggNode=(Node)systemSession.getNodeByUUID(uuid);
+				updateTagStatus(taggNode.getPath(), repository,
+						SessionProviderFactory.createSystemProvider());
+			} catch (Exception e) {
+				LOG.error("You haven't permission to remove tag: ", e);
+
+			}
+
+		} finally {
+			if (systemSession != null)
+				systemSession.logout();
+		}
+		
+	}
 }

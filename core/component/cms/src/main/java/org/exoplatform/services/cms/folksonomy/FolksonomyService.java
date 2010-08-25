@@ -114,5 +114,15 @@ public interface FolksonomyService {
    * @param repository     repository name
    */
   public void init(String repository) throws Exception ;
+  /**
+	 * Remove linked tags of current document by uuid.
+	 * remove the EXO_FOLKSONOMY_PROP
+	 * 
+	 * @param uuid
+	 * @param document
+	 * @param repository
+	 * @throws Exception
+	 */
+	public void removeLinkedTagsOfDocument(String uuid, Node document,String repository) throws Exception ;
   
 }

@@ -51,6 +51,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template = "system:/groovy/webui/form/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UITaggingForm.AddTagActionListener.class),
+      @EventConfig(listeners = UITaggingForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UITaggingForm.CancelActionListener.class, phase = Phase.DECODE)
     }
 )
@@ -70,6 +71,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName");
     addUIComponentInput(uiInputSet);
     uiInputSet.setIsView(false);
+    setActions(new String[]{"AddTag", "Cancel"});
   }
   
   public void activate() throws Exception {
@@ -83,7 +85,9 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     }
     UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET);
     uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString());
+    uiLinkedInput.setActionInfo(LINKED_TAGS, new String[] { "Edit", "Remove"});
     uiLinkedInput.setIsShowOnly(true);
+    uiLinkedInput.setIsDeleteOnly(false);
     
   }
   public void deActivate() throws Exception {}
@@ -183,4 +187,21 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       uiExplorer.cancelAction();
     }
   }
+  
+  static public class RemoveActionListener extends EventListener<UITaggingForm> {
+	    public void execute(Event<UITaggingForm> event) throws Exception {
+	    	UITaggingForm uiForm = event.getSource();
+	        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+	        FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class);
+	        String tagName = event.getRequestContext().getRequestParameter(OBJECTID);
+	    	String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+	    	List<Node> tags=folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository);
+	    	 for(Node tag:tags){
+	    		 if(tag.getName().equals(tagName))
+			    	 folksonomyService.removeLinkedTagsOfDocument(tag.getUUID(),uiExplorer.getCurrentNode(),repository);
+		    		 uiForm.activate();
+	    		  	      
+	    	            }
+	    		 }
+	    	 }
 }
