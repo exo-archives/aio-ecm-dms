@@ -309,7 +309,29 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
     return service;
   }
+  /**
+   * 
+   * @param node
+   * @return target node if it is a symlink or simply the actual node
+   * @throws ItemNotFoundException
+   * @throws RepositoryException
+   */
+  public Node getNodeLink(Node node) throws ItemNotFoundException, RepositoryException
+  { 
+	  
+		if(isSymLink(node))
+		  {
+			LinkManager linkManager = getApplicationComponent(LinkManager.class);
+			return linkManager.getTarget(node);
+			  
+		  }
+		else
+			return node;
+		
+	
 
+	
+  }
   public String getNodeOwner(Node node) throws RepositoryException {
     if (node.hasProperty(Utils.EXO_OWNER)) {
       return node.getProperty(Utils.EXO_OWNER).getString();

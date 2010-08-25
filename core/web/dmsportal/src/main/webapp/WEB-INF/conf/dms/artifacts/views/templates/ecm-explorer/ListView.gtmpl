@@ -270,7 +270,7 @@
 		          %>
 	        </div>
 	        <div class="RightColumn" style="width: 120px;">
-		        <%=uicomponent.getNodeOwner(data)%>
+		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
 	        </div>
 	        <div class="RightColumn" style="width: 120px;">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>

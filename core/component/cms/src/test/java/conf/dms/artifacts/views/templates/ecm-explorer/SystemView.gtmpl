@@ -176,7 +176,7 @@
 		          %>
 	        </div>
 	        <div class="RightColumn" style="width: 90px">
-		        <%=uicomponent.getNodeOwner(data)%>
+		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
 	        </div>
 	        <div class="RightColumn" style="width: 125px">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
