@@ -1,7 +1,7 @@
-Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java
 ===================================================================
---- component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(révision 49579)
-+++ component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(copie de travail)
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(revision 51200)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/FolksonomyServiceImpl.java	(working copy)
 @@ -509,5 +509,41 @@
      } finally {
        if (systemSession != null) systemSession.logout();
@@ -45,10 +45,10 @@ Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/impl/
 +		
 +	}
  }
-Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java
 ===================================================================
---- component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(révision 49579)
-+++ component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(copie de travail)
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(revision 51200)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/FolksonomyService.java	(working copy)
 @@ -113,6 +113,16 @@
     * Init all TagStylePlugin with session in repository name
     * @param repository     repository name
@@ -67,10 +67,10 @@ Index: component/cms/src/main/java/org/exoplatform/services/cms/folksonomy/Folks
 +	public void removeLinkedTagsOfDocument(String uuid, Node document,String repository) throws Exception ;
    
  }
-Index: portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java
 ===================================================================
---- portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(révision 49579)
-+++ portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(copie de travail)
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(revision 51200)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(working copy)
 @@ -51,6 +51,7 @@
      template = "system:/groovy/webui/form/UIForm.gtmpl",
      events = {
