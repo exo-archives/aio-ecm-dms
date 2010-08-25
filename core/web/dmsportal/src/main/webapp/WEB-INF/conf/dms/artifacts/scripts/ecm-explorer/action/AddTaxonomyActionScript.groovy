@@ -60,8 +60,8 @@ public class AddTaxonomyActionScript implements CmsScript {
   
   public void execute(Object context) throws Exception {
     Map variables = (Map) context;       
-    String nodePath = (String)variables.get("nodePath") ;
-    String storeFullPath = (String)variables.get("exo:storeHomePath") ;
+    String nodePath = (String)variables.get("nodePath");
+    String storeFullPath = (String)variables.get("exo:storeHomePath");
     String storeHomePath = null;
     String storeWorkspace = null;
     String repository = (String)variables.get("repository");
@@ -69,7 +69,10 @@ public class AddTaxonomyActionScript implements CmsScript {
     String targetPath = (String)variables.get("exo:targetPath");
     if(storeFullPath.indexOf(":/") > -1) {
       storeWorkspace = storeFullPath.split(":/")[0];
-      storeHomePath = storeFullPath.split(":/")[1];
+      if (storeFullPath.split(":/").length == 1)
+        storeHomePath = "";
+      else
+        storeHomePath = storeFullPath.split(":/")[1];      
       if(!storeHomePath.startsWith("/")) storeHomePath = "/" + storeHomePath;
     } else {
       storeWorkspace = targetWorkspace;
@@ -81,49 +84,60 @@ public class AddTaxonomyActionScript implements CmsScript {
     Node targetNode = null;
     Node storeNode = null;
     try{
-      sessionHomeNode = seProviderService_.getSystemSessionProvider(null).getSession(storeWorkspace, manageableRepository);
+      sessionHomeNode = seProviderService_.getSessionProvider(null).getSession(storeWorkspace, manageableRepository);
       storeNode = (Node)sessionHomeNode.getItem(storeHomePath);
     } catch(Exception e) {
       LOG.error("Exception when try to get node of root taxonomy tree", e);
       throw e;
     }
     try{
-      sessionTargetNode = seProviderService_.getSystemSessionProvider(null).getSession(targetWorkspace, manageableRepository);
+      sessionTargetNode = seProviderService_.getSessionProvider(null).getSession(targetWorkspace, manageableRepository);
       targetNode = (Node)sessionTargetNode.getItem(targetPath);
     } catch(Exception e) {
       LOG.error("Exception when try to get node of target", e);
       throw e;
     }
-	String[] subPaths = getDateLocation().split("/");
-	Node cNode = targetNode;
-	for (String subPath : subPaths) {
-		if (!cNode.hasNode(subPath)) {
-			cNode.addNode(subPath);
-			cNode.save();
-		}
-		cNode = cNode.getNode(subPath);
-	}
-  	String nodeName = nodePath.substring(nodePath.lastIndexOf("/") + 1);
-  	// defend node with same name is overwrited
-  	String generatedNodeName = idGenerator_.generateStringID(nodeName);
-  	String targetParentPath = cNode.getPath(); 
-  	targetPath = cNode.getPath().concat("/").concat(generatedNodeName).replaceAll("/+", "/");
-    if(!storeWorkspace.equals(targetWorkspace)) {
-      Node currentNode = (Node)storeNode.getSession().getItem(nodePath);
-      sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, true);
-      currentNode.remove();
-      storeNode.save();
-    } else {
-      sessionTargetNode.move(nodePath, targetPath);
+    try {
+	  	String[] subPaths = getDateLocation().split("/");
+	  	Node cNode = targetNode;
+	  	for (String subPath : subPaths) {
+	  		if (!cNode.hasNode(subPath)) {
+	  			cNode.addNode(subPath);
+	  			cNode.save();
+	  		}
+	  		cNode = cNode.getNode(subPath);
+	  	}
+	  	String nodeName = nodePath.substring(nodePath.lastIndexOf("/") + 1);
+	  	// defend node with same name is overwrited
+	  	String generatedNodeName = idGenerator_.generateStringID(nodeName);
+	  	String targetParentPath = cNode.getPath(); 
+	  	targetPath = cNode.getPath().concat("/").concat(generatedNodeName).replaceAll("/+", "/");
+	    if (!storeWorkspace.equals(targetWorkspace) && storeNode.getSession().itemExists(nodePath)) {
+	      Node currentNode = (Node)storeNode.getSession().getItem(nodePath);
+	      sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, true);
+	      currentNode.remove();
+	      storeNode.save();
+	    } else {
+	    	if (sessionHomeNode.itemExists(nodePath)) {
+	    		sessionHomeNode.move(nodePath, targetPath);
+	    		sessionHomeNode.save();
+	    	}	
+	    }
+	    if (sessionTargetNode.itemExists(targetPath)) {
+	    	targetNode = (Node)sessionTargetNode.getItem(targetPath);
+		    String nodeLinkPath = nodePath.substring(0, nodePath.lastIndexOf("/"));
+		    if (!nodeLinkPath.startsWith("/")) nodeLinkPath = "/" + nodeLinkPath;     
+		    Node nodeLink = linkManager_.createLink((Node)storeNode.getSession().getItem(nodeLinkPath), "exo:taxonomyLink", targetNode, nodeName);
+		    //rename added node to recover official name
+		    sessionTargetNode.move(targetPath, targetParentPath.concat("/").concat(nodeName));
+		    if (targetNode.canAddMixin("exo:privilegeable"))
+		      targetNode.addMixin("exo:privilegeable");
+		    sessionTargetNode.save();
+	    }
+    } catch (Exception e) {
+    	LOG.error("Exception when try move node and create link", e);
+      throw e;
     }
-    sessionTargetNode.save();
-    targetNode = (Node)sessionTargetNode.getItem(targetPath);
-    Node nodeLink = linkManager_.createLink((Node)storeNode.getSession().getItem(nodePath.substring(0, nodePath.lastIndexOf("/"))), "exo:taxonomyLink", targetNode, nodeName);
-    // rename added node to recover official name
-    sessionTargetNode.move(targetPath, targetParentPath.concat("/").concat(nodeName));
-    if (targetNode.canAddMixin("exo:privilegeable"))
-      targetNode.addMixin("exo:privilegeable");
-    sessionTargetNode.save();
   }
   
   private String getDateLocation() {
