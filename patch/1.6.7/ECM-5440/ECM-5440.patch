@@ -1,0 +1,125 @@
+Index: core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl
+===================================================================
+--- core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(revision 50536)
++++ core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(working copy)
+@@ -176,7 +176,7 @@
+ 		          %>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 90px">
+-		        <%=uicomponent.getNodeOwner(data)%>
++		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 125px">
+ 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+@@ -200,4 +200,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>	
+\ No newline at end of file
++</div>	
+Index: core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl
+===================================================================
+--- core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(revision 50536)
++++ core/component/cms/src/test/java/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(working copy)
+@@ -257,7 +257,7 @@
+ 		          %>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 120px;">
+-		        <%=uicomponent.getNodeOwner(data)%>
++		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 120px;">
+ 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+@@ -284,4 +284,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>	
+\ No newline at end of file
++</div>	
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(revision 50536)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(working copy)
+@@ -309,7 +309,29 @@
+     }
+     return service;
+   }
++  /**
++   * 
++   * @param node
++   * @return target node if it is a symlink or simply the actual node
++   * @throws ItemNotFoundException
++   * @throws RepositoryException
++   */
++  public Node getNodeLink(Node node) throws ItemNotFoundException, RepositoryException
++  { 
++	  
++		if(isSymLink(node))
++		  {
++			LinkManager linkManager = getApplicationComponent(LinkManager.class);
++			return linkManager.getTarget(node);
++			  
++		  }
++		else
++			return node;
++		
++	
+ 
++	
++  }
+   public String getNodeOwner(Node node) throws RepositoryException {
+     if (node.hasProperty(Utils.EXO_OWNER)) {
+       return node.getProperty(Utils.EXO_OWNER).getString();
+@@ -859,8 +881,8 @@
+ 		    return;
+ 		  }
+     }
+-  }
+-  
++  }
++  
+   public boolean isEnableComment() {
+     return true;
+   }
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(revision 50536)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(working copy)
+@@ -177,7 +177,7 @@
+ 		          %>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 90px">
+-		        <%=uicomponent.getNodeOwner(data)%>
++		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 125px">
+ 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+@@ -201,4 +201,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>	
+\ No newline at end of file
++</div>	
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(revision 50536)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(working copy)
+@@ -270,7 +270,7 @@
+ 		          %>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 120px;">
+-		        <%=uicomponent.getNodeOwner(data)%>
++		        <%=uicomponent.getNodeOwner(uicomponent.getNodeLink(data))%>
+ 	        </div>
+ 	        <div class="RightColumn" style="width: 120px;">
+ 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+@@ -297,4 +297,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>	
+\ No newline at end of file
++</div>	
