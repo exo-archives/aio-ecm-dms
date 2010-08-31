@@ -319,7 +319,10 @@ public class UIDialogForm extends UIForm {
           if(childNode.getProperty(propertyName).getDefinition().isMultiple()) {
             Value[] values = childNode.getProperty(propertyName).getValues();
             for(Value value : values) {
-              uiDateTime.setCalendar(value.getDate());
+              if (uiDateTime.getDefaultValue() == null) {
+                uiDateTime.setCalendar(value.getDate());
+                uiDateTime.setDefaultValue(uiDateTime.getValue());
+              }
             }
           } else {
             uiDateTime.setCalendar(childNode.getProperty(propertyName).getValue().getDate());
