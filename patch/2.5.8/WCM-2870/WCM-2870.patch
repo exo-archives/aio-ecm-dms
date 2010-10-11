@@ -1,0 +1,39 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(revision 51001)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(working copy)
+@@ -324,7 +324,7 @@
+ 			frameBorder = 0 ;
+ 			scrolling = "auto" ;
+ 		}
+-		var strValue = txtArea.value ;
++		var strValue = txtArea.innerHTML;
+ 		txtArea.parentNode.replaceChild(ifrm, txtArea) ;
+ 		try {
+ 			var doc = ifrm.contentWindow.document ;
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/admin_view.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/admin_view.gtmpl	(revision 51001)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/admin_view.gtmpl	(working copy)
+@@ -101,7 +101,7 @@
+ 				        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
+ 				        %>
+ 				        	<div style="text-align: center">
+-				        		<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
++				        		<div id="<%=iframeId%>" class="<%=iframeId%>"><code><%=contentNode.getProperty("jcr:data").getString()%></code></div> 
+ 				        	</div>
+ 				        <%}%>
+ 					    </div>   
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl	(revision 51001)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/file/views/view1.gtmpl	(working copy)
+@@ -102,7 +102,7 @@
+ 				        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
+ 				        %>
+ 				        	<div style="text-align: center">
+-				        		<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
++				        		<div id="<%=iframeId%>" class="<%=iframeId%>"><code><%=contentNode.getProperty("jcr:data").getString()%></code></div> 
+ 				        	</div>
+ 				        <%}%>
+ 					    </div>   
