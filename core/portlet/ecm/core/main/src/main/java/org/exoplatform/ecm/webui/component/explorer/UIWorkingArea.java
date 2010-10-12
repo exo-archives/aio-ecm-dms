@@ -241,11 +241,6 @@ public class UIWorkingArea extends UIContainer {
 
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "";
-    try {
-      node.refresh(true);
-    } catch(InvalidItemStateException e) {
-      return "";
-    }
     StringBuilder actionsList = new StringBuilder();        
     Node realNode = (node instanceof NodeLinkAware) ? ((NodeLinkAware) node).getRealNode() : node;
     boolean isEditable = isEditable(node);    

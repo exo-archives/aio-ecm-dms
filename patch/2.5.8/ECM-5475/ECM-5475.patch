@@ -1,0 +1,16 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(revision 61279)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(working copy)
+@@ -241,11 +241,6 @@
+ 
+   public String getActionsList(Node node) throws Exception {
+     if(node == null) return "";
+-    try {
+-      node.refresh(true);
+-    } catch(InvalidItemStateException e) {
+-      return "";
+-    }
+     StringBuilder actionsList = new StringBuilder();        
+     Node realNode = (node instanceof NodeLinkAware) ? ((NodeLinkAware) node).getRealNode() : node;
+     boolean isEditable = isEditable(node);    
