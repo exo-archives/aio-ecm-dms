@@ -1,0 +1,31 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UIListView.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UIListView.js	(revision 51697)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UIListView.js	(working copy)
+@@ -92,7 +92,7 @@
+ 	  eXo.ecm.UIListView.object = this;
+     var element = eXo.ecm.UIListView.object ;
+ 	  var pos = eXo.core.Browser.findMouseYInPage(evt) - eXo.core.Browser.findPosY(element);
+-	  if(element.offsetHeight - pos < 40){
++	  if(element.offsetHeight - pos < 200){
+ 	    element.scrollTop = element.scrollTop + 5;  
+ 	  } else if(element.scrollTop > 0 && pos < 40) {
+ 	    element.scrollTop = element.scrollTop - 5;  
+@@ -744,6 +744,7 @@
+ 	
+ 	ListView.prototype.setHeight = function() {
+ 		var root = document.getElementById("UIDocumentInfo");
++		
+ 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
+ 		var workingArea = document.getElementById('UIWorkingArea');
+ 		var workingContainer = document.getElementById('UIDocumentContainer');
+@@ -756,8 +757,7 @@
+ 		} else {
+ 		  if (view) view.style.height = workingArea.offsetHeight + 'px';
+ 		}
+-	};
+-	
++	};		
+ };
+ 
+ eXo.ecm.UIListView = new ListView();
