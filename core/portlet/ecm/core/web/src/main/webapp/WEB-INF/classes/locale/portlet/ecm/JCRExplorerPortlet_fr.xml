@@ -1784,7 +1784,7 @@
       <name-exist>Le tag existe déjà ou est invalide</name-exist>
       <tagName-invalid>Caractères invalides détectés dans le nom du tag.</tagName-invalid>
       <tag-name-empty>Nom du tag requis</tag-name-empty>
-      <tagName-too-long>Nom du tag trop long (doit être inférieur à 20 caractères)</tagName-too-long>
+      <tagName-too-long>Nom du tag trop long (doit être inférieur à 30 caractères)</tagName-too-long>
     </msg>
     <introduction>
       <tagName>(Utilisez le séparateur "," pour ajouter plusieurs tags)</tagName>

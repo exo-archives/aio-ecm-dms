@@ -1778,7 +1778,7 @@
       <name-exist>Tag name '{0}' is existing</name-exist>
       <tagName-invalid>Have some invalid characters in tag name.</tagName-invalid>
       <tag-name-empty>Your tag name is empty</tag-name-empty>
-      <tagName-too-long>One of the tags entered was too long. Tags must be less than 20 characters long</tagName-too-long>
+      <tagName-too-long>One of the tags entered was too long. Tags must be less than 30 characters long</tagName-too-long>
     </msg>
     <introduction>
       <tagName>(Use "," separator to add multiple tag)</tagName>

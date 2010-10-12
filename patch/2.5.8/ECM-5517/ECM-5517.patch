@@ -1,0 +1,78 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(revision 52533)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UITaggingForm.java	(working copy)
+@@ -141,7 +141,7 @@
+           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+           return;
+         }
+-        if(t.trim().length() > 20) {
++        if(t.trim().length() > 30) {
+           uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-too-long", null, 
+                                                   ApplicationMessage.WARNING));
+           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(revision 52533)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(working copy)
+@@ -1779,7 +1779,7 @@
+       <name-exist>Tag Name '{0}' existiert schon</name-exist>
+       <tagName-invalid><![CDATA[Ung&uuml;ltige Symbole in Tag Namen.]]></tagName-invalid>
+       <tag-name-empty>Ihr Tag Name ist leer</tag-name-empty>
+-      <tagName-too-long><![CDATA[Einer der eingegebenen Tags war zu lang. Tags m&uuml;ssen k&uuml;rzer als 20 Buchstaben sein.]]></tagName-too-long>
++      <tagName-too-long><![CDATA[Einer der eingegebenen Tags war zu lang. Tags m&uuml;ssen k&uuml;rzer als 30 Buchstaben sein.]]></tagName-too-long>
+     </msg>
+     <introduction>
+       <tagName>(Verwenden Sie "," separator, um mehrere Tag)</tagName>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 52533)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
+@@ -1778,7 +1778,7 @@
+       <name-exist>Tag name '{0}' is existing</name-exist>
+       <tagName-invalid>Have some invalid characters in tag name.</tagName-invalid>
+       <tag-name-empty>Your tag name is empty</tag-name-empty>
+-      <tagName-too-long>One of the tags entered was too long. Tags must be less than 20 characters long</tagName-too-long>
++      <tagName-too-long>One of the tags entered was too long. Tags must be less than 30 characters long</tagName-too-long>
+     </msg>
+     <introduction>
+       <tagName>(Use "," separator to add multiple tag)</tagName>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 52533)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
+@@ -1784,7 +1784,7 @@
+       <name-exist>Le tag existe déjà ou est invalide</name-exist>
+       <tagName-invalid>Caractères invalides détectés dans le nom du tag.</tagName-invalid>
+       <tag-name-empty>Nom du tag requis</tag-name-empty>
+-      <tagName-too-long>Nom du tag trop long (doit être inférieur à 20 caractères)</tagName-too-long>
++      <tagName-too-long>Nom du tag trop long (doit être inférieur à 30 caractères)</tagName-too-long>
+     </msg>
+     <introduction>
+       <tagName>(Utilisez le séparateur "," pour ajouter plusieurs tags)</tagName>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(revision 52533)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(working copy)
+@@ -1778,7 +1778,7 @@
+       <name-exist>Tag naam '{0}' bestaat reeds</name-exist>
+       <tagName-invalid>ongeldige karakters in tag naam.</tagName-invalid>
+       <tag-name-empty>tag naam is leeg</tag-name-empty>
+-      <tagName-too-long>Een van de tags is te lang.(max 20 karakters)</tagName-too-long>
++      <tagName-too-long>Een van de tags is te lang.(max 30 karakters)</tagName-too-long>
+     </msg>
+     <introduction>
+       <tagName>(gebruik ","  om meerdere tags toe te voegen)</tagName>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(revision 52533)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(working copy)
+@@ -1786,7 +1786,7 @@
+       <name-exist>Tên thẻ '{0}' đã tồn tại.</name-exist>
+       <tagName-invalid>Có một số kí tự không hợp lệ trong tên nhãn.</tagName-invalid>
+       <tag-name-empty>Tên thẻ của bạn là rỗng</tag-name-empty>
+-      <tagName-too-long>Một trong các thẻ nhập vào là quá dài. Các thể phải có độ dài nhỏ hơn 20 kí tự.</tagName-too-long>
++      <tagName-too-long>Một trong các thẻ nhập vào là quá dài. Các thể phải có độ dài nhỏ hơn 30 kí tự.</tagName-too-long>
+     </msg>
+     <introduction>
+       <tagName>(Sử dụng dấu "," để thêm nhiều thẻ)</tagName>
