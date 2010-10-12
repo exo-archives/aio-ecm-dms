@@ -1,0 +1,21 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(revision 50661)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(working copy)
+@@ -126,12 +126,14 @@
+ 	*/
+ 
+ .UIJCRExplorerPortlet .UIDocumentWorkspace {  
+-  height: 475px;
+-  overflow: auto;
++  height: 475px; 
++  /* overflow: auto; */
+ }
+ 
+ .UIJCRExplorerPortlet .UIListView {
+ 	posititon: relative;	
++	overflow:auto;
++	height:430px;
+ }
+ 
+ .UIJCRExplorerPortlet .UITabPane .UIListView {

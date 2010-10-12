@@ -126,12 +126,14 @@
 	*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {  
-  height: 475px;
-  overflow: auto;
+  height: 475px; 
+  /* overflow: auto; */
 }
 
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;	
+	overflow:auto;
+	height:430px;
 }
 
 .UIJCRExplorerPortlet .UITabPane .UIListView {
