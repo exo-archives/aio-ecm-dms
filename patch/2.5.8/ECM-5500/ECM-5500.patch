@@ -1,0 +1,30 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(revision 51963)
++++ core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(working copy)
+@@ -41,17 +41,15 @@
+     Token nextToken = input.next();
+     if (nextToken != null) {
+       String tokenText = nextToken.termText();
+-      tokenText = StringEscapeUtils.unescapeHtml(tokenText);
++      String brTokenText = tokenText.replaceAll("<br", "");    
++      tokenText = StringEscapeUtils.unescapeHtml(brTokenText);
+       tokenText = tokenText.replaceAll("\\<.*?>", "");
+       // Finally we return a new token with transformed characters.
+       if(tokenText.equals("")||tokenText.trim().equals("")){
+     	  return new Token("", 0, 0, nextToken.type());
+-      }else{
+-      return new Token(tokenText.trim(), nextToken.startOffset(), nextToken.startOffset()+tokenText.length(), nextToken.type());
+       }
+-
+-    } else
+-      return null;
++      return new Token(tokenText.trim(), nextToken.startOffset(), nextToken.startOffset()+tokenText.length(), nextToken.type());
++    } 
++    return null;
+   }
+-
+- }
+\ No newline at end of file
++}
+\ No newline at end of file
