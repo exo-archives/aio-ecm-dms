@@ -730,7 +730,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (PathNotFoundException pa) {
-        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null,
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.path-not-found", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
