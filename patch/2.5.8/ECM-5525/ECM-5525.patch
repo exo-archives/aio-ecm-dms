@@ -1,0 +1,24 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(revision 61775)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(working copy)
+@@ -678,6 +678,11 @@
+     } catch(Exception e) {
+       tabIter = getRootNode().getNodes();
+     }
++    if (getSelectedTab()==null) {
++  	  setSelectedTabPath(null);
++ 	    setCurrentNodePath(null);
++    }
++    else {
+     while(tabIter.hasNext()) {
+       Node tab = tabIter.nextNode();
+       if(canRead(tab) && !tab.isNodeType(Utils.EXO_HIDDENABLE)) {
+@@ -703,6 +708,7 @@
+           }
+         }
+       }
++    }
+     }
+     content.put("tabList", tabList);
+     content.put("subCategoryList", subCategoryList);

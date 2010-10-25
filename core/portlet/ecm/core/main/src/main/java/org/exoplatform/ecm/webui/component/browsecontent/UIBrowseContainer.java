@@ -678,6 +678,11 @@ public class UIBrowseContainer extends UIContainer {
     } catch(Exception e) {
       tabIter = getRootNode().getNodes();
     }
+    if (getSelectedTab()==null) {
+  	  setSelectedTabPath(null);
+ 	    setCurrentNodePath(null);
+    }
+    else {
     while(tabIter.hasNext()) {
       Node tab = tabIter.nextNode();
       if(canRead(tab) && !tab.isNodeType(Utils.EXO_HIDDENABLE)) {
@@ -703,6 +708,7 @@ public class UIBrowseContainer extends UIContainer {
           }
         }
       }
+    }
     }
     content.put("tabList", tabList);
     content.put("subCategoryList", subCategoryList);
