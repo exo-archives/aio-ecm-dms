@@ -1,0 +1,15 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(revision 61851)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(working copy)
+@@ -1223,6 +1223,10 @@
+             setSelectedTabPath(null);
+             setCurrentNodePath(null);
+           }
++          if(getTemplateName().equals(TREELIST)) {        	  
++            if (getCurrentNode() != null)
++              getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath());
++          }
+           setPageIterator(getSubDocumentList(getSelectedTab()));
+         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
+           PortletPreferences preferences = getPortletPreferences();

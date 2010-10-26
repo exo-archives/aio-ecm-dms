@@ -1223,6 +1223,10 @@ public class UIBrowseContainer extends UIContainer {
             setSelectedTabPath(null);
             setCurrentNodePath(null);
           }
+          if(getTemplateName().equals(TREELIST)) {        	  
+            if (getCurrentNode() != null)
+              getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath());
+          }
           setPageIterator(getSubDocumentList(getSelectedTab()));
         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
           PortletPreferences preferences = getPortletPreferences();
