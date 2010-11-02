@@ -22,6 +22,11 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -30,10 +35,13 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -261,11 +269,12 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      Node realNode = uiExplorer.getRealCurrentNode();
       LinkManager linkManager = uiExplorer.getApplicationComponent(LinkManager.class);
-      if (linkManager.isLink(realNode)) {
-        // Reset the permissions
-        linkManager.updateLink(realNode, currentNode);
+      List<Node> symlinks = LinkUtils.getAllSymlinks(currentNode, uiExplorer.getRepositoryName());
+      for (Node symlink : symlinks) {
+        try {
+          linkManager.updateLink(symlink, currentNode);
+        } catch (Exception e) {}
       }
       currentNode.getSession().save();
       uiForm.refresh();
@@ -273,6 +282,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
       uiExplorer.updateAjax(event);
     }
+    
   }
 
   static public class SelectUserActionListener extends EventListener<UIPermissionForm> {
