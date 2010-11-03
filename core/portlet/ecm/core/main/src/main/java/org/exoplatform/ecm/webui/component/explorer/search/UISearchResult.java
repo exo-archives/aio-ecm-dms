@@ -225,6 +225,8 @@ public class UISearchResult extends UIContainer {
               int index = categoryPath.indexOf("/");
               List<String> pathCategoriesList = new ArrayList<String>();
               String searchCategory = rootTreePath + "/" + categoryPath;
+              if ((categoryPath != null) && (categoryPath.length()==0)) continue;
+              if (categoryPath.substring(0, index).length()==0) continue;
               List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
               for (Node category : listCategories) {
                 pathCategoriesList.add(category.getPath());

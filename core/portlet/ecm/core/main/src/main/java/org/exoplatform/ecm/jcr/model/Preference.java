@@ -32,6 +32,8 @@ public class Preference {
   public static final String SHOW_NON_DOCUMENTTYPE = "showNonDocumentType" ;
   public static final String ASCENDING_ORDER = "Ascending" ;
   public static final String DESCENDING_ORDER = "Descending" ;
+  public static final String SQL_QUERY = "SQL";
+  public static final String XPATH_QUERY = "XPATH";
   
   public static final String BLUE_DOWN_ARROW = "BlueDownArrow" ;
   public static final String BLUE_UP_ARROW = "BlueUpArrow" ;
@@ -47,6 +49,7 @@ public class Preference {
   private boolean isShowPreferenceDocuments = false ;
   private boolean isShowHiddenNode = false ;
   
+  private String queryType = "SQL";
   private int nodesPerPage = 20;
     
   public boolean isJcrEnable() { return jcrEnable ; }
@@ -75,4 +78,7 @@ public class Preference {
   
   public int getNodesPerPage(){return nodesPerPage ; }
   public void setNodesPerPage(int number) { this.nodesPerPage = number ; }
+  
+  public String getQueryType(){return queryType; }
+  public void setQueryType(String query) { this.queryType = query; }
 }

@@ -26,6 +26,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -146,6 +147,16 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     return "" ;
   }
   
+  private String getContainSQLQueryString(String property, String type, boolean isContain) {
+    String value = getUIStringInput(type).getValue();
+    if(value == null) return "";
+    if(value.trim().length() > 0) {
+      if(isContain) return " CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
+      return " NOT CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
+    }
+    return "";
+  }
+  
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
     Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
     if(afterDate != null && afterDate.trim().length() > 0) {
@@ -169,6 +180,29 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     return "" ;
   }
   
+  private String getDateTimeSQLQueryString(String beforeDate, String afterDate, String type) {
+    Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar();
+    if(afterDate != null && afterDate.trim().length() > 0) {
+      Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar();
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"') and (documents created to '"+afterDate+"')";
+        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateCreated < TIMESTAMP '"+ISO8601.format(afDate)+"'";
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') and (documents modified to '"+afterDate+"')";
+        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateModified < TIMESTAMP '"+ISO8601.format(afDate)+"'";
+      }
+    } else {
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"')";
+        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"')";
+        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
+      }
+    }
+    return "" ;
+  }
+  
   private String getNodeTypeQueryString(String nodeTypes) {
     String advanceQuery = "" ;
     String[] arrNodeTypes = {} ;
@@ -180,6 +214,21 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
       }
     } else {
       advanceQuery = "@jcr:primaryType = '" + nodeTypes + "'" ;
+    }
+    return advanceQuery;
+  }
+  
+  private String getNodeTypeSQLQueryString(String nodeTypes) {
+    String advanceQuery = "";
+    String[] arrNodeTypes = {};
+    if(nodeTypes.indexOf(",") > -1) arrNodeTypes = nodeTypes.split(",");
+    if(arrNodeTypes.length > 0) {
+      for(String nodeType : arrNodeTypes) {
+        if(advanceQuery.length() == 0) advanceQuery = "jcr:primaryType = '" + nodeType + "'";
+        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "jcr:primaryType = '" + nodeType + "'";
+      }
+    } else {
+      advanceQuery = "jcr:primaryType = '" + nodeTypes + "'";
     }
     return advanceQuery;
   }
@@ -198,39 +247,66 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     return ("@exo:category = '" + categoryPath + "'");
   }
   
+  private String getCategorySQLQueryString(String categoryPath) {    
+    if (categoryPath == null || categoryPath.length() == 0) return "";
+    return ("exo:category = '" + categoryPath + "'");
+  }
+  
   private void addConstraint(int opt) throws Exception {
     String advanceQuery = "" ;
     String property ;
     virtualDateQuery_ = null ;
     UISimpleSearch uiSimpleSearch = ((UISearchContainer)getParent()).getChild(UISimpleSearch.class) ;
+    UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
+    Preference pref = uiExplorer.getPreference();
+    String queryType = pref.getQueryType();
     switch (opt) {
       case 0:
         property = getUIStringInput(PROPERTY1).getValue() ;
         String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
-        advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = "@" + property + " = '" + value.trim() + "'";
+        else
+          advanceQuery = " CONTAINS(" + property + ", '" + value.trim() + "')";
         break;
       case 1:
         property = getUIStringInput(PROPERTY2).getValue() ; 
-        advanceQuery = getContainQueryString(property, CONTAIN, true) ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getContainQueryString(property, CONTAIN, true);
+        else
+          advanceQuery = getContainSQLQueryString(property, CONTAIN, true);
         break;
       case 2:
         property = getUIStringInput(PROPERTY3).getValue() ; 
-        advanceQuery = getContainQueryString(property, NOT_CONTAIN, false) ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getContainQueryString(property, NOT_CONTAIN, false);
+        else
+          advanceQuery = getContainSQLQueryString(property, NOT_CONTAIN, false);
         break;
       case 3:
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
-        advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getDateTimeQueryString(fromDate, toDate, type);
+        else
+          advanceQuery = getDateTimeSQLQueryString(fromDate, toDate, type);
         break ;
       case 4:
         property = getUIStringInput(DOC_TYPE).getValue() ;
-        advanceQuery = getNodeTypeQueryString(property) ;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getNodeTypeQueryString(property);
+        else
+          advanceQuery = getNodeTypeSQLQueryString(property);
         break;
       case 5:
         property = getUIStringInput(CATEGORY_TYPE).getValue() ;
-        advanceQuery = getCategoryQueryString(property) ;
-        if (!uiSimpleSearch.getCategoryPathList().contains(property))
+        if (queryType.equals(Preference.XPATH_QUERY))
+          advanceQuery = getCategoryQueryString(property);
+        else
+          advanceQuery = getCategorySQLQueryString(property);
+        String firstOperator = uiSimpleSearch.getUIStringInput(UISimpleSearch.FIRST_OPERATOR).getValue();
+        if (!uiSimpleSearch.getCategoryPathList().contains(property) && firstOperator.equals("and"))
           uiSimpleSearch.getCategoryPathList().add(property);
         break;
       default:

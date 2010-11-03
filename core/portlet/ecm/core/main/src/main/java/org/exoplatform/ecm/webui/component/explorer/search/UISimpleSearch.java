@@ -25,6 +25,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -79,6 +80,8 @@ public class UISimpleSearch extends UIForm {
   
   private static final String ROOT_XPATH_QUERY = "//*";
   private static final String XPATH_QUERY = "/jcr:root$0//*";
+  private static final String ROOT_SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '/%' ";
+  private static final String SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '$0/%' ";
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null));
@@ -145,6 +148,41 @@ public class UISimpleSearch extends UIForm {
         statement.append(constraint);
       }
       statement.append(")]");
+    }
+    return statement.toString();
+  }
+  
+  private String getSQLStatement() throws Exception {
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    StringBuilder statement = new StringBuilder(1024);
+    String text = getUIStringInput(INPUT_SEARCH).getValue();
+    if(text != null && constraints_.size() == 0) {
+      if ("/".equals(currentNode.getPath())) {
+        statement.append(ROOT_SQL_QUERY);
+      } else {
+        statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
+      }
+      statement.append("AND CONTAINS(*,'").append(text.replaceAll("'", "''")).append("')");
+    } else if(constraints_.size() > 0) {
+      if(text == null) {
+        if ("/".equals(currentNode.getPath())) {
+          statement.append(ROOT_SQL_QUERY);
+        } else {
+          statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
+        } 
+      } else {        
+        if ("/".equals(currentNode.getPath())) {
+          statement.append(ROOT_SQL_QUERY);
+        } else {
+          statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
+        } 
+        statement.append("AND CONTAINS(*,'").append(text.replaceAll("'", "''")).append("') ");
+      }
+      String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue();
+      statement.append(operator).append(" ");
+      for(String constraint : constraints_) {
+        statement.append(constraint);
+      }
     }
     return statement.toString();
   }
@@ -226,24 +264,42 @@ public class UISimpleSearch extends UIForm {
           }
         }
       }
-      String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
+      Preference pref = uiExplorer.getPreference();
+      String queryType = pref.getQueryType();
+      String statement;
       List<String> searchCategoryPathList = uiSimpleSearch.getCategoryPathList();
-      if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
-        for (String searchCategoryPath : searchCategoryPathList) {
-          String statementReplace = statement.replaceAll("@exo:category = '" + searchCategoryPath + "'", 
-              "@jcr:mixinTypes = 'mix:referenceable'");
-          statement = statementReplace;
+      if (queryType.equals(Preference.XPATH_QUERY)) {
+        statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
+        if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
+          for (String searchCategoryPath : searchCategoryPathList) {
+            String statementReplace = statement.replaceAll("@exo:category = '" + searchCategoryPath + "'", 
+                "@jcr:mixinTypes = 'mix:referenceable'");
+            statement = statementReplace;
+          }
         }
-      }
-      
+      } else {
+        statement = uiSimpleSearch.getSQLStatement() + " order by exo:dateCreated DESC";
+        if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
+          for (String searchCategoryPath : searchCategoryPathList) {
+            String statementReplace = statement.replaceAll("exo:category = '" + searchCategoryPath + "'", 
+                "jcr:mixinTypes = 'mix:referenceable'");
+            statement = statementReplace;
+          }
+        }
+      }      
       long startTime = System.currentTimeMillis();
       try {
-        Query query = queryManager.createQuery(statement, Query.XPATH);      
+        Query query;
+        if (queryType.equals(Preference.XPATH_QUERY))
+          query = queryManager.createQuery(statement, Query.XPATH);
+        else
+          query = queryManager.createQuery(statement, Query.SQL);
         QueryResult queryResult = query.execute();
         uiSearchResult.clearAll();
         uiSearchResult.setQueryResults(queryResult);
         uiSearchResult.updateGrid(true);
       } catch(Exception e) {
+        e.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

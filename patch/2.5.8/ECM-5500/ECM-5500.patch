@@ -1,6 +1,6 @@
 Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java
 ===================================================================
---- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(revision 51963)
+--- core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(revision 52058)
 +++ core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/UnescapeHTMLFilter.java	(working copy)
 @@ -41,17 +41,15 @@
      Token nextToken = input.next();
@@ -28,3 +28,318 @@ Index: core/component/cms/src/main/java/org/exoplatform/services/jcr/analyzer/Un
 \ No newline at end of file
 +}
 \ No newline at end of file
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 52058)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -225,6 +225,8 @@
+               int index = categoryPath.indexOf("/");
+               List<String> pathCategoriesList = new ArrayList<String>();
+               String searchCategory = rootTreePath + "/" + categoryPath;
++              if ((categoryPath != null) && (categoryPath.length()==0)) continue;
++              if (categoryPath.substring(0, index).length()==0) continue;
+               List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+               for (Node category : listCategories) {
+                 pathCategoriesList.add(category.getPath());
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java	(revision 52058)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java	(working copy)
+@@ -25,6 +25,7 @@
+ import javax.jcr.query.QueryResult;
+ 
+ import org.apache.commons.lang.StringUtils;
++import org.exoplatform.ecm.jcr.model.Preference;
+ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+ import org.exoplatform.web.application.ApplicationMessage;
+@@ -79,6 +80,8 @@
+   
+   private static final String ROOT_XPATH_QUERY = "//*";
+   private static final String XPATH_QUERY = "/jcr:root$0//*";
++  private static final String ROOT_SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '/%' ";
++  private static final String SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '$0/%' ";
+   
+   public UISimpleSearch() throws Exception {
+     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null));
+@@ -149,6 +152,41 @@
+     return statement.toString();
+   }
+   
++  private String getSQLStatement() throws Exception {
++    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
++    StringBuilder statement = new StringBuilder(1024);
++    String text = getUIStringInput(INPUT_SEARCH).getValue();
++    if(text != null && constraints_.size() == 0) {
++      if ("/".equals(currentNode.getPath())) {
++        statement.append(ROOT_SQL_QUERY);
++      } else {
++        statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
++      }
++      statement.append("AND CONTAINS(*,'").append(text.replaceAll("'", "''")).append("')");
++    } else if(constraints_.size() > 0) {
++      if(text == null) {
++        if ("/".equals(currentNode.getPath())) {
++          statement.append(ROOT_SQL_QUERY);
++        } else {
++          statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
++        } 
++      } else {        
++        if ("/".equals(currentNode.getPath())) {
++          statement.append(ROOT_SQL_QUERY);
++        } else {
++          statement.append(StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()));
++        } 
++        statement.append("AND CONTAINS(*,'").append(text.replaceAll("'", "''")).append("') ");
++      }
++      String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue();
++      statement.append(operator).append(" ");
++      for(String constraint : constraints_) {
++        statement.append(constraint);
++      }
++    }
++    return statement.toString();
++  }
++  
+   static  public class SaveActionListener extends EventListener<UISimpleSearch> {
+     public void execute(Event<UISimpleSearch> event) throws Exception {
+       UISimpleSearch uiSimpleSearch = event.getSource();
+@@ -226,24 +264,42 @@
+           }
+         }
+       }
+-      String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
++      Preference pref = uiExplorer.getPreference();
++      String queryType = pref.getQueryType();
++      String statement;
+       List<String> searchCategoryPathList = uiSimpleSearch.getCategoryPathList();
+-      if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
+-        for (String searchCategoryPath : searchCategoryPathList) {
+-          String statementReplace = statement.replaceAll("@exo:category = '" + searchCategoryPath + "'", 
+-              "@jcr:mixinTypes = 'mix:referenceable'");
+-          statement = statementReplace;
++      if (queryType.equals(Preference.XPATH_QUERY)) {
++        statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
++        if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
++          for (String searchCategoryPath : searchCategoryPathList) {
++            String statementReplace = statement.replaceAll("@exo:category = '" + searchCategoryPath + "'", 
++                "@jcr:mixinTypes = 'mix:referenceable'");
++            statement = statementReplace;
++          }
+         }
+-      }
+-      
++      } else {
++        statement = uiSimpleSearch.getSQLStatement() + " order by exo:dateCreated DESC";
++        if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
++          for (String searchCategoryPath : searchCategoryPathList) {
++            String statementReplace = statement.replaceAll("exo:category = '" + searchCategoryPath + "'", 
++                "jcr:mixinTypes = 'mix:referenceable'");
++            statement = statementReplace;
++          }
++        }
++      }      
+       long startTime = System.currentTimeMillis();
+       try {
+-        Query query = queryManager.createQuery(statement, Query.XPATH);      
++        Query query;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          query = queryManager.createQuery(statement, Query.XPATH);
++        else
++          query = queryManager.createQuery(statement, Query.SQL);
+         QueryResult queryResult = query.execute();
+         uiSearchResult.clearAll();
+         uiSearchResult.setQueryResults(queryResult);
+         uiSearchResult.updateGrid(true);
+       } catch(Exception e) {
++        e.printStackTrace();
+         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
+                                                 ApplicationMessage.WARNING));
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java	(revision 52058)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java	(working copy)
+@@ -26,6 +26,7 @@
+ import javax.jcr.query.QueryResult;
+ 
+ import org.exoplatform.commons.utils.ISO8601;
++import org.exoplatform.ecm.jcr.model.Preference;
+ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+ import org.exoplatform.ecm.webui.selector.UISelectable;
+ import org.exoplatform.web.application.ApplicationMessage;
+@@ -144,6 +145,16 @@
+       return " fn:not(jcr:contains(@" + property.trim() + ", '"+ value.trim() + "'))" ;
+     }
+     return "" ;
++  }
++  
++  private String getContainSQLQueryString(String property, String type, boolean isContain) {
++    String value = getUIStringInput(type).getValue();
++    if(value == null) return "";
++    if(value.trim().length() > 0) {
++      if(isContain) return " CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
++      return " NOT CONTAINS(" + property.trim() + ", '"+ value.trim() + "')";
++    }
++    return "";
+   }
+   
+   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
+@@ -167,6 +178,29 @@
+       }
+     }
+     return "" ;
++  }
++  
++  private String getDateTimeSQLQueryString(String beforeDate, String afterDate, String type) {
++    Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar();
++    if(afterDate != null && afterDate.trim().length() > 0) {
++      Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar();
++      if(type.equals(CREATED_DATE)) {
++        virtualDateQuery_ = "(documents created from '"+beforeDate+"') and (documents created to '"+afterDate+"')";
++        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateCreated < TIMESTAMP '"+ISO8601.format(afDate)+"'";
++      } else if(type.equals(MODIFIED_DATE)) {
++        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') and (documents modified to '"+afterDate+"')";
++        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"' and exo:dateModified < TIMESTAMP '"+ISO8601.format(afDate)+"'";
++      }
++    } else {
++      if(type.equals(CREATED_DATE)) {
++        virtualDateQuery_ = "(documents created from '"+beforeDate+"')";
++        return "exo:dateCreated >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
++      } else if(type.equals(MODIFIED_DATE)) {
++        virtualDateQuery_ = "(documents modified from '"+beforeDate+"')";
++        return "exo:dateModified >= TIMESTAMP '"+ISO8601.format(bfDate)+"'";
++      }
++    }
++    return "" ;
+   }
+   
+   private String getNodeTypeQueryString(String nodeTypes) {
+@@ -184,6 +218,21 @@
+     return advanceQuery;
+   }
+   
++  private String getNodeTypeSQLQueryString(String nodeTypes) {
++    String advanceQuery = "";
++    String[] arrNodeTypes = {};
++    if(nodeTypes.indexOf(",") > -1) arrNodeTypes = nodeTypes.split(",");
++    if(arrNodeTypes.length > 0) {
++      for(String nodeType : arrNodeTypes) {
++        if(advanceQuery.length() == 0) advanceQuery = "jcr:primaryType = '" + nodeType + "'";
++        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "jcr:primaryType = '" + nodeType + "'";
++      }
++    } else {
++      advanceQuery = "jcr:primaryType = '" + nodeTypes + "'";
++    }
++    return advanceQuery;
++  }
++  
+   /**
+    * Create query string for category
+    * @param category
+@@ -196,41 +245,68 @@
+     */
+     if (categoryPath == null || categoryPath.length() == 0) return "";
+     return ("@exo:category = '" + categoryPath + "'");
++  }
++  
++  private String getCategorySQLQueryString(String categoryPath) {    
++    if (categoryPath == null || categoryPath.length() == 0) return "";
++    return ("exo:category = '" + categoryPath + "'");
+   }
+   
+   private void addConstraint(int opt) throws Exception {
+     String advanceQuery = "" ;
+     String property ;
+     virtualDateQuery_ = null ;
+-    UISimpleSearch uiSimpleSearch = ((UISearchContainer)getParent()).getChild(UISimpleSearch.class) ;
++    UISimpleSearch uiSimpleSearch = ((UISearchContainer)getParent()).getChild(UISimpleSearch.class) ;
++    UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
++    Preference pref = uiExplorer.getPreference();
++    String queryType = pref.getQueryType();
+     switch (opt) {
+       case 0:
+         property = getUIStringInput(PROPERTY1).getValue() ;
+         String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
+-        advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = "@" + property + " = '" + value.trim() + "'";
++        else
++          advanceQuery = " CONTAINS(" + property + ", '" + value.trim() + "')";
+         break;
+       case 1:
+         property = getUIStringInput(PROPERTY2).getValue() ; 
+-        advanceQuery = getContainQueryString(property, CONTAIN, true) ;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = getContainQueryString(property, CONTAIN, true);
++        else
++          advanceQuery = getContainSQLQueryString(property, CONTAIN, true);
+         break;
+       case 2:
+         property = getUIStringInput(PROPERTY3).getValue() ; 
+-        advanceQuery = getContainQueryString(property, NOT_CONTAIN, false) ;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = getContainQueryString(property, NOT_CONTAIN, false);
++        else
++          advanceQuery = getContainSQLQueryString(property, NOT_CONTAIN, false);
+         break;
+       case 3:
+         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
+         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
+         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
+-        advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = getDateTimeQueryString(fromDate, toDate, type);
++        else
++          advanceQuery = getDateTimeSQLQueryString(fromDate, toDate, type);
+         break ;
+       case 4:
+         property = getUIStringInput(DOC_TYPE).getValue() ;
+-        advanceQuery = getNodeTypeQueryString(property) ;
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = getNodeTypeQueryString(property);
++        else
++          advanceQuery = getNodeTypeSQLQueryString(property);
+         break;
+       case 5:
+         property = getUIStringInput(CATEGORY_TYPE).getValue() ;
+-        advanceQuery = getCategoryQueryString(property) ;
+-        if (!uiSimpleSearch.getCategoryPathList().contains(property))
++        if (queryType.equals(Preference.XPATH_QUERY))
++          advanceQuery = getCategoryQueryString(property);
++        else
++          advanceQuery = getCategorySQLQueryString(property);
++        String firstOperator = uiSimpleSearch.getUIStringInput(UISimpleSearch.FIRST_OPERATOR).getValue();
++        if (!uiSimpleSearch.getCategoryPathList().contains(property) && firstOperator.equals("and"))
+           uiSimpleSearch.getCategoryPathList().add(property);
+         break;
+       default:
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/jcr/model/Preference.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/jcr/model/Preference.java	(revision 52058)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/jcr/model/Preference.java	(working copy)
+@@ -32,6 +32,8 @@
+   public static final String SHOW_NON_DOCUMENTTYPE = "showNonDocumentType" ;
+   public static final String ASCENDING_ORDER = "Ascending" ;
+   public static final String DESCENDING_ORDER = "Descending" ;
++  public static final String SQL_QUERY = "SQL";
++  public static final String XPATH_QUERY = "XPATH";
+   
+   public static final String BLUE_DOWN_ARROW = "BlueDownArrow" ;
+   public static final String BLUE_UP_ARROW = "BlueUpArrow" ;
+@@ -47,6 +49,7 @@
+   private boolean isShowPreferenceDocuments = false ;
+   private boolean isShowHiddenNode = false ;
+   
++  private String queryType = "SQL";
+   private int nodesPerPage = 20;
+     
+   public boolean isJcrEnable() { return jcrEnable ; }
+@@ -75,4 +78,7 @@
+   
+   public int getNodesPerPage(){return nodesPerPage ; }
+   public void setNodesPerPage(int number) { this.nodesPerPage = number ; }
++  
++  public String getQueryType(){return queryType; }
++  public void setQueryType(String query) { this.queryType = query; }
+ }
