@@ -35,6 +35,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
 	overflow: auto;
+	height: 475px;
 }
 
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {

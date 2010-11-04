@@ -1,0 +1,12 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(revision 62208)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(working copy)
+@@ -35,6 +35,7 @@
+ 
+ .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
+ 	overflow: auto;
++	height: 475px;
+ }
+ 
+ .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {

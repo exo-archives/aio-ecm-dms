@@ -16,10 +16,9 @@ How is the problem fixed?
     * Display web content type without out of panel in full screen mode.
 
 Patch information:
-
-    * Final files to use should be attached to this page (Jira is for the discussion)
-
-Patch files: ECM-5535.patch
+Patch files: 
+ECM-5535.patch
+ECM-5535-bis.patch
 
 Tests to perform
 
