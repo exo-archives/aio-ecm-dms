@@ -27,12 +27,14 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
+import org.apache.commons.logging.Log;
 
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 
 
 /**
@@ -54,6 +56,11 @@ public class CommentsServiceImpl implements CommentsService {
   private final static String CREATED_DATE = "exo:commentDate".intern() ;
   private static final String LANGUAGES = "languages".intern() ;
   private static final String ANONYMOUS = "anonymous".intern() ;
+  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("cms.CommentsServiceImpl");
 
   private ExoCache commentsCache_ ;
   private MultiLanguageService multiLangService_ ;  
@@ -77,54 +84,60 @@ public class CommentsServiceImpl implements CommentsService {
     ManageableRepository  repository = (ManageableRepository)session.getRepository();
     //TODO check if really need delegate to system session
     Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
-    Node document = (Node)systemSession.getItem(node.getPath()) ;
-    if(!document.isNodeType(COMMENTABLE)) {
-      if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
-      else throw new Exception("This node does not support comments.") ;  
-    }        
-    Node multiLanguages =null, languageNode= null, commentNode = null ;
-
-    if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
-      if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
-      else { 
-        commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ; 
-        commentNode.addMixin("exo:hiddenable");
-      }
-    } else {
-      multiLanguages = document.getNode(LANGUAGES) ;
-      if(multiLanguages.hasNode(language)) {
-        languageNode = multiLanguages.getNode(language) ;
+    try {
+    	      Node document = (Node)systemSession.getItem(node.getPath()) ;
+    	      if(!document.isNodeType(COMMENTABLE)) {
+    	        if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
+    	        else throw new Exception("This node does not support comments.") ;  
+    	      }        
+    	      Node multiLanguages =null, languageNode= null, commentNode = null ;
+    	      
+    	      if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
+    	        if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
+    	        else { 
+    	          commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ; 
+    	          commentNode.addMixin("exo:hiddenable");
+    	        }
+   
       } else {
-        languageNode = multiLanguages.addNode(language) ;
+    	  multiLanguages = document.getNode(LANGUAGES) ;
+    	          if(multiLanguages.hasNode(language)) {
+    	            languageNode = multiLanguages.getNode(language) ;
+    	          } else {
+    	            languageNode = multiLanguages.addNode(language) ;
+    	          }
+    	          if(languageNode.hasNode(COMMENTS)) {
+    	            commentNode = languageNode.getNode(COMMENTS) ;
+    	          } else{
+    	            commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
+    	            commentNode.addMixin("exo:hiddenable");
+    	          }
       }
-      if(languageNode.hasNode(COMMENTS)) {
-        commentNode = languageNode.getNode(COMMENTS) ;
-      } else{
-        commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
-        commentNode.addMixin("exo:hiddenable");
+    	      if(commentor == null || commentor.length() == 0) {
+    	    	          commentor = ANONYMOUS ;
       }
+    	            
+    	            Calendar commentDate = new GregorianCalendar() ;
+    	            String name = Long.toString(commentDate.getTimeInMillis()) ;    
+    	            Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     
+    	            newComment.setProperty(COMMENTOR,commentor) ;
+    	            newComment.setProperty(CREATED_DATE,commentDate) ;
+    	            newComment.setProperty(MESSAGE,comment) ;
+    	            if(email!=null && email.length()>0) {
+    	              newComment.setProperty(COMMENTOR_EMAIL,email) ;
+    	            }
+    	            if(site !=null && site.length()>0) {
+    	              newComment.setProperty(COMMENTOR_SITE,site) ;
+    	            }          
+    	            document.save();
+    	            systemSession.save();
+    	            commentsCache_.remove(commentNode.getPath()) ;
+    	          } catch(Exception e) {
+    	            LOG.error("Unexpected problem occurs. Your comment cannot be created successfully", e);
+    	          } finally {
+    	            if(systemSession != null) systemSession.logout();
     }
 
-    if(commentor == null || commentor.length() == 0) {
-      commentor = ANONYMOUS ;      
-    }
-
-    Calendar commentDate = new GregorianCalendar() ;
-    String name = Long.toString(commentDate.getTimeInMillis()) ;    
-    Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     
-    newComment.setProperty(COMMENTOR,commentor) ;
-    newComment.setProperty(CREATED_DATE,commentDate) ;
-    newComment.setProperty(MESSAGE,comment) ;
-    if(email!=null && email.length()>0) {
-      newComment.setProperty(COMMENTOR_EMAIL,email) ;
-    }
-    if(site !=null && site.length()>0) {
-      newComment.setProperty(COMMENTOR_SITE,site) ;
-    }          
-    document.save();
-    systemSession.save();
-    systemSession.logout();
-    commentsCache_.remove(commentNode.getPath()) ;
   }
 
   /**
@@ -176,18 +189,24 @@ public class CommentsServiceImpl implements CommentsService {
     Session session = document.getSession();
     ManageableRepository  repository = (ManageableRepository)session.getRepository();
     //TODO check if really need delegate to system session
-    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
-    commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
-    String cacheKey = document.getPath().concat(commentsNode.getPath());
-    Object comments = commentsCache_.get(cacheKey) ;
-    if(comments !=null) return (List<Node>)comments ;        
+    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;        
     List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = commentsNode.getNodes(); iter.hasNext();) {
-      list.add(iter.nextNode()) ;
-    }    
-    Collections.sort(list,new DateComparator()) ;
-    commentsCache_.put(commentsNode.getPath(),list) ;  
-    session.logout();
+    try {
+    	      commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
+    	      String cacheKey = document.getPath().concat(commentsNode.getPath());
+    	      Object comments = commentsCache_.get(cacheKey) ;
+    	      if(comments !=null) return (List<Node>)comments ;        
+    	      for(NodeIterator iter = commentsNode.getNodes(); iter.hasNext();) {
+    	        list.add(iter.nextNode()) ;
+    	      }    
+    	      Collections.sort(list,new DateComparator()) ;
+    	      commentsCache_.put(commentsNode.getPath(),list) ;  
+    	    } catch(Exception e) {
+    	      LOG.error("Unexpected problem occurs. You cannot get the list of comment as expected", e);
+    	    } finally {
+    	      if(systemSession != null) systemSession.logout();
+    	      if(session != null) session.logout();
+    	    }
     return list;
   }  
 
@@ -204,6 +223,7 @@ public class CommentsServiceImpl implements CommentsService {
      */
     public int compare(Node node1, Node node2) {
       try{
+
         Date date1 = node1.getProperty(CREATED_DATE).getDate().getTime() ;
         Date date2 = node2.getProperty(CREATED_DATE).getDate().getTime() ;
         return date2.compareTo(date1) ;

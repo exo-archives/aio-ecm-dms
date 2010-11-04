@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.relations.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -26,6 +27,7 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -33,6 +35,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -42,6 +45,11 @@ import org.picocontainer.Startable;
 public class RelationsServiceImpl implements RelationsService, Startable {
   private static final String RELATION_MIXIN = "exo:relationable";
   private static final String RELATION_PROP = "exo:relation";
+    
+    /**
+     * Logger.
+     */
+    private static final Log LOG  = ExoLogger.getLogger("cms.RelationsServiceImpl");
 
   private RepositoryService repositoryService_;
   String repositories_ ;
@@ -137,41 +145,46 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
     SessionProvider provider = SessionProvider.createSystemProvider() ;
     Session session = getSession(repository,workpace,provider) ;
-    Node catNode = (Node) session.getItem(relationPath); 
-    if(!catNode.isNodeType("mix:referenceable")) {
-      catNode.addMixin("mix:referenceable") ;
-      catNode.save() ;
-      session.save() ;
-    }      
-    Value value2add = session.getValueFactory().createValue(catNode);
-    if (!node.isNodeType(RELATION_MIXIN)) {
-      node.addMixin(RELATION_MIXIN);    
-      node.setProperty(RELATION_PROP, new Value[] {value2add});
-      node.save() ;
-      session.save() ;
-    } else {
-      List<Value> vals = new ArrayList<Value>();
-      Value[] values = node.getProperty(RELATION_PROP).getValues();
-      for (int i = 0; i < values.length; i++) {
-        Value value = values[i];
-        String uuid = value.getString();
-        Node refNode = null ;
-        try {
-//          refNode = session.getNodeByUUID(uuid);
-          refNode = getNodeByUUID(uuid, repository, provider) ;
-        } catch(ItemNotFoundException ie) {
-          removeRelation(node, relationPath, repository) ;
-          continue ;
+    try {
+    	      Node catNode = (Node) session.getItem(relationPath); 
+    	      if(!catNode.isNodeType("mix:referenceable")) {
+    	        catNode.addMixin("mix:referenceable") ;
+    	        catNode.save() ;
+    	        session.save() ;
+    	      }      
+    	      Value value2add = session.getValueFactory().createValue(catNode);
+    	      if (!node.isNodeType(RELATION_MIXIN)) {
+    	        node.addMixin(RELATION_MIXIN);    
+    	        node.setProperty(RELATION_PROP, new Value[] {value2add});
+    	        node.save() ;
+    	        session.save() ;
+    	      } else {
+    	        List<Value> vals = new ArrayList<Value>();
+    	        Value[] values = node.getProperty(RELATION_PROP).getValues();
+    	        for (int i = 0; i < values.length; i++) {
+    	          Value value = values[i];
+    	          String uuid = value.getString();
+    	          Node refNode = null ;
+    	          try {
+   //          refNode = session.getNodeByUUID(uuid);
+    	        	  refNode = getNodeByUUID(uuid, repository, provider) ;
+    	        	            } catch(ItemNotFoundException ie) {
+    	        	              removeRelation(node, relationPath, repository) ;
+    	        	              continue ;
+    	        	            }
+    	        	            if(refNode.getPath().equals(relationPath)) return;
+    	        	            vals.add(value);
         }
-        if(refNode.getPath().equals(relationPath)) return;
-        vals.add(value);
+    	        vals.add(value2add);
+    	                node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+    	                node.save() ;
+    	                session.save() ;
       }
-      vals.add(value2add);
-      node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
-      node.save() ;
-      session.save() ;
-      session.logout();
-      provider.close();
+    } catch(Exception e) {
+    	      LOG.error("Unexpected problem occurs. Your relation cannot be created successfully", e);
+    	    } finally {
+    	      if(session != null) session.logout();
+    	      if(provider != null) provider.close();
     }
   }
 

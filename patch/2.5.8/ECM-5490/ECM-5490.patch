@@ -1,0 +1,299 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/comments/impl/CommentsServiceImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/comments/impl/CommentsServiceImpl.java	(revision 62255)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/comments/impl/CommentsServiceImpl.java	(working copy)
+@@ -27,12 +27,14 @@
+ import javax.jcr.Node;
+ import javax.jcr.NodeIterator;
+ import javax.jcr.Session;
++import org.apache.commons.logging.Log;
+ 
+ import org.exoplatform.services.cache.CacheService;
+ import org.exoplatform.services.cache.ExoCache;
+ import org.exoplatform.services.cms.comments.CommentsService;
+ import org.exoplatform.services.cms.i18n.MultiLanguageService;
+ import org.exoplatform.services.jcr.core.ManageableRepository;
++import org.exoplatform.services.log.ExoLogger;
+ 
+ 
+ /**
+@@ -54,6 +56,11 @@
+   private final static String CREATED_DATE = "exo:commentDate".intern() ;
+   private static final String LANGUAGES = "languages".intern() ;
+   private static final String ANONYMOUS = "anonymous".intern() ;
++  
++  /**
++   * Logger.
++   */
++  private static final Log LOG  = ExoLogger.getLogger("cms.CommentsServiceImpl");
+ 
+   private ExoCache commentsCache_ ;
+   private MultiLanguageService multiLangService_ ;  
+@@ -77,54 +84,60 @@
+     ManageableRepository  repository = (ManageableRepository)session.getRepository();
+     //TODO check if really need delegate to system session
+     Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+-    Node document = (Node)systemSession.getItem(node.getPath()) ;
+-    if(!document.isNodeType(COMMENTABLE)) {
+-      if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
+-      else throw new Exception("This node does not support comments.") ;  
+-    }        
+-    Node multiLanguages =null, languageNode= null, commentNode = null ;
+-
+-    if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
+-      if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
+-      else { 
+-        commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ; 
+-        commentNode.addMixin("exo:hiddenable");
+-      }
+-    } else {
+-      multiLanguages = document.getNode(LANGUAGES) ;
+-      if(multiLanguages.hasNode(language)) {
+-        languageNode = multiLanguages.getNode(language) ;
++    try {
++    	      Node document = (Node)systemSession.getItem(node.getPath()) ;
++    	      if(!document.isNodeType(COMMENTABLE)) {
++    	        if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
++    	        else throw new Exception("This node does not support comments.") ;  
++    	      }        
++    	      Node multiLanguages =null, languageNode= null, commentNode = null ;
++    	      
++    	      if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
++    	        if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
++    	        else { 
++    	          commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ; 
++    	          commentNode.addMixin("exo:hiddenable");
++    	        }
++   
+       } else {
+-        languageNode = multiLanguages.addNode(language) ;
++    	  multiLanguages = document.getNode(LANGUAGES) ;
++    	          if(multiLanguages.hasNode(language)) {
++    	            languageNode = multiLanguages.getNode(language) ;
++    	          } else {
++    	            languageNode = multiLanguages.addNode(language) ;
++    	          }
++    	          if(languageNode.hasNode(COMMENTS)) {
++    	            commentNode = languageNode.getNode(COMMENTS) ;
++    	          } else{
++    	            commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
++    	            commentNode.addMixin("exo:hiddenable");
++    	          }
+       }
+-      if(languageNode.hasNode(COMMENTS)) {
+-        commentNode = languageNode.getNode(COMMENTS) ;
+-      } else{
+-        commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
+-        commentNode.addMixin("exo:hiddenable");
++    	      if(commentor == null || commentor.length() == 0) {
++    	    	          commentor = ANONYMOUS ;
+       }
++    	            
++    	            Calendar commentDate = new GregorianCalendar() ;
++    	            String name = Long.toString(commentDate.getTimeInMillis()) ;    
++    	            Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     
++    	            newComment.setProperty(COMMENTOR,commentor) ;
++    	            newComment.setProperty(CREATED_DATE,commentDate) ;
++    	            newComment.setProperty(MESSAGE,comment) ;
++    	            if(email!=null && email.length()>0) {
++    	              newComment.setProperty(COMMENTOR_EMAIL,email) ;
++    	            }
++    	            if(site !=null && site.length()>0) {
++    	              newComment.setProperty(COMMENTOR_SITE,site) ;
++    	            }          
++    	            document.save();
++    	            systemSession.save();
++    	            commentsCache_.remove(commentNode.getPath()) ;
++    	          } catch(Exception e) {
++    	            LOG.error("Unexpected problem occurs. Your comment cannot be created successfully", e);
++    	          } finally {
++    	            if(systemSession != null) systemSession.logout();
+     }
+ 
+-    if(commentor == null || commentor.length() == 0) {
+-      commentor = ANONYMOUS ;      
+-    }
+-
+-    Calendar commentDate = new GregorianCalendar() ;
+-    String name = Long.toString(commentDate.getTimeInMillis()) ;    
+-    Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     
+-    newComment.setProperty(COMMENTOR,commentor) ;
+-    newComment.setProperty(CREATED_DATE,commentDate) ;
+-    newComment.setProperty(MESSAGE,comment) ;
+-    if(email!=null && email.length()>0) {
+-      newComment.setProperty(COMMENTOR_EMAIL,email) ;
+-    }
+-    if(site !=null && site.length()>0) {
+-      newComment.setProperty(COMMENTOR_SITE,site) ;
+-    }          
+-    document.save();
+-    systemSession.save();
+-    systemSession.logout();
+-    commentsCache_.remove(commentNode.getPath()) ;
+   }
+ 
+   /**
+@@ -176,18 +189,24 @@
+     Session session = document.getSession();
+     ManageableRepository  repository = (ManageableRepository)session.getRepository();
+     //TODO check if really need delegate to system session
+-    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+-    commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
+-    String cacheKey = document.getPath().concat(commentsNode.getPath());
+-    Object comments = commentsCache_.get(cacheKey) ;
+-    if(comments !=null) return (List<Node>)comments ;        
++    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;        
+     List<Node> list = new ArrayList<Node>() ;
+-    for(NodeIterator iter = commentsNode.getNodes(); iter.hasNext();) {
+-      list.add(iter.nextNode()) ;
+-    }    
+-    Collections.sort(list,new DateComparator()) ;
+-    commentsCache_.put(commentsNode.getPath(),list) ;  
+-    session.logout();
++    try {
++    	      commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
++    	      String cacheKey = document.getPath().concat(commentsNode.getPath());
++    	      Object comments = commentsCache_.get(cacheKey) ;
++    	      if(comments !=null) return (List<Node>)comments ;        
++    	      for(NodeIterator iter = commentsNode.getNodes(); iter.hasNext();) {
++    	        list.add(iter.nextNode()) ;
++    	      }    
++    	      Collections.sort(list,new DateComparator()) ;
++    	      commentsCache_.put(commentsNode.getPath(),list) ;  
++    	    } catch(Exception e) {
++    	      LOG.error("Unexpected problem occurs. You cannot get the list of comment as expected", e);
++    	    } finally {
++    	      if(systemSession != null) systemSession.logout();
++    	      if(session != null) session.logout();
++    	    }
+     return list;
+   }  
+ 
+@@ -204,6 +223,7 @@
+      */
+     public int compare(Node node1, Node node2) {
+       try{
++
+         Date date1 = node1.getProperty(CREATED_DATE).getDate().getTime() ;
+         Date date2 = node2.getProperty(CREATED_DATE).getDate().getTime() ;
+         return date2.compareTo(date1) ;
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/relations/impl/RelationsServiceImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/relations/impl/RelationsServiceImpl.java	(revision 62255)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/relations/impl/RelationsServiceImpl.java	(working copy)
+@@ -19,6 +19,7 @@
+ import java.util.ArrayList;
+ import java.util.List;
+ 
++
+ import javax.jcr.ItemNotFoundException;
+ import javax.jcr.Node;
+ import javax.jcr.NodeIterator;
+@@ -26,6 +27,7 @@
+ import javax.jcr.Session;
+ import javax.jcr.Value;
+ 
++import org.apache.commons.logging.Log;
+ import org.exoplatform.container.xml.InitParams;
+ import org.exoplatform.services.cms.BasePath;
+ import org.exoplatform.services.cms.relations.RelationsService;
+@@ -33,6 +35,7 @@
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
+ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
++import org.exoplatform.services.log.ExoLogger;
+ import org.picocontainer.Startable;
+ 
+ /**
+@@ -42,6 +45,11 @@
+ public class RelationsServiceImpl implements RelationsService, Startable {
+   private static final String RELATION_MIXIN = "exo:relationable";
+   private static final String RELATION_PROP = "exo:relation";
++    
++    /**
++     * Logger.
++     */
++    private static final Log LOG  = ExoLogger.getLogger("cms.RelationsServiceImpl");
+ 
+   private RepositoryService repositoryService_;
+   String repositories_ ;
+@@ -137,41 +145,46 @@
+   public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
+     SessionProvider provider = SessionProvider.createSystemProvider() ;
+     Session session = getSession(repository,workpace,provider) ;
+-    Node catNode = (Node) session.getItem(relationPath); 
+-    if(!catNode.isNodeType("mix:referenceable")) {
+-      catNode.addMixin("mix:referenceable") ;
+-      catNode.save() ;
+-      session.save() ;
+-    }      
+-    Value value2add = session.getValueFactory().createValue(catNode);
+-    if (!node.isNodeType(RELATION_MIXIN)) {
+-      node.addMixin(RELATION_MIXIN);    
+-      node.setProperty(RELATION_PROP, new Value[] {value2add});
+-      node.save() ;
+-      session.save() ;
+-    } else {
+-      List<Value> vals = new ArrayList<Value>();
+-      Value[] values = node.getProperty(RELATION_PROP).getValues();
+-      for (int i = 0; i < values.length; i++) {
+-        Value value = values[i];
+-        String uuid = value.getString();
+-        Node refNode = null ;
+-        try {
+-//          refNode = session.getNodeByUUID(uuid);
+-          refNode = getNodeByUUID(uuid, repository, provider) ;
+-        } catch(ItemNotFoundException ie) {
+-          removeRelation(node, relationPath, repository) ;
+-          continue ;
++    try {
++    	      Node catNode = (Node) session.getItem(relationPath); 
++    	      if(!catNode.isNodeType("mix:referenceable")) {
++    	        catNode.addMixin("mix:referenceable") ;
++    	        catNode.save() ;
++    	        session.save() ;
++    	      }      
++    	      Value value2add = session.getValueFactory().createValue(catNode);
++    	      if (!node.isNodeType(RELATION_MIXIN)) {
++    	        node.addMixin(RELATION_MIXIN);    
++    	        node.setProperty(RELATION_PROP, new Value[] {value2add});
++    	        node.save() ;
++    	        session.save() ;
++    	      } else {
++    	        List<Value> vals = new ArrayList<Value>();
++    	        Value[] values = node.getProperty(RELATION_PROP).getValues();
++    	        for (int i = 0; i < values.length; i++) {
++    	          Value value = values[i];
++    	          String uuid = value.getString();
++    	          Node refNode = null ;
++    	          try {
++   //          refNode = session.getNodeByUUID(uuid);
++    	        	  refNode = getNodeByUUID(uuid, repository, provider) ;
++    	        	            } catch(ItemNotFoundException ie) {
++    	        	              removeRelation(node, relationPath, repository) ;
++    	        	              continue ;
++    	        	            }
++    	        	            if(refNode.getPath().equals(relationPath)) return;
++    	        	            vals.add(value);
+         }
+-        if(refNode.getPath().equals(relationPath)) return;
+-        vals.add(value);
++    	        vals.add(value2add);
++    	                node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
++    	                node.save() ;
++    	                session.save() ;
+       }
+-      vals.add(value2add);
+-      node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+-      node.save() ;
+-      session.save() ;
+-      session.logout();
+-      provider.close();
++    } catch(Exception e) {
++    	      LOG.error("Unexpected problem occurs. Your relation cannot be created successfully", e);
++    	    } finally {
++    	      if(session != null) session.logout();
++    	      if(provider != null) provider.close();
+     }
+   }
+ 
