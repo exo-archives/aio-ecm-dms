@@ -25,7 +25,7 @@
   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
 %>
 <div class="UISearchResult" id="$uicomponent.id">
-  <table class="UIGrid" style="width: 97%">
+  <table class="UIGrid" style="width: 72%">
     <thead>
       <tr>
         <th width="45px">
@@ -104,6 +104,12 @@
   	      excerpt = StringEscapeUtils.unescapeHtml(excerpt);
   	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
   	      String s = "";
+  	      def linkNode = null;
+					if(uicomponent.isTaxonomyNode()) {
+						linkNode = uicomponent.getSymlinkNode(node);
+					} else {
+						linkNode = node;
+					}
   	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
       %>
           <tr class="$rowClass">
@@ -112,17 +118,17 @@
             </td>
             <td>
             	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
-            		<%=node.getName()%>
+            		<%=linkNode.getName()%>
             	</div>
        				<div>$excerpt</div>
-       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
+       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=linkNode.getPath()%></div>
        				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
 		        </td>
             <td><div class="ActionContainer">$score</div></td>
 	          <td>
 	          	<div class="ActionContainer">
-		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
-		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
+		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(linkNode.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
+		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(linkNode.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
 		          </div>
 	          </td>	                  
           </tr>

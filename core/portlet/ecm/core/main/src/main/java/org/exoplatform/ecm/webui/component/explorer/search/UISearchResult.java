@@ -29,6 +29,8 @@ import java.util.Locale;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
@@ -39,12 +41,14 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.JCRPath;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -95,7 +99,9 @@ public class UISearchResult extends UIContainer {
   static private int PAGE_SIZE = 10;
   private List<String> categoryPathList = new ArrayList<String>();
   private String constraintsCondition;
-  
+  private boolean isTaxonomyNode = false;
+  private String workspaceName = null;
+  private String currentPath = null;
   public List<String> getCategoryPathList() { return categoryPathList; }
   public void setCategoryPathList(List<String> categoryPathListItem) {
     categoryPathList = categoryPathListItem; 
@@ -125,6 +131,28 @@ public class UISearchResult extends UIContainer {
     Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
     return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
   }
+  	
+    public void setTaxonomyNode(boolean isTaxonomyNode, String workspaceName, String currentPath) {
+      this.isTaxonomyNode = isTaxonomyNode;
+      this.workspaceName = workspaceName;
+      this.currentPath = currentPath;
+    }
+     
+    public boolean isTaxonomyNode() { return isTaxonomyNode; }
+  
+    public Node getSymlinkNode(Node targetNode) throws Exception {
+      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+      Session session = 
+        SessionProviderFactory.createSessionProvider().getSession(workspaceName, repositoryService.getCurrentRepository());
+      String queryStatement = 
+        "select * from exo:taxonomyLink where jcr:path like '" + currentPath + "/%' " +
+        		"and exo:uuid='"+targetNode.getUUID()+"' " +
+        		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
+      QueryManager queryManager = session.getWorkspace().getQueryManager();
+      Query query = queryManager.createQuery(queryStatement, Query.SQL);
+      return query.execute().getNodes().nextNode();
+    }	
+      
   
   private void addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
     List<Node> checkList = new ArrayList<Node>();

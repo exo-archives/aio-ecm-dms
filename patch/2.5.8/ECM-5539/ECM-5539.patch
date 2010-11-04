@@ -1,0 +1,246 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(revision 62209)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(working copy)
+@@ -44,17 +44,14 @@
+ import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+ import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
+ import org.exoplatform.ecm.webui.utils.Utils;
+-import org.exoplatform.portal.webui.util.Util;
++import org.exoplatform.portal.webui.util.SessionProviderFactory;
+ import org.exoplatform.services.cms.actions.ActionServiceContainer;
+ import org.exoplatform.services.cms.drives.DriveData;
+ import org.exoplatform.services.cms.drives.ManageDriveService;
+ import org.exoplatform.services.cms.link.LinkUtils;
+ import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+-import org.exoplatform.services.jcr.RepositoryService;
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
+-import org.exoplatform.services.security.ConversationState;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.config.annotation.ComponentConfig;
+ import org.exoplatform.webui.config.annotation.EventConfig;
+@@ -235,8 +232,11 @@
+     public void execute(Event<UIAddressBar> event) throws Exception {
+       UIAddressBar uiForm = event.getSource();
+       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+-      String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();
+-      Node currentNode = uiExplorer.getCurrentNode();      
++      String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();   
++      Node currentNode = uiExplorer.getCurrentNode();
++      String queryStatement = null;
++      QueryManager queryManager = null;
++      boolean isTaxonomyNode = false;
+       if (currentNode.isNodeType(Utils.EXO_TAXANOMY)) {
+         TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
+         List<Node> TaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
+@@ -249,71 +249,46 @@
+                 String searchPath = actionNode.getProperty(EXO_TARGETPATH).getString();
+                 String searchWorkspace = actionNode.getProperty(EXO_TARGETWORKSPACE).getString();                
+                 uiExplorer.setSelectNode(searchWorkspace, searchPath);                
+-                String queryStatement = null;
+                 if("/".equals(searchPath)) {
+                   queryStatement = ROOT_SQL_QUERY;        
+-                }else {
++                } else {
+                   queryStatement = StringUtils.replace(SQL_QUERY,"$0", searchPath);
+                 }
+-                queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));            
+-                uiExplorer.removeChildById("ViewSearch");
+-                UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+-                getChild(UIDocumentWorkspace.class);
++                SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider();
+                 
+-                RepositoryService repositoryService = 
+-                  Util.getUIPortal().getApplicationComponent(RepositoryService.class);
+-                SessionProviderService sessionProviderService = 
+-                  Util.getUIPortal().getApplicationComponent(SessionProviderService.class);
+-                SessionProvider sessionProvider = sessionProviderService.getSessionProvider(null);
+-                
+                 Session session = sessionProvider.getSession(searchWorkspace, 
+-                    repositoryService.getRepository(uiExplorer.getRepositoryName()));      
+-                UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
+-                QueryManager queryManager =session.getWorkspace().getQueryManager();
+-                        
+-                long startTime = System.currentTimeMillis();
+-                Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+-                QueryResult queryResult = query.execute();                  
+-                uiSearchResult.clearAll();
+-                uiSearchResult.setQueryResults(queryResult);            
+-                uiSearchResult.updateGrid(true);
+-                long time = System.currentTimeMillis() - startTime;
+-                uiSearchResult.setSearchTime(time);
+-                uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
+-                if (session != null) session.logout();
+-                sessionProvider.close();                
+-                return;
++                		(ManageableRepository)currentNode.getSession().getRepository());      
++                                queryManager = session.getWorkspace().getQueryManager();
++                                isTaxonomyNode = true;
++                                break;
+               }
+             }
++            break;
+           }
+         }
++      } else {
++    	          if("/".equals(currentNode.getPath())) {
++    	            queryStatement = ROOT_SQL_QUERY;        
++    	          } else {
++    	            queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
++    	          }
++    	          queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+       }
+-      String queryStatement = null;
+-      if("/".equals(currentNode.getPath())) {
+-        queryStatement = ROOT_SQL_QUERY;        
+-      }else {
+-        queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
+-      }
+-      queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));            
++                 
+       uiExplorer.removeChildById("ViewSearch");
+-      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+-      getChild(UIDocumentWorkspace.class);
+-      SessionProvider sessionProvider = new SessionProvider(ConversationState.getCurrent());
+-      Session session = sessionProvider.getSession(currentNode.getSession().getWorkspace().getName(), 
+-          (ManageableRepository)currentNode.getSession().getRepository());      
+-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
+-      QueryManager queryManager =session.getWorkspace().getQueryManager();      
++      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
++      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);      
+       long startTime = System.currentTimeMillis();
++      queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));
+       Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+-      QueryResult queryResult = query.execute();                  
++      QueryResult queryResult = query.execute();
++      uiSearchResult.setTaxonomyNode(isTaxonomyNode, currentNode.getSession().getWorkspace().getName(), currentNode.getPath());
+       uiSearchResult.clearAll();
+       uiSearchResult.setQueryResults(queryResult);            
+       uiSearchResult.updateGrid(true);
+       long time = System.currentTimeMillis() - startTime;
+       uiSearchResult.setSearchTime(time);
+       uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
+-      if (session != null) session.logout();
+-      sessionProvider.close();
+     }
+   }
+   
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 62209)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -29,6 +29,8 @@
+ import javax.jcr.AccessDeniedException;
+ import javax.jcr.Node;
+ import javax.jcr.Session;
++import javax.jcr.query.Query;
++import javax.jcr.query.QueryManager;
+ import javax.jcr.query.QueryResult;
+ import javax.jcr.query.Row;
+ import javax.jcr.query.RowIterator;
+@@ -39,12 +41,14 @@
+ import org.exoplatform.portal.webui.util.Util;
+ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+ import org.exoplatform.services.cms.BasePath;
++import org.exoplatform.portal.webui.util.SessionProviderFactory;
+ import org.exoplatform.services.cms.link.LinkUtils;
+ import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+ import org.exoplatform.services.cms.templates.TemplateService;
+ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+ import org.exoplatform.services.jcr.impl.core.JCRPath;
+ import org.exoplatform.services.jcr.impl.core.SessionImpl;
++import org.exoplatform.services.jcr.RepositoryService;
+ import org.exoplatform.services.log.ExoLogger;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.config.annotation.ComponentConfig;
+@@ -95,7 +99,9 @@
+   static private int PAGE_SIZE = 10;
+   private List<String> categoryPathList = new ArrayList<String>();
+   private String constraintsCondition;
+-  
++  private boolean isTaxonomyNode = false;
++  private String workspaceName = null;
++  private String currentPath = null;
+   public List<String> getCategoryPathList() { return categoryPathList; }
+   public void setCategoryPathList(List<String> categoryPathListItem) {
+     categoryPathList = categoryPathListItem; 
+@@ -125,7 +131,29 @@
+     Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
+     return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
+   }
++  	
++    public void setTaxonomyNode(boolean isTaxonomyNode, String workspaceName, String currentPath) {
++      this.isTaxonomyNode = isTaxonomyNode;
++      this.workspaceName = workspaceName;
++      this.currentPath = currentPath;
++    }
++     
++    public boolean isTaxonomyNode() { return isTaxonomyNode; }
+   
++    public Node getSymlinkNode(Node targetNode) throws Exception {
++      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
++      Session session = 
++        SessionProviderFactory.createSessionProvider().getSession(workspaceName, repositoryService.getCurrentRepository());
++      String queryStatement = 
++        "select * from exo:taxonomyLink where jcr:path like '" + currentPath + "/%' " +
++        		"and exo:uuid='"+targetNode.getUUID()+"' " +
++        		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
++      QueryManager queryManager = session.getWorkspace().getQueryManager();
++      Query query = queryManager.createQuery(queryStatement, Query.SQL);
++      return query.execute().getNodes().nextNode();
++    }	
++      
++  
+   private void addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
+     List<Node> checkList = new ArrayList<Node>();
+     if (flag_) checkList = currentListNodes_; 
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 62209)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
+@@ -25,7 +25,7 @@
+   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
+ %>
+ <div class="UISearchResult" id="$uicomponent.id">
+-  <table class="UIGrid" style="width: 97%">
++  <table class="UIGrid" style="width: 72%">
+     <thead>
+       <tr>
+         <th width="45px">
+@@ -104,6 +104,12 @@
+   	      excerpt = StringEscapeUtils.unescapeHtml(excerpt);
+   	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
+   	      String s = "";
++  	      def linkNode = null;
++					if(uicomponent.isTaxonomyNode()) {
++						linkNode = uicomponent.getSymlinkNode(node);
++					} else {
++						linkNode = node;
++					}
+   	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
+       %>
+           <tr class="$rowClass">
+@@ -112,17 +118,17 @@
+             </td>
+             <td>
+             	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
+-            		<%=node.getName()%>
++            		<%=linkNode.getName()%>
+             	</div>
+        				<div>$excerpt</div>
+-       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
++       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=linkNode.getPath()%></div>
+        				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
+ 		        </td>
+             <td><div class="ActionContainer">$score</div></td>
+ 	          <td>
+ 	          	<div class="ActionContainer">
+-		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
+-		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
++		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(linkNode.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
++		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(linkNode.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
+ 		          </div>
+ 	          </td>	                  
+           </tr>
