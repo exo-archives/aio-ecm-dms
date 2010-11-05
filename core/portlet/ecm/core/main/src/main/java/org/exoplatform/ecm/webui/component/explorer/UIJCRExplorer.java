@@ -108,7 +108,8 @@ public class UIJCRExplorer extends UIContainer {
   private String currentRootPath_ ;
   private String currentPath_ ;
   private String currentStatePath_ ;
-  private String currentStateWorkspaceName_ ;  private String lastWorkspaceName_ ;
+  private String currentStateWorkspaceName_ ;  
+  private String lastWorkspaceName_ ;
   private String currentDriveRootPath_ ;
   private String currentDriveWorkspaceName_ ;
   private String currentDriveRepositoryName_ ;
@@ -339,12 +340,7 @@ public class UIJCRExplorer extends UIContainer {
    * @return the workspace of the session of the current node (= UIJCRExplorer.getCurrentNode())
    */
   public String getCurrentWorkspace() {
-    try {
-      return getCurrentNode().getSession().getWorkspace().getName();
-    } catch (Exception e) {
-      LOG.warn("The workspace of the current node cannot be found, the workspace of the drive will be used", e);
-    } 
-    return getCurrentDriveWorkspace();
+	  return currentDriveWorkspaceName_;
   }
 
   public ManageableRepository getRepository() throws Exception{         

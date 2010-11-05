@@ -1,0 +1,114 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(revision 62258)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(working copy)
+@@ -108,7 +108,8 @@
+   private String currentRootPath_ ;
+   private String currentPath_ ;
+   private String currentStatePath_ ;
+-  private String currentStateWorkspaceName_ ;  private String lastWorkspaceName_ ;
++  private String currentStateWorkspaceName_ ;  
++  private String lastWorkspaceName_ ;
+   private String currentDriveRootPath_ ;
+   private String currentDriveWorkspaceName_ ;
+   private String currentDriveRepositoryName_ ;
+@@ -339,12 +340,7 @@
+    * @return the workspace of the session of the current node (= UIJCRExplorer.getCurrentNode())
+    */
+   public String getCurrentWorkspace() {
+-    try {
+-      return getCurrentNode().getSession().getWorkspace().getName();
+-    } catch (Exception e) {
+-      LOG.warn("The workspace of the current node cannot be found, the workspace of the drive will be used", e);
+-    } 
+-    return getCurrentDriveWorkspace();
++	  return currentDriveWorkspaceName_;
+   }
+ 
+   public ManageableRepository getRepository() throws Exception{         
+@@ -691,11 +687,11 @@
+     } else if (Preference.SORT_BY_VERSIONABLE.equals(preferences_.getSortType())) {
+         Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_VERSIONABLE));
+     } else if (Preference.SORT_BY_AUDITING.equals(preferences_.getSortType())) {
+-        Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_AUDITING));
+-    } else if (Preference.SORT_BY_CREATED_DATE.equals(preferences_.getSortType())) {
+-        Collections.sort(childrenList, new PropertyValueComparator(Utils.EXO_CREATED_DATE, preferences_.getOrder())); 
+-    } else if (Preference.SORT_BY_MODIFIED_DATE.equals(preferences_.getSortType())) {
+-        Collections.sort(childrenList, new PropertyValueComparator(Utils.EXO_MODIFIED_DATE, preferences_.getOrder())); 
++        Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_AUDITING));
++    } else if (Preference.SORT_BY_CREATED_DATE.equals(preferences_.getSortType())) {
++        Collections.sort(childrenList, new PropertyValueComparator(Utils.EXO_CREATED_DATE, preferences_.getOrder())); 
++    } else if (Preference.SORT_BY_MODIFIED_DATE.equals(preferences_.getSortType())) {
++        Collections.sort(childrenList, new PropertyValueComparator(Utils.EXO_MODIFIED_DATE, preferences_.getOrder())); 
+     } else {
+         Collections.sort(childrenList, new PropertyValueComparator(preferences_.getSortType(), preferences_.getOrder()));
+     }
+@@ -827,4 +823,4 @@
+       return path;
+     }    
+   }
+-}
++}
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(revision 62258)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/SystemView.gtmpl	(working copy)
+@@ -139,7 +139,7 @@
+ 	      	String portalName = uicomponent.getPortalName();
+ 	      	String repository = uicomponent.getRepository();
+ 	        for(data in uicomponent.getChildrenList()) {
+-	          def isPreferenceNode = uicomponent.isPreferenceNode(data);
++	          
+ 	          def preferenceWS = data.getSession().getWorkspace().getName();
+ 	          String nodePath = data.getPath();
+ 	         String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()));
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl	(revision 62258)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl	(working copy)
+@@ -102,7 +102,6 @@
+ 		      int i = 0;
+ 		      for(data in uicomponent.getChildrenList()) { 
+               i++;
+-		          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+ 		          def preferenceWS = data.getSession().getWorkspace().getName() ;
+ 		          String name = data.getPath().substring(data.getPath().lastIndexOf("/") + 1) ;
+ 		          String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
+@@ -195,4 +194,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>
+\ No newline at end of file
++</div>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl	(revision 62258)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl	(working copy)
+@@ -104,7 +104,6 @@
+ 		      int i = 0;
+ 			    for(data in uicomponent.getChildrenList()) {
+ 		    		  i++;
+-		          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+ 		          def preferenceWS = data.getSession().getWorkspace().getName() ;
+ 		          String name = data.getPath().substring(data.getPath().lastIndexOf("/") + 1) ;
+ 		          String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
+@@ -188,4 +187,4 @@
+ 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+ 		</div>
+ 	<% } %>
+-</div>
+\ No newline at end of file
++</div>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(revision 62258)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(working copy)
+@@ -189,7 +189,6 @@
+ 	        int i = 0;
+ 	        for (data in uicomponent.getChildrenList()) {
+      			  i++;
+-	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+ 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
+ 	          String nodePath = data.getPath() ;
+ 	          String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length())) ;    

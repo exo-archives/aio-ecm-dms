@@ -139,7 +139,7 @@
 	      	String portalName = uicomponent.getPortalName();
 	      	String repository = uicomponent.getRepository();
 	        for(data in uicomponent.getChildrenList()) {
-	          def isPreferenceNode = uicomponent.isPreferenceNode(data);
+	          
 	          def preferenceWS = data.getSession().getWorkspace().getName();
 	          String nodePath = data.getPath();
 	         String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()));

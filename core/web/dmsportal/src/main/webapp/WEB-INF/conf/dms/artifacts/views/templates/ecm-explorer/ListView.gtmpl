@@ -189,7 +189,6 @@
 	        int i = 0;
 	        for (data in uicomponent.getChildrenList()) {
      			  i++;
-	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
 	          String nodePath = data.getPath() ;
 	          String name = Text.unescapeIllegalJcrChars(nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length())) ;    

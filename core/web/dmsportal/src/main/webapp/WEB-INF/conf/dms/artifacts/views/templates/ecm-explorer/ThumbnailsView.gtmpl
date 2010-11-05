@@ -102,7 +102,6 @@
 		      int i = 0;
 		      for(data in uicomponent.getChildrenList()) { 
               i++;
-		          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 		          def preferenceWS = data.getSession().getWorkspace().getName() ;
 		          String name = data.getPath().substring(data.getPath().lastIndexOf("/") + 1) ;
 		          String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
