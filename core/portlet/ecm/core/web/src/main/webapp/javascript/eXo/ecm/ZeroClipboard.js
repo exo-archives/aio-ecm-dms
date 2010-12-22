@@ -251,22 +251,33 @@ ZeroClipboard.Client.prototype = {
 				}
 				
 				this.ready = true;
-				this.movie.setText( this.clipText );
-				this.movie.setHandCursor( this.handCursorEnabled );
+                this.movie.setText( this.clipText );
+                this.movie.setHandCursor( this.handCursorEnabled );
+                var rightClickMenu = document.getElementById("ECMContextMenu");
+                var divMovie = eXo.core.DOMUtil.findAncestorByTagName(this.movie, 'div');
+                var style = divMovie.style;
+                this.movie.width=rightClickMenu.offsetWidth;
+                style.width = '' + this.movie.width + 'px';
 				break;
 			
 			case 'mouseover':
-  			break;
+				var item = document.getElementById(this.domElement.id);
+				item.className = 'ItemSelected';
+			break;
 			
 			case 'mouseout':
+				var item = document.getElementById(this.domElement.id);
+				item.className = 'MenuItem';
   			break;
 			
 			case 'mousedown':
 				break;
-			
+
 			case 'mouseup':
 				this.movie.setText(this.clipText);
-	  		eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
+				var item = document.getElementById(this.domElement.id);
+				item.className = 'MenuItem';
+	  			eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
 		  	break;
 		} // switch eventName
 		

@@ -142,7 +142,7 @@
     <title>Explorateur</title>
     <label>
       <Root>Racine</Root>
-      <webDavView>Télécharger pour permettre l'édition</webDavView>
+      <webDavView>Télécharger pour éditer</webDavView>
     </label>
     <msg>
       <path-not-found>Cet élément a été modifié ou supprimé. Veuillez cliquer sur le bouton "Actualiser"</path-not-found>
@@ -531,7 +531,7 @@
       <UnLock>Déverrouiller</UnLock>
       <ViewProperties>Visualiser les propriétés du noeud</ViewProperties>
       <GetURL>Copier l'URL dans le presse-papier</GetURL>
-      <DownloadAndAllowEdition>Télécharger pour permettre l'édition</DownloadAndAllowEdition>
+      <DownloadAndAllowEdition>Télécharger pour éditer</DownloadAndAllowEdition>
       <AddThumbnail>Ajouter/Supprimer une vignette</AddThumbnail>
     </event>
   </ECMContextMenu>
@@ -1834,6 +1834,7 @@
   -->
   <UIViewMetadataContainer>
     <msg>
+
       <path-not-found>Ce noeud ne supporte pas cette vue</path-not-found>
     </msg>
   </UIViewMetadataContainer>

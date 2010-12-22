@@ -772,6 +772,17 @@
 	white-space: nowrap;
 }
 
+.UIJCRExplorerPortlet .UIRightClickPopupMenu .MenuItem .ItemIcon {
+	cursor: pointer;	
+	padding: 5px 0 5px 26px;
+}
+
+.UIJCRExplorerPortlet .UIRightClickPopupMenu .ItemSelected {
+	cursor: pointer;	
+	background-color: #DEE4F2;
+	color: orange;
+}
+
 .UIRightClickPopupMenu .MenuURLIcon {
 	line-height:16px;
 	margin: 0 7px;
@@ -780,6 +791,7 @@
 	width: auto;
 	background-position: right center; /* orientation=rt */
 	background-position: left center; /* orientation=lt */
+	cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UISymLinkManager {

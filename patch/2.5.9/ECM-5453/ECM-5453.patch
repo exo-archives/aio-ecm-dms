@@ -1,0 +1,405 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(revision 49334)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(working copy)
+@@ -17,7 +17,7 @@
+ package org.exoplatform.services.cms.webdav;
+ 
+ import java.io.InputStream;
+-
++import org.exoplatform.ecm.utils.text.Text;
+ import javax.jcr.Item;
+ import javax.jcr.NoSuchWorkspaceException;
+ import javax.jcr.PathNotFoundException;
+@@ -88,8 +88,8 @@
+     String destPath = destinationHeader.substring(serverURI.length() + 1);
+     
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(destPath), LinkUtils.getParentPath(path(destPath)), true);
+-      return item.getSession().getWorkspace().getName() + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(destPath)));
++      Item item = nodeFinder.getItem(repoName, workspaceName(destPath), LinkUtils.getParentPath(path(Text.escapeIllegalJcrChars(destPath))), true);
++      return item.getSession().getWorkspace().getName() + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(Text.escapeIllegalJcrChars(destPath))));
+     } catch (Exception e) {
+       log.warn("Cannot find the item at " + repoName + "/" + destPath, e);
+       return null;
+@@ -107,7 +107,7 @@
+                           HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -130,7 +130,7 @@
+                            @HeaderParam(WebDavHeaders.IF) String ifHeader,
+                            HierarchicalProperty body) {
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -158,7 +158,7 @@
+                        HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath));
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)));
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -187,7 +187,7 @@
+                       @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -210,7 +210,7 @@
+                        @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -236,7 +236,7 @@
+                        HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -260,7 +260,7 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -293,7 +293,7 @@
+                         HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -317,7 +317,7 @@
+                            HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -342,7 +342,7 @@
+                             HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -369,8 +369,8 @@
+                       InputStream inputStream) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), LinkUtils.getParentPath(path(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(repoPath)));
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), LinkUtils.getParentPath(path(Text.escapeIllegalJcrChars(repoPath))), true);
++      repoPath = item.getSession().getWorkspace().getName() + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(Text.escapeIllegalJcrChars(repoPath))));
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -394,7 +394,7 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -417,7 +417,7 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -441,7 +441,7 @@
+                              HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+@@ -464,7 +464,7 @@
+                                  @HeaderParam(WebDavHeaders.IF) String ifHeader) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+       repoPath = item.getSession().getWorkspace().getName() + item.getPath();
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(revision 49334)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(working copy)
+@@ -769,6 +769,17 @@
+ 	white-space: nowrap;
+ }
+ 
++.UIJCRExplorerPortlet .UIRightClickPopupMenu .MenuItem .ItemIcon {
++	cursor: pointer;	
++	padding: 5px 0 5px 26px;
++}
++
++.UIJCRExplorerPortlet .UIRightClickPopupMenu .ItemSelected {
++	cursor: pointer;	
++	background-color: #DEE4F2;
++	color: orange;
++}
++
+ .UIRightClickPopupMenu .MenuURLIcon {
+ 	line-height:16px;
+ 	margin: 0 7px;
+@@ -777,6 +788,7 @@
+ 	width: auto;
+ 	background-position: right center; /* orientation=rt */
+ 	background-position: left center; /* orientation=lt */
++	cursor: pointer;
+ }
+ 
+ .UIJCRExplorerPortlet .UISymLinkManager {
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl	(revision 49334)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl	(working copy)
+@@ -8,7 +8,7 @@
+   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
+   import java.util.List;
+-	import java.util.ArrayList;
++  import java.util.ArrayList;
+   import org.exoplatform.ecm.utils.text.Text;  
+   
+   def rcontext = _ctx.getRequestContext();
+@@ -81,16 +81,19 @@
+ 		      if (node.hasNode("jcr:content")) {
+ 		        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+ 		      }
+-					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+ serverPath+"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";
+-				    strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+-					  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+-						  strActs += "</a>" ;				  	
+-				  } else {
+-				  	String link = serverPath + "/rest/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+-			    strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
++		      		// Escape "'" for js
++				String webDavPath=node.getPath();
++				webDavPath = webDavPath.contains("%27") ? webDavPath.replaceAll("%27","%2527") : webDavPath;
++		      		String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverPath+ "','"+repository+"','"+ preferenceWS+ "','" + webDavPath + "','"+mimeType+"')";
++			    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
+ 				  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+-					  strActs += "</a>" ;				  	
+-				  }
++					strActs += "</a>" ;				  	
++			  } else {
++			  	String link = serverPath + "/rest/jcr/" + repository + "/" + preferenceWS + node.getPath(); 
++		    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
++			  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
++				strActs += "</a>" ;				  	
++			  }
+ 			   //End WebDAV Action					        
+ 			   List customActs = uicomponent.getCustomActions(node) ;				  
+ 		    Parameter[] params ;
+@@ -171,4 +174,4 @@
+ 			%>
+     </div>
+   </div>   	    
+-</div>
+\ No newline at end of file
++</div>
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ZeroClipboard.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ZeroClipboard.js	(revision 49334)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ZeroClipboard.js	(working copy)
+@@ -251,22 +251,33 @@
+ 				}
+ 				
+ 				this.ready = true;
+-				this.movie.setText( this.clipText );
+-				this.movie.setHandCursor( this.handCursorEnabled );
++                this.movie.setText( this.clipText );
++                this.movie.setHandCursor( this.handCursorEnabled );
++                var rightClickMenu = document.getElementById("ECMContextMenu");
++                var divMovie = eXo.core.DOMUtil.findAncestorByTagName(this.movie, 'div');
++                var style = divMovie.style;
++                this.movie.width=rightClickMenu.offsetWidth;
++                style.width = '' + this.movie.width + 'px';
+ 				break;
+ 			
+ 			case 'mouseover':
+-  			break;
++				var item = document.getElementById(this.domElement.id);
++				item.className = 'ItemSelected';
++			break;
+ 			
+ 			case 'mouseout':
++				var item = document.getElementById(this.domElement.id);
++				item.className = 'MenuItem';
+   			break;
+ 			
+ 			case 'mousedown':
+ 				break;
+-			
++
+ 			case 'mouseup':
+ 				this.movie.setText(this.clipText);
+-	  		eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
++				var item = document.getElementById(this.domElement.id);
++				item.className = 'MenuItem';
++	  			eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
+ 		  	break;
+ 		} // switch eventName
+ 		
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 49334)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
+@@ -142,7 +142,7 @@
+     <title>Explorateur</title>
+     <label>
+       <Root>Racine</Root>
+-      <webDavView>Télécharger pour permettre l'édition</webDavView>
++      <webDavView>Télécharger pour éditer</webDavView>
+     </label>
+     <msg>
+       <path-not-found>Ce noeud a été modifié ou supprimé, veuillez cliquer sur le bouton "Actualiser".</path-not-found>
+@@ -530,7 +530,7 @@
+       <UnLock>Déverrouiller</UnLock>
+       <ViewProperties>Visualiser les propriétés du noeud</ViewProperties>
+       <GetURL>Copier l'URL dans le presse-papier</GetURL>
+-      <DownloadAndAllowEdition>Télécharger pour permettre l'édition</DownloadAndAllowEdition>
++      <DownloadAndAllowEdition>Télécharger pour éditer</DownloadAndAllowEdition>
+       <AddThumbnail>Ajouter/Supprimer une vignette</AddThumbnail>
+     </event>
+   </ECMContextMenu>
+@@ -1833,6 +1833,7 @@
+   -->
+   <UIViewMetadataContainer>
+     <msg>
++
+       <path-not-found>Ce noeud ne supporte pas cette vue</path-not-found>
+     </msg>
+   </UIViewMetadataContainer>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl	(revision 49334)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ThumbnailsView.gtmpl	(working copy)
+@@ -3,7 +3,7 @@
+   import org.exoplatform.ecm.webui.utils.Utils ;
+   import org.exoplatform.web.application.Parameter ;
+   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+-  import org.exoplatform.services.jcr.util.Text;
++  import org.exoplatform.ecm.utils.text.Text;
+   import org.exoplatform.services.cms.link.LinkManager;
+   
+ 	def linkManager = uicomponent.getComponentInstanceOfType("org.exoplatform.services.cms.link.LinkManager");
+@@ -111,8 +111,10 @@
+ 		          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+ 			        if ((!linkManager.isLink(data) || linkManager.isTargetReachable(data)) && data.getPrimaryNodeType().getName().equals("nt:file")) {
+ 						  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+-						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+"','"+repository+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
+-			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
++						  	// This escape "'" for js
++						  	String webDavPath = data.getPath().contains("%27") ? data.getPath().replaceAll("%27","%2527") : data.getPath(); 
++						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+ "','"+repository+"','"+ preferenceWS+ "','" + webDavPath + "','"+mimeType+"')";
++						  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+ 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">";
+ 						  	strActs +=	  _ctx.appRes("ECMContextMenu.event.DownloadAndAllowEdition");
+ 						  	strActs +=		"</div>" ;
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl	(revision 49334)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/IconView.gtmpl	(working copy)
+@@ -3,7 +3,7 @@
+   import org.exoplatform.ecm.webui.utils.Utils ;
+   import org.exoplatform.web.application.Parameter ;
+   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+-  import org.exoplatform.services.jcr.util.Text;
++  import org.exoplatform.ecm.utils.text.Text;
+   import org.exoplatform.services.cms.link.LinkManager;
+   
+ 	def linkManager = uicomponent.getComponentInstanceOfType("org.exoplatform.services.cms.link.LinkManager");
+@@ -113,7 +113,9 @@
+ 		          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+ 			        if ((!linkManager.isLink(data) || linkManager.isTargetReachable(data)) && data.getPrimaryNodeType().getName().equals("nt:file")) {
+ 						  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+-						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+"','"+repository+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
++						  	// This escape "'" for js
++						  	String webDavPath = data.getPath().contains("%27") ? data.getPath().replaceAll("%27","%2527") : data.getPath(); 
++						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+ "','"+repository+"','"+ preferenceWS+ "','" + webDavPath + "','"+mimeType+"')";
+ 			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+ 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">";
+ 						  	strActs +=	  _ctx.appRes("ECMContextMenu.event.DownloadAndAllowEdition");
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(revision 49334)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/ListView.gtmpl	(working copy)
+@@ -12,7 +12,7 @@
+   import org.exoplatform.ecm.webui.utils.Utils ;
+   import org.exoplatform.web.application.Parameter ;
+   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+-  import org.exoplatform.services.jcr.util.Text;
++  import org.exoplatform.ecm.utils.text.Text;
+   import org.exoplatform.services.cms.link.LinkManager;
+   
+ 	def linkManager = uicomponent.getComponentInstanceOfType("org.exoplatform.services.cms.link.LinkManager");
+@@ -194,22 +194,23 @@
+ 	          String nodePath = data.getPath() ;
+ 	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
+ 	          String subName ;
+-	          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+ 	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+ 	          //Begin WebDav Action
+ 	          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+ 		        if ((!linkManager.isLink(data) || linkManager.isTargetReachable(data)) && data.getPrimaryNodeType().getName().equals("nt:file")) {
+ 					  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+-					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+ "','"+repository+"','"+ preferenceWS+ "','" +Utils.formatNodeName(data.getPath())+"','"+mimeType+"')";
+-					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\" >" ;	        
++					  	// This escape "'" for js
++					  	String webDavPath = nodePath.contains("%27") ? nodePath.replaceAll("%27","%2527") : nodePath; 
++					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverUrl+ "','"+repository+"','"+ preferenceWS+ "','" + webDavPath + "','"+mimeType+"')";
++					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event,this);\" href=\"" + link + "\" >" ;	        
+ 					  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">";
+ 					  	strActs +=	  _ctx.appRes("ECMContextMenu.event.DownloadAndAllowEdition");
+ 					  	strActs += 		"</div>";
+ 						  strActs += 		"</a>" ;				  	
+ 						  _ctx.appRes("ECMContextMenu.event.GetURL")
+ 					  } else {
+-					  	String link = serverUrl  + "/rest/jcr/" + repository+ "/" + preferenceWS + Utils.formatNodeName(data.getPath()); 
+-					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
++					  	String link = serverUrl  + "/rest/jcr/" + repository+ "/" + preferenceWS + data.getPath(); 
++					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event,this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
+ 					  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">";
+ 					  	strActs +=		_ctx.appRes("ECMContextMenu.event.DownloadAndAllowEdition");
+ 					  	strActs +=		"</div>" ;
