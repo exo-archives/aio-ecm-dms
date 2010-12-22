@@ -1,0 +1,70 @@
+Index: core/webui/dms/src/main/java/org/exoplatform/ecm/webui/utils/Utils.java
+===================================================================
+--- core/webui/dms/src/main/java/org/exoplatform/ecm/webui/utils/Utils.java	(revision 64227)
++++ core/webui/dms/src/main/java/org/exoplatform/ecm/webui/utils/Utils.java	(working copy)
+@@ -51,9 +51,11 @@
+ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
+ import org.exoplatform.services.organization.Group;
+-import org.exoplatform.services.organization.Membership;
+ import org.exoplatform.services.organization.OrganizationService;
+ import org.exoplatform.services.resources.ResourceBundleService;
++import org.exoplatform.services.security.Identity;
++import org.exoplatform.services.security.IdentityRegistry;
++import org.exoplatform.services.security.MembershipEntry;
+ 
+ /**
+  * Created by The eXo Platform SARL
+@@ -323,16 +325,17 @@
+   
+   public static List<String> getMemberships() throws Exception {
+     String userId = Util.getPortalRequestContext().getRemoteUser();
+-    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class);
+-    List<String> userMemberships = new ArrayList<String> ();
++    List<String> userMemberships = new ArrayList<String>();
+     userMemberships.add(userId);
+-    Collection<?> memberships = oservice.getMembershipHandler().findMembershipsByUser(userId);
+-    if(memberships == null || memberships.size() < 0) return userMemberships;
+-    Object[] objects = memberships.toArray();
+-    for(int i = 0; i < objects.length; i ++ ){
+-      Membership membership = (Membership)objects[i];
+-      String role = membership.getMembershipType() + ":" + membership.getGroupId();
+-      userMemberships.add(role);     
++    // here we must retrieve memberships of the user using the
++    // IdentityRegistry Service instead of Organization Service to
++    // allow JAAS based authorization
++    Collection<MembershipEntry> memberships = getUserMembershipsFromIdentityRegistry(userId);
++    if (memberships != null) {
++      for (MembershipEntry membership : memberships) {
++        String role = membership.getMembershipType() + ":" + membership.getGroup();
++        userMemberships.add(role);
++      }
+     }
+     return userMemberships;
+   }
+@@ -468,7 +471,24 @@
+     String finalResult = getRoundedValue(fileSizeKB);
+     return finalResult+" "+howBig;
+   }
+-  
++
++  /**
++   * this method retrieves memberships of the user having the given id using the
++   * IdentityRegistry service instead of the Organization service to allow JAAS
++   * based authorization
++   * 
++   * @param authenticatedUser the authenticated user id
++   * @return a collection of MembershipEntry
++   */
++  private static Collection<MembershipEntry> getUserMembershipsFromIdentityRegistry(String authenticatedUser) {
++    ExoContainer container = ExoContainerContext.getCurrentContainer();
++    IdentityRegistry identityRegistry = (IdentityRegistry) container.getComponentInstanceOfType(IdentityRegistry.class);
++    Identity currentUserIdentity = identityRegistry.getIdentity(authenticatedUser);
++    return currentUserIdentity.getMemberships();
++
++  }
++
++
+   private static String getRoundedValue(double decimalVal) {
+     long beforeDecimalValue = decimalTokenize(decimalVal,1);
+     long afterDecimalValue = decimalTokenize(decimalVal,2);
