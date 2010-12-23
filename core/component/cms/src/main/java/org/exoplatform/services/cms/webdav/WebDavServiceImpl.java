@@ -183,6 +183,7 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
   public Response get(@URIParam("repoName") String repoName,
                       @URIParam("repoPath") String repoPath,
                       @HeaderParam(WebDavHeaders.RANGE) String rangeHeader,
+                      @HeaderParam(WebDavHeaders.IF_MODIFIED_SINCE) String ifModifiedSince,
                       @QueryParam("version") String version,
                       @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI) {
 
@@ -197,7 +198,7 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
       log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
       return Response.Builder.serverError().build();
     }
-    return super.get(repoName, repoPath, rangeHeader, version, baseURI);
+    return super.get(repoName, repoPath, rangeHeader, ifModifiedSince, version, baseURI);
   }
 
   @HTTPMethod(WebDavMethods.HEAD)
