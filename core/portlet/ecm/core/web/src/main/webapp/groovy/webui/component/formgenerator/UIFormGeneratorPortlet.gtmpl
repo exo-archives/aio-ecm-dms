@@ -13,7 +13,7 @@
 					</div>
 					<div class="UIComponentItem FCKEditor" type="Content" style="border:solid 1px #000;margin:5px;">
 						<div class="lblContent">Content</div>
-						<div class="Content" style="margin:5px;"><img src="ToolbarFCK.png"></div>
+						<div class="Content" style="margin:5px;"><img src="ToolbarFCK.png"/></div>
 					</div>
 				</td>
 				<td style="border:solid 1px #000;width:100%;">
