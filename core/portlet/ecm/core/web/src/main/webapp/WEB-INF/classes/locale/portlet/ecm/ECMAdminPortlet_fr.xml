@@ -15,7 +15,7 @@
       </label>
     </tab>
     <label>
-      <UIFolksonomyManager>Tags</UIFolksonomyManager>
+      <UIFolksonomyManager>Etiquettes</UIFolksonomyManager>
       <UITaxonomyManager>Catégories</UITaxonomyManager>
       <UITaxonomyManagerTrees>Taxonomies</UITaxonomyManagerTrees>
       <UIMetadataManager>Gestion des Metadonnées</UIMetadataManager>
@@ -39,11 +39,11 @@
   -->
   <UITaxonomyWorkingArea>
     <msg>
-      <referential-integrity>Lecture impossible à parti du fichier source ou la catégorie de destination est une sous-catégorie</referential-integrity>
+      <referential-integrity>Lecture impossible à partir du fichier source ou la catégorie de destination est une sous-catégorie</referential-integrity>
       <no-taxonomy-selected>Vous devez copier ou couper au moins 1 catégorie</no-taxonomy-selected>
       <node-is-cutting>Impossible de copier ici. La catégorie sélectionnée ('{0}') a probablement été déplacée ou supprimée.</node-is-cutting>
       <can-not-paste>Le presse-papier ne contient aucune donnée à copier.</can-not-paste>
-      <reference-exception>Impossible de supprimer cette catégorie car elle est actuellement référencée ailleur.</reference-exception>
+      <reference-exception>Impossible de supprimer cette catégorie car elle est actuellement référencée ailleurs.</reference-exception>
       <path-error>Un problème est survenu lors de la suppression de cette catégorie.</path-error>
     </msg>
   </UITaxonomyWorkingArea>
@@ -125,7 +125,7 @@
 		<header>
 			<usersOrGroups>Utilisateur ou Groupe</usersOrGroups>
 			<read>Lecture</read>
-			<addNode>Ajout de Noeud</addNode>
+			<addNode>Ajout de Nœud</addNode>
 			<setProperty>Modification de Propriété</setProperty>
 			<remove>Suppression</remove>
 			<action>Action</action>
@@ -138,20 +138,20 @@
 	##########################################################################################
 	-->
 	<UIPermissionTreeForm>
-		<title>Ajouter une permission à ce noeud</title>
+		<title>Ajouter une permission à ce nœud</title>
 		<label>
 			<userOrGroup>Utilisateur ou Groupe</userOrGroup>
 			<read>Lecture</read>
-			<add_node>Ajout de Noeud</add_node>
+			<add_node>Ajout de Nœud</add_node>
 			<set_property>Modification de Propriété</set_property>
 			<remove>Suppression</remove>
 		</label>
 		<action>
-			<Save>Sauver</Save>
+			<Save>Enregistrer</Save>
 			<Reset>Initialiser</Reset>
 		</action>
 		<msg>
-		  <have-not-any-permission>Ajouter une Permission au noeud</have-not-any-permission>
+		  <have-not-any-permission>Ajouter une Permission au nœud</have-not-any-permission>
 		</msg>
 	</UIPermissionTreeForm>
 	
@@ -164,13 +164,13 @@
 	<UIActionForm>
 		<title>Ajouter une Action pour la taxonomie</title>
 		<action>
-			<Save>Sauver</Save>
+			<Save>Enregistrer</Save>
 		</action>
 		<msg>
   		<name-not-allowed>Nom non autorisé</name-not-allowed>
   		<path-invalid>Le chemin est incorrect</path-invalid>
 			<taxonomy-existed>Une taxonomie du même nom existe déjà</taxonomy-existed>
-			<taxonomy-node-existed>Ce noeud de taxonomie existe déjà</taxonomy-node-existed>
+			<taxonomy-node-existed>Ce nœud de taxonomie existe déjà</taxonomy-node-existed>
 			<no-permission-add>Vous n'avez pas les droits d'ajout</no-permission-add>
 			<not-created-tree>La taxonomie n'a pas encore été créée</not-created-tree>
 		</msg>
@@ -259,7 +259,7 @@
     </header>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <delete-successful>les formulaires de '{0}' ont été supprimés</delete-successful>
+      <delete-successful>Les formulaires de '{0}' ont été supprimés</delete-successful>
     </msg>
     <action>
       <Add>Ajouter une métadonnée</Add>
@@ -604,7 +604,7 @@
       <step>Etape</step>
       <wizardSteps>Etapes de l'assistant</wizardSteps>
       <name>Nom</name>
-      <autoInitializedRootNt>Type du noeud racine</autoInitializedRootNt>
+      <autoInitializedRootNt>Type du nœud racine</autoInitializedRootNt>
       <isDefault>Définir par défault</isDefault>
       <!--DMS 2.4.x ECM-3611-->
       <isDMSSytemWs>Définir comme l'espace de travail système de DMS</isDMSSytemWs>
@@ -621,7 +621,7 @@
       <storePath>Répertoire de stockage</storePath>
       <externalStore>Stockage externe</externalStore>
       <queryHandler>Gestionnaire de requêtes</queryHandler>
-      <indexPath>Répertoire des index de requêtes</indexPath>
+      <indexPath>Répertoire des indexs de requêtes</indexPath>
       <isCache>Gestion du cache activée</isCache>
       <maxSize>Taille max de cache</maxSize>
       <liveTime>Temps de validité du cache</liveTime>
@@ -667,7 +667,7 @@
     </label>
     <header>
       <icon>Icône</icon>
-      <nodeType>Type de noeud</nodeType>
+      <nodeType>Type de nœud</nodeType>
       <mixinType>Mixin</mixinType>
       <orderable>Fils ordonnés</orderable>
       <description>Description</description>
@@ -714,7 +714,7 @@
   <UINodeTypeForm>
     <tab>
       <label>
-        <nodeTypeDefinition>Type de noeud</nodeTypeDefinition>
+        <nodeTypeDefinition>Type de nœud</nodeTypeDefinition>
         <propertyDefinition>Propriété</propertyDefinition>
         <childNodeDefinition>Fils</childNodeDefinition>
         <SuperTypeTab>Super types</SuperTypeTab>
@@ -725,7 +725,7 @@
     </tab>
     <label>
       <propertiesDefinitions>Définitions des propriétés</propertiesDefinitions>
-      <childDefinitions>Définitions des noeuds fils</childDefinitions>
+      <childDefinitions>Définitions des nœuds fils</childDefinitions>
       <namespace>Espace de nommage</namespace>
       <propertyNamespace>Espace de nommage</propertyNamespace>
       <nodeTypeName>Nom</nodeTypeName>
@@ -756,7 +756,7 @@
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>#{word.save}</Save>
-      <SaveDraft>Sauver un brouillon</SaveDraft>
+      <SaveDraft>Enregistrer un brouillon</SaveDraft>
       <AddProperty>Ajouter une propriété</AddProperty>
       <AddChild>Ajouter un fils</AddChild>
       <AddConstraints>Ajouter des contraintes</AddConstraints>
@@ -772,15 +772,15 @@
       <Close>#{word.close}</Close>
     </action>
     <msg>
-      <register-successfully>Type de noeud '{0}' enregistré avec succès</register-successfully>
-      <supertype-is-madatory>Le super type est obligatoire pour créer un nouveau type de noeud. Vous devez en sélectionner au moins 1.</supertype-is-madatory>
-      <register-failed>Enregistrement du type de noeud impossible. Ce type de noeudexiste déjà, ou le super type est invalide</register-failed>
-      <nodeType-name>Nom du type de noeud requis</nodeType-name>
+      <register-successfully>Type de nœud '{0}' enregistré avec succès</register-successfully>
+      <supertype-is-madatory>Le super type est obligatoire pour créer un nouveau type de nœud. Vous devez en sélectionner au moins 1.</supertype-is-madatory>
+      <register-failed>Enregistrement du type de nœud impossible. Ce type de nœud existe déjà, ou le super type est invalide</register-failed>
+      <nodeType-name>Nom du type de nœud requis</nodeType-name>
       <fileName-invalid>Caractères invalides dans le nom.</fileName-invalid>
-      <node-type-exists>Le type de noeud '{0}' existe déjà !</node-type-exists>
-      <node-type-name>Nom du type de noeud invalide !</node-type-name>
-      <values-error>Veuillez sélectionner un seul type de noeud pour le type primaire par défaut</values-error>
-      <confirm-delete-child>Confirmez-vous la suppression de ce noeud fils ?</confirm-delete-child>
+      <node-type-exists>Le type de nœud '{0}' existe déjà !</node-type-exists>
+      <node-type-name>Nom du type de nœud invalide !</node-type-name>
+      <values-error>Veuillez sélectionner un seul type de nœud pour le type primaire par défaut</values-error>
+      <confirm-delete-child>Confirmez-vous la suppression de ce nœud fils ?</confirm-delete-child>
       <confirm-delete-property>Confirmez-vous la suppression de cette propriété ?</confirm-delete-property>
     </msg>
   </UINodeTypeForm>
@@ -798,8 +798,8 @@
   </UIPropertyDefinitionForm>
   <UIChildNodeDefinitionForm>
     <msg>
-      <child-name>Nom du noeud fils manquant</child-name>
-      <default-node-type-not-found>Type de noeud par défaut non trouvé</default-node-type-not-found>
+      <child-name>Nom du nœud fils manquant</child-name>
+      <default-node-type-not-found>Type de nœud par défaut non trouvé</default-node-type-not-found>
       <requiredPrimaryType>Type primaire requis manquant</requiredPrimaryType>
       <defaultPrimaryType>Type primaire par défaut manquant</defaultPrimaryType>
     </msg>
@@ -821,12 +821,12 @@
   </superTypesPopup>
   <NodeTypePopup>
     <title>
-      <UINodeTypeForm>Ajout/Edition des définitions de types de noeud</UINodeTypeForm>
+      <UINodeTypeForm>Ajout/Edition des définitions de types de nœud</UINodeTypeForm>
     </title>
   </NodeTypePopup>
   <ViewNodeTypePopup>
     <title>
-      <UINodeTypeForm>Visualisation des informations d'un type de noeud</UINodeTypeForm>
+      <UINodeTypeForm>Visualisation des informations d'un type de nœud</UINodeTypeForm>
     </title>
   </ViewNodeTypePopup>
   <!--
@@ -846,14 +846,14 @@
       <UncheckAll>Tout décocher</UncheckAll>
       <CheckAll>Tout cocher</CheckAll>
     </action>
-    <title>Exportation des types de noeuds</title>
+    <title>Exportation des types de nœuds</title>
     <msg>
-      <item-null>Vous devez sélectionner au moins un noeud à exporter</item-null>
+      <item-null>Vous devez sélectionner au moins un nœud à exporter</item-null>
     </msg>
   </UINodeTypeExport>
   <NodeTypeExportPopup>
     <title>
-      <UINodeTypeExport>Exportation des types de noeuds</UINodeTypeExport>
+      <UINodeTypeExport>Exportation des types de nœuds</UINodeTypeExport>
     </title>
   </NodeTypeExportPopup>
   <!--
@@ -874,7 +874,7 @@
       <Cancel>#{word.cancel}</Cancel>
       <Upload>Envoyer</Upload>
     </action>
-    <title>Importation des types de noeuds à partir d'un fichier XML</title>
+    <title>Importation des types de nœuds à partir d'un fichier XML</title>
     <msg>
       <filename-error>Parcourir les fichiers pour l'import</filename-error>
       <data-file-error>Seuls les fichiers XML ou ZIP sont supportés pour l'import</data-file-error>
@@ -897,15 +897,15 @@
       <label>Nom</label>
       <input>Action</input>
     </header>
-    <title>Sélection d'un type de noeud à importer</title>
+    <title>Sélection d'un type de nœud à importer</title>
     <msg>
-      <no-nodetype-registered>Aucun type de noeud enregistré !</no-nodetype-registered>
+      <no-nodetype-registered>Aucun type de nœud enregistré !</no-nodetype-registered>
       <nodetype-registered>Enregistrement réussi !</nodetype-registered>
     </msg>
   </UINodeTypeImport>
   <NodeTypeImportPopup>
     <title>
-      <UINodeTypeImportPopup>Importation de types de noeud à partir d'un fichier XML</UINodeTypeImportPopup>
+      <UINodeTypeImportPopup>Importation de types de nœud à partir d'un fichier XML</UINodeTypeImportPopup>
     </title>
   </NodeTypeImportPopup>
   <!--
@@ -969,8 +969,8 @@
       <action-type-added>'{0}' a été ajouté.</action-type-added>
       <action-type-create-error>Création du type d'action impossible !</action-type-create-error>
       <action-name-invalid>'{0}' invalide ! Le nom doit débuter par 'exo:'</action-name-invalid>
-      <action-exist>Ce type d'action existe déjà</action-exist>
-      <fileName-invalid>Le nom de l'action comporte des caractères invalides</fileName-invalid>
+      <action-exist>Ce type d'action existe déjà.</action-exist>
+      <fileName-invalid>Le nom de l'action comporte des caractères invalides.</fileName-invalid>
     </msg>
   </UIActionTypeForm>
   <!--
@@ -1084,7 +1084,7 @@
       <paste>Coller</paste>
       <search>Rechercher</search>
       <viewReferences>Voir les références</viewReferences>
-      <viewNodeType>Voir les types de noeud</viewNodeType>
+      <viewNodeType>Voir les types de nœud</viewNodeType>
       <viewPermissions>Voir les permissions</viewPermissions>
       <viewProperties>Voir les propriétés</viewProperties>
       <manageVersions>Gérer les versions</manageVersions>
@@ -1093,13 +1093,13 @@
       <manageCategories>Gérer les catégories</manageCategories>
       <manageRelations>Gérer les relations</manageRelations>
       <manageActions>Gérer les actions</manageActions>
-      <exportNode>Exporter un noeud</exportNode>
-      <importNode>Importer un noeud</importNode>
+      <exportNode>Exporter un nœud</exportNode>
+      <importNode>Importer un nœud</importNode>
       <viewRelations>Voir les relations</viewRelations>
       <showJCRStructure>Afficher la structure du JCR</showJCRStructure>
       <watchDocument>S'abonner à un document</watchDocument>
       <taggingDocument>Marquer un document</taggingDocument>
-      <multiLanguage>Multi Languages</multiLanguage>
+      <multiLanguage>Multilingues</multiLanguage>
       <viewMetadatas>Voir les métadonnées</viewMetadatas>
       <overloadThumbnail>Surcharger une vignette</overloadThumbnail>
       <manageHidden>Cacher/Montrer le contenu</manageHidden>
@@ -1129,7 +1129,7 @@
       <Add>Ajouter</Add>
     </action>
     <msg>
-      <template-in-use>Suppresion impossible du formulaire '{0}' (probablement en cours d'utilisation)</template-in-use>
+      <template-in-use>Suppression impossible du formulaire '{0}' (probablement en cours d'utilisation)</template-in-use>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
       <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
     </msg>
@@ -1168,7 +1168,7 @@
       <Refresh>#{word.refresh}</Refresh>
     </action>
     <msg>
-      <version-restored>La version '{0}' a été restauré avec succès.</version-restored>
+      <version-restored>La version '{0}' a été restaurée avec succès.</version-restored>
       <role-require>Veuillez sélectionner une permission</role-require>
       <template-name-exist>Le formulaire '{0}' existe déjà</template-name-exist>
     </msg>
@@ -1313,10 +1313,10 @@
       <Change>Modifier</Change>
     </action>
     <msg>
-      <version-restored>la version {0} a été restaurée avec succès.</version-restored>
+      <version-restored>La version {0} a été restaurée avec succès.</version-restored>
       <name-null>Veuillez saisir un nom de script</name-null>
       <name-exist>Le script '{0}' existe déjà</name-exist>
-      <fileName-invalid>Caractères invalides détectés dns le nom du script.</fileName-invalid>
+      <fileName-invalid>Caractères invalides détectés dans le nom du script.</fileName-invalid>
     </msg>
   </UIScriptForm>
   <!--
@@ -1373,7 +1373,7 @@
     <msg>
       <exist>La catégorie "{0}" existe déjà</exist>
       <name-null>Veuillez saisir un nom de catégorie</name-null>
-      <name-invalid>Caractères invalides détectés dns le nom de la catégorie</name-invalid>
+      <name-invalid>Caractères invalides détectés dans le nom de la catégorie</name-invalid>
       <name-too-long>Le nom de la catégorie ne peut excéder 30 caractères</name-too-long>
     </msg>
   </UITaxonomyForm>
@@ -1435,7 +1435,7 @@
   <TaxoTreeAnyPermission>
     <label>
       <any>Toute permission</any>
-      <anyPermission>TaxoTreeAnyPermission</anyPermission>
+      <anyPermission>TaxonomieTreeAnyPermission</anyPermission>
     </label>
   </TaxoTreeAnyPermission>
   
@@ -1460,7 +1460,7 @@
       <action>Action</action>
     </header>
     <action>
-      <AddTaxonomyTree>Ajouter une taxonomies</AddTaxonomyTree>
+      <AddTaxonomyTree>Ajouter une taxonomie</AddTaxonomyTree>
     </action>
     <tooltip>
       <EditTaxonomyTree>Editer la taxonomie</EditTaxonomyTree>
@@ -1492,15 +1492,15 @@
   
   <UIPermissionTreeForm>
     <label>
-      <UIPopupWindow>Selectionner</UIPopupWindow>
+      <UIPopupWindow>Sélectionner</UIPopupWindow>
       <permission>UIPermissionTreeForm</permission>
       <userOrGroup>Utilisateur Ou Groupe</userOrGroup>
-      <read>Droit de Lecture</read>
-      <add_node>Droit d'ajout de Noeud</add_node>
+      <read>Droit de lecture</read>
+      <add_node>Droit d'ajout de nœud</add_node>
       <set_property>Droit de MAJ des propriétés</set_property>
       <remove>Droit de suppression</remove>
     </label>
-    <title>Ajouter une permission à ce noeud</title>
+    <title>Ajouter une permission à ce nœud</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
@@ -1508,7 +1508,7 @@
     </action>
     <msg>
       <checkbox-require>Vous devez choisir au moins une permission</checkbox-require>
-      <userOrGroup-required>Vous devez choisir un groupe ou un utilisateur avant de sauver la permission</userOrGroup-required>
+      <userOrGroup-required>Vous devez choisir un groupe ou un utilisateur avant d'enregistrer la permission</userOrGroup-required>
       <not-change-permission>Vous n'avez pas le droit d'ajouter une permission</not-change-permission>
       <access-denied>Accès refusé ! Vous ne pouvez pas supprimer cette permission.</access-denied>
     </msg>
@@ -1553,10 +1553,10 @@
       </title>
     </action>
     <header>
-      <usersOrGroups>Uilisateur Ou Groupe</usersOrGroups>
+      <usersOrGroups>Utilisateur Ou Groupe</usersOrGroups>
       <read>Lecture</read>
-      <addNode>Ajout de Noeud</addNode>
-      <setProperty>MAJ des Propriétés</setProperty>
+      <addNode>Ajout de nœud</addNode>
+      <setProperty>MAJ des propriétés</setProperty>
       <remove>Suppression</remove>
       <action>Action</action>
     </header>
@@ -1592,7 +1592,7 @@
       <selectUser>Sélectionner un utilisateur</selectUser>
     </label>
     <msg>
-      <not-change-owner>'{0}' est le propriétaire du noeud et a l'accès total</not-change-owner>
+      <not-change-owner>'{0}' est le propriétaire du nœud et a l'accès total</not-change-owner>
     </msg>
   </UIGroupSelector>
   <UIPermissionForm>
@@ -1601,19 +1601,19 @@
       <permission>UIPermissionForm</permission>
       <userOrGroup>Utilisateur Ou Groupe</userOrGroup>
       <read>Droit de Lecture</read>
-      <add_node>Droit d'Ajout de Noeud</add_node>
+      <add_node>Droit d'Ajout de Nœud</add_node>
       <set_property>Droit de MAJ des Propriétés</set_property>
       <remove>Droit de Suppression</remove>
     </label>
-    <title>Ajouter une permission à ce noeud</title>
+    <title>Ajouter une permission à ce nœud</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
       <Reset>Initialiser</Reset>
     </action>
     <msg>
-      <checkbox-require>Vous devez selectionner au moins une propriété</checkbox-require>
-      <userOrGroup-required>Vous devez choisir un utilisateur ou un groupe avant de sauver cette permission</userOrGroup-required>
+      <checkbox-require>Vous devez sélectionner au moins une propriété</checkbox-require>
+      <userOrGroup-required>Vous devez choisir un utilisateur ou un groupe avant d'enregistrer cette permission</userOrGroup-required>
       <not-change-permission>Vous n'avez pas les droits requis pour ajouter une permission</not-change-permission>
       <access-denied>Accès refusé ! Vous ne pouvez pas supprimer cette permission.</access-denied>
     </msg>
@@ -1866,7 +1866,7 @@
       <permission-require>Vous devez sélectionner au moins une permission</permission-require>
       <name-invalid>Caractères invalides détectés dans le nom de la requête</name-invalid>
       <name-existing>Une requête du même nom existe déjà</name-existing>
-      <invalid-query>Requuêtes invalide. Veuillez vérifier le code de votre requête !</invalid-query>
+      <invalid-query>Requête invalide. Veuillez vérifier le code de votre requête !</invalid-query>
     </msg>
   </UIQueriesForm>
   <AddQueryForm>
@@ -1901,7 +1901,7 @@
     <label>
       <styleName>Nom du style</styleName>
       <documentRange>Nombre de références</documentRange>
-      <styleHTML>Style Html</styleHTML>
+      <styleHTML>Style HTML</styleHTML>
     </label>
     <action>
       <UpdateStyle>Mettre à jour</UpdateStyle>
@@ -1924,7 +1924,7 @@
   -->
   <ECMNameValidator>
     <msg>
-      <Invalid-char>Caractères invalide détectés dans le champ '{0}'.</Invalid-char>
+      <Invalid-char>Caractères invalides détectés dans le champ '{0}'.</Invalid-char>
       <empty-input>La valeur du champ '{0}' est nulle ou vide !</empty-input>
     </msg>
   </ECMNameValidator>
@@ -2073,21 +2073,21 @@
   --> 
   <UIWorkspaceWizard>
     <label>
-      <step1>Step 1</step1>
-      <step2>Step 2</step2>
-      <step3>Step 3</step3>
+      <step1>Étape 1</step1>
+      <step2>Étape 2</step2>
+      <step3>Étape 3</step3>
     </label>
   </UIWorkspaceWizard>
   
   <UIDriveForm>
 		<msg>
-  		<permission-path-invalid>Permission is invalid!</permission-path-invalid>	
+  		<permission-path-invalid>La permission est invalide !</permission-path-invalid>	
   	</msg>
   </UIDriveForm>
   
   <UITaxonomyTreeMainForm>
     <msg>
-      <homepath-emty>The Home path is empty</homepath-emty>
+      <homepath-emty>Le chemin racine est vide.</homepath-emty>
     </msg>
   </UITaxonomyTreeMainForm>
   
@@ -2118,19 +2118,19 @@
   </PermissionTreeSelectUser>
   <UIPermissionTreeInfo>
   	<msg>
-  		<confirm-delete-permission>Do you really want to delete this permission?</confirm-delete-permission>
+  		<confirm-delete-permission>Confirmez-vous la suppression de ce droit ?</confirm-delete-permission>
   	</msg>
   </UIPermissionTreeInfo>
   <UITaxonomyTreeMainForm>
 		<msg>
-			<no-right-target-path>You have to choose other home path</no-right-target-path>
+			<no-right-target-path>Veuillez choisir un autre chemin racine.</no-right-target-path>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	<UIViewFormTabPane>
     <action>
-      <AddTabForm>Add Tab</AddTabForm>
-      <AddTab>Add Tab</AddTab>
-      <BackViewForm>Back</BackViewForm>
+      <AddTabForm>Ajouter un onglet</AddTabForm>
+      <AddTab>Ajouter un onglet</AddTab>
+      <BackViewForm>Précédent</BackViewForm>
     </action>
   </UIViewFormTabPane>
   
@@ -2150,19 +2150,19 @@
   
   <UISkinTab>
     <header>
-      <name>Name</name>
-      <roles>Roles</roles>
+      <name>Nom</name>
+      <roles>Rôles</roles>
       <baseVersion>Version</baseVersion>
       <action>Actions</action>
     </header>
     <msg>
-      <undeletable>'{0}' can not be deleted, it is the default one!</undeletable>
-      <confirm-delete>Do you really want to delete?</confirm-delete>
+      <undeletable>'{0}' ne peut pas être supprimé, c'est celui qui est utilisé par défaut !</undeletable>
+      <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
     <action>
       <title>
-        <Edit>Edit</Edit>
-        <Delete>Delete</Delete>
+        <Edit>Editer</Edit>
+        <Delete>Supprimer</Delete>
       </title>
     </action>
   </UISkinTab>
@@ -2170,29 +2170,29 @@
   <SkinForm>
     <label>
       <UITemplateContent>SkinForm</UITemplateContent>
-      <UIPopupWindow>Skin Permission</UIPopupWindow>
+      <UIPopupWindow>Permission de la feuille de style</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
-      <content>Content</content>
-      <name>Name</name>
-      <isDocumentTemplate>is Document Template</isDocumentTemplate>
+      <content>Contenu</content>
+      <name>Nom</name>
+      <isDocumentTemplate>Formulaire de document</isDocumentTemplate>
       <viewPermission>Permission</viewPermission>
-      <enableVersion>is Enable Version</enableVersion>
+      <enableVersion>Activer le versionning</enableVersion>
     </label>
-    <title>add/edit skin</title>
+    <title>Ajouter/Éditer une feuille de style</title>
   </SkinForm>
   
   <SkinFormTemplatePermission>
   	<title>
-  		<UIPermissionSelector>Permission Selector</UIPermissionSelector>
+  		<UIPermissionSelector>Sélection de permissions</UIPermissionSelector>
   	</title>
   </SkinFormTemplatePermission>	    
 	<UITaxonomyTreeMainForm>			
 		<msg>	  		
-			<targetPath-emty>The target path is empty</targetPath-emty>	  		
+			<targetPath-emty>Le chemin cible est vide.</targetPath-emty>	  		
 		</msg>
 		<action>
-			<NextViewPermission>Next</NextViewPermission>
-			<Reset>Reset</Reset>
+			<NextViewPermission>Suivant</NextViewPermission>
+			<Reset>Réinitialiser</Reset>
 		</action>
 		</UITaxonomyTreeMainForm>
 		  
@@ -2204,17 +2204,17 @@
 
 	<UIPermissionTreeForm>
 		<action>
-			<Save>Save</Save>
-			<Reset>Reset</Reset>
-			<NextAddAction>Next</NextAddAction>
-			<Previous>Previous</Previous>
+			<Save>Enregistrer</Save>
+			<Reset>Réinitialiser</Reset>
+			<NextAddAction>Suivant</NextAddAction>
+			<Previous>Précédent</Previous>
 		</action>
 	</UIPermissionTreeForm>	
 
 	<UIActionForm>
 		<action>
-			<PreviousViewPermission>Previous</PreviousViewPermission>
-			<NextViewTree>Next</NextViewTree>
+			<PreviousViewPermission>Précédent</PreviousViewPermission>
+			<NextViewTree>Suivant</NextViewTree>
 		</action>
 	</UIActionForm>
 
@@ -2225,12 +2225,12 @@
 	</UITaxonomyTreeWorkingArea>
 	<UIActionForm>
   <msg>
-  		<constraint-violation-exception>Can not add node '{0}' to '{1}' in workspace '{2}' because you have problem with permission or contraints condition</constraint-violation-exception>
+  		<constraint-violation-exception>Impossible d'ajouter le nœud '{0}' au '{1}' dans l'espace de travail '{2}'. Problème de droit d'accès ou de contrainte.</constraint-violation-exception>
   </msg>	
  </UIActionForm>
  <UIViewFormTabPane>
 		<label>
-			<addCategory>Add Category</addCategory>
+			<addCategory>Ajouter une catégorie</addCategory>
 		</label>
 	</UIViewFormTabPane>
 </bundle>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
+  
   <!--
   #####################################################################
   # org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelectPanel #
@@ -27,12 +28,12 @@
       <action>Action</action>
     </header>
     <action>
-      <SaveCategories>Sauver</SaveCategories>
+      <SaveCategories>Enregistrer</SaveCategories>
       <Cancel>Annuler</Cancel>
     </action>
     <msg>
-      <cannot-save>Les catégories ne sont pas sauvegardées.</cannot-save>
-      <have-saved>Les catégories ont été sauvegardées avec succès.</have-saved>
+      <cannot-save>Les catégories ne sont pas enregistrées.</cannot-save>
+      <have-saved>Les catégories ont été enregistrées avec succès.</have-saved>
       <non-categories>Les catégories sont mauvaises. Veuillez sélectionner une bonne catégorie.</non-categories>
       <confirm-delete>Etes vous sûr de vouloir supprimer cette catégorie ?</confirm-delete>
     </msg>
@@ -51,7 +52,7 @@
   <UIPermissionUser>
     <label>
       <selectUser>Sélectionner un utilisateur</selectUser>
-      <selectGroup>Parcourir et Sélectionner un groupe</selectGroup>
+      <selectGroup>Parcourir et sélectionner un groupe</selectGroup>
     </label>
   </UIPermissionUser>
   <UIPermissionMembership>
