@@ -28,7 +28,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
@@ -48,6 +47,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
@@ -62,6 +64,7 @@ import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.config.UserACL;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -75,6 +78,8 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
@@ -1111,6 +1116,15 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;
     }
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    UserACL userACLService = (UserACL) container.getComponentInstance(UserACL.class);
+    String remoteUser = node.getSession().getUserID();
+    if (remoteUser.equals( userACLService.getSuperUser() )) {
+       SessionProviderService sp = (SessionProviderService) PortalContainer.getInstance().getComponentInstanceOfType(SessionProviderService.class);
+       session = sp.getSystemSessionProvider(null).getSession(node.getSession().getWorkspace().getName(), (ManageableRepository)node.getSession().getRepository());
+       node = (Node)session.getItem(node.getPath());   
+    }    
+
     try {
       if(node.holdsLock()) {
         String lockToken = LockUtil.getLockToken(node);        
