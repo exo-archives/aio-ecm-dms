@@ -1,0 +1,13 @@
+Index: core/webui/dms/src/main/java/org/exoplatform/ecm/webui/form/UIDialogForm.java
+===================================================================
+--- core/webui/dms/src/main/java/org/exoplatform/ecm/webui/form/UIDialogForm.java	(revision 64045)
++++ core/webui/dms/src/main/java/org/exoplatform/ecm/webui/form/UIDialogForm.java	(working copy)
+@@ -647,7 +647,7 @@
+     inputProperty.setJcrPath(jcrPath);
+     setInputProperty(name, inputProperty);
+     if(formTextAreaField.isMultiValues()) {
+-      renderMultiValuesInput(UIFormDateTimeInput.class,name,label);      
++      renderMultiValuesInput(UIFormTextAreaInput.class,name,label);      
+       return;
+     }
+     UIFormTextAreaInput uiTextArea = findComponentById(name);    

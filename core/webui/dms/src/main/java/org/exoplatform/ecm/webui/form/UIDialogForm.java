@@ -647,7 +647,7 @@ public class UIDialogForm extends UIForm {
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty);
     if(formTextAreaField.isMultiValues()) {
-      renderMultiValuesInput(UIFormDateTimeInput.class,name,label);      
+      renderMultiValuesInput(UIFormTextAreaInput.class,name,label);      
       return;
     }
     UIFormTextAreaInput uiTextArea = findComponentById(name);    
