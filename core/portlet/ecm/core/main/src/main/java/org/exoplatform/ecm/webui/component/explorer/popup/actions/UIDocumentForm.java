@@ -59,6 +59,7 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
@@ -84,18 +85,29 @@ import org.exoplatform.webui.form.UIFormStringInput;
  * Nov 08, 2006  
  */
 
-@ComponentConfig(
-  lifecycle = UIFormLifecycle.class,
-  events = {
-    @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
-    @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
-    @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
-    @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
-    @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
-    @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE),
-    @EventConfig(listeners = DialogFormActionListeners.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
+@ComponentConfigs(
+                  {
+        @ComponentConfig(
+                         type = UIFormMultiValueInputSet.class,
+                         id="WYSIWYGMultipleInputset",
+                         events = {@EventConfig(listeners = UIDialogForm.AddActionListener.class, phase = Phase.DECODE),
+                                   @EventConfig(listeners = UIFormMultiValueInputSet.RemoveActionListener.class, phase = Phase.DECODE)
+                         }
+                     ),
+        @ComponentConfig(
+          lifecycle = UIFormLifecycle.class,
+          events = {
+            @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
+            @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
+            @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
+            @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
+            @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+            @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE),
+            @EventConfig(listeners = DialogFormActionListeners.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
+          }
+        )
   }
-)
+ )
 
 public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelectable {   
   

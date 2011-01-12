@@ -30,6 +30,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -47,15 +48,26 @@ import org.exoplatform.webui.form.UIFormStringInput;
  *          minh.dang@exoplatform.com
  * May 25, 2007 8:58:25 AM
  */
-@ComponentConfig(
-    lifecycle = UIFormLifecycle.class,
-    events = {
-      @EventConfig(listeners = UIAddMetadataForm.SaveActionListener.class),
-      @EventConfig(listeners = UIAddMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIAddMetadataForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIAddMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
-    }
-)
+@ComponentConfigs(
+                  {
+        @ComponentConfig(
+                         type = UIFormMultiValueInputSet.class,
+                         id="WYSIWYGMultipleInputset",
+                         events = {@EventConfig(listeners = UIDialogForm.AddActionListener.class, phase = Phase.DECODE),
+                                   @EventConfig(listeners = UIFormMultiValueInputSet.RemoveActionListener.class, phase = Phase.DECODE)
+                                  }
+                     ),
+
+        @ComponentConfig(
+            lifecycle = UIFormLifecycle.class,
+            events = {
+              @EventConfig(listeners = UIAddMetadataForm.SaveActionListener.class),
+              @EventConfig(listeners = UIAddMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
+              @EventConfig(listeners = UIAddMetadataForm.AddActionListener.class, phase = Phase.DECODE),
+              @EventConfig(listeners = UIAddMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
+            }
+        )
+})
 public class UIAddMetadataForm extends UIDialogForm {
 
   private String nodeType_ ;

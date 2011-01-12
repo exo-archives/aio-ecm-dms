@@ -36,12 +36,14 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.workflow.webui.component.controller.UITask;
 import org.exoplatform.workflow.webui.component.controller.UITaskManager;
 
@@ -52,15 +54,26 @@ import org.exoplatform.workflow.webui.component.controller.UITaskManager;
  *          xxx5669@gmail.com
  * Jan 16, 2009  
  */
-@ComponentConfig(
-    lifecycle = UIFormLifecycle.class,
-    events = {
-      @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
-      @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
-    }
-)
+@ComponentConfigs(
+                  {
+        @ComponentConfig(
+                         type = UIFormMultiValueInputSet.class,
+                         id="WYSIWYGMultipleInputset",
+                         events = {@EventConfig(listeners = UIDialogForm.AddActionListener.class, phase = Phase.DECODE),
+                                   @EventConfig(listeners = UIFormMultiValueInputSet.RemoveActionListener.class, phase = Phase.DECODE)
+                         }
+                     ),
+
+        @ComponentConfig(
+            lifecycle = UIFormLifecycle.class,
+            events = {
+              @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
+              @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
+              @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
+              @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
+            }
+        )
+})
 
 public class UIDocumentForm extends UIDialogForm {
 

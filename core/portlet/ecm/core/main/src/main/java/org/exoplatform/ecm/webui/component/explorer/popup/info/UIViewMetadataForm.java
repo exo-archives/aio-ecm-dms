@@ -30,6 +30,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -49,15 +50,27 @@ import org.exoplatform.webui.form.UIFormStringInput;
  * Jan 25, 2007  
  * 1:47:55 PM
  */
-@ComponentConfig(
-    lifecycle = UIFormLifecycle.class,
-    events = {
-      @EventConfig(listeners = UIViewMetadataForm.SaveActionListener.class),
-      @EventConfig(listeners = UIViewMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIViewMetadataForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
-    }
-)
+@ComponentConfigs(
+                  {
+        @ComponentConfig(
+                         type = UIFormMultiValueInputSet.class,
+                         id="WYSIWYGMultipleInputset",
+                         events = {@EventConfig(listeners = UIDialogForm.AddActionListener.class, phase = Phase.DECODE),
+                                   @EventConfig(listeners = UIFormMultiValueInputSet.RemoveActionListener.class, phase = Phase.DECODE)
+                                  }
+
+                     ),
+
+        @ComponentConfig(
+            lifecycle = UIFormLifecycle.class,
+            events = {
+              @EventConfig(listeners = UIViewMetadataForm.SaveActionListener.class),
+              @EventConfig(listeners = UIViewMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
+              @EventConfig(listeners = UIViewMetadataForm.AddActionListener.class, phase = Phase.DECODE),
+              @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
+            }
+        )
+})
 public class UIViewMetadataForm extends UIDialogForm {
 
   private String nodeType_;
