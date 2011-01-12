@@ -240,10 +240,16 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveTemplate() throws Exception {    
-    assertNotNull(templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME));    
-    templateService.removeTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);    
+    String label = "test template";
+    boolean isDocumentTemplate = true;
+    String templateName = "templateName"; 
+    String templateFile = "Remove template Unit test";
+    String[] roles = {"*"};
+    assertNotNull(templateService.addTemplate(TemplateService.DIALOGS, EXO_ARTICLE, label, isDocumentTemplate, 
+        templateName, roles, templateFile, REPO_NAME));
+    templateService.removeTemplate(TemplateService.DIALOGS, EXO_ARTICLE, templateName, REPO_NAME);    
     try {
-      templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);
+      templateService.getTemplate(TemplateService.DIALOGS, EXO_ARTICLE, templateName, REPO_NAME);
       fail();
     } catch (Exception ex) {
     }

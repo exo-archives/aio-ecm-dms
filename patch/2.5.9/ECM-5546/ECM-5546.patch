@@ -1,0 +1,24 @@
+Index: core/component/cms/src/test/java/org/exoplatform/services/ecm/dms/template/TestTemplateService.java
+===================================================================
+--- core/component/cms/src/test/java/org/exoplatform/services/ecm/dms/template/TestTemplateService.java	(revision 62900)
++++ core/component/cms/src/test/java/org/exoplatform/services/ecm/dms/template/TestTemplateService.java	(working copy)
+@@ -240,10 +240,16 @@
+    * @throws Exception
+    */
+   public void testRemoveTemplate() throws Exception {    
+-    assertNotNull(templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME));    
+-    templateService.removeTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);    
++    String label = "test template";
++    boolean isDocumentTemplate = true;
++    String templateName = "templateName"; 
++    String templateFile = "Remove template Unit test";
++    String[] roles = {"*"};
++    assertNotNull(templateService.addTemplate(TemplateService.DIALOGS, EXO_ARTICLE, label, isDocumentTemplate, 
++        templateName, roles, templateFile, REPO_NAME));
++    templateService.removeTemplate(TemplateService.DIALOGS, EXO_ARTICLE, templateName, REPO_NAME);    
+     try {
+-      templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);
++      templateService.getTemplate(TemplateService.DIALOGS, EXO_ARTICLE, templateName, REPO_NAME);
+       fail();
+     } catch (Exception ex) {
+     }
