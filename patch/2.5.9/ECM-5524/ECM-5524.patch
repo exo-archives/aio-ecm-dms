@@ -1,0 +1,61 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UICategoryTree.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UICategoryTree.java	(revision 62208)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UICategoryTree.java	(working copy)
+@@ -44,7 +44,8 @@
+ @ComponentConfig(
+     template = "app:/groovy/webui/component/browse/UICategoryTree.gtmpl",
+     events = {
+-        @EventConfig(listeners = UICategoryTree.SelectActionListener.class)
++        @EventConfig(listeners = UICategoryTree.SelectActionListener.class),
++        @EventConfig(listeners = UICategoryTree.CollapActionListener.class)
+     }
+ )
+ public class UICategoryTree extends UIComponent {  
+@@ -140,4 +141,34 @@
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+     }
+   }
++  
++  static public class CollapActionListener extends EventListener<UICategoryTree> {
++	    public void execute(Event<UICategoryTree> event) throws Exception {
++	      UICategoryTree cateTree = event.getSource() ;
++	      UIBrowseContainer uiContainer = cateTree.getAncestorOfType(UIBrowseContainer.class) ;
++	      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
++	      Node node = uiContainer.getNodeByPath(path) ;     
++	      if(node.getParent().isNode())
++	      {
++	    	  node = (Node)node.getParent();
++	    	  path = node.getPath();
++	      }	      
++	      if(node == null) {
++	        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
++	        app.addMessage(new ApplicationMessage("UICategoryTree.msg.invalid-node", null)) ;
++	        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
++	        return ;
++	      }
++	      
++	      uiContainer.setShowDocumentDetail(false)  ;
++	      uiContainer.setShowDocumentByTag(false)  ;
++	      uiContainer.setShowAllChildren(false) ;
++	      uiContainer.setSelectedTabPath(path) ;
++	      uiContainer.setCurrentNodePath(path) ;      
++	      cateTree.buildTree(path) ;
++	      uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode()));
++	      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
++	    }
++	  }
++  
+ }
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICategoryTree.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICategoryTree.gtmpl	(revision 62208)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICategoryTree.gtmpl	(working copy)
+@@ -14,6 +14,7 @@
+ 	    if(node.isExpanded()) {
+ 	      styleTree = "CategorySelectLabel" ;
+ 	      expandIcon = "NormalFolder" ;
++	      actionTreeLink = uicomponent.event("Collap",node.getPath()) ;   
+ 	    }
+ 	    println "<div class=\"ParentSupMenu\" style=\"margin-left: ${level * 15}px;\">" ;
+ 	    println "<a href=\"" + actionTreeLink + "\"><div class=\"SelectIcon ${expandIcon}16x16Icon\"><span></span></div></a>" ;

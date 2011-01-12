@@ -44,7 +44,8 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/browse/UICategoryTree.gtmpl",
     events = {
-        @EventConfig(listeners = UICategoryTree.SelectActionListener.class)
+        @EventConfig(listeners = UICategoryTree.SelectActionListener.class),
+        @EventConfig(listeners = UICategoryTree.CollapActionListener.class)
     }
 )
 public class UICategoryTree extends UIComponent {  
@@ -140,4 +141,34 @@ public class UICategoryTree extends UIComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
+  
+  static public class CollapActionListener extends EventListener<UICategoryTree> {
+	    public void execute(Event<UICategoryTree> event) throws Exception {
+	      UICategoryTree cateTree = event.getSource() ;
+	      UIBrowseContainer uiContainer = cateTree.getAncestorOfType(UIBrowseContainer.class) ;
+	      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+	      Node node = uiContainer.getNodeByPath(path) ;     
+	      if(node.getParent().isNode())
+	      {
+	    	  node = (Node)node.getParent();
+	    	  path = node.getPath();
+	      }	      
+	      if(node == null) {
+	        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+	        app.addMessage(new ApplicationMessage("UICategoryTree.msg.invalid-node", null)) ;
+	        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+	        return ;
+	      }
+	      
+	      uiContainer.setShowDocumentDetail(false)  ;
+	      uiContainer.setShowDocumentByTag(false)  ;
+	      uiContainer.setShowAllChildren(false) ;
+	      uiContainer.setSelectedTabPath(path) ;
+	      uiContainer.setCurrentNodePath(path) ;      
+	      cateTree.buildTree(path) ;
+	      uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode()));
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+	    }
+	  }
+  
 }
