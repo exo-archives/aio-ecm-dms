@@ -1,0 +1,12 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java	(revision 61729)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/link/impl/LinkManagerImpl.java	(working copy)
+@@ -116,7 +116,6 @@
+     String uuid = link.getProperty(UUID).getString();
+     Session session = getSession(link, system);
+     Node targetNode = session.getNodeByUUID(uuid);
+-    session.logout();
+     return targetNode;
+   }
+ 
