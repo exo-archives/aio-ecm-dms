@@ -32,8 +32,12 @@
 			          <%
 			            String path = node.getPath() ;
 			            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+			            String sNodeName = nodeName;
+			            if (nodeName.length() > 20) {
+			            	sNodeName = nodeName.substring(0, 18) + "...";
+			            }
 			           %>
-			          <div class="Text">$nodeName</div>
+			          <div class="Text" title="$nodeName">$nodeName</div>
 			        </td>
 			        <td>
 			        	<div class="ActionContainer">

@@ -1,0 +1,51 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWorkingArea.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWorkingArea.gtmpl	(revision 65208)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWorkingArea.gtmpl	(working copy)
+@@ -32,8 +32,12 @@
+ 			          <%
+ 			            String path = node.getPath() ;
+ 			            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
++			            String sNodeName = nodeName;
++			            if (nodeName.length() > 20) {
++			            	sNodeName = nodeName.substring(0, 18) + "...";
++			            }
+ 			           %>
+-			          <div class="Text">$nodeName</div>
++			          <div class="Text" title="$nodeName">$nodeName</div>
+ 			        </td>
+ 			        <td>
+ 			        	<div class="ActionContainer">
+@@ -94,4 +98,4 @@
+ 			</tr>
+ 	  </table>
+   </div>
+-<div class="ClearLeft"><span></span></div>
+\ No newline at end of file
++<div class="ClearLeft"><span></span></div>
+Index: core/web/eXoDMSResources/src/main/webapp/skin/DefaultSkin/webui/UITreeJCRExplorer/Stylesheet.css
+===================================================================
+--- core/web/eXoDMSResources/src/main/webapp/skin/DefaultSkin/webui/UITreeJCRExplorer/Stylesheet.css	(revision 65208)
++++ core/web/eXoDMSResources/src/main/webapp/skin/DefaultSkin/webui/UITreeJCRExplorer/Stylesheet.css	(working copy)
+@@ -42,6 +42,14 @@
+ 	width: 100%;
+ }
+ 
++.UITaxonomyTreeCreateChild .UITreeList .Text {
++  background-position: left top; /* orientation=lt */
++  background-position: right top; /* orientation=rt */
++  padding-left: 10px; /* orientation=lt */
++  padding-right: 10px; /* orientation=rt */
++  width: 100%;
++}
++
+ .UITreeList .TextSymLink {
+   background-position: left top; /* orientation=lt */
+   background-position: right top; /* orientation=rt */
+@@ -85,4 +93,4 @@
+ 
+ .UITaxonomyManager .UIBreadcumbs {
+ 	padding-bottom: 10px;
+-}
+\ No newline at end of file
++}
