@@ -149,6 +149,7 @@ public class Utils {
   final static public String EXO_HIDDENABLE = "exo:hiddenable";
   final static public String EXO_ACCESSPERMISSION = "exo:accessPermissions";
 
+  final static public String EXO_WEBCONTENT = "exo:webContent";
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";
   final static public String EXO_PICTUREFOLDER = "exo:pictureFolder";

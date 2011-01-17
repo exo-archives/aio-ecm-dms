@@ -30,6 +30,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.HasPublicatio
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsDocumentFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotRootNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotWebContentChildNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActivePublication;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPublicationManager;
@@ -61,7 +62,12 @@ import org.exoplatform.webui.form.UIForm;
  )
 public class ManagePublicationsActionComponent extends UIComponent {
 
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new HasPublicationLifecycleFilter(), new IsDocumentFilter("UIActionBar.msg.manage-publication.not-supported-nodetype"), new IsNotRootNodeFilter("UIActionBar.msg.cannot-enable-publication-rootnode"), new CanSetPropertyFilter("UIActionBar.msg.access-denied"), new CanRemoveNodeFilter(), new IsNotLockedFilter()});
+  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[] {
+      new HasPublicationLifecycleFilter(),
+      new IsDocumentFilter("UIActionBar.msg.manage-publication.not-supported-nodetype"),
+      new IsNotRootNodeFilter("UIActionBar.msg.cannot-enable-publication-rootnode"),
+      new CanSetPropertyFilter("UIActionBar.msg.access-denied"), new CanRemoveNodeFilter(),
+      new IsNotLockedFilter(), new IsNotWebContentChildNodeFilter()});
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
