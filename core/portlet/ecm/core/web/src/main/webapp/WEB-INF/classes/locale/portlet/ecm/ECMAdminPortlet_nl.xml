@@ -1374,7 +1374,7 @@
       <exist>De "(0)" categorie bestaat al!</exist>
       <name-null>U moet taxonomie naam.</name-null>
       <name-invalid>Hier zijn een aantal ongeldige tekens in de naam.</name-invalid>
-      <name-too-long>Taxonomie naam dient minder dan 30 tekens</name-too-long>
+      <name-too-long>Taxonomie naam dient minder dan 150 tekens</name-too-long>
     </msg>
   </UITaxonomyForm>
     
@@ -1408,7 +1408,7 @@
     <msg>
 			<name-null>Naam is null</name-null>
 			<name-invalid>Naam is ongeldig</name-invalid>
-			<name-too-long>Naam is te lang</name-too-long>
+			<name-too-long>Taxonomie naam dient minder dan 150 tekens</name-too-long>
 			<exist>Naam bestaat al</exist>
 		</msg>
 	</UITaxonomyTreeCreateChildForm>

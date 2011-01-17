@@ -1374,7 +1374,7 @@
       <exist>La catégorie "{0}" existe déjà</exist>
       <name-null>Veuillez saisir un nom de catégorie</name-null>
       <name-invalid>Caractères invalides détectés dans le nom de la catégorie</name-invalid>
-      <name-too-long>Le nom de la catégorie ne peut excéder 30 caractères</name-too-long>
+      <name-too-long>Le nom de la catégorie ne peut excéder 150 caractères</name-too-long>
     </msg>
   </UITaxonomyForm>
     
@@ -1408,7 +1408,7 @@
     <msg>
 			<name-null>Le nom est vide</name-null>
 			<name-invalid>Le nom est invalide</name-invalid>
-			<name-too-long>Le nom est trop long</name-too-long>
+			<name-too-long>Le nom de la catégorie ne peut excéder 150 caractères</name-too-long>
 			<exist>Le nom existe déjà</exist>
 		</msg>
 	</UITaxonomyTreeCreateChildForm>

@@ -1375,7 +1375,7 @@
       <exist>The "{0}" category already exists!</exist>
       <name-null>You must enter taxonomy name.</name-null>
       <name-invalid>There are some invalid characters in name.</name-invalid>
-      <name-too-long>Taxonomy name must less than 30 characters</name-too-long>
+      <name-too-long>Taxonomy name must be less than 150 characters</name-too-long>
     </msg>
   </UITaxonomyForm>
     
@@ -1409,7 +1409,7 @@
     <msg>
 			<name-null>Name is null</name-null>
 			<name-invalid>Name is invalid</name-invalid>
-			<name-too-long>Name is too long</name-too-long>
+			<name-too-long>Taxonomy name must be less than 150 characters</name-too-long>
 			<exist>Name already exists</exist>
 		</msg>
 	</UITaxonomyTreeCreateChildForm>

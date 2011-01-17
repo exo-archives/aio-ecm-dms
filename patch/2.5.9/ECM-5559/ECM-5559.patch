@@ -1,0 +1,165 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyForm.java	(revision 64705)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyForm.java	(working copy)
+@@ -91,7 +91,7 @@
+         return ;
+       }
+       
+-      if(name.length() > 30) {
++      if(name.length() > 150) {
+         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-too-long", null, 
+                                                 ApplicationMessage.WARNING)) ;
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+@@ -126,4 +126,4 @@
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+     }
+   }
+-}
+\ No newline at end of file
++}
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyTreeCreateChildForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyTreeCreateChildForm.java	(revision 64705)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/taxonomy/UITaxonomyTreeCreateChildForm.java	(working copy)
+@@ -95,7 +95,7 @@
+         return;
+       }
+ 
+-      if (name.length() > 30) {
++      if (name.length() > 150) {
+         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-too-long",
+             null, ApplicationMessage.WARNING));
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_nl.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_nl.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_nl.xml	(working copy)
+@@ -1374,7 +1374,7 @@
+       <exist>De "(0)" categorie bestaat al!</exist>
+       <name-null>U moet taxonomie naam.</name-null>
+       <name-invalid>Hier zijn een aantal ongeldige tekens in de naam.</name-invalid>
+-      <name-too-long>Taxonomie naam dient minder dan 30 tekens</name-too-long>
++      <name-too-long>Taxonomie naam dient minder dan 150 tekens</name-too-long>
+     </msg>
+   </UITaxonomyForm>
+     
+@@ -1408,7 +1408,7 @@
+     <msg>
+ 			<name-null>Naam is null</name-null>
+ 			<name-invalid>Naam is ongeldig</name-invalid>
+-			<name-too-long>Naam is te lang</name-too-long>
++			<name-too-long>Taxonomie naam dient minder dan 150 tekens</name-too-long>
+ 			<exist>Naam bestaat al</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_vi.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_vi.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_vi.xml	(working copy)
+@@ -1375,7 +1375,7 @@
+       <exist>The "{0}" category đã tồn tại!</exist>
+       <name-null>Bạn phải nhập tên taxonomy .</name-null>
+       <name-invalid>Có một vài kí tự không hợp lệ.</name-invalid>
+-      <name-too-long>Tên Taxonomy phải nhỏ hơn hoặc bằng 30 kí tự</name-too-long>
++      <name-too-long>Tên Taxonomy phải nhỏ hơn hoặc bằng 150 kí tự</name-too-long>
+     </msg>
+   </UITaxonomyForm>
+ 
+@@ -1409,7 +1409,7 @@
+     <msg>
+ 			<name-null>Tên danh mục trống</name-null>
+ 			<name-invalid>Tên danh mục không hợp lệ</name-invalid>
+-			<name-too-long>Tên danh mục quá dài</name-too-long>
++			<name-too-long>Tên Taxonomy phải nhỏ hơn hoặc bằng 150 kí tự</name-too-long>
+ 			<exist>Tên danh mục đã tồn tại</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_de.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_de.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_de.xml	(working copy)
+@@ -1374,7 +1374,7 @@
+       <exist>Die "{0}" Kategorie existiert nicht!</exist>
+       <name-null>Taxonomie Name muss eingegeben werden.</name-null>
+       <name-invalid><![CDATA[Der Name besteht zum Teil aus ung&uuml;ltigen Symbolen.]]></name-invalid>
+-      <name-too-long>Taxonomie Name muss weniger als 30 Buchstaben beinhalten.</name-too-long>
++      <name-too-long>Taxonomie Name muss weniger als 150 Buchstaben beinhalten.</name-too-long>
+     </msg>
+   </UITaxonomyForm>
+     
+@@ -1408,7 +1408,7 @@
+     <msg>
+ 			<name-null>Der Name ist null</name-null>
+ 			<name-invalid>Name ist ungültig</name-invalid>
+-			<name-too-long>Name ist zu lang</name-too-long>
++			<name-too-long>Taxonomie Name muss weniger als 150 Buchstaben beinhalten.</name-too-long>
+ 			<exist>Name ist bereits vorhanden</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_en.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_en.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_en.xml	(working copy)
+@@ -1375,7 +1375,7 @@
+       <exist>The "{0}" category already exists!</exist>
+       <name-null>You must enter taxonomy name.</name-null>
+       <name-invalid>There are some invalid characters in name.</name-invalid>
+-      <name-too-long>Taxonomy name must less than 30 characters</name-too-long>
++      <name-too-long>Taxonomy name must be less than 150 characters</name-too-long>
+     </msg>
+   </UITaxonomyForm>
+     
+@@ -1409,7 +1409,7 @@
+     <msg>
+ 			<name-null>Name is null</name-null>
+ 			<name-invalid>Name is invalid</name-invalid>
+-			<name-too-long>Name is too long</name-too-long>
++			<name-too-long>Taxonomy name must be less than 150 characters</name-too-long>
+ 			<exist>Name already exists</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_ar.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_ar.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_ar.xml	(working copy)
+@@ -1374,7 +1374,7 @@
+       <exist> الفئة '{0}' موجودة!</exist>
+       <name-null>يجب ان تدخل إسم التصنيف</name-null>
+       <name-invalid> .هناك بعض الأحرف غير متاحة في هذا الإسم</name-invalid>
+-      <name-too-long>إسم التصنيف يجب أن يكون أقل من 30 حرفا </name-too-long>
++      <name-too-long>إسم التصنيف يجب أن يكون أقل من 150 حرفا </name-too-long>
+     </msg>
+   </UITaxonomyForm>
+   
+@@ -1408,7 +1408,7 @@
+     <msg>
+ 			<name-null>اسم لاغ</name-null>
+ 			<name-invalid>اسم غير صالح</name-invalid>
+-			<name-too-long>الاسم طويل جدا</name-too-long>
++			<name-too-long>إسم التصنيف يجب أن يكون أقل من 150 حرفا</name-too-long>
+ 			<exist>الاسم موجود بالفعل</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_fr.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_fr.xml	(revision 64705)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/ECMAdminPortlet_fr.xml	(working copy)
+@@ -1374,7 +1374,7 @@
+       <exist>La catégorie "{0}" existe déjà</exist>
+       <name-null>Veuillez saisir un nom de catégorie</name-null>
+       <name-invalid>Caractères invalides détectés dans le nom de la catégorie</name-invalid>
+-      <name-too-long>Le nom de la catégorie ne peut excéder 30 caractères</name-too-long>
++      <name-too-long>Le nom de la catégorie ne peut excéder 150 caractères</name-too-long>
+     </msg>
+   </UITaxonomyForm>
+     
+@@ -1408,7 +1408,7 @@
+     <msg>
+ 			<name-null>Le nom est vide</name-null>
+ 			<name-invalid>Le nom est invalide</name-invalid>
+-			<name-too-long>Le nom est trop long</name-too-long>
++			<name-too-long>Le nom de la catégorie ne peut excéder 150 caractères</name-too-long>
+ 			<exist>Le nom existe déjà</exist>
+ 		</msg>
+ 	</UITaxonomyTreeCreateChildForm>

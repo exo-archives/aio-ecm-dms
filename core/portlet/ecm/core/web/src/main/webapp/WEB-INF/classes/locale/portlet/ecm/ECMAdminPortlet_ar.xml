@@ -1374,7 +1374,7 @@
       <exist> الفئة '{0}' موجودة!</exist>
       <name-null>يجب ان تدخل إسم التصنيف</name-null>
       <name-invalid> .هناك بعض الأحرف غير متاحة في هذا الإسم</name-invalid>
-      <name-too-long>إسم التصنيف يجب أن يكون أقل من 30 حرفا </name-too-long>
+      <name-too-long>إسم التصنيف يجب أن يكون أقل من 150 حرفا </name-too-long>
     </msg>
   </UITaxonomyForm>
   
@@ -1408,7 +1408,7 @@
     <msg>
 			<name-null>اسم لاغ</name-null>
 			<name-invalid>اسم غير صالح</name-invalid>
-			<name-too-long>الاسم طويل جدا</name-too-long>
+			<name-too-long>إسم التصنيف يجب أن يكون أقل من 150 حرفا</name-too-long>
 			<exist>الاسم موجود بالفعل</exist>
 		</msg>
 	</UITaxonomyTreeCreateChildForm>

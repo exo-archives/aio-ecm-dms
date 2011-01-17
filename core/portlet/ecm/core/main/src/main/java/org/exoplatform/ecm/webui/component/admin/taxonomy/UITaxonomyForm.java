@@ -91,7 +91,7 @@ public class UITaxonomyForm extends UIForm {
         return ;
       }
       
-      if(name.length() > 30) {
+      if(name.length() > 150) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-too-long", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
