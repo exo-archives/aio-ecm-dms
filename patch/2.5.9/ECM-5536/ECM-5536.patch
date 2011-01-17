@@ -1,0 +1,14 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl	(revision 65226)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl	(working copy)
+@@ -30,6 +30,9 @@
+      </div>
+      <div style="clear:left;"><span></span></div>
+ 	   <%uiform.end()%>   
++	  <script type="text/javascript"> 
++	  document.getElementById("inputValue").setAttribute("onkeypress", "if(event.keyCode==13) {eXo.webui.UIForm.submitForm('contentbrowser#UICBSearchForm','Search',false);}");
++	   </script>
+ 	</div>       
+ </div>
+ 
