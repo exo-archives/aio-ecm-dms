@@ -150,7 +150,8 @@ public class UISearchResult extends UIContainer {
         		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
-      return query.execute().getNodes().nextNode();
+      if(query.execute().getNodes().getSize() > 0) return query.execute().getNodes().nextNode();
+      return null;
     }	
       
   

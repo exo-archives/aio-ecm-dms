@@ -248,7 +248,6 @@ public class UIAddressBar extends UIForm {
               if (actionNode.isNodeType(ACTION_TAXONOMY)) {
                 String searchPath = actionNode.getProperty(EXO_TARGETPATH).getString();
                 String searchWorkspace = actionNode.getProperty(EXO_TARGETWORKSPACE).getString();                
-                uiExplorer.setSelectNode(searchWorkspace, searchPath);                
                 if("/".equals(searchPath)) {
                   queryStatement = ROOT_SQL_QUERY;        
                 } else {
@@ -272,7 +271,7 @@ public class UIAddressBar extends UIForm {
     	          } else {
     	            queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
     	          }
-    	          queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+    	          queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
       }
                  
       uiExplorer.removeChildById("ViewSearch");

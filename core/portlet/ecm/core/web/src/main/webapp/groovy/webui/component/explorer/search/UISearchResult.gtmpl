@@ -13,6 +13,7 @@
 	import javax.jcr.Node;
 	import javax.jcr.Session;
 	import org.apache.commons.lang.StringEscapeUtils;
+	import java.util.ArrayList;
 %>
 <% 
   def resultList = uicomponent.getCurrentList(); 
@@ -82,8 +83,10 @@
       def rowClass = null ;
  	    boolean even = true ;
  	    boolean found = false ;
- 	    Node node = null; 
+ 	    Node node = null;
+	    def listAddedResult = new ArrayList<Node>(); 
  	    if (resultList != null && resultList.size() > 0) {
+	    def count = 0;
   	    for (row in resultList) {
   	      found = true;
   	      if (even) rowClass = "EvenRow";  
@@ -106,11 +109,19 @@
   	      String s = "";
   	      def linkNode = null;
 					if(uicomponent.isTaxonomyNode()) {
-						linkNode = uicomponent.getSymlinkNode(node);
+					    if(node.getParent().isNodeType("exo:webContent")) {
+					    node = node.getParent();
+					    linkNode = uicomponent.getSymlinkNode(node);
+					  } else {
+						   linkNode = uicomponent.getSymlinkNode(node);
+					  }
 					} else {
 						linkNode = node;
 					}
-  	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
+  	      if(!listAddedResult.contains(linkNode)) listAddedResult.add(linkNode);
+	      else continue;
+  	      if (linkNode != null && !node.getPrimaryNodeType().getName().equals("exo:comments")) {
+  	        count++;
       %>
           <tr class="$rowClass">
           	<td>
@@ -135,6 +146,12 @@
     <%				
     						}
         }
+ 	if(count == 0) { %>
+  	      <tr class="EvenRow">
+            <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
+          </tr>
+  	<%      
+  	    }
       } else {
     %>
       <tr class="EvenRow">

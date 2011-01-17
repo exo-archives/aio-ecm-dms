@@ -1,0 +1,115 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(revision 65208)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(working copy)
+@@ -248,7 +248,6 @@
+               if (actionNode.isNodeType(ACTION_TAXONOMY)) {
+                 String searchPath = actionNode.getProperty(EXO_TARGETPATH).getString();
+                 String searchWorkspace = actionNode.getProperty(EXO_TARGETWORKSPACE).getString();                
+-                uiExplorer.setSelectNode(searchWorkspace, searchPath);                
+                 if("/".equals(searchPath)) {
+                   queryStatement = ROOT_SQL_QUERY;        
+                 } else {
+@@ -272,7 +271,7 @@
+     	          } else {
+     	            queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
+     	          }
+-    	          queryManager = currentNode.getSession().getWorkspace().getQueryManager();
++    	          queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
+       }
+                  
+       uiExplorer.removeChildById("ViewSearch");
+@@ -364,4 +363,4 @@
+     }
+   }
+   
+-}
+\ No newline at end of file
++}
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 65208)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -150,7 +150,8 @@
+         		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
+       QueryManager queryManager = session.getWorkspace().getQueryManager();
+       Query query = queryManager.createQuery(queryStatement, Query.SQL);
+-      return query.execute().getNodes().nextNode();
++      if(query.execute().getNodes().getSize() > 0) return query.execute().getNodes().nextNode();
++      return null;
+     }	
+       
+   
+@@ -426,4 +427,4 @@
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult.getParent());      
+     }
+   } 
+-}
+\ No newline at end of file
++}
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 65208)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
+@@ -13,6 +13,7 @@
+ 	import javax.jcr.Node;
+ 	import javax.jcr.Session;
+ 	import org.apache.commons.lang.StringEscapeUtils;
++	import java.util.ArrayList;
+ %>
+ <% 
+   def resultList = uicomponent.getCurrentList(); 
+@@ -82,8 +83,10 @@
+       def rowClass = null ;
+  	    boolean even = true ;
+  	    boolean found = false ;
+- 	    Node node = null; 
++ 	    Node node = null;
++	    def listAddedResult = new ArrayList<Node>(); 
+  	    if (resultList != null && resultList.size() > 0) {
++	    def count = 0;
+   	    for (row in resultList) {
+   	      found = true;
+   	      if (even) rowClass = "EvenRow";  
+@@ -106,11 +109,19 @@
+   	      String s = "";
+   	      def linkNode = null;
+ 					if(uicomponent.isTaxonomyNode()) {
+-						linkNode = uicomponent.getSymlinkNode(node);
++					    if(node.getParent().isNodeType("exo:webContent")) {
++					    node = node.getParent();
++					    linkNode = uicomponent.getSymlinkNode(node);
++					  } else {
++						   linkNode = uicomponent.getSymlinkNode(node);
++					  }
+ 					} else {
+ 						linkNode = node;
+ 					}
+-  	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
++  	      if(!listAddedResult.contains(linkNode)) listAddedResult.add(linkNode);
++	      else continue;
++  	      if (linkNode != null && !node.getPrimaryNodeType().getName().equals("exo:comments")) {
++  	        count++;
+       %>
+           <tr class="$rowClass">
+           	<td>
+@@ -135,6 +146,12 @@
+     <%				
+     						}
+         }
++ 	if(count == 0) { %>
++  	      <tr class="EvenRow">
++            <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
++          </tr>
++  	<%      
++  	    }
+       } else {
+     %>
+       <tr class="EvenRow">
+@@ -148,4 +165,4 @@
+     <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+   </div>
+   <% } %>
+-</div>
+\ No newline at end of file
++</div>
