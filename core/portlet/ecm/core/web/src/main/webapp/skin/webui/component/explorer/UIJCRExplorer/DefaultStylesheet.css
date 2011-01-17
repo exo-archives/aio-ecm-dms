@@ -131,6 +131,11 @@
   /* overflow: auto; */
 }
 
+.UIDocumentWorkspace a {
+	color: #058ee9;
+	text-decoration: underline;
+}
+
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;	
 	overflow:auto;

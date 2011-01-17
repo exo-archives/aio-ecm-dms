@@ -1,0 +1,16 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(revision 64610)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIJCRExplorer/DefaultStylesheet.css	(working copy)
+@@ -131,6 +131,11 @@
+   /* overflow: auto; */
+ }
+ 
++.UIDocumentWorkspace a {
++	color: #058ee9;
++	text-decoration: underline;
++}
++
+ .UIJCRExplorerPortlet .UIListView {
+ 	posititon: relative;	
+ 	overflow:auto;
