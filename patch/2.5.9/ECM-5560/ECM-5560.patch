@@ -1,0 +1,88 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/MacStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/MacStylesheet.css	(revision 65231)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/MacStylesheet.css	(working copy)
+@@ -172,6 +172,7 @@
+   border: solid 1px #d1d1d1;
+   background: white;
+   padding: 8px 0px 5px 0px;
++  overflow: hidden;
+ }
+ 
+ .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/DefaultStylesheet.css	(revision 65231)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/DefaultStylesheet.css	(working copy)
+@@ -187,6 +187,7 @@
+   border: solid 1px #d1d1d1;
+   background: white;
+   padding: 8px 0px 5px 0px;
++  overflow: hidden;
+ }
+ 
+ .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
+@@ -263,4 +264,4 @@
+   background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
+ }
+ 
+-/*############################## -- End UIDrivesBrowser -- ##############################*/
+\ No newline at end of file
++/*############################## -- End UIDrivesBrowser -- ##############################*/
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/VistaStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/VistaStylesheet.css	(revision 65231)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/UIDrivesBrowser/VistaStylesheet.css	(working copy)
+@@ -191,6 +191,7 @@
+   border: solid 1px #e4e4e4;
+   background: white url('VistaSkin/background/DriverContainerBG1x20.gif') repeat-x bottom;
+   padding: 10px 5px;
++  overflow: hidden;
+ }
+ 
+ .UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {
+@@ -264,4 +265,4 @@
+   background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
+ }
+ 
+-/*############################## -- End UIDrivesBrowser -- ##############################*/
+\ No newline at end of file
++/*############################## -- End UIDrivesBrowser -- ##############################*/
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl	(revision 65231)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl	(working copy)
+@@ -54,7 +54,7 @@
+ 			                  <div class="LeftBar">
+ 			                    <div class="RightBar">
+ 			                      <div class="MiddleBar">
+-			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=uicomponent.getLabel(personalDrive.getName())%></a>
++			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>" title="<%=uicomponent.getLabel(personalDrive.getName())%>"><%=uicomponent.getLabel(personalDrive.getName())%></a>
+ 			                      </div>
+ 			                    </div>
+ 			                  </div>
+@@ -115,7 +115,7 @@
+ 			                  <div class="LeftBar">
+ 			                    <div class="RightBar">
+ 			                      <div class="MiddleBar">
+-			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=uicomponent.getGroupLabel(groupDrive.getName())%></a>
++			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>" title="<%=uicomponent.getGroupLabel(groupDrive.getName())%>"><%=uicomponent.getGroupLabel(groupDrive.getName())%></a>
+ 			                      </div>
+ 			                    </div>
+ 			                  </div>
+@@ -176,7 +176,7 @@
+ 				                  <div class="LeftBar">
+ 				                    <div class="RightBar">
+ 				                      <div class="MiddleBar">
+-				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=uicomponent.getLabel(drive.getName())%></a>
++				                       <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>" title="<%=uicomponent.getLabel(drive.getName())%>"><%=uicomponent.getLabel(drive.getName())%></a>
+ 				                      </div>
+ 				                    </div>
+ 				                  </div>
+@@ -207,4 +207,4 @@
+ 		  
+ 		</div>
+ 	</div>
+-</div>
+\ No newline at end of file
++</div>
