@@ -1,0 +1,20 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/admin/UIPropertyForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/admin/UIPropertyForm.java	(revision 64992)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/admin/UIPropertyForm.java	(working copy)
+@@ -423,13 +423,13 @@
+           Value[] values = {};
+           List valueList = uiForm.processValues(type);
+           values = uiForm.createValues(valueList, type, currentNode.getSession().getValueFactory());
+-          if(nodeType.canSetProperty(name, values)) {
++          if(currentNode.hasProperty(name) || nodeType.canSetProperty(name, values)) {
+             currentNode.setProperty(name, values);
+           }
+         } else {
+           Object objValue = uiForm.processValue(type);
+           Value value = uiForm.createValue(objValue, type, currentNode.getSession().getValueFactory());
+-          if(nodeType.canSetProperty(name, value)) {
++          if(currentNode.hasProperty(name) || nodeType.canSetProperty(name, value)) {
+             currentNode.setProperty(name, value);
+           }
+         }
