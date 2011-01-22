@@ -21,10 +21,8 @@
 	  if(uicomponent.isShowSearchForm()) {
 	  	uicomponent.renderChild(UISearchController.class);
 	  } else {
-			jsmanager.importJavascript('eXo.portal.UIBrowseContent');
-			jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
-			//jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
-			
+		jsmanager.importJavascript('eXo.ecm.ECMUtils');
+		
 	    Node currentNode = uicomponent.getCurrentNode() ;
 	    Node selectedTab = uicomponent.getSelectedTab() ; 
 	    boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
@@ -130,41 +128,46 @@
               </div>
           <%}%>  
         </div>
-        <div class="NavigationButtonContainer">
-					<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+        <div class="NavigationButtonContainer" style="display: none">
+					<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>">
 						<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 					</div>
-		  		<!--<div style="clear:both"><span></span></div>-->
 				</div>                  
-      </div>
-      <div class="UICBSubNavigation">
-      <div class="CBLeftNavigation">
-          <div class="CBRightNavigation">
-	          <div class="CBMiddleNavigation">
-	            <div class="FixHeight"> 
-		              <%
-		                for(String subCat in subCategoryList) {
-		                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-		                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
-		              %>
-	                    <a class="NodeLabel" href="$actionLinkSub">
-	                     <%if(uicomponent.isSymLink(subCat)) {%> 
-	                       <img class="LinkSmall" />
-	                     <%}%> 
-	                    $catName</a>
-		                  <div class="SeparatorLine"><span></span></div>
-		              <%}%>
-		            <div class="NavigationButtonContainer">
-									<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
-										<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
-									</div>
-		              <!--<div style="clear:both"><span></span></div>-->
-		            </div>
-		          </div>
-	          </div> 
-          </div>
-      </div>
-      </div>
+        </div>
+				  
+		<div id="mainNav" class="UICBSubNavigation CBNavigation ClearFix">
+			<div id="buttonContainer" class="NavigationButtonContainer">
+				<div id="btnMore" class="NavigationIcon" style="display: none" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>" onclick="eXo.ecm.ECMUtils.toggleVisibility(document.getElementById('popupNav'))">
+				</div>
+				<div id="popupNav" class="PopupNav" style="display: none">							
+				</div>
+			</div>
+		</div>
+		
+		<%
+			def catNames = [];
+			def actionLinks = [];
+			def symLinkChecking = [];
+			for(String subCat in subCategoryList) {
+				catNames.add(subCat.substring(subCat.lastIndexOf("/") + 1));
+				actionLinks.add(uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)));
+					
+				if(uicomponent.isSymLink(subCat)) {
+					symLinkChecking.add(true);
+				} else {
+					symLinkChecking.add(false);
+				}
+			}
+					
+			jsmanager.addOnLoadJavascript('eXo.ecm.ECMUtils.loadDataForSubNavigation');
+						
+		%>
+		  
+		<script type="text/javascript">
+			ECMUtils.prototype.categoryNames = $catNames;
+			ECMUtils.prototype.actionLinks = $actionLinks;
+			ECMUtils.prototype.symLinkChecking = $symLinkChecking;
+		</script>
 
 	  </div>
 	  <%/*End UICBNavigation*/%>
@@ -277,33 +280,22 @@
 	                    def docChilds = child.get("doc") ;
 	                    if(!subChilds.isEmpty()) {
 	                   %>
-	                  	<div class="SubContentTitle">
-		                   	<div class="LeftBar">
-		                   		<div class="RightBar">
-		                   			<div class="MiddleBar"> 
-		                   					<% 
-							                    for(String subChild in subChilds) {
-							                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
-							                      String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
-							                  %>					                      	
-				                        <a class="NodeLabel" href="$subChildLink">
-				                        <%if(uicomponent.isSymLink(subChild)) {%> 
-						                      <img class="LinkSmall" />
-						                    <%}%> 
-				                        $subChildName
-				                        </a>
-					                      <div class="SeparatorLine"><span></span></div>
-							                  <%}%>
-							                  <div class="NavigationButtonContainer">
-																	<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs")%>"><!--<span></span>-->
-																		<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
-																	</div>
-										              <!--<div style="clear:both"><span></span></div>-->
-										            </div>                  
-		                   			</div>                   		
-		                   		</div>
-		                  	</div>                   
-	                		</div>
+	                  	<div class="SubContentTitle CBNavigation ClearFix">
+				<% 
+				  for(String subChild in subChilds) {
+					String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
+					String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
+				%>					                      	
+					<a class="NodeLabel" href="$subChildLink">
+			                <%
+					   if(uicomponent.isSymLink(subChild)) {
+					%> 
+						<img class="LinkSmall" />
+					<%}%> 
+			                        $subChildName
+			                </a>
+				<%}%>
+	                	</div>
 	                <%}%>
 	                <div class="UIDocumentContentInfo">
 	                  <table>

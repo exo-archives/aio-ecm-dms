@@ -1,0 +1,498 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UISubContent/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UISubContent/DefaultStylesheet.css	(revision 64938)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UISubContent/DefaultStylesheet.css	(working copy)
+@@ -8,10 +8,6 @@
+ .UISubContent {
+ }
+ 
+-.UISubContent .SeparatorLine{
+-	margin-top: 3px;
+-}
+-
+ .UISubContent .SubContentHolder {
+ 	padding: 5px;
+ }
+@@ -38,8 +34,7 @@
+ /*###########################-- Begin Title --############################*/
+ 
+ .UISubContent .SubContentTitle { 	
+-	height: 26px; line-height: 26px;
+-	overflow: hidden;
++	line-height: 26px;
+ }
+ 
+ .UISubContent .SubContentTitle .LeftBar { 
+@@ -79,25 +74,7 @@
+ 	/*margin-top: 4px;*/
+ }
+ 
+-.UISubContent .SubContentTitle a { 
+-	text-decoration: none;
+-	color: #515151;
+-	font-size: 11px; font-weight: bold;
+-}
+ 
+-.UISubContent .SubContentTitle a:hover { 
+-	text-decoration: none;
+-	color: #058ee6;
+-}
+-
+-.UISubContent .SubContentTitle .NodeLabel { 
+-	float: left; /* orientation=lt */
+-	float: right; /* orientation=rt */
+-	padding: 0px 8px;
+-	line-height: 19px;
+-	padding: 1px 5px 0px 5px;
+-}
+-
+ .UISubContent .SubContentTitle .LinkSmall {
+ 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+   position: absolute;
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UINavigation/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UINavigation/DefaultStylesheet.css	(revision 64938)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/browse/UINavigation/DefaultStylesheet.css	(working copy)
+@@ -80,25 +80,11 @@
+ .UICBNavigation {
+ }
+ 
+-.UICBNavigation .CBLeftNavigation {
+-  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
+-  padding-left: 4px;
+-}
+ 
+-.UICBNavigation .CBRightNavigation {
+-  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
+-  padding-right: 4px;
+-}
+ 
+-.UICBNavigation .CBMiddleNavigation {
+-	line-height: 26px;
+-  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x ;
++.UICBNavigation .FixHeight {
+ }
+ 
+-.UICBNavigation .CBMiddleNavigation .FixHeight {
+-	height: 26px;
+-}
+-
+ .UICBNavigation .UICBMainNavigation {
+ 	height: 25px;
+   font-size: 11px;
+@@ -274,17 +260,44 @@
+ .UICBNavigation .NavigationButtonContainer {
+ 	float: right; /* orientation=lt */
+ 	float: left; /* orientation=rt */
+-	height: 16px;
+-	margin-top: 3px;
++	padding: 6px 5px 0px 5px;
++	position: relative;
+ }
+ 
+ .UICBNavigation .NavigationButtonContainer .NavigationIcon {
+-	float: left; /* orientation=lt */
+-	float: right; /* orientation=rt */
+ 	cursor: pointer;
+-	/*margin-top: 3px;*/
++	background: url('DefaultSkin/background/NavigationIcon.gif') no-repeat left top;
++	width: 13px;
++	height: 13px;
++	padding: 0px;
+ }
+ 
++.UICBNavigation .NavigationButtonContainer .NavigationIcon:hover {
++	background: url('DefaultSkin/background/NavigationIconHover.gif') no-repeat left top;
++}
++
++.UICBNavigation .PopupNav {
++	background: #f6f6f6;
++	border: 1px solid #c0c0c0;
++	padding: 6px 8px;
++	position: absolute;
++	display: block;
++	right: 0px;
++	top: 24px;
++}
++
++.UICBNavigation .PopupNav a {
++	display: block;
++	line-height: 18px;
++	color: #515151;
++	font-weight: bold;
++}
++
++.UICBNavigation .PopupNav a:hover {
++	color: #058ee6;
++}
++
++
+ .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
+   line-height: 19px;	
+ 	padding-left: 4px; /* orientation=lt */
+@@ -303,25 +316,6 @@
+   margin-top: 2px;
+ }
+ 
+-.UICBNavigation .UICBSubNavigation a { 
+-	text-decoration: none;
+-	color: #515151; font-size: 11px; font-weight: bold;
+-}
+-
+-.UICBNavigation .UICBSubNavigation a:hover { 
+-	text-decoration: none;
+-	color: #058ee6;
+-}
+-
+-.UICBNavigation .UICBSubNavigation .NodeLabel { 
+-	float: left; /* orientation=lt */
+-	float: right; /* orientation=rt */
+-	line-height: 18px;
+-	text-decoration: none;
+-	padding: 1px 5px 0px 5px;
+-  position: relative;
+-}
+-
+ .UICBNavigation .UICBSubNavigation .LinkSmall {
+ 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+   position: absolute;
+@@ -336,7 +330,7 @@
+ 	float: left; /* orientation=lt */
+ 	float: right; /* orientation=rt */
+ 	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y;  
+-	margin: 3px 3px;
++	margin: 3px;
+ 	height: 18px; width: 1px;
+ }
+ 
+@@ -348,4 +342,69 @@
+ 	margin: 2px 0px 0px 3px; /* orientation=rt */
+ }
+ 
+-/*###########################-- End UITabs --############################*/
+\ No newline at end of file
++/*###########################-- End UITabs --############################*/
++
++/*########################### Start UISubContent ######################################*/
++
++
++.CBNavigation {
++  background: #f6f6f6;
++  -moz-border-radius: 2px;
++  border: 1px solid #c0c0c0;
++  -moz-box-shadow: 0px 1px 0px #d7d7d7;
++  margin-bottom: 3px;
++}
++
++.CBNavigation .NodeLabel { 
++	float: left; /* orientation=lt */
++	float: right; /* orientation=rt */
++	line-height: 18px;
++	text-decoration: none;
++	padding: 3px 5px;
++	color: #515151; 
++	font-size: 11px; 
++	font-weight: bold;
++	display: block;
++	white-space:nowrap;
++}
++
++.CBNavigation a:hover {
++	color: #058ee6;
++}
++
++.CBNavigation .NavigationButtonContainer {
++	float: right; /* orientation=lt */
++	float: left; /* orientation=rt */
++	padding: 6px 5px 0px 5px;
++	position: relative;
++}
++
++.CBNavigation .NavigationIcon {
++	cursor: pointer;
++	background: url('DefaultSkin/background/NavigationIcon.gif') no-repeat left top;
++	width: 13px;
++	height: 13px;
++	padding: 0px;
++}
++
++.CBNavigation .PopupNav {
++	background: #f6f6f6;
++	border: 1px solid #c0c0c0;
++	padding: 6px 8px;
++	position: absolute;
++	display: block;
++	right: 0px;
++	top: 24px;
++}
++
++.CBNavigation .PopupNav a {
++	display: block;
++	line-height: 18px;
++	color: #515151;
++	font-weight: bold;
++}
++
++.CBNavigation .PopupNav a:hover {
++	color: #058ee6;
++}
++
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(revision 64938)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/ECMUtils.js	(working copy)
+@@ -8,6 +8,70 @@
+ 	
+ 	ECMUtils.prototype.popupArray = [];
+ 	
++	ECMUtils.prototype.categoryNames = [];
++	ECMUtils.prototype.actionLinks = [];
++	ECMUtils.prototype.symLinkChecking = [];
++	
++	var MAX_HEIGHT = 75;
++		
++	ECMUtils.prototype.isLimitedHeight = function(elem) {
++		if (elem.offsetHeight > MAX_HEIGHT) {
++			return true;
++		}
++		return false;
++	};
++			
++	ECMUtils.prototype.toggleVisibility = function(elem) {
++				
++		if (elem.style.display == "block") {
++			elem.style.display = "none";
++		} else {
++			elem.style.display = "block";
++		}
++	};
++			
++	ECMUtils.prototype.loadDataForSubNavigation = function() {
++			
++		var categoryNumber = Self.categoryNames.length;
++			
++		var mainNavigationDiv = document.getElementById('mainNav');
++		var popupNavigationDiv = document.getElementById('popupNav');
++		
++		var isFull = false;
++		for (var i = 0; i < categoryNumber; i++) {
++			//make link
++			var categoryLink = document.createElement('a');
++			categoryLink.innerHTML = Self.categoryNames[i];
++			categoryLink.setAttribute('href', Self.actionLinks[i].replace(/&amp;/g, '&'));
++			categoryLink.className = 'NodeLabel';
++				
++			if (Self.symLinkChecking[i]) {
++				var symLinkImg = document.createElement('img');
++				symLinkImg.className = 'LinkSmall';
++				categoryLink.appendChild(symLinkImg);
++			}
++				
++			//add link into main div or popup div
++			if (isFull == false) {
++				mainNavigationDiv.insertBefore (categoryLink, document.getElementById('buttonContainer'));
++			} else {
++				popupNavigationDiv.appendChild (categoryLink);
++			}
++				
++			//check full in main div
++			if (Self.isLimitedHeight(mainNavigationDiv) && isFull == false) {
++				isFull = true;
++				mainNavigationDiv.removeChild(categoryLink);
++				popupNavigationDiv.appendChild (categoryLink);
++									
++				//enable "More" button
++				var btnMore = document.getElementById('btnMore');
++				btnMore.style.display="block";
++				popupNavigationDiv.style.display="none";
++			}
++		}		
++	};	
++	
+ 	ECMUtils.prototype.init = function(portletId) {
+ 		var portlet = document.getElementById(portletId) ;
+ 		if(!portlet) return ;
+@@ -69,12 +133,12 @@
+ 			var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
+ 			if(resizeObj.length) {
+ 				for(var i = 0; i < resizeObj.length; i++) {
+-					//resizeObj[i].style.height = resizeObj[i].offsetHeight - delta + "px" ;
++					//resizeObj[i].style.height = resizeObj[i].offsetHeight - delta + "px" ;
+ 					resizeObj[i].style.height = resizeObj[i].offsetHeight + "px" ;
+ 				}
+ 			}
+ 			var uiDocumentWorkspace = DOM.findFirstDescendantByClass(portlet, 'div', 'UIDocumentWorkspace');
+-			if (uiDocumentWorkspace) //uiDocumentWorkspace.style.height = uiDocumentWorkspace.offsetHeight - delta + "px";
++			if (uiDocumentWorkspace) //uiDocumentWorkspace.style.height = uiDocumentWorkspace.offsetHeight - delta + "px";
+ 				uiDocumentWorkspace.style.height = uiDocumentWorkspace.offsetHeight + "px";
+ 		}
+ 		eXo.core.Browser.addOnResizeCallback('controlLayout', function(){eXo.ecm.ECMUtils.controlLayout(portletId)});
+@@ -159,7 +223,7 @@
+ 	    iconTree.style.position = 'relative';
+ 	  }
+ 	  DOM.listHideElements(elemt);
+-	}
++	};
+ 	 
+ 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
+ 		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
+@@ -522,4 +586,4 @@
+ 	};
+ };
+ 
+-eXo.ecm.ECMUtils = new ECMUtils();
++eXo.ecm.ECMUtils = new ECMUtils();
+\ No newline at end of file
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/content-browser/path-templates/UsePathView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/content-browser/path-templates/UsePathView.gtmpl	(revision 64938)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/content-browser/path-templates/UsePathView.gtmpl	(working copy)
+@@ -21,10 +21,8 @@
+ 	  if(uicomponent.isShowSearchForm()) {
+ 	  	uicomponent.renderChild(UISearchController.class);
+ 	  } else {
+-			jsmanager.importJavascript('eXo.portal.UIBrowseContent');
+-			jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
+-			//jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
+-			
++		jsmanager.importJavascript('eXo.ecm.ECMUtils');
++		
+ 	    Node currentNode = uicomponent.getCurrentNode() ;
+ 	    Node selectedTab = uicomponent.getSelectedTab() ; 
+ 	    boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
+@@ -130,41 +128,46 @@
+               </div>
+           <%}%>  
+         </div>
+-        <div class="NavigationButtonContainer">
+-					<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
++        <div class="NavigationButtonContainer" style="display: none">
++					<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>">
+ 						<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+ 					</div>
+-		  		<!--<div style="clear:both"><span></span></div>-->
+ 				</div>                  
+-      </div>
+-      <div class="UICBSubNavigation">
+-      <div class="CBLeftNavigation">
+-          <div class="CBRightNavigation">
+-	          <div class="CBMiddleNavigation">
+-	            <div class="FixHeight"> 
+-		              <%
+-		                for(String subCat in subCategoryList) {
+-		                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
+-		                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
+-		              %>
+-	                    <a class="NodeLabel" href="$actionLinkSub">
+-	                     <%if(uicomponent.isSymLink(subCat)) {%> 
+-	                       <img class="LinkSmall" />
+-	                     <%}%> 
+-	                    $catName</a>
+-		                  <div class="SeparatorLine"><span></span></div>
+-		              <%}%>
+-		            <div class="NavigationButtonContainer">
+-									<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+-										<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+-									</div>
+-		              <!--<div style="clear:both"><span></span></div>-->
+-		            </div>
+-		          </div>
+-	          </div> 
+-          </div>
+-      </div>
+-      </div>
++        </div>
++				  
++		<div id="mainNav" class="UICBSubNavigation CBNavigation ClearFix">
++			<div id="buttonContainer" class="NavigationButtonContainer">
++				<div id="btnMore" class="NavigationIcon" style="display: none" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>" onclick="eXo.ecm.ECMUtils.toggleVisibility(document.getElementById('popupNav'))">
++				</div>
++				<div id="popupNav" class="PopupNav" style="display: none">							
++				</div>
++			</div>
++		</div>
++		
++		<%
++			def catNames = [];
++			def actionLinks = [];
++			def symLinkChecking = [];
++			for(String subCat in subCategoryList) {
++				catNames.add(subCat.substring(subCat.lastIndexOf("/") + 1));
++				actionLinks.add(uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)));
++					
++				if(uicomponent.isSymLink(subCat)) {
++					symLinkChecking.add(true);
++				} else {
++					symLinkChecking.add(false);
++				}
++			}
++					
++			jsmanager.addOnLoadJavascript('eXo.ecm.ECMUtils.loadDataForSubNavigation');
++						
++		%>
++		  
++		<script type="text/javascript">
++			ECMUtils.prototype.categoryNames = $catNames;
++			ECMUtils.prototype.actionLinks = $actionLinks;
++			ECMUtils.prototype.symLinkChecking = $symLinkChecking;
++		</script>
+ 
+ 	  </div>
+ 	  <%/*End UICBNavigation*/%>
+@@ -277,33 +280,22 @@
+ 	                    def docChilds = child.get("doc") ;
+ 	                    if(!subChilds.isEmpty()) {
+ 	                   %>
+-	                  	<div class="SubContentTitle">
+-		                   	<div class="LeftBar">
+-		                   		<div class="RightBar">
+-		                   			<div class="MiddleBar"> 
+-		                   					<% 
+-							                    for(String subChild in subChilds) {
+-							                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
+-							                      String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
+-							                  %>					                      	
+-				                        <a class="NodeLabel" href="$subChildLink">
+-				                        <%if(uicomponent.isSymLink(subChild)) {%> 
+-						                      <img class="LinkSmall" />
+-						                    <%}%> 
+-				                        $subChildName
+-				                        </a>
+-					                      <div class="SeparatorLine"><span></span></div>
+-							                  <%}%>
+-							                  <div class="NavigationButtonContainer">
+-																	<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs")%>"><!--<span></span>-->
+-																		<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+-																	</div>
+-										              <!--<div style="clear:both"><span></span></div>-->
+-										            </div>                  
+-		                   			</div>                   		
+-		                   		</div>
+-		                  	</div>                   
+-	                		</div>
++	                  	<div class="SubContentTitle CBNavigation ClearFix">
++				<% 
++				  for(String subChild in subChilds) {
++					String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
++					String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
++				%>					                      	
++					<a class="NodeLabel" href="$subChildLink">
++			                <%
++					   if(uicomponent.isSymLink(subChild)) {
++					%> 
++						<img class="LinkSmall" />
++					<%}%> 
++			                        $subChildName
++			                </a>
++				<%}%>
++	                	</div>
+ 	                <%}%>
+ 	                <div class="UIDocumentContentInfo">
+ 	                  <table>
+@@ -388,4 +380,4 @@
+ 	 %>
+ 	 		<div style="text-align:center;"><%=_ctx.appRes("UIBrowseContainer.label.cannot-access")%></div>
+   <%}%>
+-</div>
++</div>
+\ No newline at end of file

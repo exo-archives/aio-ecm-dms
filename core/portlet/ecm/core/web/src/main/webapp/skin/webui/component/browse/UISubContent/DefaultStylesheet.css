@@ -8,10 +8,6 @@
 .UISubContent {
 }
 
-.UISubContent .SeparatorLine{
-	margin-top: 3px;
-}
-
 .UISubContent .SubContentHolder {
 	padding: 5px;
 }
@@ -38,8 +34,7 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 26px; line-height: 26px;
-	overflow: hidden;
+	line-height: 26px;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
@@ -79,24 +74,6 @@
 	/*margin-top: 4px;*/
 }
 
-.UISubContent .SubContentTitle a { 
-	text-decoration: none;
-	color: #515151;
-	font-size: 11px; font-weight: bold;
-}
-
-.UISubContent .SubContentTitle a:hover { 
-	text-decoration: none;
-	color: #058ee6;
-}
-
-.UISubContent .SubContentTitle .NodeLabel { 
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	padding: 0px 8px;
-	line-height: 19px;
-	padding: 1px 5px 0px 5px;
-}
 
 .UISubContent .SubContentTitle .LinkSmall {
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;

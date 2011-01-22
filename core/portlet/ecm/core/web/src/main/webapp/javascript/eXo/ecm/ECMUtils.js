@@ -8,6 +8,70 @@
 	
 	ECMUtils.prototype.popupArray = [];
 	
+	ECMUtils.prototype.categoryNames = [];
+	ECMUtils.prototype.actionLinks = [];
+	ECMUtils.prototype.symLinkChecking = [];
+	
+	var MAX_HEIGHT = 75;
+		
+	ECMUtils.prototype.isLimitedHeight = function(elem) {
+		if (elem.offsetHeight > MAX_HEIGHT) {
+			return true;
+		}
+		return false;
+	};
+			
+	ECMUtils.prototype.toggleVisibility = function(elem) {
+				
+		if (elem.style.display == "block") {
+			elem.style.display = "none";
+		} else {
+			elem.style.display = "block";
+		}
+	};
+			
+	ECMUtils.prototype.loadDataForSubNavigation = function() {
+			
+		var categoryNumber = Self.categoryNames.length;
+			
+		var mainNavigationDiv = document.getElementById('mainNav');
+		var popupNavigationDiv = document.getElementById('popupNav');
+		
+		var isFull = false;
+		for (var i = 0; i < categoryNumber; i++) {
+			//make link
+			var categoryLink = document.createElement('a');
+			categoryLink.innerHTML = Self.categoryNames[i];
+			categoryLink.setAttribute('href', Self.actionLinks[i].replace(/&amp;/g, '&'));
+			categoryLink.className = 'NodeLabel';
+				
+			if (Self.symLinkChecking[i]) {
+				var symLinkImg = document.createElement('img');
+				symLinkImg.className = 'LinkSmall';
+				categoryLink.appendChild(symLinkImg);
+			}
+				
+			//add link into main div or popup div
+			if (isFull == false) {
+				mainNavigationDiv.insertBefore (categoryLink, document.getElementById('buttonContainer'));
+			} else {
+				popupNavigationDiv.appendChild (categoryLink);
+			}
+				
+			//check full in main div
+			if (Self.isLimitedHeight(mainNavigationDiv) && isFull == false) {
+				isFull = true;
+				mainNavigationDiv.removeChild(categoryLink);
+				popupNavigationDiv.appendChild (categoryLink);
+									
+				//enable "More" button
+				var btnMore = document.getElementById('btnMore');
+				btnMore.style.display="block";
+				popupNavigationDiv.style.display="none";
+			}
+		}		
+	};	
+	
 	ECMUtils.prototype.init = function(portletId) {
 		var portlet = document.getElementById(portletId) ;
 		if(!portlet) return ;
@@ -159,7 +223,7 @@
 	    iconTree.style.position = 'relative';
 	  }
 	  DOM.listHideElements(elemt);
-	}
+	};
 	 
 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");

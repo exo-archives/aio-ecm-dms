@@ -80,23 +80,9 @@
 .UICBNavigation {
 }
 
-.UICBNavigation .CBLeftNavigation {
-  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
-  padding-left: 4px;
-}
 
-.UICBNavigation .CBRightNavigation {
-  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
-  padding-right: 4px;
-}
 
-.UICBNavigation .CBMiddleNavigation {
-	line-height: 26px;
-  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x ;
-}
-
-.UICBNavigation .CBMiddleNavigation .FixHeight {
-	height: 26px;
+.UICBNavigation .FixHeight {
 }
 
 .UICBNavigation .UICBMainNavigation {
@@ -274,16 +260,43 @@
 .UICBNavigation .NavigationButtonContainer {
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
-	height: 16px;
-	margin-top: 3px;
+	padding: 6px 5px 0px 5px;
+	position: relative;
 }
 
 .UICBNavigation .NavigationButtonContainer .NavigationIcon {
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
 	cursor: pointer;
-	/*margin-top: 3px;*/
+	background: url('DefaultSkin/background/NavigationIcon.gif') no-repeat left top;
+	width: 13px;
+	height: 13px;
+	padding: 0px;
 }
+
+.UICBNavigation .NavigationButtonContainer .NavigationIcon:hover {
+	background: url('DefaultSkin/background/NavigationIconHover.gif') no-repeat left top;
+}
+
+.UICBNavigation .PopupNav {
+	background: #f6f6f6;
+	border: 1px solid #c0c0c0;
+	padding: 6px 8px;
+	position: absolute;
+	display: block;
+	right: 0px;
+	top: 24px;
+}
+
+.UICBNavigation .PopupNav a {
+	display: block;
+	line-height: 18px;
+	color: #515151;
+	font-weight: bold;
+}
+
+.UICBNavigation .PopupNav a:hover {
+	color: #058ee6;
+}
+
 
 .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
   line-height: 19px;	
@@ -303,25 +316,6 @@
   margin-top: 2px;
 }
 
-.UICBNavigation .UICBSubNavigation a { 
-	text-decoration: none;
-	color: #515151; font-size: 11px; font-weight: bold;
-}
-
-.UICBNavigation .UICBSubNavigation a:hover { 
-	text-decoration: none;
-	color: #058ee6;
-}
-
-.UICBNavigation .UICBSubNavigation .NodeLabel { 
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	line-height: 18px;
-	text-decoration: none;
-	padding: 1px 5px 0px 5px;
-  position: relative;
-}
-
 .UICBNavigation .UICBSubNavigation .LinkSmall {
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
   position: absolute;
@@ -336,7 +330,7 @@
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y;  
-	margin: 3px 3px;
+	margin: 3px;
 	height: 18px; width: 1px;
 }
 
@@ -349,3 +343,68 @@
 }
 
 /*###########################-- End UITabs --############################*/
+
+/*########################### Start UISubContent ######################################*/
+
+
+.CBNavigation {
+  background: #f6f6f6;
+  -moz-border-radius: 2px;
+  border: 1px solid #c0c0c0;
+  -moz-box-shadow: 0px 1px 0px #d7d7d7;
+  margin-bottom: 3px;
+}
+
+.CBNavigation .NodeLabel { 
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	line-height: 18px;
+	text-decoration: none;
+	padding: 3px 5px;
+	color: #515151; 
+	font-size: 11px; 
+	font-weight: bold;
+	display: block;
+	white-space:nowrap;
+}
+
+.CBNavigation a:hover {
+	color: #058ee6;
+}
+
+.CBNavigation .NavigationButtonContainer {
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
+	padding: 6px 5px 0px 5px;
+	position: relative;
+}
+
+.CBNavigation .NavigationIcon {
+	cursor: pointer;
+	background: url('DefaultSkin/background/NavigationIcon.gif') no-repeat left top;
+	width: 13px;
+	height: 13px;
+	padding: 0px;
+}
+
+.CBNavigation .PopupNav {
+	background: #f6f6f6;
+	border: 1px solid #c0c0c0;
+	padding: 6px 8px;
+	position: absolute;
+	display: block;
+	right: 0px;
+	top: 24px;
+}
+
+.CBNavigation .PopupNav a {
+	display: block;
+	line-height: 18px;
+	color: #515151;
+	font-weight: bold;
+}
+
+.CBNavigation .PopupNav a:hover {
+	color: #058ee6;
+}
+
