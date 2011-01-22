@@ -62,39 +62,6 @@
       <version>${org.exoplatform.jcr.version}</version>
       <type>js</type>
     </dependency>
-   <!--jaxen:jaxen:1.1.1:jar: portal-->
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-      <version>1.1.1</version>
-      <!--version>${jaxen.version}</version-->
-      <type>jar</type>
-    </dependency>
-   <!--javagroups:jgroups-all:2.5.2: jcr, kernel -->
-   <dependency>
-      <groupId>javagroups</groupId>
-      <artifactId>jgroups-all</artifactId>
-      <version>2.5.2</version>
-      <!--version>${javagroups.version}</version-->
-      <type>jar</type>
-    </dependency><!-- 2.5.2-->
-    <!-- org.apache.shindig:shindig-social-api:${org.apache.shindig.version} -->
-    <dependency><groupId>org.apache.shindig</groupId><artifactId>shindig-social-api</artifactId><version>0.8.1-1-r719456</version><type>jar</type></dependency><!-- 0.8.1-1-r719456-->
-   <!--xml-apis:xml-apis:${xml-apis.version}  -->
-   <dependency><groupId>xml-apis</groupId><artifactId>xml-apis</artifactId><version>1.3.04</version><type>jar</type></dependency><!-- 1.3.04-->
-   <!-- org.hibernate:hibernate:${org.hibernate.version} -->
-   <dependency><groupId>org.hibernate</groupId><artifactId>hibernate</artifactId><version>3.2.6.ga</version><type>jar</type></dependency><!-- 3.2.6.ga-->    
-   <dependency><groupId>org.hibernate</groupId><artifactId>hibernate-annotations</artifactId><version>3.4.0.GA</version><type>jar</type></dependency><!-- 3.4.0.GA-->
-  <dependency><groupId>org.hibernate</groupId><artifactId>hibernate-core</artifactId><version>3.3.2.GA</version><type>jar</type></dependency><!-- 3.3.2.GA-->
-   <dependency><groupId>org.jvnet.jaxb2.maven2</groupId><artifactId>maven-jaxb2-plugin</artifactId><version>0.1</version><type>jar</type></dependency><!-- 0.1-->
-   <dependency><groupId>stax</groupId><artifactId>stax-api</artifactId><version>1.0</version><type>jar</type></dependency><!-- 1.0-->
-   <dependency><groupId>javassist</groupId><artifactId>javassist</artifactId><version>3.4.GA</version><type>jar</type></dependency><!-- 3.4.GA-->
-  <dependency><groupId>net.sf.ehcache</groupId><artifactId>ehcache</artifactId><version>1.6.0</version><type>jar</type></dependency><!-- 1.6.0-->
-  <dependency><groupId>org.codehaus.woodstox</groupId><artifactId>wstx-asl</artifactId><version>3.2.1</version><type>jar</type></dependency><!-- 3.2.1-->	
-  <dependency><groupId>jcr</groupId><artifactId>jcr</artifactId><version>1.0</version><type>jar</type></dependency><!-- 1.0-->
-  <dependency><groupId>commons-fileupload</groupId><artifactId>commons-fileupload</artifactId><version>1.0</version><type>jar</type></dependency><!-- 1.0-->
-
-   <!-- End add dependencies --> 
     <dependency>
       <groupId>org.exoplatform.portletcontainer</groupId>
       <artifactId>portletcontainer.packaging.module</artifactId>
