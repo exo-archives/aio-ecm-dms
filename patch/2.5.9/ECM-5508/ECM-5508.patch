@@ -1,0 +1,12 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(revision 65226)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(working copy)
+@@ -417,6 +417,7 @@
+       pasteNum++;
+       if(pasteNum == virtualClipboards.size()) {
+         processPaste(clipboard, destPath, event, true, true);
++        getVirtualClipboards().clear();
+         break;
+       }
+       processPaste(clipboard, destPath, event, true, false);

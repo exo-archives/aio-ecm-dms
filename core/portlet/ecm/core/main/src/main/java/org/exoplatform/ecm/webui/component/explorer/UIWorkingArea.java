@@ -417,6 +417,7 @@ public class UIWorkingArea extends UIContainer {
       pasteNum++;
       if(pasteNum == virtualClipboards.size()) {
         processPaste(clipboard, destPath, event, true, true);
+        getVirtualClipboards().clear();
         break;
       }
       processPaste(clipboard, destPath, event, true, false);
