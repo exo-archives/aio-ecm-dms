@@ -78,7 +78,8 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     return ACTIONS;
   }
 
-  public List getTaxonomyTreeList() throws Exception {
+  public List getTaxonomyTreeList() throws Exception {	
+	updateTaxonomyTreeListGrid(uiPageIterator_.getCurrentPage());
     return uiPageIterator_.getCurrentPageData();
   }
 
@@ -95,7 +96,7 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     List<TaxonomyTreeData> lstTaxonomyTreeData = new ArrayList<TaxonomyTreeData>();
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    List<Node> lstTaxonomyTreeNode = taxonomyService.getAllTaxonomyTrees(repository);
+    List<Node> lstTaxonomyTreeNode = taxonomyService.getAllTaxonomyTrees(repository);    
     if (lstTaxonomyTreeNode != null && lstTaxonomyTreeNode.size() > 0) {
       for (Node node : lstTaxonomyTreeNode) {
         lstTaxonomyTreeData.add(setData(node));
@@ -144,10 +145,11 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       ActionServiceContainer actionService = uiTaxonomyTreeList.getApplicationComponent(ActionServiceContainer.class);
       UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
       try {
-        // Remove all avaiable action
+        // Remove all available action
         Node taxonomyTreeNode = taxonomyService.getTaxonomyTree(repository,taxoTreeName, true);
         actionService.removeAction(taxonomyTreeNode, repository);
-        taxonomyService.removeTaxonomyTree(taxoTreeName);
+        taxonomyService.removeTaxonomyTree(taxoTreeName);   
+
       } catch(RepositoryException e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeList.msg.remove-exception",
             null, ApplicationMessage.WARNING));
@@ -172,14 +174,25 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
 
   public static class EditTaxonomyTreeActionListener extends EventListener<UITaxonomyTreeList> {
     public void execute(Event<UITaxonomyTreeList> event) throws Exception {
-      UITaxonomyManagerTrees uiTaxonomyManagerTrees = event.getSource().getParent();
-      uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
-      uiTaxonomyManagerTrees.initPopupTreeContainer(UITaxonomyTreeList.ST_EDIT);
-      UITaxonomyTreeContainer uiTaxoTreeContainer = uiTaxonomyManagerTrees
-          .findFirstComponentOfType(UITaxonomyTreeContainer.class);
+      UITaxonomyTreeList uiTaxonomyTreeList = event.getSource();
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeList.getParent();
       String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
       String repository = uiTaxonomyManagerTrees.getAncestorOfType(UIECMAdminPortlet.class)
       .getPreferenceRepository();
+      TaxonomyService taxonomyService = uiTaxonomyTreeList.getApplicationComponent(TaxonomyService.class);
+      UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
+      try {
+    	  Node taxonomyTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);    	
+      } catch(RepositoryException e) {
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeList.msg.remove-exception",
+              null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
+      uiTaxonomyManagerTrees.initPopupTreeContainer(UITaxonomyTreeList.ST_EDIT);
+      UITaxonomyTreeContainer uiTaxoTreeContainer = uiTaxonomyManagerTrees
+          .findFirstComponentOfType(UITaxonomyTreeContainer.class);      
       TaxonomyTreeData taxoTreeData = new TaxonomyTreeData();
       taxoTreeData.setTaxoTreeName(taxoTreeName);
       taxoTreeData.setEdit(true);
