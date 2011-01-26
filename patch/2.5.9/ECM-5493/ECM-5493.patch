@@ -1,0 +1,182 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(revision 65499)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIWorkingArea.java	(working copy)
+@@ -80,6 +80,7 @@
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
++import org.exoplatform.services.jcr.util.Text;
+ import org.exoplatform.services.log.ExoLogger;
+ import org.exoplatform.services.security.Identity;
+ import org.exoplatform.services.security.IdentityRegistry;
+@@ -175,6 +176,32 @@
+     Session session = SessionProviderFactory.createSystemProvider().getSession(workspace,repo);    
+     return session.getNodeByUUID(uuid);
+   }
++  /**
++   * Gets the title.
++   * 
++   * @param node the node
++   * 
++   * @return the title
++   * 
++   * @throws Exception the exception
++   */
++  public String getTitle(Node node) throws Exception {
++	  String title = null;
++	  if (node.hasNode("jcr:content")) {
++		  Node content = node.getNode("jcr:content");
++		  if (content.hasProperty("dc:title")) {
++		    try {
++		      title = content.getProperty("dc:title").getValues()[0].getString();
++		    } catch(Exception ex) {}
++		  }
++	  } else if (node.hasProperty("exo:title")) {
++		  title = node.getProperty("exo:title").getValue().getString();
++	  }
++	  if ((title==null) || ((title!=null) && (title.trim().length()==0))) {
++  		title = node.getName();
++	  }
++	  return Text.unescapeIllegalJcrChars(title);	  
++  }
+ 
+   public boolean isReferenceableNode(Node node) throws Exception {
+     NodeType[] nodeTypes = node.getMixinNodeTypes();
+Index: core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/sidebar/DefaultStylesheet.css
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/sidebar/DefaultStylesheet.css	(revision 65226)
++++ core/portlet/ecm/core/web/src/main/webapp/skin/webui/component/explorer/sidebar/DefaultStylesheet.css	(working copy)
+@@ -139,12 +139,14 @@
+ 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 10px bottom; /* orientation=lt */
+ 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 94% bottom; /* orientation=rt */
+ 	padding-left: 22px; /* orientation=lt */
+-	padding-right: 22px; /* orientation=rt */
++	padding-right: 22px; /* orientation=rt */	
+ }
+ 
+ .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
+   background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
+   height: 15px;
++  padding-top: 10px;
++  padding-left: 5px;
+   float: left; /* orientation=lt */
+   float: right; /* orientation=rt */
+ }
+@@ -156,6 +158,8 @@
+ 
+ .UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
+   font-weight: bold;
++  padding-top: 10px;
++  padding-left: 33px;
+ }
+ 
+ .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
+Index: core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UICoverFlow.js
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UICoverFlow.js	(revision 65226)
++++ core/portlet/ecm/core/web/src/main/webapp/javascript/eXo/ecm/UICoverFlow.js	(working copy)
+@@ -13,8 +13,9 @@
+ 		iframe.setAttribute("border", "0");
+ 		iframe.style.border = "none";
+ 		var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");
+-		iframe.style.width = "98%";
+-		iframe.style.height = workingArea.offsetHeight - 47 + "px";
++                var resizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");                
++		iframe.style.width = "75%";
++		iframe.style.height = resizableBlock.offsetHeight - 20 + "px";
+ 		iframe.style.margin = "auto";
+ 		portlet.insertBefore(iframe, album);
+ 		var idoc = iframe.contentWindow.document;  
+@@ -28,8 +29,27 @@
+ 	  img.style.display = "block";
+ 	  obj.style.display = "none";
+ 	};
++
++        CoverFlow.prototype.setHeight = function() {
++		
++		 Self.portletId = portletId;
++		 var portlet = document.getElementById(portletId);
++			var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");			 
++			var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");		
++                        var sizeBar =  DOM.findFirstDescendantByClass(workingArea, "div", "UISideBar");
++                        var resizableBlock = DOM.findFirstDescendantByClass(workingArea, "div", "UIResizableBlock");
++                        var uiSelectContent = DOM.findFirstDescendantByClass(workingArea, "div", "UISelectContent");
++                        sizeBarContainer.style.height = workingArea.offsetHeight -15 + 'px';
++                        uiSelectContent.style.height = workingArea.offsetHeight -15 + 'px';
++                        resizableBlock.style.height = workingArea.offsetHeight -25 + 'px';
++                        sizeBarContainer.style.margin = "auto";
++			sizeBar.style.height = workingArea.offsetHeight + 'px';	
++                        
++                       
++                        								
++       };
+ };
+ 
+ eXo.ecm.UICoverFlow = new CoverFlow();
+ 
+-window.onerror = function() {return false;}
+\ No newline at end of file
++window.onerror = function() {return false;}
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/CoverFlowView.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/CoverFlowView.gtmpl	(revision 65226)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/views/templates/ecm-explorer/CoverFlowView.gtmpl	(working copy)
+@@ -10,6 +10,7 @@
+ <%   
+   import org.exoplatform.web.application.Parameter ;
+   import org.exoplatform.services.jcr.util.Text;  
++  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+ %>
+ <%
+   if(uicomponent.getChildrenList().size() > 0) {
+@@ -17,6 +18,7 @@
+ 	  def rcontext = _ctx.getRequestContext() ;
+ 	  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UICoverFlow','/ecm/javascript/'); 
+ 	  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.initEvent('$viewComponentId')");
++	  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.setHeight");
+ %>
+ 	<div id="$uicomponent.id" class="UICoverFlowView">
+ 		<div class="TLBox">
+@@ -108,10 +110,12 @@
+ 							  def actionLink = "";
+ 							  def wsName = "";
+ 							  String primaryType = "";
++							  def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
+ 							  for(image in uicomponent.getChildrenList()) {
+ 							    wsName = image.getSession().getWorkspace().getName();
+-							    actionLink = uicomponent.event("ChangeNode", image.getPath(), new Parameter("workspaceName", wsName));
++							    actionLink = uicomponent.event("ChangeNode", Text.escapeIllegalJcrChars(image.getPath()), new Parameter("workspaceName", wsName));
+ 							    primaryType = image.getPrimaryNodeType().getName();
++							  def title = uiWorkingArea.getTitle(image);  
+ 	  					    def thumbnailNode = uicomponent.getThumbnailNode(image);
+ 	  					    boolean isShowCoverFlow = false;
+ 	  					    String[] arrSize = {};
+@@ -125,21 +129,21 @@
+ 	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?size=big";
+ 	  					    if(uicomponent.isImageType(image)) {
+ 								    if(isShowCoverFlow) {
+-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 								    } else {
+-								      println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.setAttribute(\"w\", (this.width || 300)); this.setAttribute(\"h\", (this.height || 300));' alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++								      println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.setAttribute(\"w\", (this.width || 300)); this.setAttribute(\"h\", (this.height || 300));' alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 								    }
+ 							    } else if(primaryType.equals("nt:unstructured") || primaryType.equals("nt:folder")) {
+ 	  						    if(isShowCoverFlow) {
+-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 	  						    } else {
+-  	  						    println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigFolder.gif\" longdesc=\""+actionLink+"\" w=\"208\" h=\"218\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++  	  						    println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigFolder.gif\" longdesc=\""+actionLink+"\" w=\"208\" h=\"218\" alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 	  						    }
+ 							    } else {
+ 							      if(isShowCoverFlow) {
+-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 	  						    } else {
+-	  						      println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigDocument.gif\" longdesc=\""+actionLink+"\" w=\"115\" h=\"144\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
++	  						      println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigDocument.gif\" longdesc=\""+actionLink+"\" w=\"115\" h=\"144\" alt=\""+Text.unescapeIllegalJcrChars(title)+"\"/>";
+ 	                  }
+ 							    }
+ 							  }

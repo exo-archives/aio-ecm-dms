@@ -139,12 +139,14 @@
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 10px bottom; /* orientation=lt */
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 94% bottom; /* orientation=rt */
 	padding-left: 22px; /* orientation=lt */
-	padding-right: 22px; /* orientation=rt */
+	padding-right: 22px; /* orientation=rt */	
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
   background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
   height: 15px;
+  padding-top: 10px;
+  padding-left: 5px;
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
 }
@@ -156,6 +158,8 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
   font-weight: bold;
+  padding-top: 10px;
+  padding-left: 33px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
