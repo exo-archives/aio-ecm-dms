@@ -1,0 +1,234 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java	(revision 65494)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISimpleSearch.java	(working copy)
+@@ -18,6 +18,7 @@
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.ResourceBundle;
+ 
+ import javax.jcr.Node;
+ import javax.jcr.query.Query;
+@@ -29,6 +30,7 @@
+ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+ import org.exoplatform.web.application.ApplicationMessage;
++import org.exoplatform.web.application.RequestContext;
+ import org.exoplatform.webui.config.annotation.ComponentConfig;
+ import org.exoplatform.webui.config.annotation.EventConfig;
+ import org.exoplatform.webui.core.UIApplication;
+@@ -83,12 +85,18 @@
+   private static final String ROOT_SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '/%' ";
+   private static final String SQL_QUERY = "SELECT * FROM nt:base WHERE jcr:path LIKE '$0/%' ";
+   
++  public String _OR;
++  public String _AND;
+   public UISimpleSearch() throws Exception {
+     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null));
+     addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null));
+     List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>();
+-    operators.add(new SelectItemOption<String>(AND, AND));
+-    operators.add(new SelectItemOption<String>(OR, OR));
++    RequestContext context = RequestContext.getCurrentInstance();
++    ResourceBundle res = context.getApplicationResourceBundle();
++    _AND = res.getString("UIConstraintForm.label.and");
++    _OR = res.getString("UIConstraintForm.label.or");
++    operators.add(new SelectItemOption<String>(_AND, AND));
++    operators.add(new SelectItemOption<String>(_OR, OR));
+     addUIFormInput(new UIFormSelectBox(FIRST_OPERATOR, FIRST_OPERATOR, operators));
+     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints");
+     uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null));
+@@ -321,4 +329,4 @@
+       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer);
+     }
+   }
+-}
+\ No newline at end of file
++}
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java	(revision 65494)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UIConstraintsForm.java	(working copy)
+@@ -20,6 +20,7 @@
+ import java.util.Calendar;
+ import java.util.GregorianCalendar;
+ import java.util.List;
++import java.util.ResourceBundle;
+ 
+ import javax.jcr.query.Query;
+ import javax.jcr.query.QueryManager;
+@@ -30,6 +31,7 @@
+ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+ import org.exoplatform.ecm.webui.selector.UISelectable;
+ import org.exoplatform.web.application.ApplicationMessage;
++import org.exoplatform.web.application.RequestContext;
+ import org.exoplatform.webui.config.annotation.ComponentConfig;
+ import org.exoplatform.webui.config.annotation.EventConfig;
+ import org.exoplatform.webui.core.UIApplication;
+@@ -93,14 +95,22 @@
+   final static private String SPLIT_REGEX = "/|\\s+|:" ;
+   final static private String DATETIME_REGEX = 
+     "^(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})\\s*(\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})?$" ;
+-  
++  public String _CREATED_DATE;
++  public String _MODIFIED_DATE;
++  public String _AND_OPERATION;
++  public String _OR_OPERATION;
++
+   private String virtualDateQuery_ ;
+   
+   public UIConstraintsForm() throws Exception {
++        RequestContext context = RequestContext.getCurrentInstance();
++        ResourceBundle res = context.getApplicationResourceBundle();
+     setActions(new String[] {"Add", "Cancel"}) ;
+     List<SelectItemOption<String>> typeOperation = new ArrayList<SelectItemOption<String>>() ;
+-    typeOperation.add(new SelectItemOption<String>(AND_OPERATION, AND_OPERATION));
+-    typeOperation.add(new SelectItemOption<String>(OR_OPERATION, OR_OPERATION));
++    _AND_OPERATION = res.getString("UIConstraintForm.label.and");
++    _OR_OPERATION = res.getString("UIConstraintForm.label.or");
++    typeOperation.add(new SelectItemOption<String>(_AND_OPERATION, AND_OPERATION));
++    typeOperation.add(new SelectItemOption<String>(_OR_OPERATION, OR_OPERATION));
+     addUIFormInput(new UIFormSelectBox(OPERATOR, OPERATOR, typeOperation)) ;
+     
+     addUIFormInput(new UIFormCheckBoxInput<Boolean>(EXACTLY_PROPERTY, EXACTLY_PROPERTY, null)) ;
+@@ -118,8 +128,10 @@
+     
+     addUIFormInput(new UIFormCheckBoxInput<Boolean>(DATE_PROPERTY, DATE_PROPERTY, null)) ;
+     List<SelectItemOption<String>> dateOperation = new ArrayList<SelectItemOption<String>>() ;
+-    dateOperation.add(new SelectItemOption<String>(CREATED_DATE, CREATED_DATE));
+-    dateOperation.add(new SelectItemOption<String>(MODIFIED_DATE, MODIFIED_DATE));
++    _CREATED_DATE = res.getString("UIConstraintForm.label.created");
++    _MODIFIED_DATE = res.getString("UIConstraintForm.label.modified");
++    dateOperation.add(new SelectItemOption<String>(_CREATED_DATE, CREATED_DATE));
++    dateOperation.add(new SelectItemOption<String>(_MODIFIED_DATE, MODIFIED_DATE));
+     addUIFormInput(new UIFormSelectBox(TIME_OPTION, TIME_OPTION, dateOperation)) ;
+     UIFormDateTimeInput uiFromDate = new UIFormDateTimeInput(START_TIME, START_TIME, null) ;
+     uiFromDate.setDisplayTime(false) ;
+@@ -455,7 +467,7 @@
+               null, ApplicationMessage.WARNING));
+           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+           return;
+-        }
++       }
+         uiForm.addConstraint(5);
+       }
+       
+@@ -559,4 +571,4 @@
+     uiPopup.setRendered(false);
+     uiPopup.setShow(false);
+   }
+-}
+\ No newline at end of file
++}
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UIConstraintsForm.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UIConstraintsForm.gtmpl	(revision 65494)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UIConstraintsForm.gtmpl	(working copy)
+@@ -9,7 +9,7 @@
+ %>
+ <div class="$uicomponent.id">
+ 	<% uiform.begin() %>
+-	  <div class="ConstraintOption">Operator : <%uiform.renderField(uicomponent.getChildById("operator"))%></div>
++	  <div class="ConstraintOption"><%=_ctx.appRes("UIConstraintForm.label.operator")%> : <%uiform.renderField(uicomponent.getChildById("operator"))%></div>
+ 	  <div class="ConstraintOption">
+ 	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("exactlyPro"))%></div>
+ 	    <div class="FloatLeft"><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label>:<%uiform.renderField(uicomponent.getChildById("property1"))%></div>
+@@ -21,7 +21,7 @@
+ 	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("containPro"))%></div>
+ 	    <div class="FloatLeft"><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label> : <%uiform.renderField(uicomponent.getChildById("property2"))%> </div>
+ 	    <img class="IconConstraint AddMetadataTypeIcon FloatLeft" onclick="<%=uicomponent.event("AddMetadataType", "1")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>" />
+-	    <div class="FloatLeft"><%=_ctx.appRes("UIConstraintForm.label.Contain")%> : <%uiform.renderField(uicomponent.getChildById("contain"))%></div>
++	    <div class="FloatLeft"><%=_ctx.appRes("UIConstraintForm.label.containPro-Contain")%> : <%uiform.renderField(uicomponent.getChildById("contain"))%></div>
+ 	  </div>
+ 	  <div class="ConstraintOption">
+ 	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("notContainPro"))%></div>
+@@ -71,4 +71,4 @@
+ 	  </div>
+ 	  <%/* end render action */%>
+ 	<%uiform.end()%>
+-</div>
+\ No newline at end of file
++</div>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 65494)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
+@@ -916,6 +916,9 @@
+         <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+       </label>
+     </tab>
++    <action>
++      <Close>Close</Close>
++    </action>
+   </UICategoryManagerSearch>
+   <UIContentNameSearch>
+     <label>
+@@ -1038,6 +1041,10 @@
+       <ConstraintOption-To>To</ConstraintOption-To>
+       <DocumentType-label>Document Type</DocumentType-label>
+       <Category-label>Category</Category-label>
++	<created>Created</created>
++      	<modified>Modified</modified>
++      	<and>And</and>
++      	<or>Or</or>
+     </label>
+   </UIConstraintForm>
+   <NodeTypePopup>
+@@ -1143,6 +1150,11 @@
+     <label>
+       <metadataType>Metadata type</metadataType>
+     </label>
++   <pLabel>Properties:</pLabel>    
++     <action>
++       <Add>Add</Add>
++       <Cancel>Cancel</Cancel>
++    </action>
+   </UISelectPropertyForm>
+   <ExactlyFormPopup>
+     <title>
+@@ -1314,6 +1326,7 @@
+   </UIAuditingInfo>
+   
+   <!--
++
+   ###############################################################################
+   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
+   ###############################################################################
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 65494)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
+@@ -918,6 +918,9 @@
+         <UIOneNodePathSelector>Sélectionner une catégorie</UIOneNodePathSelector>
+       </label>
+     </tab>
++	<action>
++         <Close>Fermer</Close>
++      </action>
+   </UICategoryManagerSearch>
+   <UIContentNameSearch>
+     <label>
+@@ -1040,6 +1043,10 @@
+       <ConstraintOption-To>à</ConstraintOption-To>
+       <DocumentType-label>Type de Document</DocumentType-label>
+       <Category-label>Catégorie</Category-label>
++	<created>Créé</created>
++	<modified>Mise à jour</modified>
++        <and>Et</and>
++        <or>Ou</or>
+     </label>
+   </UIConstraintForm>
+   <NodeTypePopup>
+@@ -1145,6 +1152,11 @@
+     <label>
+       <metadataType>Type de métadonnée</metadataType>
+     </label>
++	<pLabel>Propriété:</pLabel> 
++    	<action>
++      	   <Add>Ajouter</Add>
++      	   <Cancel>Annuler</Cancel>
++    	</action>
+   </UISelectPropertyForm>
+   <ExactlyFormPopup>
+     <title>
