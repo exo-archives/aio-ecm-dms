@@ -1,0 +1,132 @@
+Index: core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_fr.properties
+===================================================================
+--- core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_fr.properties	(revision 65226)
++++ core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_fr.properties	(working copy)
+@@ -1,19 +1,19 @@
+-LoginException.msg=Login fails
+-AccessDeniedException.msg=Acc�s interdit !    
+-NoSuchWorkspaceException.msg=Workspace does not exist      
+-ItemNotFoundException.msg=Objet introuvable !
+-ItemExistsException.msg=Cet objet existe d�j� !
+-ConstraintViolationException.msg=You can't do action because of some constraints      
+-InvalidItemStateException.msg=Invalid state      
++LoginException.msg=Connexion �chou�e
++AccessDeniedException.msg=Acc�s interdit    
++NoSuchWorkspaceException.msg=Espace de travail n'existe pas      
++ItemNotFoundException.msg=Objet introuvable 
++ItemExistsException.msg=Cet objet existe d�j�. 
++ConstraintViolationException.msg=Vous ne pouvez pas faire d'action en raison de certaines contraintes      
++InvalidItemStateException.msg=Etat invalide       
+ ReferentialIntegrityException.msg=Action impossible. Ce noeud est r�f�renc� par un autre      
+-LockException.msg=This node is locked      
+-NoSuchNodeTypeException.msg=The nodetype does not exist      
+-VersionException.msg=Version error      
++LockException.msg=Ce noeud est verrouill�    
++NoSuchNodeTypeException.msg=Ce type de noeud n'existe pas     
++VersionException.msg=Version erreur      
+ PathNotFoundException.msg=R�pertoire introuvable     
+-ValueFormatException.msg=Wrong value      
+-InvalidSerializedDataException.msg=Invalid data      
+-RepositoryException.msg=Repository error
+-AccessControlException.msg=Acc�s interdit ! Vous n'avez pas les droits suffisants pour effectuer cette action         
+-UnsupportedRepositoryOperationException=Operation fails
+-RemoveAttachmentComponent.msg.confirm-deleteattachment=Do you want to delete attached file?
+-RemoveCommentComponent.msg.confirm-deletecomment=Do you want to delete this comment?
+\ No newline at end of file
++ValueFormatException.msg=Mauvaise valeur      
++InvalidSerializedDataException.msg=Donn�es invalides      
++RepositoryException.msg=R�pertoire d'erreur
++AccessControlException.msg=Acc�s interdit ! Vous n'avez pas de droits suffisants pour effectuer cette action         
++UnsupportedRepositoryOperationException=Op�ration �chou�e
++RemoveAttachmentComponent.msg.confirm-deleteattachment=Voulez-vous supprimer ce fichier attach� ?
++RemoveCommentComponent.msg.confirm-deletecomment=Voulez-vous supprimer ce commentaire ?
+Index: core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_vi.properties
+===================================================================
+--- core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_vi.properties	(revision 65226)
++++ core/webui/dms/src/main/resources/locale/portlet/i18n/WebUIDms_vi.properties	(working copy)
+@@ -1,19 +1,19 @@
+-﻿LoginException.msg=Đăng nhập lỗi
+-AccessDeniedException.msg=Truy cập bị từ chối
+-NoSuchWorkspaceException.msg=Không gian làm việc không tồn tại
+-ItemNotFoundException.msg=Không tồn tại nút này
+-ItemExistsException.msg=Danh mục này đã tồn tại 
+-ConstraintViolationException.msg=Bạn không thể thực hiện hành động này vì tồn tại một số ràng buộc
+-InvalidItemStateException.msg=Trạng thái không hợp lệ
+-ReferentialIntegrityException.msg=Truy nhập bị từ chối, tồn tại một số thuộc tính tham chiếu trong không gian làm việc liên kết tới mục này
+-LockException.msg=Nút đang bị khóa
+-NoSuchNodeTypeException.msg=Kiểu nút không tồn tại
+-VersionException.msg=Lỗi phiên bản
+-PathNotFoundException.msg=Không tìm thấy đường dẫn, có thể đường dẫn đã bị thay đổi
+-ValueFormatException.msg=Định dạng dữ liệu bị sai
+-InvalidSerializedDataException.msg=Dữ liệu không hợp lệ    
+-RepositoryException.msg=Lỗi kho dữ liệu
+-AccessControlException.msg=Truy nhật bị từ chối, bạn không có quyền thực hiện hành động này
+-UnsupportedRepositoryOperationException=Thao tác lỗi
+-RemoveAttachmentComponent.msg.confirm-deleteattachment=Bạn muốn xóa file đính kèm phải không?
+-RemoveCommentComponent.msg.confirm-deletecomment=Bạn muốn xóa lời bình luận này phải không?
+\ No newline at end of file
++LoginException.msg=\u0110\u0103ng nh\u1eadp l\u1ed7i
++AccessDeniedException.msg=Truy c\u1eadp b\u1ecb t\u1eeb ch\u1ed1i
++NoSuchWorkspaceException.msg=Kh\u00f4ng gian l\u00e0m vi\u1ec7c kh\u00f4ng t\u1ed3n t\u1ea1i
++ItemNotFoundException.msg=Kh\u00f4ng t\u1ed3n t\u1ea1i n\u00fat n\u00e0y
++ItemExistsException.msg=Danh m\u1ee5c n\u00e0y \u0111\u00e3 t\u1ed3n t\u1ea1i 
++ConstraintViolationException.msg=B\u1ea1n kh\u00f4ng th\u1ec3 th\u1ef1c hi\u1ec7n h\u00e0nh \u0111\u1ed9ng n\u00e0y v\u00ec t\u1ed3n t\u1ea1i m\u1ed9t s\u1ed1 r\u00e0ng bu\u1ed9c
++InvalidItemStateException.msg=Tr\u1ea1ng th\u00e1i kh\u00f4ng h\u1ee3p l\u1ec7
++ReferentialIntegrityException.msg=Truy nh\u1eadp b\u1ecb t\u1eeb ch\u1ed1i, t\u1ed3n t\u1ea1i m\u1ed9t s\u1ed1 thu\u1ed9c t\u00ednh tham chi\u1ebfu trong kh\u00f4ng gian l\u00e0m vi\u1ec7c li\u00ean k\u1ebft t\u1edbi m\u1ee5c n\u00e0y
++LockException.msg=N\u00fat \u0111ang b\u1ecb kh\u00f3a
++NoSuchNodeTypeException.msg=Ki\u1ec3u n\u00fat kh\u00f4ng t\u1ed3n t\u1ea1i
++VersionException.msg=L\u1ed7i phi\u00ean b\u1ea3n
++PathNotFoundException.msg=Kh\u00f4ng t\u00ecm th\u1ea5y \u0111\u01b0\u1eddng d\u1eabn, c\u00f3 th\u1ec3 \u0111\u01b0\u1eddng d\u1eabn \u0111\u00e3 b\u1ecb thay \u0111\u1ed5i
++ValueFormatException.msg=\u0110\u1ecbnh d\u1ea1ng d\u1eef li\u1ec7u b\u1ecb sai
++InvalidSerializedDataException.msg=D\u1eef li\u1ec7u kh\u00f4ng h\u1ee3p l\u1ec7    
++RepositoryException.msg=L\u1ed7i kho d\u1eef li\u1ec7u
++AccessControlException.msg=Truy nh\u1eadt b\u1ecb t\u1eeb ch\u1ed1i, b\u1ea1n kh\u00f4ng c\u00f3 quy\u1ec1n th\u1ef1c hi\u1ec7n h\u00e0nh \u0111\u1ed9ng n\u00e0y
++UnsupportedRepositoryOperationException=Thao t\u00e1c l\u1ed7i
++RemoveAttachmentComponent.msg.confirm-deleteattachment=B\u1ea1n mu\u1ed1n x\u00f3a file \u0111\u00ednh k\u00e8m ph\u1ea3i kh\u00f4ng?
++RemoveCommentComponent.msg.confirm-deletecomment=B\u1ea1n mu\u1ed1n x\u00f3a l\u1eddi b\u00ecnh lu\u1eadn n\u00e0y ph\u1ea3i kh\u00f4ng?
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl	(revision 65226)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl	(working copy)
+@@ -1,10 +1,14 @@
+ <%
+   import org.exoplatform.web.application.Parameter ;
++  import org.exoplatform.portal.webui.util.Util;
++  import java.util.Locale;
++  import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+   
+   def commentsList = uicomponent.getComments() ;
+   def uicomment = uicomponent.getCommentComponent();
+   if(commentsList.size() > 0) {
+-    java.text.SimpleDateFormat commentDateFormat = new java.text.SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
++    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
++    java.text.SimpleDateFormat commentDateFormat = new java.text.SimpleDateFormat("h:mm a. EEE, MMM d, yyyy", locale) ;
+     def lastComment = commentsList.get(0) ;
+     def rcontext = _ctx.getRequestContext() ;
+     
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_fr.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_fr.xml	(revision 65226)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_fr.xml	(working copy)
+@@ -48,7 +48,7 @@
+       <label>
+         <postedBy>Dernier commentaire posté par</postedBy>
+         <at>à</at>
+-        <comments>Commentaires</comments>
++        <comments>Commentaire(s)</comments>
+         <show-comments>Afficher les commentaires</show-comments>
+         <hide-comments>Cacher les commentaires</hide-comments>
+         <comment-by>Commenté par</comment-by>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_en.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_en.xml	(revision 65226)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/views_en.xml	(working copy)
+@@ -49,7 +49,7 @@
+       <label>
+         <postedBy>Last comment posted by</postedBy>
+         <at>at</at>
+-        <comments>Comments</comments>
++        <comments>Comment(s)</comments>
+         <show-comments>Show comments</show-comments>
+         <hide-comments>Hide comments</hide-comments>
+         <comment-by>Commented by</comment-by>
