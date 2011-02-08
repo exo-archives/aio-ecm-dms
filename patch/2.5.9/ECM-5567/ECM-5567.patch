@@ -1,0 +1,12 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UIDocumentForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UIDocumentForm.java	(revision 65812)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/popup/actions/UIDocumentForm.java	(working copy)
+@@ -253,6 +253,7 @@
+         for (int i = 0; i < inputs.size(); i++) {
+           UIFormInput input = (UIFormInput) inputs.get(i);
+           if ((input.getName() != null) && input.getName().equals("name")) {
++            input.setValue(input.getValue().toString().trim());
+             String[] arrFilterChar = {"]", "["};
+             String valueName = input.getValue().toString();
+             if (!Utils.isNameValid(valueName, arrFilterChar)) {
