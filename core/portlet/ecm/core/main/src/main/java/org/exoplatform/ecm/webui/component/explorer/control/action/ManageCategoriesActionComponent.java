@@ -75,9 +75,6 @@ public class ManageCategoriesActionComponent extends UIComponent {
       UIActionBar uiActionBar = event.getSource().getAncestorOfType(UIActionBar.class);
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       String repository = uiExplorer.getRepositoryName();
-      DMSConfiguration dmsConfiguration = uiExplorer.getApplicationComponent(DMSConfiguration.class);
-      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
-      String workspaceName = dmsRepoConfig.getSystemWorkspace();
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
@@ -86,8 +83,8 @@ public class ManageCategoriesActionComponent extends UIComponent {
       List<Node> lstNode = taxonomyService.getAllTaxonomyTrees(repository);
       if (lstNode != null && lstNode.size() > 0) {
         uiOneTaxonomySelector.setRootTaxonomyName(lstNode.get(0).getName());
-        uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, lstNode.get(0).getPath());
-        uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+        uiOneTaxonomySelector.setRootNodeLocation(repository, lstNode.get(0).getSession().getWorkspace().getName(), lstNode.get(0).getPath());
+        uiOneTaxonomySelector.setIsDisable(lstNode.get(0).getSession().getWorkspace().getName(), false);
         uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
         uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
         UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
