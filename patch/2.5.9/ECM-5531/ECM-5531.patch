@@ -12,7 +12,7 @@ Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/admin/ta
 +			            }
  			           %>
 -			          <div class="Text">$nodeName</div>
-+			          <div class="Text" title="$nodeName">$nodeName</div>
++			          <div class="Text" title="$nodeName">$sNodeName</div>
  			        </td>
  			        <td>
  			        	<div class="ActionContainer">

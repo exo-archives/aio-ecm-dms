@@ -37,7 +37,7 @@
 			            	sNodeName = nodeName.substring(0, 18) + "...";
 			            }
 			           %>
-			          <div class="Text" title="$nodeName">$nodeName</div>
+			          <div class="Text" title="$nodeName">$sNodeName</div>
 			        </td>
 			        <td>
 			        	<div class="ActionContainer">
