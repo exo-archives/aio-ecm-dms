@@ -164,18 +164,15 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
    */
   public Node getTaxonomyTree(String repository, String taxonomyName, boolean system)
       throws RepositoryException {
-	try {
+    try {
       Node taxonomyDef = getRootTaxonomyDef(repository);
-      Node taxonomyTree = taxonomyDef.getNode(taxonomyName);    
+      Node taxonomyTree = taxonomyDef.getNode(taxonomyName);
       if (taxonomyTree.isNodeType(EXOSYMLINK_LINK))
         return linkManager_.getTarget(taxonomyTree, system);
-      
-    } catch (ItemNotFoundException e) {
-    	return null;   	
-    } catch (PathNotFoundException e2) {  
-        return null;
     } catch (RepositoryConfigurationException e1) {
       throw new RepositoryException(e1);
+    } catch (PathNotFoundException e2) {
+      throw new RepositoryException(e2);
     }
     return null;
   }
@@ -237,24 +234,17 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       String repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
       if (hasTaxonomyTree(repository, taxonomyName)) {
         Node targetNode = getTaxonomyTree(repository, taxonomyName, true);
-        if(targetNode != null) {
         session = targetNode.getSession();
         targetNode.remove();
         session.save();
-        }
         Node taxonomyDef = getRootTaxonomyDef(repository);
         Node taxonomyTree = taxonomyDef.getNode(taxonomyName);
         taxonomyTree.remove();
         taxonomyDef.getSession().save();
-      }else{
-    	Node taxonomyDef = getRootTaxonomyDef(repository);
-        taxonomyDef.getSession().save(); 
       }
     } catch (RepositoryConfigurationException e) {
       throw new RepositoryException(e);
-    }catch (PathNotFoundException e){
-    	
-    } finally {    	
+    } finally {
       if(session != null) session.logout();
     }
   }

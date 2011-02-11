@@ -111,15 +111,12 @@ public class LinkManagerImpl implements LinkManager {
   /**
    * {@inheritDoc}
    */
-  public Node getTarget(Node link, boolean system) throws 
+  public Node getTarget(Node link, boolean system) throws ItemNotFoundException,
       RepositoryException {
-    try{
-    	String uuid = link.getProperty(UUID).getString();
-        return getSession(link, system).getNodeByUUID(uuid);
-    }catch (ItemNotFoundException e){
-    	return link;
-    }
-	  
+    String uuid = link.getProperty(UUID).getString();
+    Session session = getSession(link, system);
+    Node targetNode = session.getNodeByUUID(uuid);
+    return targetNode;
   }
 
   private Session getSession(Node link, boolean system) throws RepositoryException {
