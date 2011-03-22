@@ -1,0 +1,116 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(revision 66937)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(working copy)
+@@ -78,6 +78,8 @@
+ import org.exoplatform.services.jcr.ext.audit.AuditHistory;
+ import org.exoplatform.services.jcr.ext.audit.AuditService;
+ import org.exoplatform.services.log.ExoLogger;
++import org.exoplatform.services.organization.OrganizationService;
++import org.exoplatform.services.organization.User;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.application.WebuiRequestContext;
+ import org.exoplatform.webui.application.portlet.PortletRequestContext;
+@@ -904,4 +906,12 @@
+   @SuppressWarnings("unused")
+   public void setEnableVote(boolean value) {
+   }
++  /*
++   * This method is used to get the comment's owner's name
++   */
++  public String getCmtOwner(String name) throws Exception{   
++      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
++      User userAccount = service.getUserHandler().findUserByName(name);
++      return userAccount.getFullName();
++  }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(revision 66938)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(working copy)
+@@ -55,6 +55,8 @@
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
+ import org.exoplatform.services.log.ExoLogger;
++import org.exoplatform.services.organization.OrganizationService;
++import org.exoplatform.services.organization.User;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.application.WebuiRequestContext;
+ import org.exoplatform.webui.application.portlet.PortletRequestContext;
+@@ -537,5 +539,12 @@
+   @SuppressWarnings("unused")
+   public void setEnableVote(boolean value) {
+   }
+-
++  /*
++   * This method is used to get the comment's owner's name
++   */
++  public String getCmtOwner(String name) throws Exception{   
++      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
++      User userAccount = service.getUserHandler().findUserByName(name);
++      return userAccount.getFullName();
++  }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(revision 66938)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(working copy)
+@@ -79,6 +79,7 @@
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
+ import org.exoplatform.services.log.ExoLogger;
++import org.exoplatform.services.organization.OrganizationService;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.application.WebuiRequestContext;
+ import org.exoplatform.webui.application.portlet.PortletRequestContext;
+@@ -91,6 +92,7 @@
+ import org.exoplatform.webui.core.UIPopupContainer;
+ import org.exoplatform.webui.event.Event;
+ import org.exoplatform.webui.event.EventListener;
++import org.exoplatform.services.organization.User;
+ 
+ /**
+  * Created by The eXo Platform SARL
+@@ -555,7 +557,10 @@
+   }
+   public String getOwner(Node node) throws Exception{
+     if(node.hasProperty("exo:owner")) {
+-      return node.getProperty("exo:owner").getString();
++      String userName =  node.getProperty("exo:owner").getString();
++      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
++      User userAccount = service.getUserHandler().findUserByName(userName);
++      return userAccount.getFullName();
+     }
+     return SystemIdentity.ANONIM;
+   }
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl	(revision 66938)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/artifacts/templates/comment/view1.gtmpl	(working copy)
+@@ -24,7 +24,7 @@
+ 			    	<div class="LabelPostedComment">
+ 		  			  <%=_ctx.appRes("Comment.view.label.postedBy")%><span style="color:#f7941e">
+ 		  			  <%if(lastComment.hasProperty("exo:commentor")){%>
+-		  			  	<%=lastComment.getProperty("exo:commentor").getString()%></span> 
++		  			  	<%=uicomponent.getCmtOwner(lastComment.getProperty("exo:commentor").getString())%></span> 
+ 		  			  <%}%>
+ 		  			  <%=_ctx.appRes("Comment.view.label.at")%> 
+ 		  			  <%if(lastComment.hasProperty("exo:commentDate")){%>
+@@ -48,7 +48,7 @@
+ 		  		<%=_ctx.appRes("Comment.view.label.comment-by")%> 
+ 		  		<span style="color: orange; font-weight: bold;">
+ 			  		<%if(comment.hasProperty("exo:commentor")){%>
+-			  			<%=comment.getProperty("exo:commentor").getString()%>
++			  			<%=uicomponent.getCmtOwner(comment.getProperty("exo:commentor").getString())%>
+ 			  		<%}%>
+ 		  		</span>
+ 		  		<%
+@@ -72,7 +72,7 @@
+ 		  		String path = comment.getPath();
+ 		  		String parentPath = comment.getSession().getWorkspace().getName().concat(":").concat(uicomponent.getNode().getPath());
+ 		  		if(comment.hasProperty("exo:commentor")){
+-		  		  commentor=comment.getProperty("exo:commentor").getString();
++		  		  commentor=uicomponent.getCmtOwner(comment.getProperty("exo:commentor").getString());
+ 			  	}
+           if (commentor!=null && commentor.equals(rcontext.getRemoteUser())) {
+ 	  		 %>

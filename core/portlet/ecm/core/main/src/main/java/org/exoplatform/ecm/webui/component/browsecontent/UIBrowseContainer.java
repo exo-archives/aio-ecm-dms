@@ -79,6 +79,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -91,6 +92,7 @@ import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.services.organization.User;
 
 /**
  * Created by The eXo Platform SARL
@@ -555,7 +557,10 @@ public class UIBrowseContainer extends UIContainer {
   }
   public String getOwner(Node node) throws Exception{
     if(node.hasProperty("exo:owner")) {
-      return node.getProperty("exo:owner").getString();
+      String userName =  node.getProperty("exo:owner").getString();
+      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
+      User userAccount = service.getUserHandler().findUserByName(userName);
+      return userAccount.getFullName();
     }
     return SystemIdentity.ANONIM;
   }

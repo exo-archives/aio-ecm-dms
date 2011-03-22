@@ -55,6 +55,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -537,5 +539,12 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
   @SuppressWarnings("unused")
   public void setEnableVote(boolean value) {
   }
-
+  /*
+   * This method is used to get the comment's owner's name
+   */
+  public String getCmtOwner(String name) throws Exception{   
+      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
+      User userAccount = service.getUserHandler().findUserByName(name);
+      return userAccount.getFullName();
+  }
 }

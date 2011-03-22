@@ -24,7 +24,7 @@
 			    	<div class="LabelPostedComment">
 		  			  <%=_ctx.appRes("Comment.view.label.postedBy")%><span style="color:#f7941e">
 		  			  <%if(lastComment.hasProperty("exo:commentor")){%>
-		  			  	<%=lastComment.getProperty("exo:commentor").getString()%></span> 
+		  			  	<%=uicomponent.getCmtOwner(lastComment.getProperty("exo:commentor").getString())%></span> 
 		  			  <%}%>
 		  			  <%=_ctx.appRes("Comment.view.label.at")%> 
 		  			  <%if(lastComment.hasProperty("exo:commentDate")){%>
@@ -48,7 +48,7 @@
 		  		<%=_ctx.appRes("Comment.view.label.comment-by")%> 
 		  		<span style="color: orange; font-weight: bold;">
 			  		<%if(comment.hasProperty("exo:commentor")){%>
-			  			<%=comment.getProperty("exo:commentor").getString()%>
+			  			<%=uicomponent.getCmtOwner(comment.getProperty("exo:commentor").getString())%>
 			  		<%}%>
 		  		</span>
 		  		<%
@@ -72,7 +72,7 @@
 		  		String path = comment.getPath();
 		  		String parentPath = comment.getSession().getWorkspace().getName().concat(":").concat(uicomponent.getNode().getPath());
 		  		if(comment.hasProperty("exo:commentor")){
-		  		  commentor=comment.getProperty("exo:commentor").getString();
+		  		  commentor=uicomponent.getCmtOwner(comment.getProperty("exo:commentor").getString());
 			  	}
           if (commentor!=null && commentor.equals(rcontext.getRemoteUser())) {
 	  		 %>
