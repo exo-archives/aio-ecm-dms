@@ -1,0 +1,18 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl	(revision 67803)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/browse/UICBSearchForm.gtmpl	(working copy)
+@@ -31,7 +31,12 @@
+      <div style="clear:left;"><span></span></div>
+ 	   <%uiform.end()%>   
+ 	  <script type="text/javascript"> 
+-	  document.getElementById("inputValue").setAttribute("onkeypress", "if(event.keyCode==13) {eXo.webui.UIForm.submitForm('contentbrowser#UICBSearchForm','Search',false);}");
++	  	if (navigator.userAgent.indexOf("MSIE") >= 0) {
++	  		document.getElementById("inputValue").attachEvent("onkeypress", new Function ("if(event.keyCode==13) { eXo.webui.UIForm.submitForm('contentbrowser#UICBSearchForm','Search',false); return false;}"));
++	  	} else {
++	  		document.getElementById("inputValue").setAttribute("onkeypress", "if(event.keyCode==13) {eXo.webui.UIForm.submitForm('contentbrowser#UICBSearchForm','Search',false);}");
++	  	}
++	  
+ 	   </script>
+ 	</div>       
+ </div>
