@@ -1,0 +1,26 @@
+Index: core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java
+===================================================================
+--- core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java	(revision 67954)
++++ core/webui/dms/src/main/java/org/exoplatform/ecm/webui/presentation/UIBaseNodePresentation.java	(working copy)
+@@ -41,6 +41,8 @@
+ import org.exoplatform.services.jcr.RepositoryService;
+ import org.exoplatform.services.jcr.core.ManageableRepository;
+ import org.exoplatform.services.jcr.ext.common.SessionProvider;
++import org.exoplatform.services.organization.OrganizationService;
++import org.exoplatform.services.organization.User;
+ import org.exoplatform.webui.application.WebuiRequestContext;
+ import org.exoplatform.webui.application.portlet.PortletRequestContext;
+ 
+@@ -378,4 +380,12 @@
+   public boolean isEnableComment() { return enableComment_; }
+   
+   public void setEnableComment(boolean value) { enableComment_ = value; }
++     /**
++     * This method is used to get the comment's owner's name
++     */
++    public String getCmtOwner(String name) throws Exception{   
++        OrganizationService service = this.getApplicationComponent(OrganizationService.class);
++        User userAccount = service.getUserHandler().findUserByName(name);
++        return userAccount.getFullName();
++    }
+ }
