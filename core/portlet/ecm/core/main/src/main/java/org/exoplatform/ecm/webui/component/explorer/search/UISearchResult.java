@@ -200,6 +200,8 @@ public class UISearchResult extends UIContainer {
     long resultListSize = queryResult_.getNodes().getSize();
     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
     if (resultListSize > 100) {
+      currentListNodes_.clear();
+      currentListRows_.clear();
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();
         String path = r.getValue("jcr:path").getString();
@@ -238,6 +240,8 @@ public class UISearchResult extends UIContainer {
         }
       }
     } else {
+      currentListNodes_.clear();
+      currentListRows_.clear();
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();        
         if (!iter.hasNext()) isEndOfIterator_ = true;

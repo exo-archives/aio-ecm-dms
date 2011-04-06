@@ -1,0 +1,22 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 66926)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -200,6 +200,8 @@
+     long resultListSize = queryResult_.getNodes().getSize();
+     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
+     if (resultListSize > 100) {
++      currentListNodes_.clear();
++      currentListRows_.clear();
+       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+         Row r = iter.nextRow();
+         String path = r.getValue("jcr:path").getString();
+@@ -238,6 +240,8 @@
+         }
+       }
+     } else {
++      currentListNodes_.clear();
++      currentListRows_.clear();
+       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+         Row r = iter.nextRow();        
+         if (!iter.hasNext()) isEndOfIterator_ = true;
