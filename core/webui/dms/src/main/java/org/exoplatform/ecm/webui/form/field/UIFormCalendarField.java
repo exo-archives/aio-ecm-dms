@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.exoplatform.ecm.webui.form.DialogFormField;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 
@@ -60,6 +61,9 @@ public class UIFormCalendarField extends DialogFormField {
       uiDateTime = new UIFormDateTimeInput(name, name, date, false) ;
     }
     Calendar calendar = new GregorianCalendar();
+    if(validateType != null) {
+        DialogFormUtil.addValidators(uiDateTime, validateType);
+      }    
     calendar.setTime(date);
     uiDateTime.setCalendar(calendar);
     if(label != null) uiDateTime.setLabel(label);       
