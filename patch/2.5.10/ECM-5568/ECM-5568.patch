@@ -1,0 +1,121 @@
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_vi.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_vi.xml	(revision 68507)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_vi.xml	(working copy)
+@@ -718,5 +718,14 @@
+ 	<quarterly>Hàng quý</quarterly>
+ 	<yearly>Hàng năm</yearly>
+ 	<ten-years>10 năm</ten-years>
+-	<read>Người dùng hành động</read>    		
++	<read>Thao tác của người dùng</read>
++	<schedule>Thời gian biểu</schedule>
++	<node_added>Nội dung thêm vào</node_added>
++	<node_removed>Nội dung xóa đi</node_removed>
++	<property_added>Đặc tính thêm vào</property_added>
++	<property_removed>Đặc tính xóa đi</property_removed>
++	<property_changed>Đặc tính thay đổi</property_changed>
++	<add>thêm</add>
++	<modify>sửa</modify>
++	<remove>xóa</remove>    		
+ </bundle>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_ru.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_ru.xml	(revision 68507)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_ru.xml	(working copy)
+@@ -719,5 +719,14 @@
+ 	<quarterly>Quarterly</quarterly>
+ 	<yearly>Yearly</yearly>
+ 	<ten-years>Ten Years</ten-years>
+-	<read>User Action</read>  
++	<read>User Action</read>
++	<schedule>Scheduler</schedule>
++	<node_added>Content Addition</node_added>
++	<node_removed>Content Removal</node_removed>
++	<property_added>Property Addition</property_added>
++	<property_removed>Property Removal</property_removed>
++	<property_changed>Property Modification</property_changed>
++	<add>add</add>
++	<modify>modify</modify>
++	<remove>remove</remove>  
+ </bundle>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_en.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_en.xml	(revision 68507)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_en.xml	(working copy)
+@@ -712,8 +712,6 @@
+ 	<CLASSIFIED>Classified</CLASSIFIED>
+ 	<UNCLASSIFIED>Un Classified</UNCLASSIFIED>
+ 	<NOCONTRACT>No Contract</NOCONTRACT>
+-	<true>True</true>
+-	<false>False</false>
+ 	<one-minute>One Minute</one-minute>
+ 	<hourly>Hourly</hourly>
+ 	<daily>Daily</daily>
+@@ -721,4 +719,13 @@
+ 	<yearly>Yearly</yearly>
+ 	<ten-years>Ten Years</ten-years>
+ 	<read>User Action</read> 
++	<schedule>Scheduler</schedule>
++	<node_added>Content Addition</node_added>
++	<node_removed>Content Removal</node_removed>
++	<property_added>Property Addition</property_added>
++	<property_removed>Property Removal</property_removed>
++	<property_changed>Property Modification</property_changed>
++	<add>add</add>
++	<modify>modify</modify>
++	<remove>remove</remove>
+ </bundle>
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_fr.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_fr.xml	(revision 68507)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/classes/locale/ecm/dialogs_fr.xml	(working copy)
+@@ -701,23 +701,30 @@
+     
+   ###################### resoucebundle exo:taxonomyAction dialogs template ####
+   -->
+-  <no>No</no>
+-	<yes>Yes</yes>
+-	<true>True</true>
+-	<false>False</false>	
+-	<Electronic>Electronic</Electronic>
+-	<Paper>Paper</Paper>
+-	<NONE>None</NONE>
+-	<CLASSIFIED>Classified</CLASSIFIED>
+-	<UNCLASSIFIED>Un Classified</UNCLASSIFIED>
+-	<NOCONTRACT>No Contract</NOCONTRACT>
+-	<true>True</true>
+-	<false>False</false>
+-	<one-minute>One Minute</one-minute>
+-	<hourly>Hourly</hourly>
+-	<daily>Daily</daily>
+-	<quarterly>Quarterly</quarterly>
+-	<yearly>Yearly</yearly>
+-	<ten-years>Ten Years</ten-years>
+-	<read>User Action</read>
++        <no>Non</no>
++	<yes>Oui</yes>
++	<true>Vrai</true>
++	<false>Faux</false>	
++	<Electronic>Electronique</Electronic>
++	<Paper>Papier</Paper>
++	<NONE>Nul</NONE>
++	<CLASSIFIED>Classé</CLASSIFIED>
++	<UNCLASSIFIED>Non Classé</UNCLASSIFIED>
++	<NOCONTRACT>Pas de Contrat</NOCONTRACT>
++	<one-minute>Une Minute</one-minute>
++	<hourly>Horaire</hourly>
++	<daily>Quotidien</daily>
++	<quarterly>Trimestriel</quarterly>
++	<yearly>Annuel</yearly>
++	<ten-years>Dix Ans</ten-years>
++	<read>Action Utilisateur</read>
++	<schedule>planificateur</schedule>
++	<node_added>Ajout de contenu</node_added>
++	<node_removed>Suppression de contenu</node_removed>
++	<property_added>Ajout de la propriété</property_added>
++	<property_removed>Suppression de la propriété</property_removed>
++	<property_changed>Modification de la propriété</property_changed>
++	<add>ajouter</add>
++	<modify>modifier</modify>
++	<remove>supprimer</remove>
+ </bundle>
