@@ -6,6 +6,21 @@
  * Apr 17, 2007 3:37:43 PM
  */
 %>
+<script type="text/javascript">
+  function resetSimpleSearchResultHeight(componentID) { 
+    try {
+	  var elementDocumentWS = document.getElementById('UIDocumentWorkspace');
+	  if(elementDocumentWS!=null) {
+	    var elementSearch = document.getElementById(componentID);
+	    if(elementSearch!=null) {
+	      elementSearch.style.height = elementDocumentWS.offsetHeight-25+"px";
+	      elementSearch.style.overflow = "auto";
+	    }
+	  }
+	} catch(e){}
+  }
+  window.setTimeout('setScrollBar',1000); 
+</script>
 <% 
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.services.jcr.impl.core.JCRPath;
@@ -23,10 +38,11 @@
   def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
+  rcontext.getJavascriptManager().addOnLoadJavascript("resetSimpleSearchResultHeight('$uicomponent.id')");
   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
 %>
 <div class="UISearchResult" id="$uicomponent.id">
-  <table class="UIGrid" style="width: 72%">
+  <table class="UIGrid" style="width:96%">
     <thead>
       <tr>
         <th width="45px">

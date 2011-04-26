@@ -123,7 +123,7 @@ public class UISearchResult extends UIContainer {
   public long getSearchTime() { return searchTime_; }
   public void setSearchTime(long time) { this.searchTime_ = time; }  
   
-  public List getCurrentList() throws Exception { 
+  public List getCurrentList() throws Exception {	  
     return uiPageIterator_.getCurrentPageData();    
   }
 
@@ -203,15 +203,29 @@ public class UISearchResult extends UIContainer {
       currentListNodes_.clear();
       currentListRows_.clear();
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
-        Row r = iter.nextRow();
+        Row r = iter.nextRow();        
         String path = r.getValue("jcr:path").getString();
+        Node linkNode = null;
         try {
           resultNode = getNodeByPath(path);
         } catch (Exception e) {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        if (resultNode != null) {
+        if(resultNode != null) {
+	        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
+	          resultNode = resultNode.getParent();
+	          path = resultNode.getPath();
+	  	    }
+	        if(this.isTaxonomyNode()) {
+		    	  if(resultNode.getParent().isNodeType("exo:webContent")) {
+			    		resultNode = resultNode.getParent();
+			    		path = resultNode.getPath();
+			    		linkNode = this.getSymlinkNode(resultNode);
+		    	  }
+	        } else linkNode = resultNode;
+        }
+        if (resultNode != null && linkNode!=null) {
           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
             for (String categoryPath : categoryPathList) {
               int index = categoryPath.indexOf("/");
@@ -246,13 +260,27 @@ public class UISearchResult extends UIContainer {
         Row r = iter.nextRow();        
         if (!iter.hasNext()) isEndOfIterator_ = true;
         String path = r.getValue("jcr:path").getString();
+        Node linkNode = null;
         try {
           resultNode = getNodeByPath(path);
         } catch (Exception e) {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        if (resultNode != null) {
+        if(resultNode != null) {
+        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
+            resultNode = resultNode.getParent();
+            path = resultNode.getPath();
+    	    }
+          if(this.isTaxonomyNode()) {
+	      	  if(resultNode.getParent().isNodeType("exo:webContent")) {
+		      		resultNode = resultNode.getParent();
+		      		path = resultNode.getPath();
+		      		linkNode = this.getSymlinkNode(resultNode);
+	      	  }
+          } else linkNode = resultNode;
+        }
+        if (resultNode != null && linkNode!=null) {
           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
             for (String categoryPath : categoryPathList) {
               int index = categoryPath.indexOf("/");
@@ -273,7 +301,7 @@ public class UISearchResult extends UIContainer {
       }
       currentListNodes_= listNodes;
       currentListRows_ = listRows;
-    }
+    }    
     return currentListRows_;
   }
   
@@ -291,7 +319,7 @@ public class UISearchResult extends UIContainer {
       pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
     } else {
       pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
-    }
+    }   
     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
     uiPageIterator_.setSearchResultPageList(pageList);
     uiPageIterator_.setPageList(pageList);
