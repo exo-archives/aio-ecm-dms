@@ -1,6 +1,177 @@
+Index: patch/2.5.10/ECM-5592/ECM-5592.patch
+===================================================================
+--- patch/2.5.10/ECM-5592/ECM-5592.patch	(revision 68689)
++++ patch/2.5.10/ECM-5592/ECM-5592.patch	(working copy)
+@@ -1,166 +0,0 @@
+-Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java
+-===================================================================
+---- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(revision 68615)
+-+++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(working copy)
+-@@ -25,13 +25,14 @@
+- 
+- import javax.jcr.AccessDeniedException;
+- import javax.jcr.Node;
+-+import javax.jcr.RepositoryException;
+- import javax.jcr.Session;
+-+import javax.jcr.query.InvalidQueryException;
+- import javax.jcr.query.Query;
+- import javax.jcr.query.QueryManager;
+- import javax.jcr.query.QueryResult;
+- 
+- import org.apache.commons.lang.StringUtils;
+--import org.exoplatform.ecm.jcr.SearchValidator;
+- import org.exoplatform.ecm.utils.text.Text;
+- import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+- import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+-@@ -89,6 +90,9 @@
+-   
+-   public static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(.*)");
+-   
+-+  /** The Constant MESSAGE_NOT_SUPPORT_KEYWORD. */
+-+  private final static String MESSAGE_NOT_SUPPORT_KEYWORD = "UIAddressBar.msg.keyword-not-support".intern();
+-+  
+-   public final static String WS_NAME = "workspaceName";  
+-   public final static String FIELD_ADDRESS = "address";
+-   public final static String ACTION_TAXONOMY = "exo:taxonomyAction";
+-@@ -105,7 +109,7 @@
+-   
+-   public UIAddressBar() throws Exception {
+-     addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
+--    addUIFormInput(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
+-+    addUIFormInput(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null));
+-   }
+- 
+-   public void setViewList(List<String> viewList) {
+-@@ -232,6 +236,7 @@
+-     public void execute(Event<UIAddressBar> event) throws Exception {
+-       UIAddressBar uiForm = event.getSource();
+-       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+-+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+-       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();   
+-       Node currentNode = uiExplorer.getCurrentNode();
+-       String queryStatement = null;
+-@@ -279,8 +284,17 @@
+-       UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);      
+-       long startTime = System.currentTimeMillis();
+-       queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));
+--      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+--      QueryResult queryResult = query.execute();
+-+      QueryResult queryResult = null;
+-+      try {
+-+	      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+-+	      queryResult = query.execute();
+-+      } catch (InvalidQueryException invalidEx) {
+-+    	  uiApp.addMessage(new ApplicationMessage(MESSAGE_NOT_SUPPORT_KEYWORD, null, ApplicationMessage.WARNING));
+-+    	  return;
+-+      } catch (RepositoryException reEx) {
+-+    	  uiApp.addMessage(new ApplicationMessage(MESSAGE_NOT_SUPPORT_KEYWORD, null, ApplicationMessage.WARNING));
+-+    	  return;
+-+      }
+-       uiSearchResult.setTaxonomyNode(isTaxonomyNode, currentNode.getSession().getWorkspace().getName(), currentNode.getPath());
+-       uiSearchResult.clearAll();
+-       uiSearchResult.setQueryResults(queryResult);            
+-Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
+-@@ -14,6 +14,7 @@
+- 	import javax.jcr.Session;
+- 	import org.apache.commons.lang.StringEscapeUtils;
+- 	import java.util.ArrayList;
+-+	import org.exoplatform.services.jcr.util.Text;
+- %>
+- <% 
+-   def resultList = uicomponent.getCurrentList(); 
+-@@ -129,7 +130,7 @@
+-             </td>
+-             <td>
+-             	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
+--            		<%=linkNode.getName()%>
+-+            		<%=Text.unescapeIllegalJcrChars(linkNode.getName())%>
+-             	</div>
+-        				<div>$excerpt</div>
+-        				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=linkNode.getPath()%></div>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(working copy)
+-@@ -1727,6 +1727,7 @@
+-     <msg>
+-       <path-not-found>Pfad nicht gefunden</path-not-found>
+-       <access-denied>Zugang verweigert ! Sie haben keien Rechtleseknoten</access-denied>
+-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>Los</exeButton>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(working copy)
+-@@ -1,4 +1,4 @@
+--﻿<?xml version="1.0" encoding="UTF-8"?>
+-+<?xml version="1.0" encoding="UTF-8"?>
+- <bundle>
+-   <!--
+-   #############################################################################
+-@@ -1726,6 +1726,7 @@
+-     <msg>
+-       <path-not-found>المسار غير موجود</path-not-found>
+-       <access-denied> غير مسموح! ليس لك التصريح المناسب للمشاهدة</access-denied>
+-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>أدى</exeButton>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
+-@@ -1740,6 +1740,7 @@
+-     <msg>
+-       <path-not-found>Path not found</path-not-found>
+-       <access-denied>Access denied ! You have no right read node</access-denied>
+-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>Go</exeButton>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
+-@@ -1745,6 +1745,7 @@
+-     <msg>
+-       <path-not-found>Répertoire introuvable</path-not-found>
+-       <access-denied>Accès interdit ! Vous n'avez pas les droits suffisants pour consulter ce noeud.</access-denied>
+-+	  <keyword-not-support>Le mot clé est invalide. Certains caractères ne sont pas autorisés.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>OK</exeButton>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(working copy)
+-@@ -1726,6 +1726,7 @@
+-     <msg>
+-       <path-not-found>pad niet gevonden</path-not-found>
+-       <access-denied>toegang geweigerd ! U hebt geen right lees node</access-denied>
+-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>Ga</exeButton>
+-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml
+-===================================================================
+---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(revision 68615)
+-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(working copy)
+-@@ -1734,6 +1734,7 @@
+-     <msg>
+-       <path-not-found>Đường dẫn không tìm thấy</path-not-found>
+-       <access-denied>Truy nhập bị hủy bỏ!Bạn không có quyền.</access-denied>
+-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+-     </msg>
+-     <label>
+-       <exeButton>Go</exeButton>
 Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java
 ===================================================================
---- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(revision 68615)
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(revision 68689)
 +++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/UIAddressBar.java	(working copy)
 @@ -25,13 +25,14 @@
  
@@ -67,9 +238,9 @@ Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/compon
        uiSearchResult.setQueryResults(queryResult);            
 Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
-@@ -14,6 +14,7 @@
+@@ -29,6 +29,7 @@
  	import javax.jcr.Session;
  	import org.apache.commons.lang.StringEscapeUtils;
  	import java.util.ArrayList;
@@ -77,7 +248,7 @@ Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer
  %>
  <% 
    def resultList = uicomponent.getCurrentList(); 
-@@ -129,7 +130,7 @@
+@@ -145,7 +146,7 @@
              </td>
              <td>
              	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
@@ -88,7 +259,7 @@ Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer
         				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=linkNode.getPath()%></div>
 Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(working copy)
 @@ -1727,6 +1727,7 @@
      <msg>
@@ -98,9 +269,21 @@ Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/
      </msg>
      <label>
        <exeButton>Los</exeButton>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 68689)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
+@@ -1741,6 +1741,7 @@
+     <msg>
+       <path-not-found>Path not found</path-not-found>
+       <access-denied>Access denied ! You have no right read node</access-denied>
++	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
+     </msg>
+     <label>
+       <exeButton>Go</exeButton>
 Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(working copy)
 @@ -1,4 +1,4 @@
 -﻿<?xml version="1.0" encoding="UTF-8"?>
@@ -116,23 +299,11 @@ Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/
      </msg>
      <label>
        <exeButton>أدى</exeButton>
-Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
-===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 68615)
-+++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
-@@ -1740,6 +1740,7 @@
-     <msg>
-       <path-not-found>Path not found</path-not-found>
-       <access-denied>Access denied ! You have no right read node</access-denied>
-+	  <keyword-not-support>The keyword is invalid. Some characters are not supported.</keyword-not-support>
-     </msg>
-     <label>
-       <exeButton>Go</exeButton>
 Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
-@@ -1745,6 +1745,7 @@
+@@ -1746,6 +1746,7 @@
      <msg>
        <path-not-found>Répertoire introuvable</path-not-found>
        <access-denied>Accès interdit ! Vous n'avez pas les droits suffisants pour consulter ce noeud.</access-denied>
@@ -142,7 +313,7 @@ Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/
        <exeButton>OK</exeButton>
 Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(working copy)
 @@ -1726,6 +1726,7 @@
      <msg>
@@ -154,9 +325,9 @@ Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/
        <exeButton>Ga</exeButton>
 Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(revision 68615)
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(revision 68689)
 +++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(working copy)
-@@ -1734,6 +1734,7 @@
+@@ -1735,6 +1735,7 @@
      <msg>
        <path-not-found>Đường dẫn không tìm thấy</path-not-found>
        <access-denied>Truy nhập bị hủy bỏ!Bạn không có quyền.</access-denied>

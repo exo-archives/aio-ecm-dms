@@ -25,13 +25,14 @@ import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -89,6 +90,9 @@ public class UIAddressBar extends UIForm {
   
   public static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(.*)");
   
+  /** The Constant MESSAGE_NOT_SUPPORT_KEYWORD. */
+  private final static String MESSAGE_NOT_SUPPORT_KEYWORD = "UIAddressBar.msg.keyword-not-support".intern();
+  
   public final static String WS_NAME = "workspaceName";  
   public final static String FIELD_ADDRESS = "address";
   public final static String ACTION_TAXONOMY = "exo:taxonomyAction";
@@ -105,7 +109,7 @@ public class UIAddressBar extends UIForm {
   
   public UIAddressBar() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
+    addUIFormInput(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null));
   }
 
   public void setViewList(List<String> viewList) {
@@ -232,6 +236,7 @@ public class UIAddressBar extends UIForm {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();   
       Node currentNode = uiExplorer.getCurrentNode();
       String queryStatement = null;
@@ -279,8 +284,17 @@ public class UIAddressBar extends UIForm {
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);      
       long startTime = System.currentTimeMillis();
       queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
-      QueryResult queryResult = query.execute();
+      QueryResult queryResult = null;
+      try {
+	      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+	      queryResult = query.execute();
+      } catch (InvalidQueryException invalidEx) {
+    	  uiApp.addMessage(new ApplicationMessage(MESSAGE_NOT_SUPPORT_KEYWORD, null, ApplicationMessage.WARNING));
+    	  return;
+      } catch (RepositoryException reEx) {
+    	  uiApp.addMessage(new ApplicationMessage(MESSAGE_NOT_SUPPORT_KEYWORD, null, ApplicationMessage.WARNING));
+    	  return;
+      }
       uiSearchResult.setTaxonomyNode(isTaxonomyNode, currentNode.getSession().getWorkspace().getName(), currentNode.getPath());
       uiSearchResult.clearAll();
       uiSearchResult.setQueryResults(queryResult);            
