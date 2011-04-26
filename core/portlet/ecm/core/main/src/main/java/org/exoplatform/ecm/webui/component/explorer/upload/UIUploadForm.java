@@ -55,10 +55,12 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.services.listener.ListenerService;
 import org.exoplatform.services.log.ExoLogger;
@@ -356,7 +358,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             return;
           }
         }
-        if(!isExist || isKeepFile) {            
+        if(!isExist || isKeepFile) {
           newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, 
               getInputProperties(name, inputStream, mimeType), true,repository) ;
           selectedNode.save();
@@ -390,7 +392,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             }
           }
         } else {
-          Node node = selectedNode.getNode(name) ;
+          Node node = selectedNode.getNode(name);
+          if (isTaxonomyChildNode(node)) {
+            LinkManager linkManager = getApplicationComponent(LinkManager.class);
+            node = linkManager.getTarget(node);
+          }
           if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
             Object[] args = { name } ;
             uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.name-is-exist", args, 
@@ -465,6 +471,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     } catch(AccessControlException ace) {
       throw new MessageException(new ApplicationMessage("UIActionBar.msg.access-add-denied", 
           null, ApplicationMessage.WARNING)); 
+    } catch (ItemExistsException iee) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.item-existed", null, ApplicationMessage.WARNING));
     } catch(Exception e) {
       LOG.error("An unexpected error occurs", e);
       JCRExceptionManager.process(uiApp, e);
@@ -552,6 +560,23 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
 	    return false;
   	}
   	return true;
+  }
+
+  /**
+   * Check if a node is child node of taxonomy node or not
+   * 
+   * @param node
+   * @return
+   */
+  private boolean isTaxonomyChildNode(Node node) throws RepositoryException {
+    Node parrentNode = node.getParent();
+    while (!((NodeImpl) parrentNode).isRoot()) {
+      if (parrentNode.isNodeType(Utils.EXO_TAXANOMY)) {
+        return true;
+      }
+      parrentNode = parrentNode.getParent();
+    }
+    return false;
   }
   
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
