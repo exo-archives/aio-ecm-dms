@@ -1,0 +1,131 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 68382)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -123,7 +123,7 @@
+   public long getSearchTime() { return searchTime_; }
+   public void setSearchTime(long time) { this.searchTime_ = time; }  
+   
+-  public List getCurrentList() throws Exception { 
++  public List getCurrentList() throws Exception {	  
+     return uiPageIterator_.getCurrentPageData();    
+   }
+ 
+@@ -203,15 +203,29 @@
+       currentListNodes_.clear();
+       currentListRows_.clear();
+       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+-        Row r = iter.nextRow();
++        Row r = iter.nextRow();        
+         String path = r.getValue("jcr:path").getString();
++        Node linkNode = null;
+         try {
+           resultNode = getNodeByPath(path);
+         } catch (Exception e) {
+           LOG.warn("Can't get node by path " + path, e);
+           continue;
+         }
+-        if (resultNode != null) {
++        if(resultNode != null) {
++	        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
++	          resultNode = resultNode.getParent();
++	          path = resultNode.getPath();
++	  	    }
++	        if(this.isTaxonomyNode()) {
++		    	  if(resultNode.getParent().isNodeType("exo:webContent")) {
++			    		resultNode = resultNode.getParent();
++			    		path = resultNode.getPath();
++			    		linkNode = this.getSymlinkNode(resultNode);
++		    	  }
++	        } else linkNode = resultNode;
++        }
++        if (resultNode != null && linkNode!=null) {
+           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+             for (String categoryPath : categoryPathList) {
+               int index = categoryPath.indexOf("/");
+@@ -246,13 +260,27 @@
+         Row r = iter.nextRow();        
+         if (!iter.hasNext()) isEndOfIterator_ = true;
+         String path = r.getValue("jcr:path").getString();
++        Node linkNode = null;
+         try {
+           resultNode = getNodeByPath(path);
+         } catch (Exception e) {
+           LOG.warn("Can't get node by path " + path, e);
+           continue;
+         }
+-        if (resultNode != null) {
++        if(resultNode != null) {
++        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
++            resultNode = resultNode.getParent();
++            path = resultNode.getPath();
++    	    }
++          if(this.isTaxonomyNode()) {
++	      	  if(resultNode.getParent().isNodeType("exo:webContent")) {
++		      		resultNode = resultNode.getParent();
++		      		path = resultNode.getPath();
++		      		linkNode = this.getSymlinkNode(resultNode);
++	      	  }
++          } else linkNode = resultNode;
++        }
++        if (resultNode != null && linkNode!=null) {
+           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+             for (String categoryPath : categoryPathList) {
+               int index = categoryPath.indexOf("/");
+@@ -273,7 +301,7 @@
+       }
+       currentListNodes_= listNodes;
+       currentListRows_ = listRows;
+-    }
++    }    
+     return currentListRows_;
+   }
+   
+@@ -291,7 +319,7 @@
+       pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
+     } else {
+       pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
+-    }
++    }   
+     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
+     uiPageIterator_.setSearchResultPageList(pageList);
+     uiPageIterator_.setPageList(pageList);
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68382)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
+@@ -6,6 +6,21 @@
+  * Apr 17, 2007 3:37:43 PM
+  */
+ %>
++<script type="text/javascript">
++  function resetSimpleSearchResultHeight(componentID) { 
++    try {
++	  var elementDocumentWS = document.getElementById('UIDocumentWorkspace');
++	  if(elementDocumentWS!=null) {
++	    var elementSearch = document.getElementById(componentID);
++	    if(elementSearch!=null) {
++	      elementSearch.style.height = elementDocumentWS.offsetHeight-25+"px";
++	      elementSearch.style.overflow = "auto";
++	    }
++	  }
++	} catch(e){}
++  }
++  window.setTimeout('setScrollBar',1000); 
++</script>
+ <% 
+   import org.exoplatform.ecm.webui.utils.Utils;
+   import org.exoplatform.services.jcr.impl.core.JCRPath;
+@@ -23,10 +38,11 @@
+   def rcontext = _ctx.getRequestContext();
+   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
++  rcontext.getJavascriptManager().addOnLoadJavascript("resetSimpleSearchResultHeight('$uicomponent.id')");
+   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
+ %>
+ <div class="UISearchResult" id="$uicomponent.id">
+-  <table class="UIGrid" style="width: 72%">
++  <table class="UIGrid" style="width:96%">
+     <thead>
+       <tr>
+         <th width="45px">
