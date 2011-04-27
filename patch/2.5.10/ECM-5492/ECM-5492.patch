@@ -1,0 +1,50 @@
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/versions/UIVersionInfo.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/versions/UIVersionInfo.gtmpl	(revision 66926)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/versions/UIVersionInfo.gtmpl	(working copy)
+@@ -7,7 +7,9 @@
+  * 11:57:24 AM 
+  */
+ %>
+-<% import org.exoplatform.ecm.jcr.model.VersionNode; %>
++<% import org.exoplatform.ecm.jcr.model.VersionNode; 
++   import org.exoplatform.services.jcr.util.Text;
++%>
+ <%
+   VersionNode rootNode = uicomponent.getRootVersionNode() ;  
+   public void writeNodes(List nodes, String clazz, int level) {
+@@ -79,7 +81,7 @@
+ <div class="UIVersionInfo" id="$uicomponent.id">
+   <div class="HomeNode">
+     <div class="Icon24x24 HomeIcon"><span></span></div>
+-    <div class="NodeLabel"><%=uicomponent.getCurrentNode().getName()%></div>
++    <div class="NodeLabel"><%=Text.unescapeIllegalJcrChars(uicomponent.getCurrentNode().getName())%></div>
+   </div>
+   <%
+ 		String clazz = "" ;
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/popup/info/UIPropertyTab.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/popup/info/UIPropertyTab.gtmpl	(revision 66926)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/popup/info/UIPropertyTab.gtmpl	(working copy)
+@@ -5,8 +5,9 @@
+ 	 *          phamtuanchip@yahoo.de
+ 	 * September 14, 2006
+ 	 * 2:10:23 PM
+-	 */
++	 */		 
+ %>
++<% import org.exoplatform.services.jcr.util.Text;	 %>
+ <div class="UIPropertyTab">
+   <table class="UIGrid" style="width: 97%">
+ 	  <thead>
+@@ -56,8 +57,8 @@
+ 				      <%=_ctx.appRes("UIPropertyTab.label." + value)%>
+ 				    </div>  
+ 				    <%} else {%>
+-				    <div class="Text" title="<%=value%>">
+-				      <%=value%>
++				    <div class="Text" title="<%=Text.unescapeIllegalJcrChars(value)%>">
++				      <%=Text.unescapeIllegalJcrChars(value)%>
+ 				   	</div>
+ 				    <%}%>  
+ 			    </td>
