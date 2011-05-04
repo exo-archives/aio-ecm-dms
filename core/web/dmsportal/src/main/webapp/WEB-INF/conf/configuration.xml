@@ -37,6 +37,7 @@
 	<import>war:/conf/dms/dms-metadata-configuration.xml</import>
 	<import>war:/conf/dms/dms-folksonomy-configuration.xml</import>
 	<import>war:/conf/dms/dms-records-configuration.xml</import>
+	<import>war:/conf/dms/dms-jobs-configuration.xml</import>
 	<import>war:/conf/dms/dms-queries-configuration.xml</import>
 	<import>war:/conf/dms/organization-component-plugins-configuration.xml</import>
 	<import>war:/conf/dms/publication-configuration.xml</import>  

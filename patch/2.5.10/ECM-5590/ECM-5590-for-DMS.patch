@@ -1,0 +1,135 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/jobs/symlink/ClearOrphanSymlinksJob.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/jobs/symlink/ClearOrphanSymlinksJob.java	(revision 0)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/jobs/symlink/ClearOrphanSymlinksJob.java	(revision 0)
+@@ -0,0 +1,83 @@
++package org.exoplatform.services.cms.jobs.symlink;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import javax.jcr.ItemNotFoundException;
++import javax.jcr.Node;
++import javax.jcr.NodeIterator;
++import javax.jcr.RepositoryException;
++import javax.jcr.Session;
++import javax.jcr.query.Query;
++import javax.jcr.query.QueryManager;
++import javax.jcr.query.QueryResult;
++
++import org.apache.commons.logging.Log;
++import org.exoplatform.container.ExoContainer;
++import org.exoplatform.container.ExoContainerContext;
++import org.exoplatform.portal.webui.util.SessionProviderFactory;
++import org.exoplatform.services.cms.link.LinkManager;
++import org.exoplatform.services.jcr.RepositoryService;
++import org.exoplatform.services.jcr.core.ManageableRepository;
++import org.exoplatform.services.jcr.ext.common.SessionProvider;
++import org.exoplatform.services.log.ExoLogger;
++import org.exoplatform.services.scheduler.BaseJob;
++import org.exoplatform.services.scheduler.JobContext;
++
++public class ClearOrphanSymlinksJob extends BaseJob {
++
++	private static final Log    log                 = ExoLogger.getLogger(ClearOrphanSymlinksJob.class);
++
++	public void execute(JobContext arg0)  {
++
++	    String queryString = "SELECT * FROM exo:symlink";
++
++	    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
++	    RepositoryService repositoryService = (RepositoryService)exoContainer.getComponentInstanceOfType(RepositoryService.class);
++	    LinkManager linkManager = (LinkManager)exoContainer.getComponentInstanceOfType(LinkManager.class);
++
++	    Session session = null;
++	    try {
++	      ManageableRepository manageableRepository = repositoryService.getCurrentRepository();
++
++	      SessionProvider sessionProvider = SessionProviderFactory.createSystemProvider();
++	      String[] workspaces = manageableRepository.getWorkspaceNames();
++
++	      for (String workspace : workspaces) {
++	        try {
++	          session = sessionProvider.getSession(workspace, manageableRepository);
++	          QueryManager queryManager = session.getWorkspace().getQueryManager();
++	          Query query = queryManager.createQuery(queryString, Query.SQL);
++	          QueryResult queryResult = query.execute();
++	          NodeIterator nodeIterator = queryResult.getNodes();
++	          List<Node> deleteNodeList = new ArrayList<Node>();
++	          while (nodeIterator.hasNext()) {
++	            Node symlinkNode = nodeIterator.nextNode();
++	            //get list of node to delete
++	            try {
++	              linkManager.getTarget(symlinkNode, true);
++	            } catch (ItemNotFoundException e) {
++	              deleteNodeList.add(symlinkNode);
++	            } catch (RepositoryException e) {}
++	          }
++	          for (Node node : deleteNodeList) {
++	            try {
++	              Node parentNode = node.getParent();
++	              node.remove();	              
++	              parentNode.save();	              
++	            } catch (Exception e) {
++	              log.error("ClearOrphanSymlinksJob: Can not remove node :" + node.getPath(), e);
++	            }
++	          }
++	          session.save();
++	        } catch (RepositoryException e) {
++	          log.error("ClearOrphanSymlinksJob: Error when deleting orphan symlinks in workspace: " + workspace, e);
++	        } finally {
++	          if (session != null && session.isLive())
++	            session.logout();
++	        }
++	      }
++	    } catch (Exception e) { }
++	}
++
++}
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/dms-jobs-configuration.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/dms-jobs-configuration.xml	(revision 0)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/dms/dms-jobs-configuration.xml	(revision 0)
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="ISO-8859-1"?>
++<configuration>
++
++  <external-component-plugins>
++    <target-component>org.exoplatform.services.scheduler.JobSchedulerService</target-component>
++    <component-plugin>
++      <name>ClearOrphanSymlinksJob</name>
++      <set-method>addPeriodJob</set-method>
++      <type>org.exoplatform.services.scheduler.PeriodJob</type>
++      <description>add to the JobSchedulerService a job which cleans all the unassigned symlinks</description>
++      <init-params>
++        <properties-param>
++          <name>job.info</name>
++          <description>info of jobs</description>
++          <property name="jobName" value="ClearOrphanSymlinksJob"/>
++          <property name="job" value="org.exoplatform.services.cms.jobs.symlink.ClearOrphanSymlinksJob"/>
++          <property name="repeatCount" value="0"/>
++          <property name="period" value="6000"/>     
++          <property name="startTime" value="+24000"/>
++          <property name="endTime" value=""/>               
++          <property name="repository" value="repository"/>
++        </properties-param>
++      </init-params>
++    </component-plugin>
++  </external-component-plugins>
++    
++</configuration>
++  
+Index: core/web/dmsportal/src/main/webapp/WEB-INF/conf/configuration.xml
+===================================================================
+--- core/web/dmsportal/src/main/webapp/WEB-INF/conf/configuration.xml	(revision 68788)
++++ core/web/dmsportal/src/main/webapp/WEB-INF/conf/configuration.xml	(working copy)
+@@ -36,7 +36,8 @@
+ 	<import>war:/conf/dms/dms-drives-configuration.xml</import>
+ 	<import>war:/conf/dms/dms-metadata-configuration.xml</import>
+ 	<import>war:/conf/dms/dms-folksonomy-configuration.xml</import>
+-	<import>war:/conf/dms/dms-records-configuration.xml</import>
++	<import>war:/conf/dms/dms-records-configuration.xml</import>
++	<import>war:/conf/dms/dms-jobs-configuration.xml</import>
+ 	<import>war:/conf/dms/dms-queries-configuration.xml</import>
+ 	<import>war:/conf/dms/organization-component-plugins-configuration.xml</import>
+ 	<import>war:/conf/dms/publication-configuration.xml</import>  
