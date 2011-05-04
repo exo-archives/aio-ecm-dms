@@ -49,7 +49,7 @@
     <org.exoplatform.ecm.workflow.version>1.0.11-SNAPSHOT</org.exoplatform.ecm.workflow.version>
     <org.exoplatform.exopackage.version>1.2.3</org.exoplatform.exopackage.version>
     <version.exobuild.plugin>1.2.2</version.exobuild.plugin>
-    <org.shindig.version>0.8.1-1-r719456</org.shindig.version>
+    <org.shindig.version>trunk-r719456-eXo03</org.shindig.version>
     <org.exoplatform.ecm.jbpm.version>3.0.2</org.exoplatform.ecm.jbpm.version>
     <bonita.version>4.0</bonita.version>
   </properties>
