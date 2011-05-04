@@ -1,98 +1,6 @@
-Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
-===================================================================
---- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 68382)
-+++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
-@@ -123,7 +123,7 @@
-   public long getSearchTime() { return searchTime_; }
-   public void setSearchTime(long time) { this.searchTime_ = time; }  
-   
--  public List getCurrentList() throws Exception { 
-+  public List getCurrentList() throws Exception {	  
-     return uiPageIterator_.getCurrentPageData();    
-   }
- 
-@@ -203,15 +203,29 @@
-       currentListNodes_.clear();
-       currentListRows_.clear();
-       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
--        Row r = iter.nextRow();
-+        Row r = iter.nextRow();        
-         String path = r.getValue("jcr:path").getString();
-+        Node linkNode = null;
-         try {
-           resultNode = getNodeByPath(path);
-         } catch (Exception e) {
-           LOG.warn("Can't get node by path " + path, e);
-           continue;
-         }
--        if (resultNode != null) {
-+        if(resultNode != null) {
-+	        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
-+	          resultNode = resultNode.getParent();
-+	          path = resultNode.getPath();
-+	  	    }
-+	        if(this.isTaxonomyNode()) {
-+		    	  if(resultNode.getParent().isNodeType("exo:webContent")) {
-+			    		resultNode = resultNode.getParent();
-+			    		path = resultNode.getPath();
-+			    		linkNode = this.getSymlinkNode(resultNode);
-+		    	  }
-+	        } else linkNode = resultNode;
-+        }
-+        if (resultNode != null && linkNode!=null) {
-           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
-             for (String categoryPath : categoryPathList) {
-               int index = categoryPath.indexOf("/");
-@@ -246,13 +260,27 @@
-         Row r = iter.nextRow();        
-         if (!iter.hasNext()) isEndOfIterator_ = true;
-         String path = r.getValue("jcr:path").getString();
-+        Node linkNode = null;
-         try {
-           resultNode = getNodeByPath(path);
-         } catch (Exception e) {
-           LOG.warn("Can't get node by path " + path, e);
-           continue;
-         }
--        if (resultNode != null) {
-+        if(resultNode != null) {
-+        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
-+            resultNode = resultNode.getParent();
-+            path = resultNode.getPath();
-+    	    }
-+          if(this.isTaxonomyNode()) {
-+	      	  if(resultNode.getParent().isNodeType("exo:webContent")) {
-+		      		resultNode = resultNode.getParent();
-+		      		path = resultNode.getPath();
-+		      		linkNode = this.getSymlinkNode(resultNode);
-+	      	  }
-+          } else linkNode = resultNode;
-+        }
-+        if (resultNode != null && linkNode!=null) {
-           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
-             for (String categoryPath : categoryPathList) {
-               int index = categoryPath.indexOf("/");
-@@ -273,7 +301,7 @@
-       }
-       currentListNodes_= listNodes;
-       currentListRows_ = listRows;
--    }
-+    }    
-     return currentListRows_;
-   }
-   
-@@ -291,7 +319,7 @@
-       pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
-     } else {
-       pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
--    }
-+    }   
-     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
-     uiPageIterator_.setSearchResultPageList(pageList);
-     uiPageIterator_.setPageList(pageList);
 Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl
 ===================================================================
---- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68382)
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(revision 68687)
 +++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/search/UISearchResult.gtmpl	(working copy)
 @@ -6,6 +6,21 @@
   * Apr 17, 2007 3:37:43 PM
@@ -116,7 +24,15 @@ Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer
  <% 
    import org.exoplatform.ecm.webui.utils.Utils;
    import org.exoplatform.services.jcr.impl.core.JCRPath;
-@@ -23,10 +38,11 @@
+@@ -14,6 +29,7 @@
+ 	import javax.jcr.Session;
+ 	import org.apache.commons.lang.StringEscapeUtils;
+ 	import java.util.ArrayList;
++	import org.exoplatform.services.jcr.util.Text;
+ %>
+ <% 
+   def resultList = uicomponent.getCurrentList(); 
+@@ -23,10 +39,11 @@
    def rcontext = _ctx.getRequestContext();
    rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
    rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
@@ -129,3 +45,115 @@ Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer
      <thead>
        <tr>
          <th width="45px">
+@@ -129,7 +146,7 @@
+             </td>
+             <td>
+             	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
+-            		<%=linkNode.getName()%>
++            		<%=Text.unescapeIllegalJcrChars(linkNode.getName())%>
+             	</div>
+        				<div>$excerpt</div>
+        				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=linkNode.getPath()%></div>
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 68687)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -123,7 +123,7 @@
+   public long getSearchTime() { return searchTime_; }
+   public void setSearchTime(long time) { this.searchTime_ = time; }  
+   
+-  public List getCurrentList() throws Exception { 
++  public List getCurrentList() throws Exception {	  
+     return uiPageIterator_.getCurrentPageData();    
+   }
+ 
+@@ -197,21 +197,37 @@
+     List<Node> listNodes = new ArrayList<Node>();
+     List<Row> listRows = new ArrayList<Row>();
+     Node resultNode = null;
+-    long resultListSize = queryResult_.getNodes().getSize();
++    long resultListSize = queryResult_.getNodes().getSize();    
+     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
+     if (resultListSize > 100) {
+       currentListNodes_.clear();
+       currentListRows_.clear();
+       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+-        Row r = iter.nextRow();
++        Row r = iter.nextRow();        
+         String path = r.getValue("jcr:path").getString();
++        Node linkNode = null;
+         try {
+           resultNode = getNodeByPath(path);
+         } catch (Exception e) {
+           LOG.warn("Can't get node by path " + path, e);
+           continue;
+         }
+-        if (resultNode != null) {
++        if(resultNode != null) {
++        	if(this.isTaxonomyNode()) {
++        		if (resultNode.isNodeType("nt:resource")) {
++        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
++        			  resultNode = resultNode.getParent().getParent();		      		
++        		    linkNode = this.getSymlinkNode(resultNode);
++        		  } else {
++        		    resultNode = resultNode.getParent();
++        		    linkNode = this.getSymlinkNode(resultNode);
++        		  }
++        		}	else {
++        		  linkNode = this.getSymlinkNode(resultNode);
++        		}
++        	} else linkNode = resultNode;
++        }
++        if (resultNode != null && linkNode!=null) {
+           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+             for (String categoryPath : categoryPathList) {
+               int index = categoryPath.indexOf("/");
+@@ -246,13 +262,29 @@
+         Row r = iter.nextRow();        
+         if (!iter.hasNext()) isEndOfIterator_ = true;
+         String path = r.getValue("jcr:path").getString();
++        Node linkNode = null;
+         try {
+           resultNode = getNodeByPath(path);
+         } catch (Exception e) {
+           LOG.warn("Can't get node by path " + path, e);
+           continue;
+         }
+-        if (resultNode != null) {
++        if(resultNode != null) {
++        	if(this.isTaxonomyNode()) {
++        		if (resultNode.isNodeType("nt:resource")) {
++        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
++        			  resultNode = resultNode.getParent().getParent();		      		
++        		    linkNode = this.getSymlinkNode(resultNode);
++        		  } else {
++        		    resultNode = resultNode.getParent();
++        		    linkNode = this.getSymlinkNode(resultNode);
++        		  }
++        		}	else {
++        		  linkNode = this.getSymlinkNode(resultNode);
++        		}
++        	} else linkNode = resultNode;
++        }
++        if (resultNode != null && linkNode!=null) {
+           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+             for (String categoryPath : categoryPathList) {
+               int index = categoryPath.indexOf("/");
+@@ -273,7 +305,7 @@
+       }
+       currentListNodes_= listNodes;
+       currentListRows_ = listRows;
+-    }
++    }    
+     return currentListRows_;
+   }
+   
+@@ -291,7 +323,7 @@
+       pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
+     } else {
+       pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
+-    }
++    }   
+     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
+     uiPageIterator_.setSearchResultPageList(pageList);
+     uiPageIterator_.setPageList(pageList);

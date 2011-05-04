@@ -197,7 +197,7 @@ public class UISearchResult extends UIContainer {
     List<Node> listNodes = new ArrayList<Node>();
     List<Row> listRows = new ArrayList<Row>();
     Node resultNode = null;
-    long resultListSize = queryResult_.getNodes().getSize();
+    long resultListSize = queryResult_.getNodes().getSize();    
     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
     if (resultListSize > 100) {
       currentListNodes_.clear();
@@ -213,17 +213,19 @@ public class UISearchResult extends UIContainer {
           continue;
         }
         if(resultNode != null) {
-	        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
-	          resultNode = resultNode.getParent();
-	          path = resultNode.getPath();
-	  	    }
-	        if(this.isTaxonomyNode()) {
-		    	  if(resultNode.getParent().isNodeType("exo:webContent")) {
-			    		resultNode = resultNode.getParent();
-			    		path = resultNode.getPath();
-			    		linkNode = this.getSymlinkNode(resultNode);
-		    	  }
-	        } else linkNode = resultNode;
+        	if(this.isTaxonomyNode()) {
+        		if (resultNode.isNodeType("nt:resource")) {
+        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
+        			  resultNode = resultNode.getParent().getParent();		      		
+        		    linkNode = this.getSymlinkNode(resultNode);
+        		  } else {
+        		    resultNode = resultNode.getParent();
+        		    linkNode = this.getSymlinkNode(resultNode);
+        		  }
+        		}	else {
+        		  linkNode = this.getSymlinkNode(resultNode);
+        		}
+        	} else linkNode = resultNode;
         }
         if (resultNode != null && linkNode!=null) {
           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
@@ -268,17 +270,19 @@ public class UISearchResult extends UIContainer {
           continue;
         }
         if(resultNode != null) {
-        if (resultNode.getPrimaryNodeType().getName().equals("nt:resource")) {
-            resultNode = resultNode.getParent();
-            path = resultNode.getPath();
-    	    }
-          if(this.isTaxonomyNode()) {
-	      	  if(resultNode.getParent().isNodeType("exo:webContent")) {
-		      		resultNode = resultNode.getParent();
-		      		path = resultNode.getPath();
-		      		linkNode = this.getSymlinkNode(resultNode);
-	      	  }
-          } else linkNode = resultNode;
+        	if(this.isTaxonomyNode()) {
+        		if (resultNode.isNodeType("nt:resource")) {
+        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
+        			  resultNode = resultNode.getParent().getParent();		      		
+        		    linkNode = this.getSymlinkNode(resultNode);
+        		  } else {
+        		    resultNode = resultNode.getParent();
+        		    linkNode = this.getSymlinkNode(resultNode);
+        		  }
+        		}	else {
+        		  linkNode = this.getSymlinkNode(resultNode);
+        		}
+        	} else linkNode = resultNode;
         }
         if (resultNode != null && linkNode!=null) {
           if ((categoryPathList != null) && (categoryPathList.size() > 0)){
