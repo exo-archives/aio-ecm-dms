@@ -32,7 +32,7 @@ function getModule(params) {
     addDependency(new Project("jdom", "jdom", "jar", "1.0")).
     addDependency(new Project("org.apache.ws.commons", "ws-commons-util", "jar", "1.0.1")).
     addDependency(new Project("com.sun.xml.stream", "sjsxp", "jar", "1.0")).
-    addDependency(new Project("pdfbox", "pdfbox", "jar", "0.7.2")).
+    addDependency(new Project("pdfbox", "pdfbox", "jar", "0.7.2-eXo02")).
     addDependency(new Project("net.sf.ehcache", "ehcache", "jar", "1.6.0")).    
     addDependency(new Project("org.hibernate", "hibernate", "jar", "3.2.6.ga")).
     addDependency(new Project("org.hibernate", "hibernate-annotations", "jar", "3.4.0.GA")).
