@@ -21,8 +21,8 @@ Fix description
 
 How is the problem fixed?
 
-    * Remove SearchValidator from SimpleSearch StringInput
-    * catch Exception and show message about unsupported characters
+    * Use SimpleSearchValidator to validate the Simple Search Text Input (validate empty value only) 
+    * Catch Exception and show message about unsupported characters
 
 Patch file: ECM-5592.patch
 
@@ -42,8 +42,12 @@ Tests performed at DevLevel
    2. in step 4, Enter the name of the created document which contains apostrophes => have no pop-up message is displayed
    3. in step 5, the name of document is display correctly in search result table. (contains apostrophes)
 
-Tests performed at QA/Support Level
-*
+Tests performed at QA Level
+* ECM-5599
+   1. Go to Sites Explorer
+   2. Select 1 drive (Sites Management)
+   3. Put the cursor in quick search & hit enter
+      Expected: A popup message informs that you have to input value for search.
 
 Documentation changes
 
@@ -53,7 +57,7 @@ Documentation changes:
 Configuration changes
 
 Configuration changes:
-*No
+* No
 
 Will previous configuration continue to work?
 *Yes
