@@ -5,6 +5,11 @@
   #             org.exoplatform.ecm.webui.component.UICommentForm			  #
   #############################################################################
   -->
+  <javax>
+    <portlet>
+      <title>Explorateur de contenus</title>
+    </portlet>
+  </javax>
   <UICommentForm>
     <label>
       <name>Nom</name>

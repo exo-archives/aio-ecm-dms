@@ -5,6 +5,11 @@
   #Edit mode																		  #
   ###################################################################################
   -->
+  <javax>
+    <portlet>
+      <title>Création rapide de contenu</title>
+    </portlet>
+  </javax>
   <UIEditModeConfiguration>
     <label>
       <selectTemplate>Sélection d'un modèle</selectTemplate>

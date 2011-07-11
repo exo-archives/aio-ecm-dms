@@ -5,6 +5,11 @@
   #      org.exoplatform.ecm.webui.component.browse.UIConfigTabPane #
   ###################################################################
   -->
+  <javax>
+    <portlet>
+      <title>Content Browser</title>
+    </portlet>
+  </javax>
   <UIConfigTabPane>
     <tab>
       <label>
