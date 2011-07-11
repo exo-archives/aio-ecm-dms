@@ -1,0 +1,309 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(revision 70605)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(working copy)
+@@ -21,6 +21,7 @@
+ import javax.jcr.Item;
+ import javax.jcr.NoSuchWorkspaceException;
+ import javax.jcr.PathNotFoundException;
++import javax.jcr.Session;
+ 
+ import org.apache.commons.logging.Log;
+ import org.exoplatform.common.util.HierarchicalProperty;
+@@ -29,8 +30,12 @@
+ import org.exoplatform.services.cms.link.NodeFinder;
+ import org.exoplatform.services.jcr.RepositoryService;
+ import org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService;
++import org.exoplatform.services.jcr.webdav.Depth;
+ import org.exoplatform.services.jcr.webdav.WebDavHeaders;
+ import org.exoplatform.services.jcr.webdav.WebDavMethods;
++import org.exoplatform.services.jcr.webdav.command.LockCommand;
++import org.exoplatform.services.jcr.webdav.command.UnLockCommand;
++import org.exoplatform.services.jcr.webdav.lock.NullResourceLocksHolder;
+ import org.exoplatform.services.jcr.webdav.util.TextUtil;
+ import org.exoplatform.services.jcr.webdav.xml.XMLInputTransformer;
+ import org.exoplatform.services.log.ExoLogger;
+@@ -48,7 +53,10 @@
+ import org.exoplatform.services.rest.transformer.PassthroughInputTransformer;
+ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
+ import org.exoplatform.services.rest.transformer.SerializableTransformer;
++import java.net.URLEncoder;
++import java.util.List;
+ 
++
+ /**
+  * This class is used to override the default WebDavServiceImpl in order to support symlinks
+  * 
+@@ -66,6 +74,8 @@
+   private static Log log = ExoLogger.getLogger("cms.webdav.WebDavServiceImpl");
+   
+   private final NodeFinder nodeFinder;
++  private final RepositoryService repositoryService;
++  private final NullResourceLocksHolder           nullResourceLocks;
+   
+   public WebDavServiceImpl(InitParams params,
+                            RepositoryService repositoryService,
+@@ -74,6 +84,8 @@
+                            NodeFinder nodeFinder) throws Exception {
+     super(params, repositoryService, sessionProviderService, resourceBinder);
+     this.nodeFinder = nodeFinder;
++    this.repositoryService = repositoryService;
++    this.nullResourceLocks = new NullResourceLocksHolder();
+   }
+ 
+   private String getRealDestinationHeader(String baseURI, String repoName, String destinationHeader) {
+@@ -107,8 +119,8 @@
+                           HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -130,8 +142,8 @@
+                            @HeaderParam(WebDavHeaders.IF) String ifHeader,
+                            HierarchicalProperty body) {
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -158,8 +170,8 @@
+                        HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)));
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -188,8 +200,8 @@
+                       @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -211,8 +223,8 @@
+                        @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -237,16 +249,21 @@
+                        HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+-      return Response.Builder.notFound().build();
++    	try {
++    		Session session = session(repoName, workspaceName(repoPath), lockTokens(lockTokenHeader, ifHeader));
++  			return new LockCommand(nullResourceLocks).lock(session, path(repoPath), body, new Depth(depthHeader), "86400");
++    	} catch (Exception ex) {
++    		return Response.Builder.notFound().build();
++    	}
+     } catch (NoSuchWorkspaceException exc) {
+       return Response.Builder.notFound().build();
+     } catch (Exception e) {
+       log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
+       return Response.Builder.serverError().build();
+-    }
++    }     
+     return super.lock(repoName, repoPath, lockTokenHeader, ifHeader, depthHeader, timeout, body);
+   }
+ 
+@@ -261,10 +278,16 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+-      return Response.Builder.notFound().build();
++    	try {
++    		List<String> tokens = lockTokens(lockTokenHeader, ifHeader);
++    		Session session = session(repoName, workspaceName(repoPath), lockTokens(lockTokenHeader, ifHeader));
++    		return new UnLockCommand(nullResourceLocks).unLock(session, path(repoPath), tokens);
++    	} catch (Exception ex) {
++    		return Response.Builder.notFound().build();
++    	}      
+     } catch (NoSuchWorkspaceException exc) {
+       return Response.Builder.notFound().build();
+     } catch (Exception e) {
+@@ -294,8 +317,8 @@
+                         HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -318,8 +341,8 @@
+                            HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -343,8 +366,8 @@
+                             HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -369,11 +392,21 @@
+                       @HeaderParam(WebDavHeaders.CONTENTTYPE) String mimeType,
+                       InputStream inputStream) {
+ 
+-    try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), LinkUtils.getParentPath(path(Text.escapeIllegalJcrChars(repoPath))), true);
+-      repoPath = item.getSession().getWorkspace().getName() + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(Text.escapeIllegalJcrChars(repoPath))));
+-    } catch (PathNotFoundException exc) {
+-      return Response.Builder.notFound().build();
++  	try {
++      repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      try {
++        Item item = nodeFinder.getItem(repoName, workspaceName(repoPath),
++                                       LinkUtils.getParentPath(path(normalizePath(repoPath))),
++                                       true);
++        repoPath = item.getSession().getWorkspace().getName()
++            + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(repoPath)));
++      } catch (PathNotFoundException e) {
++        Item item = nodeFinder.getItem(repoName, workspaceName(repoPath),
++                                       LinkUtils.getParentPath(path(Text.escapeIllegalJcrChars(repoPath))),
++                                       true);
++        repoPath = item.getSession().getWorkspace().getName()
++            + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(repoPath)));
++      }
+     } catch (NoSuchWorkspaceException exc) {
+       return Response.Builder.notFound().build();
+     } catch (Exception e) {
+@@ -395,8 +428,8 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -418,8 +451,8 @@
+                          HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -442,8 +475,8 @@
+                              HierarchicalProperty body) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -465,8 +498,8 @@
+                                  @HeaderParam(WebDavHeaders.IF) String ifHeader) {
+ 
+     try {
+-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
+-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    	repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
++      repoPath = convertRepoPath(repoName, repoPath, true);
+     } catch (PathNotFoundException exc) {
+       return Response.Builder.notFound().build();
+     } catch (NoSuchWorkspaceException exc) {
+@@ -477,4 +510,49 @@
+     }
+     return super.versionControl(repoName, repoPath, lockTokenHeader, ifHeader);
+   }
++  
++  private String convertRepoPath(String repoName, String repoPath, boolean giveTarget) throws Exception{
++    try {
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(normalizePath(repoPath)), giveTarget);
++      return item.getSession().getWorkspace().getName() + item.getPath();
++    } catch (PathNotFoundException e) {
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), giveTarget);
++      return item.getSession().getWorkspace().getName() + item.getPath();
++    }
++  }
++  
++  /**
++   * Normalizes path.
++   * 
++   * @param repoPath repository path
++   * @return normalized path.
++   */
++  protected String normalizePath(String repoPath)
++  {
++     if (repoPath.length() > 0 && repoPath.endsWith("/"))
++     {
++        return repoPath.substring(0, repoPath.length() - 1);
++     }
++
++     String[] pathElements = repoPath.split("/");
++     StringBuffer escapedPath = new StringBuffer();
++     for (String element : pathElements)
++     {
++        try
++        {
++           if (element.contains("'"))
++           {
++              element = element.replaceAll("'", URLEncoder.encode("'", "UTF-8"));
++           }
++           escapedPath.append(element + "/");
++        }
++        catch (Exception e)
++        {
++           log.warn(e.getMessage());
++        }
++     }
++
++     return escapedPath.toString().substring(0, escapedPath.length() - 1);
++  }
++
+ }
