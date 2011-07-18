@@ -1,0 +1,16 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/drives/UIDriveForm.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/drives/UIDriveForm.java	(revision 71330)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/admin/drives/UIDriveForm.java	(working copy)
+@@ -158,8 +158,9 @@
+                                                 ApplicationMessage.WARNING));
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+         return;
+-      }
+-      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
++      }
++      name = name.trim();
++      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!", "\"", "/"};
+       for(String filterChar : arrFilterChar) {
+         if(name.indexOf(filterChar) > -1) {
+           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.fileName-invalid", null, 
