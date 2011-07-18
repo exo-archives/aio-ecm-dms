@@ -1,0 +1,12 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/link/LinkUtils.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/link/LinkUtils.java	(revision 65509)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/link/LinkUtils.java	(working copy)
+@@ -195,6 +195,7 @@
+   
+   public static List<Node> getAllSymlinks(Node targetNode, String repoName) throws Exception {
+     List<Node> result = new ArrayList<Node>();
++    if(!targetNode.isNodeType("mix:referenceable")) return result;
+     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+     RepositoryService repositoryService =(RepositoryService)myContainer.getComponentInstanceOfType(RepositoryService.class);
+     ManageableRepository repository  = repositoryService.getRepository(repoName);

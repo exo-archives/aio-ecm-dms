@@ -195,6 +195,7 @@ public final class LinkUtils {
   
   public static List<Node> getAllSymlinks(Node targetNode, String repoName) throws Exception {
     List<Node> result = new ArrayList<Node>();
+    if(!targetNode.isNodeType("mix:referenceable")) return result;
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
     RepositoryService repositoryService =(RepositoryService)myContainer.getComponentInstanceOfType(RepositoryService.class);
     ManageableRepository repository  = repositoryService.getRepository(repoName);
