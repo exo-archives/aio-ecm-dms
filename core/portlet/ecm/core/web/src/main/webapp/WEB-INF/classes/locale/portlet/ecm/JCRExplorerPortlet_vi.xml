@@ -2575,5 +2575,12 @@
 				<msg>
 				  <not-exist-categories>Không tồn tại bất kỳ danh mục phân loại nào</not-exist-categories>
 				</msg>
-		</UIActionBar>  
+		</UIActionBar>
+  <UISearchResult>
+    <msg>
+    	<not-display-parent>Không thể hiển thị node cha của node kết quả trong File Explorer đối với drive hiện tại. Bạn cần thay đổi preferences của drive để cho phép hiển thị node cha</not-display-parent>	
+    	    	<not-display-parent>Không thể hiển thị node kết quả trong File Explorer đối với drive hiện tại. Bạn cần thay đổi preferences của drive để cho phép hiển thị node</not-display-parent>
+	</msg>
+  </UISearchResult>		
+
 </bundle>

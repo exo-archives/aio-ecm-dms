@@ -80,6 +80,8 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UISearchResult extends UIContainer {
+  
+  private static final String JCR_SYSTEM_PATH = "/jcr:system";
 
   /**
    * Logger.
@@ -160,11 +162,12 @@ public class UISearchResult extends UIContainer {
     if (flag_) checkList = currentListNodes_; 
     else checkList = listNodes;
     if (node.getName().equals(Utils.JCR_CONTENT)) {
-      if (!checkList.contains(node.getParent())) {
-        listNodes.add(node.getParent());
+      Node parent = node.getParent();
+      if (!checkList.contains(parent) && !parent.getPath().startsWith(JCR_SYSTEM_PATH)) {
+        listNodes.add(parent);
         listRows.add(r);
       }
-    } else if (!checkList.contains(node)) {
+    } else if (!checkList.contains(node) && !node.getPath().startsWith(JCR_SYSTEM_PATH)) {
       listNodes.add(node);
       listRows.add(r);
     }
@@ -202,7 +205,8 @@ public class UISearchResult extends UIContainer {
     if (resultListSize > 100) {
       currentListNodes_.clear();
       currentListRows_.clear();
-      for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+      RowIterator iter = null;
+      for (iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();        
         String path = r.getValue("jcr:path").getString();
         Node linkNode = null;
@@ -249,11 +253,11 @@ public class UISearchResult extends UIContainer {
           currentListRows_.addAll(listRows); 
           break;
         }
-        if (listNodes.size() < 100 && iter.hasNext()) {
-          currentListNodes_.addAll(listNodes);
-          currentListRows_.addAll(listRows);
-          flag_ = true;
-        }
+      }
+      if (listNodes.size() < 100) {
+        currentListNodes_.addAll(listNodes);
+        currentListRows_.addAll(listRows);
+        flag_ = true;
       }
     } else {
       currentListNodes_.clear();
@@ -376,6 +380,7 @@ public class UISearchResult extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      //check if node is viewable
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class);
       if (!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null, 
@@ -383,6 +388,14 @@ public class UISearchResult extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      //check if node can be display
+      if (!uiExplorer.canDisplayInJCRExplorer(node)) {
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-display", null, 
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+
       UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
       if (uiPopup == null) {
         uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
@@ -403,20 +416,26 @@ public class UISearchResult extends UIContainer {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       String folderPath = LinkUtils.getParentPath(path);
       Node node = null;
       try {
         node = uiExplorer.getNodeByPath(folderPath, uiExplorer.getTargetSession());
       } catch(AccessDeniedException ace) {
-        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
         LOG.error("Cannot access the node at " + folderPath, e);        
-      }      
+      }
+      if (!uiExplorer.canDisplayInJCRExplorer(node)) {
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-display-parent", null, 
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       uiExplorer.setSelectNode(node.getSession().getWorkspace().getName(), folderPath);
       uiExplorer.updateAjax(event);
     }

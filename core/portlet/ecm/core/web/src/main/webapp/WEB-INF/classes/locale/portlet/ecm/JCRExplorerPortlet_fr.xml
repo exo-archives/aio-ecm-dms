@@ -2591,5 +2591,11 @@
 				<msg>
 				  <not-exist-categories>Il n’y a aucune catégorie</not-exist-categories>
 				</msg>
-		</UIActionBar>	 
+		</UIActionBar>
+  <UISearchResult>
+    <msg>
+    	<not-display-parent>Impossible d'afficher le noeud père dans Explorateur de fichier pour le lecteur courant. Vous avez besoin d'éditer les préférences du lecteur.</not-display-parent>
+    	<not-display>Impossible d'afficher ce noeud dans Explorateur de fichier pour le lecteur courant. Vous avez besoin d'éditer les préférences du lecteur</not-display>	
+	</msg>
+  </UISearchResult>
 </bundle>

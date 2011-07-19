@@ -599,11 +599,60 @@ public class UIJCRExplorer extends UIContainer {
       record(previousPath, lastWorkspaceName_);
     }
   }
+  
+  /**
+   * check if the given node can be displayed in the JCRExplorer
+   * @param node the node
+   * @return true if can display, false if can not
+   */
+  public boolean canDisplayInJCRExplorer(Node node) {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    boolean ret = true;
+    try {
+      //check 1
+      if(!preferences_.isShowNonDocumentType()) {
+        List<String> documentTypes = templateService.getDocumentTemplates(currentDriveRepositoryName_) ;      
+        if(PermissionUtil.canRead(node)) {
+          NodeType nodeType = node.getPrimaryNodeType() ;
+          String typeName = nodeType.getName();
+          String primaryTypeName = typeName;
+          if(typeName.equals(Utils.EXO_SYMLINK)) { 
+            primaryTypeName = node.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+          }
+          if(Utils.NT_UNSTRUCTURED.equals(primaryTypeName) || Utils.NT_FOLDER.equals(primaryTypeName)) {
+            ret = true;
+          } else if(typeName.equals(Utils.EXO_SYMLINK) && 
+              documentTypes.contains(primaryTypeName)) {
+              ret = true;
+          } else if(documentTypes.contains(typeName)) {
+            ret = true;
+          } else {
+            ret = false;
+          }
+        } else {
+          ret = false;
+        }
+      } else {
+        ret = true;
+      }
+      
+      // check 3
+      if(!preferences_.isShowHiddenNode()) {
+          Node realChild = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getRealNode() : node;
+          if(!PermissionUtil.canRead(node) || !PermissionUtil.canRead(realChild) || realChild.isNodeType(Utils.EXO_HIDDENABLE)) {
+            ret = false;
+          }
+      }
+      
+      return ret && PermissionUtil.canRead(node);
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
   public List<Node> getChildrenList(String path, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession()));
     NodeIterator childrenIterator = node.getNodes();
     List<Node> childrenList  = new ArrayList<Node>() ;

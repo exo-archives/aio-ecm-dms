@@ -975,6 +975,8 @@
       <empty>No result found!</empty>
       <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
       <query-invalid>The query is invalid</query-invalid>
+	  <not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>      
+	  <not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	  
     </msg>
     <header>
       <name>#{word.name}</name>
@@ -2586,8 +2588,8 @@
   	</msg>
   </UITreeExplorer>
   <UIActionBar>
-				<msg>
-				  <not-exist-categories>There isn't any category</not-exist-categories>
-				</msg>
-		</UIActionBar>
+	<msg>
+	  <not-exist-categories>There isn't any category</not-exist-categories>
+	</msg>
+  </UIActionBar>
 </bundle>

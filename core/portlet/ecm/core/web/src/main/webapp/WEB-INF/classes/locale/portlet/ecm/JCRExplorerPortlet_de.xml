@@ -2564,5 +2564,11 @@
 				<msg>
 				  <not-exist-categories>There isn't any category</not-exist-categories>
 				</msg>
-		</UIActionBar>  
+		</UIActionBar>
+  <UISearchResult>
+    <msg>
+    	<not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>
+    	<not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	
+	</msg>
+  </UISearchResult>		
 </bundle>

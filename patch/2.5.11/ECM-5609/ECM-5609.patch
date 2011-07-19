@@ -1,0 +1,283 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(revision 71269)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/search/UISearchResult.java	(working copy)
+@@ -80,6 +80,8 @@
+     }
+ )
+ public class UISearchResult extends UIContainer {
++  
++  private static final String JCR_SYSTEM_PATH = "/jcr:system";
+ 
+   /**
+    * Logger.
+@@ -160,11 +162,12 @@
+     if (flag_) checkList = currentListNodes_; 
+     else checkList = listNodes;
+     if (node.getName().equals(Utils.JCR_CONTENT)) {
+-      if (!checkList.contains(node.getParent())) {
+-        listNodes.add(node.getParent());
++      Node parent = node.getParent();
++      if (!checkList.contains(parent) && !parent.getPath().startsWith(JCR_SYSTEM_PATH)) {
++        listNodes.add(parent);
+         listRows.add(r);
+       }
+-    } else if (!checkList.contains(node)) {
++    } else if (!checkList.contains(node) && !node.getPath().startsWith(JCR_SYSTEM_PATH)) {
+       listNodes.add(node);
+       listRows.add(r);
+     }
+@@ -202,7 +205,8 @@
+     if (resultListSize > 100) {
+       currentListNodes_.clear();
+       currentListRows_.clear();
+-      for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
++      RowIterator iter = null;
++      for (iter = queryResult_.getRows(); iter.hasNext();) {
+         Row r = iter.nextRow();        
+         String path = r.getValue("jcr:path").getString();
+         Node linkNode = null;
+@@ -249,12 +253,12 @@
+           currentListRows_.addAll(listRows); 
+           break;
+         }
+-        if (listNodes.size() < 100 && iter.hasNext()) {
+-          currentListNodes_.addAll(listNodes);
+-          currentListRows_.addAll(listRows);
+-          flag_ = true;
+-        }
+       }
++      if (listNodes.size() < 100) {
++        currentListNodes_.addAll(listNodes);
++        currentListRows_.addAll(listRows);
++        flag_ = true;
++      }
+     } else {
+       currentListNodes_.clear();
+       currentListRows_.clear();
+@@ -376,6 +380,7 @@
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+         return;
+       }
++      //check if node is viewable
+       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class);
+       if (!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
+         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null, 
+@@ -383,6 +388,14 @@
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+         return;
+       }
++      //check if node can be display
++      if (!uiExplorer.canDisplayInJCRExplorer(node)) {
++        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-display", null, 
++                                                ApplicationMessage.WARNING));
++        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
++        return;
++      }
++
+       UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
+       if (uiPopup == null) {
+         uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
+@@ -403,20 +416,26 @@
+     public void execute(Event<UISearchResult> event) throws Exception {
+       UISearchResult uiSearchResult = event.getSource();
+       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
++      UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
+       String path = event.getRequestContext().getRequestParameter(OBJECTID);
+       String folderPath = LinkUtils.getParentPath(path);
+       Node node = null;
+       try {
+         node = uiExplorer.getNodeByPath(folderPath, uiExplorer.getTargetSession());
+       } catch(AccessDeniedException ace) {
+-        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
+         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
+             ApplicationMessage.WARNING));
+         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+         return;
+       } catch(Exception e) {
+         LOG.error("Cannot access the node at " + folderPath, e);        
+-      }      
++      }
++      if (!uiExplorer.canDisplayInJCRExplorer(node)) {
++        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-display-parent", null, 
++                                                ApplicationMessage.WARNING));
++        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
++        return;
++      }
+       uiExplorer.setSelectNode(node.getSession().getWorkspace().getName(), folderPath);
+       uiExplorer.updateAjax(event);
+     }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(revision 71269)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIJCRExplorer.java	(working copy)
+@@ -599,11 +599,60 @@
+       record(previousPath, lastWorkspaceName_);
+     }
+   }
++  
++  /**
++   * check if the given node can be displayed in the JCRExplorer
++   * @param node the node
++   * @return true if can display, false if can not
++   */
++  public boolean canDisplayInJCRExplorer(Node node) {
++    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
++    boolean ret = true;
++    try {
++      //check 1
++      if(!preferences_.isShowNonDocumentType()) {
++        List<String> documentTypes = templateService.getDocumentTemplates(currentDriveRepositoryName_) ;      
++        if(PermissionUtil.canRead(node)) {
++          NodeType nodeType = node.getPrimaryNodeType() ;
++          String typeName = nodeType.getName();
++          String primaryTypeName = typeName;
++          if(typeName.equals(Utils.EXO_SYMLINK)) { 
++            primaryTypeName = node.getProperty(Utils.EXO_PRIMARYTYPE).getString();
++          }
++          if(Utils.NT_UNSTRUCTURED.equals(primaryTypeName) || Utils.NT_FOLDER.equals(primaryTypeName)) {
++            ret = true;
++          } else if(typeName.equals(Utils.EXO_SYMLINK) && 
++              documentTypes.contains(primaryTypeName)) {
++              ret = true;
++          } else if(documentTypes.contains(typeName)) {
++            ret = true;
++          } else {
++            ret = false;
++          }
++        } else {
++          ret = false;
++        }
++      } else {
++        ret = true;
++      }
++      
++      // check 3
++      if(!preferences_.isShowHiddenNode()) {
++          Node realChild = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getRealNode() : node;
++          if(!PermissionUtil.canRead(node) || !PermissionUtil.canRead(realChild) || realChild.isNodeType(Utils.EXO_HIDDENABLE)) {
++            ret = false;
++          }
++      }
++      
++      return ret && PermissionUtil.canRead(node);
++    } catch (Exception e) {
++      return false;
++    }
++  }
+ 
+   public List<Node> getChildrenList(String path, boolean isReferences) throws Exception {
+     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+     Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession()));
+     NodeIterator childrenIterator = node.getNodes();
+     List<Node> childrenList  = new ArrayList<Node>() ;
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_de.xml	(working copy)
+@@ -2564,5 +2564,11 @@
+ 				<msg>
+ 				  <not-exist-categories>There isn't any category</not-exist-categories>
+ 				</msg>
+-		</UIActionBar>  
++		</UIActionBar>
++  <UISearchResult>
++    <msg>
++    	<not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>
++    	<not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	
++	</msg>
++  </UISearchResult>		
+ </bundle>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_en.xml	(working copy)
+@@ -975,6 +975,8 @@
+       <empty>No result found!</empty>
+       <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
+       <query-invalid>The query is invalid</query-invalid>
++	  <not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>      
++	  <not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	  
+     </msg>
+     <header>
+       <name>#{word.name}</name>
+@@ -2586,8 +2588,8 @@
+   	</msg>
+   </UITreeExplorer>
+   <UIActionBar>
+-				<msg>
+-				  <not-exist-categories>There isn't any category</not-exist-categories>
+-				</msg>
+-		</UIActionBar>
++	<msg>
++	  <not-exist-categories>There isn't any category</not-exist-categories>
++	</msg>
++  </UIActionBar>
+ </bundle>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_ar.xml	(working copy)
+@@ -2548,4 +2548,10 @@
+ 				  <not-exist-categories>There isn't any category</not-exist-categories>
+ 				</msg>
+ 		</UIActionBar>
++  <UISearchResult>
++    <msg>
++    	<not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>
++    	<not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	
++	</msg>
++  </UISearchResult>		
+ </bundle>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_fr.xml	(working copy)
+@@ -2591,5 +2591,11 @@
+ 				<msg>
+ 				  <not-exist-categories>Il n’y a aucune catégorie</not-exist-categories>
+ 				</msg>
+-		</UIActionBar>	 
++		</UIActionBar>
++  <UISearchResult>
++    <msg>
++    	<not-display-parent>Impossible d'afficher le noeud père dans Explorateur de fichier pour le lecteur courant. Vous avez besoin d'éditer les préférences du lecteur.</not-display-parent>
++    	<not-display>Impossible d'afficher ce noeud dans Explorateur de fichier pour le lecteur courant. Vous avez besoin d'éditer les préférences du lecteur</not-display>	
++	</msg>
++  </UISearchResult>
+ </bundle>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_nl.xml	(working copy)
+@@ -2555,4 +2555,10 @@
+ 				  <not-exist-categories>There isn't any category</not-exist-categories>
+ 				</msg>
+ 		</UIActionBar>
++  <UISearchResult>
++    <msg>
++    	<not-display-parent>Cannot display this node's parent in File Explorer for the current drive. You may need to edit the drive's preferences to allow the parent node to be displayed</not-display-parent>
++    	<not-display>Cannot display this node in File Explorer for the current drive. You may need to edit the drive's preferences to allow the node to be displayed</not-display>	
++	</msg>
++  </UISearchResult>		
+ </bundle>
+Index: core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(revision 71269)
++++ core/portlet/ecm/core/web/src/main/webapp/WEB-INF/classes/locale/portlet/ecm/JCRExplorerPortlet_vi.xml	(working copy)
+@@ -2575,5 +2575,12 @@
+ 				<msg>
+ 				  <not-exist-categories>Không tồn tại bất kỳ danh mục phân loại nào</not-exist-categories>
+ 				</msg>
+-		</UIActionBar>  
++		</UIActionBar>
++  <UISearchResult>
++    <msg>
++    	<not-display-parent>Không thể hiển thị node cha của node kết quả trong File Explorer đối với drive hiện tại. Bạn cần thay đổi preferences của drive để cho phép hiển thị node cha</not-display-parent>	
++    	    	<not-display-parent>Không thể hiển thị node kết quả trong File Explorer đối với drive hiện tại. Bạn cần thay đổi preferences của drive để cho phép hiển thị node</not-display-parent>
++	</msg>
++  </UISearchResult>		
++
+ </bundle>
