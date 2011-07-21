@@ -33,7 +33,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
 
 /**
  * Created by The eXo Platform SARL

@@ -72,7 +72,7 @@
 		  		String path = comment.getPath();
 		  		String parentPath = comment.getSession().getWorkspace().getName().concat(":").concat(uicomponent.getNode().getPath());
 		  		if(comment.hasProperty("exo:commentor")){
-		  		  commentor=uicomponent.getCmtOwner(comment.getProperty("exo:commentor").getString());
+		  		  commentor=comment.getProperty("exo:commentor").getString();
 			  	}
           if (commentor!=null && commentor.equals(rcontext.getRemoteUser())) {
 	  		 %>
@@ -82,13 +82,16 @@
 							<image class="EditComment" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.edit-comment")%>"/>
 						</a>
 				<%
-	  		 }
+	  		 } 
+	  		 if (uiremovecomment != null) {
 	  		 Parameter[] params = [new Parameter("workspaceName", comment.getSession().getWorkspace().getName()), new Parameter("repository", uicomponent.getRepository())];
 	  		%>
 						<a href="<%=uiremovecomment.event("RemoveComment", org.exoplatform.ecm.webui.utils.Utils.formatNodeName(path), params)%>">
 						<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
 						</a>
-				<%}%>
+				<%  }
+          }
+	  		 %>
 		  	</div>
 		  	<div class="CommentBox">  		
 		  		<div class="CommentBoxTopLeft">
