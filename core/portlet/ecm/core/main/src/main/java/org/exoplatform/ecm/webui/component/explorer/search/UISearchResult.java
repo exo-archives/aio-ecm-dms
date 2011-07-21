@@ -28,6 +28,7 @@ import java.util.Locale;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -35,20 +36,22 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.JCRPath;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -101,9 +104,19 @@ public class UISearchResult extends UIContainer {
   static private int PAGE_SIZE = 10;
   private List<String> categoryPathList = new ArrayList<String>();
   private String constraintsCondition;
+  @Deprecated
   private boolean isTaxonomyNode = false;
+  
   private String workspaceName = null;
   private String currentPath = null;
+  protected String keyword = "";
+  protected RowIterator resultIter = null;
+  protected LinkManager linkManager = null;
+  protected Session checkSymlinkSession = null;
+  protected String linkWorkspace  = null;
+  final static private String  CHECK_LINK_MATCH_QUERY1= "select * from nt:base where jcr:path = '$0' and ( contains(*, '$1') or lower(exo:name) like '%$2%' or lower(exo:title) like '%$2%')";
+  final static private String  CHECK_LINK_MATCH_QUERY2= "select * from nt:base where jcr:path like '$0/%' and ( contains(*, '$1') or lower(exo:name) like '%$2%' or lower(exo:title) like '%$2%')";
+  
   public List<String> getCategoryPathList() { return categoryPathList; }
   public void setCategoryPathList(List<String> categoryPathListItem) {
     categoryPathList = categoryPathListItem; 
@@ -119,7 +132,8 @@ public class UISearchResult extends UIContainer {
   }
 
   public void setQueryResults(QueryResult queryResult) throws Exception {
-    queryResult_ = queryResult;         
+  	queryResult_ = queryResult;
+    resultIter = queryResult.getRows();
   }  
   
   public long getSearchTime() { return searchTime_; }
@@ -133,31 +147,30 @@ public class UISearchResult extends UIContainer {
     Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
     return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
   }
-  	
-    public void setTaxonomyNode(boolean isTaxonomyNode, String workspaceName, String currentPath) {
-      this.isTaxonomyNode = isTaxonomyNode;
-      this.workspaceName = workspaceName;
-      this.currentPath = currentPath;
-    }
-     
-    public boolean isTaxonomyNode() { return isTaxonomyNode; }
+  @Deprecated
+  public void setTaxonomyNode(boolean isTaxonomyNode, String workspaceName, String currentPath) {
+    this.isTaxonomyNode = isTaxonomyNode;
+    this.workspaceName = workspaceName;
+    this.currentPath = currentPath;
+  }
+  @Deprecated
+  public boolean isTaxonomyNode() { return isTaxonomyNode; }
+  @Deprecated
+  public Node getSymlinkNode(Node targetNode) throws Exception {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+    Session session = 
+      SessionProviderFactory.createSessionProvider().getSession(workspaceName, repositoryService.getCurrentRepository());
+    String queryStatement = 
+      "select * from exo:taxonomyLink where jcr:path like '" + currentPath + "/%' " +
+      		"and exo:uuid='"+targetNode.getUUID()+"' " +
+      		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    Query query = queryManager.createQuery(queryStatement, Query.SQL);
+    if(query.execute().getNodes().getSize() > 0) return query.execute().getNodes().nextNode();
+    return null;
+  }
   
-    public Node getSymlinkNode(Node targetNode) throws Exception {
-      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-      Session session = 
-        SessionProviderFactory.createSessionProvider().getSession(workspaceName, repositoryService.getCurrentRepository());
-      String queryStatement = 
-        "select * from exo:taxonomyLink where jcr:path like '" + currentPath + "/%' " +
-        		"and exo:uuid='"+targetNode.getUUID()+"' " +
-        		"and exo:workspace='"+targetNode.getSession().getWorkspace().getName()+"' order by exo:primaryType DESC";
-      QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);
-      if(query.execute().getNodes().getSize() > 0) return query.execute().getNodes().nextNode();
-      return null;
-    }	
-      
-  
-  private void addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
+  private boolean addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
     List<Node> checkList = new ArrayList<Node>();
     if (flag_) checkList = currentListNodes_; 
     else checkList = listNodes;
@@ -166,11 +179,14 @@ public class UISearchResult extends UIContainer {
       if (!checkList.contains(parent) && !parent.getPath().startsWith(JCR_SYSTEM_PATH)) {
         listNodes.add(parent);
         listRows.add(r);
+        return true;
       }
     } else if (!checkList.contains(node) && !node.getPath().startsWith(JCR_SYSTEM_PATH)) {
       listNodes.add(node);
       listRows.add(r);
+      return true;
     }
+    return false;
   }
   
   public Session getSession() throws Exception {
@@ -193,141 +209,122 @@ public class UISearchResult extends UIContainer {
     }
   }
   
-  public List<Row> getResultList() throws Exception {    
-    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
-    List<Node> listNodes = new ArrayList<Node>();
-    List<Row> listRows = new ArrayList<Row>();
-    Node resultNode = null;
-    long resultListSize = queryResult_.getNodes().getSize();    
-    if (!queryResult_.getRows().hasNext()) return currentListRows_;    
-    if (resultListSize > 100) {
-      currentListNodes_.clear();
-      currentListRows_.clear();
-      RowIterator iter = null;
-      for (iter = queryResult_.getRows(); iter.hasNext();) {
-        Row r = iter.nextRow();        
-        String path = r.getValue("jcr:path").getString();
-        Node linkNode = null;
-        try {
-          resultNode = getNodeByPath(path);
-        } catch (Exception e) {
-          LOG.warn("Can't get node by path " + path, e);
-          continue;
-        }
-        if(resultNode != null) {
-        	if(this.isTaxonomyNode()) {
-        		if (resultNode.isNodeType("nt:resource")) {
-        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
-        			  resultNode = resultNode.getParent().getParent();		      		
-        		    linkNode = this.getSymlinkNode(resultNode);
-        		  } else {
-        		    resultNode = resultNode.getParent();
-        		    linkNode = this.getSymlinkNode(resultNode);
-        		  }
-        		}	else {
-        		  linkNode = this.getSymlinkNode(resultNode);
-        		}
-        	} else linkNode = resultNode;
-        }
-        if (resultNode != null && linkNode!=null) {
-          if ((categoryPathList != null) && (categoryPathList.size() > 0)){
-            for (String categoryPath : categoryPathList) {
-              int index = categoryPath.indexOf("/");
-              List<String> pathCategoriesList = new ArrayList<String>();
-              String searchCategory = rootTreePath + "/" + categoryPath;
-              List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
-              for (Node category : listCategories) {
-                pathCategoriesList.add(category.getPath());
-              }
-              if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
-            }
-          } else {
-            addNode(listNodes, resultNode, listRows, r);
-          }
-        }
-        if (!iter.hasNext()) isEndOfIterator_ = true;
-        if (listNodes.size() == 100) {
-          currentListNodes_.addAll(listNodes);
-          currentListRows_.addAll(listRows); 
-          break;
-        }
-      }
-      if (listNodes.size() < 100) {
-        currentListNodes_.addAll(listNodes);
-        currentListRows_.addAll(listRows);
-        flag_ = true;
-      }
-    } else {
-      currentListNodes_.clear();
-      currentListRows_.clear();
-      for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
-        Row r = iter.nextRow();        
-        if (!iter.hasNext()) isEndOfIterator_ = true;
-        String path = r.getValue("jcr:path").getString();
-        Node linkNode = null;
-        try {
-          resultNode = getNodeByPath(path);
-        } catch (Exception e) {
-          LOG.warn("Can't get node by path " + path, e);
-          continue;
-        }
-        if(resultNode != null) {
-        	if(this.isTaxonomyNode()) {
-        		if (resultNode.isNodeType("nt:resource")) {
-        		  if(resultNode.getParent().getParent().isNodeType("exo:webContent")) {
-        			  resultNode = resultNode.getParent().getParent();		      		
-        		    linkNode = this.getSymlinkNode(resultNode);
-        		  } else {
-        		    resultNode = resultNode.getParent();
-        		    linkNode = this.getSymlinkNode(resultNode);
-        		  }
-        		}	else {
-        		  linkNode = this.getSymlinkNode(resultNode);
-        		}
-        	} else linkNode = resultNode;
-        }
-        if (resultNode != null && linkNode!=null) {
-          if ((categoryPathList != null) && (categoryPathList.size() > 0)){
-            for (String categoryPath : categoryPathList) {
-              int index = categoryPath.indexOf("/");
-              List<String> pathCategoriesList = new ArrayList<String>();
-              String searchCategory = rootTreePath + "/" + categoryPath;
-              if ((categoryPath != null) && (categoryPath.length()==0)) continue;
-              if (categoryPath.substring(0, index).length()==0) continue;
-              List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
-              for (Node category : listCategories) {
-                pathCategoriesList.add(category.getPath());
-              }
-              if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
-            }
-          } else {
-            addNode(listNodes, resultNode, listRows, r);
-          }
-        }        
-      }
-      currentListNodes_= listNodes;
-      currentListRows_ = listRows;
-    }    
-    return currentListRows_;
-  }
+  public List<Row> getResultList() throws Exception {
+	    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+	    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+	    String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
+	    List<Node> listNodes = new ArrayList<Node>();
+	    List<Row> listRows = new ArrayList<Row>();
+	    if (resultIter == null) return new ArrayList<Row>();
+	    Row r = null;
+	    int count = 0;
+	    Node resultNode = null;
+	    while (resultIter.hasNext()) {    		
+	      r = resultIter.nextRow();      
+	      String path = r.getValue("jcr:path").getString();
+	      try {
+	        resultNode = getNodeByPath(path);
+	      } catch (Exception e) {
+	        LOG.warn("Can't get node by path " + path, e);
+	        continue;
+	      }
+	      if (resultNode != null) {
+	      	if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+	          for (String categoryPath : categoryPathList) {
+	            int index = categoryPath.indexOf("/");
+	            List<String> pathCategoriesList = new ArrayList<String>();
+	            String searchCategory = rootTreePath + "/" + categoryPath;
+	            List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+	            for (Node category : listCategories) {
+	              pathCategoriesList.add(category.getPath());
+	            }
+	            if (pathCategoriesList.contains(searchCategory)) {
+	            	if (resultNode.isNodeType(Utils.EXO_SYMLINK))
+	            		if (checkTargetMatch(resultNode, keyword)) {
+	            			if (addNode(listNodes, resultNode, listRows, r) )	count ++;
+	            		}
+	            	}else {
+	            		if (addNode(listNodes, resultNode, listRows, r) )	count ++;
+	            	}
+	            }//for
+          }else {
+	        	if (resultNode.isNodeType(Utils.EXO_SYMLINK)) {
+	        		if (checkTargetMatch(resultNode, keyword)) {
+          			if (addNode(listNodes, resultNode, listRows, r) )	count ++;
+          		}
+	        	}else {
+	        		if (addNode(listNodes, resultNode, listRows, r) )	count ++;
+	        	}
+	        }
+	      } 
+	      if (count == 100 ) break;
+	    }
+	    currentListNodes_.addAll(listNodes);
+	    currentListRows_.addAll(listRows);
+	    if (!resultIter.hasNext()) isEndOfIterator_ = true;
+	    if (listNodes.size() < 100 && !isEndOfIterator_) {
+	      flag_ = true;
+	    }
+	    return currentListRows_;
+	  }
   
   public void clearAll() {
-    flag_ = false;
-    isEndOfIterator_ = false;
-    currentListNodes_.clear();
+		flag_ = false;
+		isEndOfIterator_ = false;
+		currentListNodes_.clear();
+		currentListRows_.clear();
+		resultIter = null;		
+		checkSymlinkSession= null;
+		keyword = "";
   }
-  
+  public void setSearchKeyword4LinkCheck(String keyword) {
+  	this.keyword = keyword;
+  }
+  /**
+   * Check a symlink/taxonomylink if its target matches with keyword for searching ...link
+   * @param linkPath
+   * @param keyword
+   * @return
+   * @Author Nguyen The Vinh from ExoPlatform
+   */
+  protected boolean checkTargetMatch(Node symlinkNode, String keyword) {
+  	String queryStatement = CHECK_LINK_MATCH_QUERY1;
+  	Node target=null;
+  	
+  	if (linkManager==null) {
+  		linkManager = getApplicationComponent(LinkManager.class);
+  	}
+  	try {
+  		if (!linkManager.isLink(symlinkNode)) return true;
+  		target = linkManager.getTarget(symlinkNode);
+  		if (target == null) return false;
+  		checkSymlinkSession = target.getSession();
+  		queryStatement = StringUtils.replace(queryStatement,"$0", target.getPath());  		
+  		queryStatement = StringUtils.replace(queryStatement,"$1", keyword.replaceAll("'", "''"));
+    	queryStatement = StringUtils.replace(queryStatement,"$2", keyword.replaceAll("'", "''").toLowerCase());
+    	
+  		
+			QueryManager queryManager = checkSymlinkSession.getWorkspace().getQueryManager();
+			Query query = queryManager.createQuery(queryStatement, Query.SQL);
+			QueryResult queryResult = query.execute();
+			if ( queryResult.getNodes().getSize()>0 ) return true;
+			if (!(target.isNodeType("exo:webContent")||target.hasNode("jcr:content")) )return false;
+			queryStatement = CHECK_LINK_MATCH_QUERY2;
+			queryStatement = StringUtils.replace(queryStatement,"$0", target.getPath());  		
+  		queryStatement = StringUtils.replace(queryStatement,"$1", keyword.replaceAll("'", "''"));
+    	queryStatement = StringUtils.replace(queryStatement,"$2", keyword.replaceAll("'", "''").toLowerCase());
+    	query = queryManager.createQuery(queryStatement, Query.SQL);
+    	queryResult = query.execute();
+			return queryResult.getNodes().getSize()>0;
+		} catch (RepositoryException e) {
+			return false;
+		}
+  }
   public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_; }
 
   public void updateGrid(boolean flagCheck) throws Exception {
     SearchResultPageList pageList;
-    if (flagCheck) {
-      pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
-    } else {
-      pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
-    }   
+    pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
     uiPageIterator_.setSearchResultPageList(pageList);
     uiPageIterator_.setPageList(pageList);

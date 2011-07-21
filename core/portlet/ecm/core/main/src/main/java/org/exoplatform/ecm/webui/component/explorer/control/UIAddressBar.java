@@ -105,8 +105,8 @@ public class UIAddressBar extends UIForm {
   private String[] arrView_ = {};
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
 
-  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC";
+  final static private  String ROOT_SQL_QUERY  = "select * from nt:base where (jcr:primaryType like 'exo:symlink' or jcr:primaryType like 'exo:taxonomyLink') OR ( contains(*, '$1') or lower(exo:name) like '%$2%') order by exo:title DESC";
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' AND ( (jcr:primaryType like 'exo:symlink' or jcr:primaryType like 'exo:taxonomyLink') OR ( contains(*, '$1') or lower(exo:name) like '%$2%') ) order by exo:title DESC";
   
   public UIAddressBar() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
@@ -241,49 +241,20 @@ public class UIAddressBar extends UIForm {
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();   
       Node currentNode = uiExplorer.getCurrentNode();
       String queryStatement = null;
-      QueryManager queryManager = null;
-      boolean isTaxonomyNode = false;
-      if (currentNode.isNodeType(Utils.EXO_TAXANOMY)) {
-        TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
-        List<Node> TaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
-        for (Node taxonomyNode : TaxonomyTrees) {
-          if (currentNode.getPath().startsWith(taxonomyNode.getPath())) {
-            ActionServiceContainer actionService = uiForm.getApplicationComponent(ActionServiceContainer.class);
-            List<Node> listAction = actionService.getActions(taxonomyNode);
-            for (Node actionNode : listAction) {
-              if (actionNode.isNodeType(ACTION_TAXONOMY)) {
-                String searchPath = actionNode.getProperty(EXO_TARGETPATH).getString();
-                String searchWorkspace = actionNode.getProperty(EXO_TARGETWORKSPACE).getString();                
-                if("/".equals(searchPath)) {
-                  queryStatement = ROOT_SQL_QUERY;        
-                } else {
-                  queryStatement = StringUtils.replace(SQL_QUERY,"$0", searchPath);
-                }
-                SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider();
-                
-                Session session = sessionProvider.getSession(searchWorkspace, 
-                		(ManageableRepository)currentNode.getSession().getRepository());      
-                                queryManager = session.getWorkspace().getQueryManager();
-                                isTaxonomyNode = true;
-                                break;
-              }
-            }
-            break;
-          }
-        }
-      } else {
-    	          if("/".equals(currentNode.getPath())) {
-    	            queryStatement = ROOT_SQL_QUERY;        
-    	          } else {
-    	            queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
-    	          }
-    	          queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
-      }
-                 
+      
+		  if("/".equals(currentNode.getPath())) {
+		    queryStatement = ROOT_SQL_QUERY;        
+		  } else {
+		    queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
+		  }
+      queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));
+      queryStatement = StringUtils.replace(queryStatement,"$2", text.replaceAll("'", "''").toLowerCase());
       uiExplorer.removeChildById("ViewSearch");
-      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);      
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
       long startTime = System.currentTimeMillis();
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
       queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));
       QueryResult queryResult = null;
       try {
@@ -296,9 +267,9 @@ public class UIAddressBar extends UIForm {
     	  uiApp.addMessage(new ApplicationMessage(MESSAGE_NOT_SUPPORT_KEYWORD, null, ApplicationMessage.WARNING));
     	  return;
       }
-      uiSearchResult.setTaxonomyNode(isTaxonomyNode, currentNode.getSession().getWorkspace().getName(), currentNode.getPath());
       uiSearchResult.clearAll();
-      uiSearchResult.setQueryResults(queryResult);            
+      uiSearchResult.setSearchKeyword4LinkCheck(text);
+      uiSearchResult.setQueryResults(queryResult);
       uiSearchResult.updateGrid(true);
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
