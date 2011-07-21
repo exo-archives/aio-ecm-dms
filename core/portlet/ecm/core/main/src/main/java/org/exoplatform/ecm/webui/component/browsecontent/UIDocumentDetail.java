@@ -542,9 +542,7 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
   /*
    * This method is used to get the comment's owner's name
    */
-  public String getCmtOwner(String name) throws Exception{   
-      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
-      User userAccount = service.getUserHandler().findUserByName(name);
-      return userAccount.getFullName();
+  public String getCmtOwner(String name) {
+    return org.exoplatform.services.cms.impl.Utils.getUserFullName(name);
   }
 }

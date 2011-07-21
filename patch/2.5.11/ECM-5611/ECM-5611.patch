@@ -1,0 +1,126 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/impl/Utils.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/impl/Utils.java	(revision 70953)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/impl/Utils.java	(working copy)
+@@ -22,12 +22,21 @@
+ import javax.jcr.PathNotFoundException;
+ import javax.jcr.RepositoryException;
+ 
++import org.exoplatform.container.ExoContainer;
++import org.exoplatform.container.ExoContainerContext;
++import org.exoplatform.services.cms.link.LinkManager;
++import org.exoplatform.services.jcr.access.SystemIdentity;
+ import org.exoplatform.services.jcr.core.ExtendedNode;
++import org.exoplatform.services.organization.OrganizationService;
++import org.exoplatform.services.organization.User;
+ 
+ /**
+  * @author benjaminmestrallet
+  */
+ public class Utils {
++
++  public static final String EXO_SYMLINK = "exo:symlink";
++  public static final String SYSTEM_NAME = "System";
+   
+   public static Node makePath(Node rootNode, String path, String nodetype)
+   throws PathNotFoundException, RepositoryException {
+@@ -57,5 +66,36 @@
+     }
+     return node;
+   }
++  
++  public static String getRealNodeOwner(Node node) {
++    try {
++      if (node.isNodeType(EXO_SYMLINK)) {
++        LinkManager linkManager = getService(LinkManager.class);
++        node = linkManager.getTarget(node, true);
++      }
++      if(node.hasProperty("exo:owner")) {
++        String userName =  node.getProperty("exo:owner").getString();
++        return getUserFullName(userName);
++      }
++    } catch (Exception e) {}
++    return SystemIdentity.ANONIM;
++  }
++  
++  public static String getUserFullName(String userId) {
++    if (SystemIdentity.SYSTEM.equals(userId)) {
++      return SYSTEM_NAME;
++    }
++    try {
++      OrganizationService service = getService(OrganizationService.class);
++      User userAccount = service.getUserHandler().findUserByName(userId);
++      return userAccount.getFullName();
++    } catch (Exception e) {}
++    return SystemIdentity.ANONIM;    
++  }
++  
++  public static <T> T getService(Class<T> clazz) {
++    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
++    return clazz.cast(myContainer.getComponentInstanceOfType(clazz));
++  }
+ 
+ }
+\ No newline at end of file
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(revision 70953)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/UIDocumentInfo.java	(working copy)
+@@ -78,8 +78,6 @@
+ import org.exoplatform.services.jcr.ext.audit.AuditHistory;
+ import org.exoplatform.services.jcr.ext.audit.AuditService;
+ import org.exoplatform.services.log.ExoLogger;
+-import org.exoplatform.services.organization.OrganizationService;
+-import org.exoplatform.services.organization.User;
+ import org.exoplatform.web.application.ApplicationMessage;
+ import org.exoplatform.webui.application.WebuiRequestContext;
+ import org.exoplatform.webui.application.portlet.PortletRequestContext;
+@@ -909,9 +907,7 @@
+   /*
+    * This method is used to get the comment's owner's name
+    */
+-  public String getCmtOwner(String name) throws Exception{   
+-      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
+-      User userAccount = service.getUserHandler().findUserByName(name);
+-      return userAccount.getFullName();
++  public String getCmtOwner(String name) {   
++    return org.exoplatform.services.cms.impl.Utils.getUserFullName(name); 
+   }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(revision 70953)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIDocumentDetail.java	(working copy)
+@@ -542,9 +542,7 @@
+   /*
+    * This method is used to get the comment's owner's name
+    */
+-  public String getCmtOwner(String name) throws Exception{   
+-      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
+-      User userAccount = service.getUserHandler().findUserByName(name);
+-      return userAccount.getFullName();
++  public String getCmtOwner(String name) {
++    return org.exoplatform.services.cms.impl.Utils.getUserFullName(name);
+   }
+ }
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(revision 70953)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/browsecontent/UIBrowseContainer.java	(working copy)
+@@ -555,14 +555,8 @@
+   public int getNumberOfPage() {
+     return uiPageIterator_.getAvailablePage();
+   }
+-  public String getOwner(Node node) throws Exception{
+-    if(node.hasProperty("exo:owner")) {
+-      String userName =  node.getProperty("exo:owner").getString();
+-      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
+-      User userAccount = service.getUserHandler().findUserByName(userName);
+-      return userAccount.getFullName();
+-    }
+-    return SystemIdentity.ANONIM;
++  public String getOwner(Node node) {
++    return org.exoplatform.services.cms.impl.Utils.getRealNodeOwner(node);
+   }
+   @SuppressWarnings("unchecked")
+   public Map getPathContent() throws Exception {

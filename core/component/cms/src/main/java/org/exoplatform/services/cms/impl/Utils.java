@@ -22,12 +22,21 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 
 /**
  * @author benjaminmestrallet
  */
 public class Utils {
+
+  public static final String EXO_SYMLINK = "exo:symlink";
+  public static final String SYSTEM_NAME = "System";
   
   public static Node makePath(Node rootNode, String path, String nodetype)
   throws PathNotFoundException, RepositoryException {
@@ -56,6 +65,37 @@ public class Utils {
       }
     }
     return node;
+  }
+  
+  public static String getRealNodeOwner(Node node) {
+    try {
+      if (node.isNodeType(EXO_SYMLINK)) {
+        LinkManager linkManager = getService(LinkManager.class);
+        node = linkManager.getTarget(node, true);
+      }
+      if(node.hasProperty("exo:owner")) {
+        String userName =  node.getProperty("exo:owner").getString();
+        return getUserFullName(userName);
+      }
+    } catch (Exception e) {}
+    return SystemIdentity.ANONIM;
+  }
+  
+  public static String getUserFullName(String userId) {
+    if (SystemIdentity.SYSTEM.equals(userId)) {
+      return SYSTEM_NAME;
+    }
+    try {
+      OrganizationService service = getService(OrganizationService.class);
+      User userAccount = service.getUserHandler().findUserByName(userId);
+      return userAccount.getFullName();
+    } catch (Exception e) {}
+    return SystemIdentity.ANONIM;    
+  }
+  
+  public static <T> T getService(Class<T> clazz) {
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    return clazz.cast(myContainer.getComponentInstanceOfType(clazz));
   }
 
 }

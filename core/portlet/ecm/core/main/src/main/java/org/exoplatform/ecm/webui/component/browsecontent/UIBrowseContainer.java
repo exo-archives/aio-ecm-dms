@@ -555,14 +555,8 @@ public class UIBrowseContainer extends UIContainer {
   public int getNumberOfPage() {
     return uiPageIterator_.getAvailablePage();
   }
-  public String getOwner(Node node) throws Exception{
-    if(node.hasProperty("exo:owner")) {
-      String userName =  node.getProperty("exo:owner").getString();
-      OrganizationService service = this.getApplicationComponent(OrganizationService.class);
-      User userAccount = service.getUserHandler().findUserByName(userName);
-      return userAccount.getFullName();
-    }
-    return SystemIdentity.ANONIM;
+  public String getOwner(Node node) {
+    return org.exoplatform.services.cms.impl.Utils.getRealNodeOwner(node);
   }
   @SuppressWarnings("unchecked")
   public Map getPathContent() throws Exception {
