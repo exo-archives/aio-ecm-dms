@@ -1,0 +1,33 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/filter/IsNotWebContentChildNodeFilter.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/filter/IsNotWebContentChildNodeFilter.java	(revision 78825)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/control/filter/IsNotWebContentChildNodeFilter.java	(working copy)
+@@ -19,8 +19,13 @@
+ import java.util.Map;
+ 
+ import javax.jcr.Node;
++import javax.jcr.nodetype.NoSuchNodeTypeException;
+ 
++import org.exoplatform.container.ExoContainer;
++import org.exoplatform.container.ExoContainerContext;
+ import org.exoplatform.ecm.webui.utils.Utils;
++import org.exoplatform.services.jcr.RepositoryService;
++import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
+ import org.exoplatform.services.jcr.impl.core.NodeImpl;
+ import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+ import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
+@@ -36,6 +41,14 @@
+   public boolean accept(Map<String, Object> context) throws Exception {
+     Node currentNode = (Node) context.get(Node.class.getName());
+     Node parrentNode = currentNode.getParent();
++    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
++    RepositoryService repositoryService = (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);
++    ExtendedNodeTypeManager ntmanager = repositoryService.getCurrentRepository().getNodeTypeManager();
++    try {        
++      ntmanager.getNodeType(Utils.EXO_WEBCONTENT);
++  	} catch (NoSuchNodeTypeException e) {
++      return true;
++  	}
+     while (!((NodeImpl) parrentNode).isRoot()) {
+       if (parrentNode.isNodeType(Utils.EXO_WEBCONTENT)) {
+         return false;
