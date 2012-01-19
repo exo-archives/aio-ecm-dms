@@ -1,0 +1,75 @@
+Index: core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/sidebar/UITreeExplorer.java
+===================================================================
+--- core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/sidebar/UITreeExplorer.java	(revision 78825)
++++ core/portlet/ecm/core/main/src/main/java/org/exoplatform/ecm/webui/component/explorer/sidebar/UITreeExplorer.java	(working copy)
+@@ -71,7 +71,7 @@
+   /**
+    * Logger.
+    */
+-  private static final Log LOG  = ExoLogger.getLogger(UITreeExplorer.class);	
++  private static final Log LOG  = ExoLogger.getLogger(UITreeExplorer.class);
+   private TreeNode treeRoot_ ;
+   public UITreeExplorer() throws Exception { 
+   }
+@@ -128,7 +128,7 @@
+   @SuppressWarnings("unchecked")
+   public List<TreeNode> getRenderedChildren(TreeNode treeNode) throws Exception {    
+     if(isPaginated(treeNode)) {      
+-      UITreeNodePageIterator pageIterator = findComponentById(treeNode.getPath());      
++      UITreeNodePageIterator pageIterator = findComponentById(encodeBase64(treeNode.getPath()));
+       return pageIterator.getCurrentPageData();
+     }
+     return treeNode.getChildren();
+@@ -219,7 +219,7 @@
+     temp.setChildren(jcrExplorer.getChildrenList(rootPath, false));
+     if (temp.getChildrenSize() > nodePerPages) {
+       ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
+-      addTreeNodePageIteratorAsChild(temp.getPath(), list, rootPath, path);
++      addTreeNodePageIteratorAsChild(encodeBase64(temp.getPath()), list, rootPath, path);
+     }
+     for (String nodeName : arr) {
+       if (nodeName.length() == 0)
+@@ -237,7 +237,7 @@
+       temp.setChildren(jcrExplorer.getChildrenList(subPath, false));
+       if (temp.getChildrenSize() > nodePerPages) {
+         ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
+-        addTreeNodePageIteratorAsChild(temp.getPath(), list, subPath, path);
++        addTreeNodePageIteratorAsChild(encodeBase64(temp.getPath()), list, subPath, path);
+       }
+     }
+     treeRoot_ = treeRoot;
+Index: core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl
+===================================================================
+--- core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl	(revision 78825)
++++ core/portlet/ecm/core/web/src/main/webapp/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl	(working copy)
+@@ -82,7 +82,7 @@
+ 		        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+ 		      }
+ 		      		// Escape "'" for js
+-				String webDavPath=node.getPath();
++				String webDavPath=node.getPath();
+ 				webDavPath = webDavPath.contains("%27") ? webDavPath.replaceAll("%27","%2527") : webDavPath;
+ 		      		String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLinkWithoutPortalName('"+serverPath+ "','"+repository+"','"+ preferenceWS+ "','" + webDavPath + "','"+mimeType+"')";
+ 			    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
+@@ -143,7 +143,7 @@
+ 	      writeNodes(treeNode) ;
+ 	      if(uicomponent.isPaginated(treeNode)) {
+ 			      println "<div class=\"Node PageIterator\">"	    	
+-		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNode.getPath())); 				
++		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(uicomponent.encodeBase64(treeNode.getPath())));
+ 		    		println "</div>" ;
+ 		    }		    	
+ 	      println "</div>" ;
+@@ -168,10 +168,10 @@
+       	writeNodes(treeNodeRoot);
+        	if(uicomponent.isPaginated(treeNodeRoot)) {%>
+        			<div class="Node PageIterator">
+-       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
++       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(uicomponent.encodeBase64(treeNodeRoot.getPath()))); %>
+        			</div>       	
+ 				<%}
+ 			%>
+     </div>
+   </div>   	    
+-</div>
++</div>

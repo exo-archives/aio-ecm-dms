@@ -143,7 +143,7 @@
 	      writeNodes(treeNode) ;
 	      if(uicomponent.isPaginated(treeNode)) {
 			      println "<div class=\"Node PageIterator\">"	    	
-		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNode.getPath())); 				
+		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(uicomponent.encodeBase64(treeNode.getPath())));
 		    		println "</div>" ;
 		    }		    	
 	      println "</div>" ;
@@ -168,7 +168,7 @@
       	writeNodes(treeNodeRoot);
        	if(uicomponent.isPaginated(treeNodeRoot)) {%>
        			<div class="Node PageIterator">
-       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
+       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(uicomponent.encodeBase64(treeNodeRoot.getPath()))); %>
        			</div>       	
 				<%}
 			%>

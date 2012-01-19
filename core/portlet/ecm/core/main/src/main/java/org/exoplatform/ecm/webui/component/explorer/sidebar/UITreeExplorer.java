@@ -71,7 +71,7 @@ public class UITreeExplorer extends UIContainer {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger(UITreeExplorer.class);	
+  private static final Log LOG  = ExoLogger.getLogger(UITreeExplorer.class);
   private TreeNode treeRoot_ ;
   public UITreeExplorer() throws Exception { 
   }
@@ -128,7 +128,7 @@ public class UITreeExplorer extends UIContainer {
   @SuppressWarnings("unchecked")
   public List<TreeNode> getRenderedChildren(TreeNode treeNode) throws Exception {    
     if(isPaginated(treeNode)) {      
-      UITreeNodePageIterator pageIterator = findComponentById(treeNode.getPath());      
+      UITreeNodePageIterator pageIterator = findComponentById(encodeBase64(treeNode.getPath()));
       return pageIterator.getCurrentPageData();
     }
     return treeNode.getChildren();
@@ -219,7 +219,7 @@ public class UITreeExplorer extends UIContainer {
     temp.setChildren(jcrExplorer.getChildrenList(rootPath, false));
     if (temp.getChildrenSize() > nodePerPages) {
       ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
-      addTreeNodePageIteratorAsChild(temp.getPath(), list, rootPath, path);
+      addTreeNodePageIteratorAsChild(encodeBase64(temp.getPath()), list, rootPath, path);
     }
     for (String nodeName : arr) {
       if (nodeName.length() == 0)
@@ -237,7 +237,7 @@ public class UITreeExplorer extends UIContainer {
       temp.setChildren(jcrExplorer.getChildrenList(subPath, false));
       if (temp.getChildrenSize() > nodePerPages) {
         ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
-        addTreeNodePageIteratorAsChild(temp.getPath(), list, subPath, path);
+        addTreeNodePageIteratorAsChild(encodeBase64(temp.getPath()), list, subPath, path);
       }
     }
     treeRoot_ = treeRoot;
