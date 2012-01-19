@@ -247,7 +247,8 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     uiExplorer.setRepositoryName(repositoryName);
     uiExplorer.setWorkspaceName(driveData.getWorkspace());
     uiExplorer.setRootPath(homePath);
-    path = homePath.concat(path).replaceAll("/+", "/"); 
+    
+//    path = homePath.concat(path).replaceAll("/+", "/"); 
     UIControl uiControl = uiExplorer.getChild(UIControl.class);
     UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
     uiActionbar.setTabOptions(viewList.get(0));

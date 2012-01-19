@@ -24,7 +24,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
@@ -43,7 +42,6 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -54,8 +52,8 @@ import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -198,16 +196,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       String rssUrlKey = "/node/exo:url";  		
   		if (input.get(rssUrlKey) == null) return;
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class);
-      //portletname
-      PortletRequestContext portletContext 
-    	= (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-      String portletName = portletContext.getWindowId();
       //drive name      
       UITreeExplorer treeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class);      
       String driveName = treeExplorer.getDriveName();
       //portalUri
       PortalRequestContext pContext = Util.getPortalRequestContext();      
       String portalUri = pContext.getPortalURI();
+      String portletName = pContext.getNodePath();
+      portletName = portletName.replaceFirst("/", "");
       
       String rssUrl = (String)input.get(rssUrlKey).getValue();
       String repository = uiExplorer.getRepositoryName();
