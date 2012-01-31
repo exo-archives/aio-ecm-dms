@@ -1,0 +1,73 @@
+Index: core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java
+===================================================================
+--- core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(revision 79046)
++++ core/component/cms/src/main/java/org/exoplatform/services/cms/webdav/WebDavServiceImpl.java	(working copy)
+@@ -17,6 +17,9 @@
+ package org.exoplatform.services.cms.webdav;
+ 
+ import java.io.InputStream;
++import java.net.URI;
++import java.net.URISyntaxException;
++import java.util.List;
+ import org.exoplatform.ecm.utils.text.Text;
+ import javax.jcr.Item;
+ import javax.jcr.NoSuchWorkspaceException;
+@@ -31,6 +34,8 @@
+ import org.exoplatform.services.jcr.RepositoryService;
+ import org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService;
+ import org.exoplatform.services.jcr.webdav.Depth;
++import org.exoplatform.services.jcr.webdav.command.MoveCommand;
++import org.exoplatform.services.jcr.webdav.command.PropFindCommand;
+ import org.exoplatform.services.jcr.webdav.WebDavHeaders;
+ import org.exoplatform.services.jcr.webdav.WebDavMethods;
+ import org.exoplatform.services.jcr.webdav.command.LockCommand;
+@@ -395,9 +400,8 @@
+   	try {
+       repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
+       try {
+-        Item item = nodeFinder.getItem(repoName, workspaceName(repoPath),
+-                                       LinkUtils.getParentPath(path(normalizePath(repoPath))),
+-                                       true);
++        repoPath = Text.escapeIllegalJcrChars(repoPath);
++        Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), LinkUtils.getParentPath(path(repoPath)), true);
+         repoPath = item.getSession().getWorkspace().getName()
+             + LinkUtils.createPath(item.getPath(), LinkUtils.getItemName(path(repoPath)));
+       } catch (PathNotFoundException e) {
+@@ -510,7 +514,36 @@
+     }
+     return super.versionControl(repoName, repoPath, lockTokenHeader, ifHeader);
+   }
+-  
++   @HTTPMethod(WebDavMethods.MOVE)
++     @URITemplate("/{repoName}/{repoPath}/")
++     @InputTransformer(XMLInputTransformer.class)
++    @OutputTransformer(PassthroughOutputTransformer.class)
++  public Response move(@URIParam("repoName") String repoName, @URIParam("repoPath") String repoPath,
++     @HeaderParam(WebDavHeaders.DESTINATION) String destinationHeader,
++     @HeaderParam(WebDavHeaders.LOCKTOKEN) String lockTokenHeader, @HeaderParam(WebDavHeaders.IF) String ifHeader,
++     @HeaderParam(WebDavHeaders.DEPTH) String depthHeader,
++     @HeaderParam(WebDavHeaders.OVERWRITE) String overwriteHeader, @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI,
++                         HierarchicalProperty body)
++  {
++   try {
++      int lastIndexOfSlash = destinationHeader.lastIndexOf('/');
++      String newPath = destinationHeader.substring(0, lastIndexOfSlash);
++      String newFileName = Text.escape(Text.escapeIllegalJcrChars(Text.unescape(destinationHeader.substring(lastIndexOfSlash + 1))));
++      destinationHeader = newPath + "/" + newFileName;
++      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(Text.escapeIllegalJcrChars(repoPath)), true);
++      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
++    } catch (PathNotFoundException exc) {
++      return Response.Builder.notFound().build();
++    } catch (NoSuchWorkspaceException exc) {
++       return Response.Builder.notFound().build();
++    } catch (Exception e) {
++      log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
++     return Response.Builder.serverError().build();
++   }
++      return super.move(repoName, repoPath, destinationHeader, lockTokenHeader, ifHeader,
++                depthHeader, overwriteHeader, baseURI, body);
++
++  }
+   private String convertRepoPath(String repoName, String repoPath, boolean giveTarget) throws Exception{
+     try {
+       Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(normalizePath(repoPath)), giveTarget);
